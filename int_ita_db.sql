@@ -156,6 +156,54 @@ INSERT INTO `setting` (`id`, `key`, `value`) VALUES
 /*!40000 ALTER TABLE `setting` ENABLE KEYS */;
 
 
+-- Дамп структуры для таблица int_ita_db.students
+CREATE TABLE IF NOT EXISTS `students` (
+  `student_id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(35) NOT NULL,
+  `middle_name` varchar(35) NOT NULL,
+  `last_name` varchar(35) NOT NULL,
+  `tel` int(13) NOT NULL,
+  `email` varchar(35) NOT NULL,
+  `address` varchar(150) NOT NULL,
+  `date_of_birth` date NOT NULL,
+  `gender` enum('male','female') NOT NULL,
+  `date_joined` date NOT NULL,
+  `country` varchar(50) NOT NULL,
+  `timezome` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`student_id`),
+  UNIQUE KEY `email` (`email`),
+  CONSTRAINT `FK_students_users` FOREIGN KEY (`email`) REFERENCES `users` (`user_email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы int_ita_db.students: ~0 rows (приблизительно)
+/*!40000 ALTER TABLE `students` DISABLE KEYS */;
+/*!40000 ALTER TABLE `students` ENABLE KEYS */;
+
+
+-- Дамп структуры для таблица int_ita_db.studentsaccess
+CREATE TABLE IF NOT EXISTS `studentsaccess` (
+  `id_access` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `module_id` int(11) NOT NULL,
+  `lecture_id` int(11) NOT NULL,
+  `date_of_change` date NOT NULL,
+  PRIMARY KEY (`id_access`),
+  KEY `FK_courseaccess_students` (`student_id`),
+  KEY `FK_studentsaccess_course` (`course_id`),
+  KEY `FK_studentsaccess_lectures` (`lecture_id`),
+  KEY `FK_studentsaccess_modules` (`module_id`),
+  CONSTRAINT `FK_courseaccess_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
+  CONSTRAINT `FK_studentsaccess_course` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_ID`),
+  CONSTRAINT `FK_studentsaccess_lectures` FOREIGN KEY (`lecture_id`) REFERENCES `lectures` (`lecture_ID`),
+  CONSTRAINT `FK_studentsaccess_modules` FOREIGN KEY (`module_id`) REFERENCES `modules` (`module_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы int_ita_db.studentsaccess: ~0 rows (приблизительно)
+/*!40000 ALTER TABLE `studentsaccess` DISABLE KEYS */;
+/*!40000 ALTER TABLE `studentsaccess` ENABLE KEYS */;
+
+
 -- Дамп структуры для таблица int_ita_db.teachers
 CREATE TABLE IF NOT EXISTS `teachers` (
   `teacher_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -252,7 +300,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `user_email` (`user_email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы int_ita_db.users: ~0 rows (приблизительно)
+-- Дамп данных таблицы int_ita_db.users: ~1 rows (приблизительно)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`user_id`, `user_email`, `user_passwd`, `user_hash`, `user_status`) VALUES
 	(1, 'mail1@mail.com', 'qwerty', '67896', 0);
@@ -271,7 +319,7 @@ CREATE TABLE IF NOT EXISTS `videos` (
   PRIMARY KEY (`video_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы int_ita_db.videos: ~0 rows (приблизительно)
+-- Дамп данных таблицы int_ita_db.videos: ~1 rows (приблизительно)
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
 INSERT INTO `videos` (`video_ID`, `fkmodule_ID`, `fklecture_ID`, `video_name`, `video_description`, `video_url`, `video_durationin_seconds`) VALUES
 	(1, 1, 1, 'Video 1', 'Description 1', 'URL 1', 344);
