@@ -1,0 +1,473 @@
+.main {
+	width: 960px;
+	margin: 0 auto;
+	overflow: hidden;
+	}
+p, h1, h3, h4{
+	font-family: Arial, Helvetica, sans-serif;
+	}
+
+.clear {
+    float: none;
+    width: 960px;
+}
+
+
+/*******navigations-top******/
+#navigation {
+    background-color: white;
+    width: 960px;
+    position: fixed;
+    z-index: 1;
+}
+.navigation {
+    margin-top: -7px;
+    background-color: white;
+    width: 960px;
+    position: fixed;
+    z-index: 1;
+}
+
+#navigation div {
+    float: left;
+}
+
+#navigation ul {
+    margin-left: 260px;
+    margin-right: 50px;
+    margin-top: 25px;
+	}
+
+#navigation li {
+	display:inline;
+	padding: 10px;
+}
+#navigation ul a {
+	text-decoration:none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bolder;
+	color: black;
+}
+#navigation ul a:hover{
+	color: blue;
+}
+#line_small_off {
+    width: 960px;
+}
+.line_small {
+    width: 960px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 2px solid #4b75a4;
+}
+#logo_img{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+/************************************/
+
+#enter_button {
+    margin-top: -28px;
+    margin-left: 694px;
+    z-index: 1;
+}
+
+.fixed {
+      position: fixed;
+      top: 40px;
+      right: 300px;
+    }
+
+#line_top{
+   width: 950px;
+
+}
+.none{
+
+    display: none;
+}
+
+#line_image {
+    margin-top: -30px;
+}
+#line_image div a {
+    position: absolute;
+    margin-top: 320px;
+    margin-left: 550px;
+}
+
+.detalization {
+    margin: auto;
+    width: 500px;
+    text-align: center;
+    line-height: 5px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.detalization h3{
+    color: dodgerblue;
+}
+.advantages {
+    border-left: 2px solid #00ffff;
+    float: left;
+    width: 250px;
+    padding: 30px;
+    height: 240px;
+}
+#steps {
+	margin-bottom: 100px;
+	}
+#steps div {
+    height: 240px;
+    text-align: center;
+    background-color: white;
+    margin-top: 50px;
+}
+#steps div h4 {
+	padding-top: 50px;
+	}
+#footer{
+    width: 960px;
+	position: relative;
+	margin-top: 20px;
+	z-index: 0;
+
+	}
+#footer div {
+	margin-left: 15px;
+    float: left;
+    height: 66px;
+    font-size: 12px;
+}
+
+.footer {
+    border-left: 2px solid #00ffff;
+	padding-top: 10px;
+    padding-left: 10px;
+    color: #00ffff;
+}
+/************navigation-bottom***********/
+#footer li {
+    display:inline;
+    padding: 8px;
+}
+
+#footer li a {
+	text-decoration:none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bolder;
+	color: dodogerblue;
+}
+
+#logo{
+    float: left;
+    margin-left: -25px;
+    margin-top: -10px;    
+}
+/****************************************/
+#footer p{
+	font-size: 10px;
+	}
+/*************form*******************/
+#forma {
+    height: 365px;
+    background: url("images/are_you_ready.jpg") no-repeat;
+    background-size: contain;
+    padding-top: 105px;
+}
+.submit_form {
+    margin-left:auto;
+    margin-right:auto;
+    width: 480px;
+    background: white;
+    padding-top: 50px;
+    padding-bottom: 30px;
+    font: 12px Georgia, "Times New Roman", Times, serif;
+    color: #888;
+    text-shadow: 1px 1px 1px #FFF;
+    border:1px solid #E4E4E4;
+}
+
+
+.submit_form input[type="text"], .submit_form input[type="email"] {
+    border: 1px solid #DADADA;
+    border-radius: 3px;
+    color: #888;
+    height: 30px;
+    margin-left: 80px;
+    margin-bottom: 5px;
+    outline: 0 none;
+    padding: 3px 3px 3px 15px;
+    width: 300px;
+    font-size: 12px;
+    line-height:15px;
+    box-shadow: inset 0px 1px 4px #ECECEC;
+    -moz-box-shadow: inset 0px 1px 4px #ECECEC;
+    -webkit-box-shadow: inset 0px 1px 4px #ECECEC;
+}
+.submit_form input[type="text"]:hover, .submit_form input[type="email"]:hover {
+    border: 1px solid dodgerblue;
+}
+.submit_form .button {
+    margin-left: 170px;
+    background: red;
+    border: none;
+    padding: 10px 25px 10px 25px;
+    color: #FFF;
+    box-shadow: 1px 1px 5px #B6B6B6;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px #9E3F3F;
+    cursor: pointer;
+}
+.submit_form .button:hover {
+    background: #CF7A7A
+}
+
+#main {
+    margin-top: 60px;
+}
+
+.left {
+    width: 475px;
+    float: left;
+    overflow: hidden;
+}
+.heading {
+
+}
+.heading .image {
+    float: left;
+    border-right: 1px solid #d3d3d3;
+    padding-right: 20px;
+    margin-right: 20px;
+}
+
+.code {
+    margin-top: -20px;
+    background: #ccccff;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #0A246A;
+    font-weight: bold;
+}
+.code p {
+}
+#instruction {
+    margin-top: -15px;
+    background: url("images/background_instruction.png") repeat-y;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-bottom: 40px;
+}
+#instruction img {
+    float: left;
+    margin-left: 15px;
+}
+#instruction div {
+    margin-left: 85px;
+    padding-top: 30px;
+}
+#task {
+    margin-top: -15px;
+    background: url("images/background_task.png") repeat-y;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-bottom: 40px;
+}
+#task img{
+    float: left;
+    margin-left: 25px;
+}
+#task div {
+    margin-left: 85px;
+    padding-top: 30px;
+}
+.right {
+    float: right;
+    width: 440px;
+}
+#video {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#code_example {
+    height: auto;
+    background-color: #003366;
+    background: url("images/background_code.png") repeat-y;
+    padding: 30px 30px;
+    color: #ff0000;
+    margin-bottom: 100px;
+}
+
+/** steps style **/
+
+
+@charset "utf-8";
+/* CSS Document */
+
+/* Стиль загального блоку */
+html{
+    font-family:Helvetica, Arial, sans-serif;
+}
+
+body, html{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* Стиль заголовку*/
+
+.stepHeader h3{
+    margin: 3px;
+}
+.stepHeader h5{
+    color:#4b75a4;
+    margin: 3px;
+}
+.stepHeader {
+    text-align:center;
+    margin: 0px auto;
+    border-bottom:2px solid #4b75a4;
+    padding:0px;
+    display: table;
+}
+
+.steps p {
+    font-size: 75%;
+    margin-top:0px;
+}
+.steps h4 {
+    margin-bottom:10px;
+}
+
+.steps {
+    margin: 0px auto;
+    background-color: #f3f3f3;
+    padding-top:32px;
+    padding-bottom:32px;
+}
+/* Стиль екземплярів класу Step*/
+.stepLeft {
+    overflow:hidden;
+    position:relative;
+    margin: 0px auto;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px #ACACAC;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+.stepRight {
+    overflow:hidden;
+    position:relative;
+    width: 540px;
+    margin: 0px auto;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px #ACACAC;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+.stepInfo {
+    box-sizing:border-box;
+    position:relative;
+    -moz-box-sizing:border-box;
+    display:inline-block;
+    width:65%;
+    text-align:left;
+}
+.stepUrl {
+    box-sizing:border-box;
+    position:relative;
+    display:inline-block;
+    width:33%;
+    border:2px solid #4b75a4;
+}
+.line {
+    background:#ffffff;
+    box-sizing:border-box;
+    position:relative;
+    display:inline-block;
+    width:1%;
+    border:0px solid #af3bf4;
+    height:100px; /*висота вкладки*/
+    z-index:2;
+}
+.stepUrl img {
+    width:100%;
+}
+
+.hexagon {
+    position:absolute;
+    width:10.7%;
+    top:15px;
+    z-index:1;
+}
+.stepArticle {
+    position:absolute;
+    width:10.7%;
+    top:15px;
+    text-align:center;
+    z-index:3;
+}
+.stepLeft .stepArticle {
+    left:28.2%;
+}
+.stepRight .stepArticle {
+    right:28.2%;
+}
+p.stepNumber {
+    color:#3d4d60;
+    font-size:100%;
+    font-weight:bold;
+    margin:0px;
+    margin-top:5px;
+}
+p.stepName {
+    color:#3d4d60;
+    font-size:80%;
+    font-weight:bold;
+    margin:0px;
+}
+.stepLeft .hexagon  {
+    position:absolute;
+    left:28.2%;
+}
+.stepRight .hexagon {
+    position:absolute;
+    right:28.2%;
+}
+
+.stepLeft .stepUrl {
+    float:left;
+}
+.stepLeft .line {
+    float:left;
+}
+.stepRight .line {
+    float:right;
+}
+.stepRight .stepUrl {
+    float:right;
+}
+.stepLeft .stepInfo {
+    border-left:2px solid #4b75a4;
+    padding:0px 5px 3px 7%;
+}
+.stepRight .stepInfo {
+    border-right:2px solid #4b75a4;
+    float:right;
+    text-align:right;
+    padding:0px 7% 3px 5px;
+}
+
+
+
+
+
