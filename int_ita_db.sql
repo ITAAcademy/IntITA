@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- Хост:                         127.0.0.1
--- Версия сервера:               5.6.21-log - MySQL Community Server (GPL)
--- ОС Сервера:                   Win64
+-- Версия сервера:               5.6.21 - MySQL Community Server (GPL)
+-- ОС Сервера:                   Win32
 -- HeidiSQL Версия:              9.1.0.4867
 -- --------------------------------------------------------
 
@@ -34,6 +34,37 @@ INSERT INTO `action` (`id`, `type`, `key`, `title`, `text`) VALUES
 	(4, 2, 'тест', 'Плановое <span>послегарантийное ТО</span> для Ford* стало еще доступнее! <span>3899 рублей</span> за все + бесплатная диагностика ходовой части автомобиля', '* Для моделей марки Ford: Focus, Fiesta, Fusion, C-Max, Mondeo, S-Max, Galaxy, Tourneo, Transit, Connect'),
 	(5, 2, 'тест', 'Тест', 'Тест');
 /*!40000 ALTER TABLE `action` ENABLE KEYS */;
+
+
+-- Дамп структуры для таблица int_ita_db.block
+CREATE TABLE IF NOT EXISTS `block` (
+  `block_id` int(11) NOT NULL AUTO_INCREMENT,
+  `header` varchar(50) NOT NULL,
+  `picture_url` varchar(255) NOT NULL,
+  `annotation` varchar(255) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  PRIMARY KEY (`block_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы int_ita_db.block: ~0 rows (приблизительно)
+/*!40000 ALTER TABLE `block` DISABLE KEYS */;
+/*!40000 ALTER TABLE `block` ENABLE KEYS */;
+
+
+-- Дамп структуры для таблица int_ita_db.carousel
+CREATE TABLE IF NOT EXISTS `carousel` (
+  `carousel_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order` int(11) NOT NULL,
+  `picture_url` varchar(255) NOT NULL,
+  `width` int(11) NOT NULL,
+  `height` int(11) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`carousel_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы int_ita_db.carousel: ~0 rows (приблизительно)
+/*!40000 ALTER TABLE `carousel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `carousel` ENABLE KEYS */;
 
 
 -- Дамп структуры для таблица int_ita_db.course
@@ -101,6 +132,49 @@ INSERT INTO `lectures` (`lecture_ID`, `fkcourse_ID`, `fkmodule_ID`, `name_classe
 /*!40000 ALTER TABLE `lectures` ENABLE KEYS */;
 
 
+-- Дамп структуры для таблица int_ita_db.mainpage
+CREATE TABLE IF NOT EXISTS `mainpage` (
+  `mainpage_id` int(11) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `carousel_id` int(11) NOT NULL,
+  `header1` varchar(50) NOT NULL,
+  `subheader1` varchar(100) NOT NULL,
+  `block1` int(11) NOT NULL,
+  `block2` int(11) NOT NULL,
+  `block3` int(11) NOT NULL,
+  `header2` varchar(50) NOT NULL,
+  `subheader2` varchar(100) NOT NULL,
+  `step1` int(11) NOT NULL,
+  `step2` int(11) NOT NULL,
+  `step3` int(11) NOT NULL,
+  `step4` int(11) NOT NULL,
+  `step5` int(11) NOT NULL,
+  PRIMARY KEY (`mainpage_id`),
+  UNIQUE KEY `carousel_id` (`carousel_id`),
+  KEY `FK_mainpage_block` (`block1`),
+  KEY `FK_mainpage_block_2` (`block2`),
+  KEY `FK_mainpage_block_3` (`block3`),
+  KEY `FK_mainpage_step` (`step1`),
+  KEY `FK_mainpage_step_2` (`step2`),
+  KEY `FK_mainpage_step_3` (`step3`),
+  KEY `FK_mainpage_step_4` (`step4`),
+  KEY `FK_mainpage_step_5` (`step5`),
+  CONSTRAINT `FK_mainpage_block` FOREIGN KEY (`block1`) REFERENCES `block` (`block_id`),
+  CONSTRAINT `FK_mainpage_block_2` FOREIGN KEY (`block2`) REFERENCES `block` (`block_id`),
+  CONSTRAINT `FK_mainpage_block_3` FOREIGN KEY (`block3`) REFERENCES `block` (`block_id`),
+  CONSTRAINT `FK_mainpage_carousel` FOREIGN KEY (`carousel_id`) REFERENCES `carousel` (`carousel_id`),
+  CONSTRAINT `FK_mainpage_step` FOREIGN KEY (`step1`) REFERENCES `step` (`step_id`),
+  CONSTRAINT `FK_mainpage_step_2` FOREIGN KEY (`step2`) REFERENCES `step` (`step_id`),
+  CONSTRAINT `FK_mainpage_step_3` FOREIGN KEY (`step3`) REFERENCES `step` (`step_id`),
+  CONSTRAINT `FK_mainpage_step_4` FOREIGN KEY (`step4`) REFERENCES `step` (`step_id`),
+  CONSTRAINT `FK_mainpage_step_5` FOREIGN KEY (`step5`) REFERENCES `step` (`step_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы int_ita_db.mainpage: ~0 rows (приблизительно)
+/*!40000 ALTER TABLE `mainpage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mainpage` ENABLE KEYS */;
+
+
 -- Дамп структуры для таблица int_ita_db.modules
 CREATE TABLE IF NOT EXISTS `modules` (
   `module_ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -154,6 +228,21 @@ INSERT INTO `setting` (`id`, `key`, `value`) VALUES
 	(9, 'контакты: телефон 1', '8 (921) 868-86-50'),
 	(10, 'контакты: телефон 2', '8 (812) 416-53-23');
 /*!40000 ALTER TABLE `setting` ENABLE KEYS */;
+
+
+-- Дамп структуры для таблица int_ita_db.step
+CREATE TABLE IF NOT EXISTS `step` (
+  `step_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order` int(11) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `picture_url` varchar(255) NOT NULL,
+  `text` varchar(255) NOT NULL,
+  PRIMARY KEY (`step_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы int_ita_db.step: ~0 rows (приблизительно)
+/*!40000 ALTER TABLE `step` DISABLE KEYS */;
+/*!40000 ALTER TABLE `step` ENABLE KEYS */;
 
 
 -- Дамп структуры для таблица int_ita_db.students
