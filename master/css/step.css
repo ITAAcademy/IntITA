@@ -1,0 +1,164 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* Стиль загального блоку */
+html{
+	font-family:Helvetica, Arial, sans-serif;
+	}
+
+body, html{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* Стиль заголовку*/	
+
+.stepHeader h3{
+	margin: 3px;
+	}
+.stepHeader h5{
+	color:#4b75a4;
+	margin: 3px;
+	}
+.stepHeader {
+	text-align:center;
+	margin: 0px auto;
+	border-bottom:2px solid #4b75a4;
+	padding:0px;
+	display: table;
+	}
+
+.steps p {
+	font-size: 75%;
+	margin-top:0px;
+	}
+.steps h4 {
+	margin-bottom:10px;
+	}
+
+.steps {
+	margin: 0px auto;
+	background-color: #f3f3f3;
+	padding-top:32px;
+	padding-bottom:32px;
+	  }
+/* Стиль екземплярів класу Step*/
+.stepLeft {
+	overflow:hidden;
+	position:relative;
+	margin: 0px auto;
+	background-color: #ffffff;
+	box-shadow: 0 0 5px #ACACAC;
+	margin-top:20px;
+	margin-bottom:20px;
+	}
+.stepRight {
+	overflow:hidden;
+	position:relative;
+	width: 540px;
+	margin: 0px auto;
+	background-color: #ffffff;
+	box-shadow: 0 0 5px #ACACAC;
+	margin-top:20px;
+	margin-bottom:20px;
+	}
+.stepInfo {
+	box-sizing:border-box;
+	position:relative;
+	-moz-box-sizing:border-box;
+	display:inline-block;
+	width:65%;
+	text-align:left;
+	      }
+.stepUrl {
+	box-sizing:border-box;
+	position:relative;
+	display:inline-block;
+	width:33%;
+	border:2px solid #4b75a4;
+         }
+.line {
+	background:#ffffff;
+	box-sizing:border-box;
+	position:relative;
+	display:inline-block;
+	width:1%;
+	border:0px solid #af3bf4;
+	height:100px; /*висота вкладки*/
+	z-index:2;
+	}
+.stepUrl img {
+	width:100%;
+	}
+
+.hexagon {
+	position:absolute;
+	width:10.7%;
+	top:15px;
+	z-index:1;
+	}
+.stepArticle {
+	position:absolute;
+	width:10.7%;
+	top:15px;
+	text-align:center;
+	z-index:3;
+}
+.stepLeft .stepArticle {
+	left:28.2%;
+}
+.stepRight .stepArticle {
+	right:28.2%;
+}
+p.stepNumber {
+	color:#3d4d60;
+	font-size:100%;
+	font-weight:bold;
+	margin:0px;
+	margin-top:5px;
+}
+p.stepName {
+	color:#3d4d60;
+	font-size:80%;
+	font-weight:bold;
+	margin:0px;
+}
+.stepLeft .hexagon  {
+	position:absolute;
+	left:28.2%;
+}
+.stepRight .hexagon {
+	position:absolute;
+	right:28.2%;
+}
+
+.stepLeft .stepUrl {
+	float:left;
+}
+.stepLeft .line {
+	float:left;
+}
+.stepRight .line {
+	float:right;
+}
+.stepRight .stepUrl {
+	float:right;
+}
+.stepLeft .stepInfo {
+	border-left:2px solid #4b75a4;
+	padding:0px 5px 3px 7%;
+}
+.stepRight .stepInfo {
+	border-right:2px solid #4b75a4;
+	float:right;
+	text-align:right;
+	padding:0px 7% 3px 5px;
+}
+
+
+
+
+							  
