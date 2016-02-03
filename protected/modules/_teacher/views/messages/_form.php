@@ -1,53 +1,40 @@
 <?php
-/* @var $this MessagesController */
-/* @var $model UserMessages */
-/* @var $form CActiveForm */
-/* @var $user StudentReg*/
+/** @var $user integer
+ * @var $scenario string
+ * @var $message int
+ * @var $receiver int
+ */
 ?>
-<?php
-$models = StudentReg::userLetterReceivers();
+<div id="messageForm<?=$message;?>">
+    <form role="form" method="post" action="<?php echo Yii::app()->createUrl('messages/'.$scenario); ?>"
+          id="message">
+        <input class="form-control" name="id" id="hidden" value="<?=$user;?>">
+        <input class="form-control" name="scenario" id="hidden" value="<?=$scenario;?>">
+        <input class="form-control" name="receiver" id="hidden" value="<?=$receiver;?>">
+        <input class="form-control" name="parent" id="hidden" value="<?=$message;?>">
+        <input class="form-control" name="subject" placeholder="Тема">
+        <br>
+        <div class="form-group">
+            <textarea class="form-control" rows="6" name="text" placeholder="Лист" required></textarea>
+        </div>
 
-$list = CHtml::listData($models,'id', 'email');
-?>
-<div class="form">
+        <button type="submit" class="btn btn-primary">
+            Написати
+        </button>
+    </form>
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'user-messages-form',
-    'action'=> Yii::app()->createUrl('/_teacher/messages/send'),
-    'enableClientValidation'=>true,
-    'enableAjaxValidation'=>true,
-    'clientOptions'=>array('validateOnSubmit'=>true,'validateOnChange'=>true),
-)); ?>
+        <button type="button" class="btn btn-default" onclick="reset(<?=$message;?>);" style="margin-top: -56px; margin-left: 100px">
+            Скасувати
+        </button>
 
-	<div class="row">
-		<?php echo $form->hiddenField($model,'sender_id',array('value'=>$user->id)); ?>
-	</div>
+</div>
 
-	<div class="letterrow">
+<script>
+    function reset(message) {
+        id = "#messageForm" + message;
+        $(id).remove();
+    }
+</script>
 
-	</div>
 
-    <div class="letterrow">
-        <?php echo $form->label($model,'topic'); ?>
-        <?php echo $form->textField($model,'topic', array('maxlength'=>80)); ?>
-        <?php echo $form->error($model,'topic'); ?>
-    </div>
 
-	<div class="letterrow">
-		<?php echo $form->label($model,'subject'); ?>
-		<?php echo $form->textArea($model,'subject',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'subject'); ?>
-	</div>
-    <div id="flashinfo">
-        <?php if(Yii::app()->user->hasFlash('sendletter')):
-            echo Yii::app()->user->getFlash('sendletter');
-        endif; ?>
-    </div>
-	<div class="row buttons">
-        <?php echo CHtml::submitButton(Yii::t("letter", "0541"), array('class' => "sendletter", 'onclick'=>'{hideFlash()}')); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
-<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'hideFlash.js'); ?>"></script>

@@ -64,7 +64,6 @@ function loadPage(url, role) {
     });
 }
 
-
 function clearDashboard() {
     if (document.getElementById("dashboard"))
         document.getElementById("dashboard").style.display = "none";
@@ -78,3 +77,60 @@ function showDialog(str)
     }
     $('#myModal').modal('show');
 }
+
+function send(url){
+    clearDashboard();
+
+    var jsonData = {
+        "user" : user,
+        "subject" : document.getElementById("subject"),
+        "text" : document.getElementById("text"),
+        receivers: document.getElementById("receiver")
+    };
+
+    $.ajax({
+        url: url,
+        data: jsonData,
+        method: post,
+        success: function (data) {
+            container = $('#pageContainer');
+            container.html('');
+            container.html(data);
+        },
+        error: function () {
+            alert("Вибачте, але на сайті виникла помилка. " +
+                "Спробуйте зайти до кабінету пізніше або зв'яжіться з адміністратором сайту.");
+            location.reload();
+        }
+    });
+}
+
+function sendMessage(url) {
+    receiver = $("#typeahead").val();
+    if (receiver === "") {
+        bootbox.alert('Виберіть отримувача повідомлення.');
+    } else{
+        var posting = $.post(url,
+            {
+                "id" : $("input[name=id]").val(),
+                "receiver" : receiver,
+                "subject" : $("input[name=subject]").val(),
+                "text": $("#text").val(),
+                "scenario": "new"
+            }
+        );
+
+        posting.done(function () {
+                bootbox.alert("Ваше повідомлення успішно відправлено.", function (){
+                    location.href = window.location.pathname;
+                });
+            })
+            .fail(function () {
+                bootbox.alert("Повідомлення не вдалося відправити. Спробуйте надіслати пізніше або " +
+                    "напишіть на адресу antongriadchenko@gmail.com.", function (){
+                    location.href = window.location.pathname;
+                });
+            });
+    }
+}
+
