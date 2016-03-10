@@ -77,7 +77,7 @@ function deleteBlock(idLecture, order) {
     if(confirm("Ви впевнені, що хочете видалити цей блок?")) {
         $.ajax({
             type: "POST",
-            url: basePath+"/lesson/deleteElement",
+            url: basePath+"/revision/deleteElement",
             data: {'idLecture': idLecture, 'order': order},
             success: function () {
                 $.fn.yiiListView.update('blocks_list', {
@@ -95,7 +95,7 @@ function deleteVideo(idLecture, pageOrder) {
         if(result){
             $.ajax({
                 type: "POST",
-                url: basePath+"/lesson/deleteVideo",
+                url: basePath+"/revision/deleteVideo",
                 data: {'idLecture': idLecture, 'pageOrder': pageOrder},
                 success: function () {
                     location.reload();

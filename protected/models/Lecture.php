@@ -699,8 +699,8 @@ class Lecture extends CActiveRecord
         return $this->save();
     }
 
-    public function createNewBlockCKE($htmlBlock, $idType, $pageOrder) {
-
+    public function createNewBlock($htmlBlock, $idType, $pageOrder, $idUser) {
+        //todo lesson should be saved only after approving
         $model = new LectureElement();
         $model->id_lecture = $this->id;
         $model->block_order = LectureElement::getNextOrder($this->id);
@@ -708,11 +708,27 @@ class Lecture extends CActiveRecord
         $model->id_type = $idType;
         $model->save();
 
-        $pageId = LecturePage::model()->findByAttributes(array('id_lecture' => $model->id_lecture, 'page_order' => $pageOrder))->id;
-        $id = LectureElement::model()->findByAttributes(array('id_lecture' => $model->id_lecture, 'block_order' => $model->block_order))->id_block;
+        if ($model->isTextBlock()) {
+            TextBlockHistory::createNewRecord($model->id_block, $model->id_type, $model->html_block, $idUser);
+        }
 
-        LecturePage::addTextBlock($id, $pageId);
+        $pageId = LecturePage::model()->findByAttributes(array('id_lecture' => $model->id_lecture, 'page_order' => $pageOrder))->id;
+        LecturePage::addTextBlock($model->id_block, $pageId);
+
     }
+
+//    DEPRECATED
+//    public function createNewBlockCKE($htmlBlock, $idType, $pageOrder) {
+//        $model = new LectureElement();
+//        $model->id_lecture = $this->id;
+//        $model->block_order = LectureElement::getNextOrder($this->id);
+//        $model->html_block = $htmlBlock;
+//        $model->id_type = $idType;
+//        $model->save();
+//
+//        $pageId = LecturePage::model()->findByAttributes(array('id_lecture' => $model->id_lecture, 'page_order' => $pageOrder))->id;
+//        LecturePage::addTextBlock($model->id_block, $pageId);
+//    }
 
     /**
      * Shifts up lesson element.
@@ -796,32 +812,60 @@ class Lecture extends CActiveRecord
         return false;
     }
 
-    public function createNewBlock($htmlBlock, $idType, $pageOrder) {
-        $model = new LectureElement();
-        $model->id_lecture = Yii::app()->request->getPost('idLecture');
-        $model->block_order = LectureElement::getNextOrder(Yii::app()->request->getPost('idLecture'));
-        $model->html_block = $htmlBlock;
-        $model->id_type = $idType;
-        $model->save();
-
-        $pageId = LecturePage::model()->findByAttributes(array('id_lecture' => $model->id_lecture, 'page_order' => $pageOrder))->id;
-        LecturePage::addTextBlock($model->id_block, $pageId);
-    }
-
-    public function deleteLectureElement($elementOrder) {
+    public function deleteLectureElement($elementOrder, $idUser) {
         if ($this->lectureEl == null) {
             $this->getRelated("lectureEl");
         }
 
         foreach ($this->lectureEl as $element) {
             if ($element->block_order == $elementOrder) {
+
                 if ($element->id_type == LectureElement::TASK) {
                     Task::deleteTask($element->id_block);
                 }
+
+                if ($element->isTextBlock()) {
+                    TextBlockHistory::cancelRecord($element->id_block, $element->id_type, $element->html_block, $idUser);
+                }
+
                 Yii::app()->db->createCommand()->delete('lecture_element_lecture_page', 'element=:id', array(':id' => $element->id_block));
+
                 $element->delete();
                 return;
             }
         }
+    }
+
+    public function saveBlock($order, $content, $userId) {
+        $lectureElement = LectureElement::model()->findByAttributes(array('id_lecture' => $this->id, 'block_order' => $order));
+        TextBlockHistory::createNewRecord($lectureElement->id_block, $lectureElement->id_type, $content, $userId);
+    }
+
+    public function addVideo($htmlBlock, $pageOrder, $userId) {
+        $lectureElement = new LectureElement();
+        $lectureElement->id_lecture = $this->id;
+        $lectureElement->block_order = 0;
+        $lectureElement->html_block = $htmlBlock;
+        $lectureElement->id_type = LectureElement::VIDEO;
+        $lectureElement->save();
+
+        $pageId = LecturePage::model()->findByAttributes(array('id_lecture' => $lectureElement->id_lecture, 'page_order' => $pageOrder))->id;
+        LecturePage::addVideo($pageId, $lectureElement->id_block);
+
+        TextBlockHistory::createNewRecord($lectureElement->id_block, $lectureElement->id_type, $lectureElement->html_block, $userId);
+    }
+
+    public function deleteVideo($pageOrder, $userId) {
+        $modelLecturePage = LecturePage::model()->findByAttributes(array('id_lecture' => $this->id, 'page_order' => $pageOrder));
+
+        if ($modelLecturePage->video) {
+            $element = LectureElement::model()->findByPk($modelLecturePage->video);
+            LecturePage::model()->updateByPk($modelLecturePage->id, array('video' => NULL));
+
+            TextBlockHistory::cancelRecord($element->id_block, $element->id_type, $element->html_block, $userId);
+
+            $element->delete();
+        }
+
     }
 }
