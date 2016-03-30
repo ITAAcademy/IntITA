@@ -164,7 +164,11 @@ class RegisteredUser
 
     public function isAuthor()
     {
-        return TeacherModule::model()->exists('idTeacher=:teacher', array('teacher' => $this->getTeacher()->teacher_id));
+        if($this->isTeacher()) {
+            return TeacherModule::model()->exists('idTeacher=:teacher', array('teacher' => $this->getTeacher()->teacher_id));
+        } else {
+            return false;
+        }
     }
 
     //todo author role check
@@ -214,5 +218,13 @@ class RegisteredUser
 
     public function canPlanConsultation(Teacher $teacher){
         return $this->registrationData->id != $teacher->user_id;
+    }
+
+    public function canSendRequest($module){
+        if(!$this->isTeacher())
+            return false;
+        else {
+            return !MessagesAuthorRequest::isRequestOpen($module, $this->registrationData->id);
+        }
     }
 }

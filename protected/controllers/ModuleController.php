@@ -25,11 +25,15 @@ class ModuleController extends Controller
 
         $editMode = 0;
         $isPaidCourse=false;
+        $isPaidModule=false;
         if (!Yii::app()->user->isGuest) {
             $userId=Yii::app()->user->getID();
             $editMode = Teacher::isTeacherAuthorModule($userId,$idModule);
             if($idCourse!=0 && (StudentReg::isAdmin() || PayCourses::model()->checkCoursePermission($userId, $idCourse, array('read')))){
                 $isPaidCourse=true;
+            }
+            if(StudentReg::isAdmin() || PayModules::model()->checkModulePermission($userId, $idModule, array('read'))){
+                $isPaidModule=true;
             }
         }
 
@@ -41,6 +45,7 @@ class ModuleController extends Controller
             'dataProvider' => $model->getLecturesDataProvider(),
             'idCourse' => $idCourse,
             'isPaidCourse' => $isPaidCourse,
+            'isPaidModule' => $isPaidModule,
         ));
     }
 
@@ -301,14 +306,30 @@ class ModuleController extends Controller
     {
         $data = [];
         $model = Module::model()->with('teacher', 'lectures')->findByPk(Yii::app()->request->getPost('id'));
-        $course = Yii::app()->request->getPost('course');
         $modelData=get_object_vars($model->getLecturesDataProvider());
 
         for($i = 0;$i < count($modelData['rawData']);$i++){
-            $data['lecturesLink'][$i]=Yii::app()->createUrl("lesson/index", array("id" => $modelData['rawData'][$i]['id'], "idCourse" => $course));
+            $data['lecturesLink'][$i]=Yii::app()->createUrl("lesson/index", array("id" => $modelData['rawData'][$i]['id'], "idCourse" => 0));
         }
         $fullData=CJSON::encode(array_merge($modelData,$data));
 
         echo $fullData;
+    }
+    public function actionUpdateLectureTitle()
+    {
+        $lang =(Yii::app()->session['lg']) ? Yii::app()->session['lg'] : 'ua';
+        $titleParam = "title_".$lang;
+
+        $title=Yii::app()->request->getParam('title');
+        $id=Yii::app()->request->getParam('lectureId');
+
+        $lecture=Lecture::model()->findByPk($id);
+        $lecture->$titleParam=$title;
+        if($lecture->validate()){
+            $lecture->save();
+            echo 'success';
+        }else{
+            echo CJSON::encode(array_shift($lecture->getErrors()));
+        }
     }
 }

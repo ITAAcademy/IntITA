@@ -8,13 +8,13 @@ $enabledLessonOrder = Lecture::getLastEnabledLessonOrder($module->module_ID);
 
 <div class="lessonModule" id="lectures">
     <?php if ($canEdit){?>
-        <a href="<?php echo Yii::app()->createUrl("module/edit", array("idModule" => $module->module_ID, "idCourse" => $idCourse)); ?>">
+        <a href="<?php echo Yii::app()->createUrl("module/edit", array("idModule" => $module->module_ID)); ?>">
             <img src="<?php echo StaticFilesHelper::createPath('image', 'editor', 'edt_30px.png'); ?>"
                  id="editIco" title="<?php echo Yii::t('module', '0373'); ?>"/>
         </a>
     <?php } ?>
     <?php if (!Yii::app()->user->isGuest) {
-    if (Yii::app()->user->model->isTeacher() && !$canEdit){ ?>
+    if (Yii::app()->user->model->canSendRequest($module->module_ID) && !$canEdit){ ?>
             <a href="#"
                onclick="sendRequest('<?php echo Yii::app()->createUrl("/module/sendRequest", array("user" => Yii::app()->user->getId(), "moduleId" => $module->module_ID)); ?>')">
 
@@ -77,7 +77,9 @@ $enabledLessonOrder = Lecture::getLastEnabledLessonOrder($module->module_ID);
                     url: url,
                     type: "POST",
                     success: function (response) {
-                        bootbox.alert(response);
+                        bootbox.alert(response, function(){
+                            location.reload();
+                        });
                     },
                     error:function () {
                         bootbox.alert("Запит не вдалося надіслати.");

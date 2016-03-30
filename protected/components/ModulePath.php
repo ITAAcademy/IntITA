@@ -27,8 +27,12 @@ class ModulePath extends Path
 
         if ($this->module != null) {
             $this->getLecture();
-            if($this->lecture != null) {
-                $this->checkPageDefined();
+            $this->checkPageDefined();
+
+            if($this->lecture == null) {
+                if($this->getLectureOrder()) {
+                    throw new \application\components\Exceptions\IntItaException(404, 'Сторінка не знайдена.');
+                }
             }
         }
 
