@@ -1,74 +1,40 @@
-function sendNewAdminData(url) {
+function assignRole(url, role, tab) {
     user = $jq("#userId").val();
     if (user == 0) {
-        bootbox.alert('Виберіть користувача, якого потрібно призначити адміністратором.');
+        bootbox.alert('Виберіть користувача.');
     } else {
-        var posting = $jq.post(url, {userId: user});
+        var posting = $jq.post(url, {userId: user, role: role});
         posting.done(function (response) {
-                bootbox.alert(response, loadUsersIndex);
+                bootbox.alert(response, loadUsersIndex(tab));
             })
             .fail(function () {
-                bootbox.alert("Користувача не вдалося призначити адміністратором. Спробуйте повторити " +
+                bootbox.alert("Користувачу не вдалося призначити обрану роль. Спробуйте повторити " +
                     "операцію пізніше або напишіть на адресу " + adminEmail, loadUsersIndex);
             });
     }
 }
 
-function cancelAdmin(url, id) {
-    var posting = $jq.post(url, {user: id});
-    posting.done(function (response) {
-            if (response == 1)
-                bootbox.alert("Права адміністратора для користувача відмінені.", loadUsersIndex);
-            else {
-                bootbox.alert("Права адміністратора для користувача не вдалося відмінити. Спробуйте повторити " +
-                    "операцію пізніше або напишіть на адресу " + adminEmail, loadUsersIndex);
-            }
-        })
-        .fail(function () {
-            bootbox.alert("Права адміністратора для користувача не вдалося відмінити. Спробуйте повторити " +
-                "операцію пізніше або напишіть на адресу " + adminEmail, loadUsersIndex);
-        });
-}
-
-function cancelAccountant(url, id) {
-    var posting = $jq.post(url, {user: id});
-
-    posting.done(function (response) {
-            if (response == 1)
-                bootbox.alert("Права бухгалтера для користувача відмінені.", loadUsersIndex);
-            else {
-                bootbox.alert("Права бухгалтера для користувача не вдалося відмінити. Спробуйте повторити " +
-                    "операцію пізніше або напишіть на адресу " + adminEmail, loadUsersIndex);
-            }
-        })
-        .fail(function () {
-            bootbox.alert("Права бухгалтера для користувача не вдалося відмінити. Спробуйте повторити " +
-                "операцію пізніше або напишіть на адресу " + adminEmail, loadUsersIndex);
-        });
-}
-
-function sendNewAccountantData(url) {
-    user = $jq("#userId").val();
+function cancelRole(url, role, user, tab) {
+    if (!user) {
+        user = $jq("#userId").val();
+    }
     if (user == 0) {
-        bootbox.alert('Виберіть користувача, якого потрібно призначити бухгалтером.');
+        bootbox.alert('Виберіть користувача.');
     } else {
-        var posting = $jq.post(url, {userId: user});
-
+        var posting = $jq.post(url, {userId: user, role: role});
         posting.done(function (response) {
-                bootbox.alert(response, function () {
-                    loadUsersIndex(1);
-                });
+                bootbox.alert(response, loadUsersIndex(tab));
             })
             .fail(function () {
-                bootbox.alert("Користувача не вдалося призначити бухгалтером. Спробуйте повторити " +
-                    "операцію пізніше або напишіть на адресу " + adminEmail, loadUsersIndex(1));
+                bootbox.alert("Користувачу не вдалося відмінити обрану роль. Спробуйте повторити " +
+                    "операцію пізніше або напишіть на адресу " + adminEmail, loadUsersIndex(tab));
             });
     }
 }
 
 function loadUsersIndex(tab) {
-    if(tab==undefined) tab=0;
-    load(basePath + '/_teacher/_admin/users/index','Користувачі','',tab);
+    if (tab == undefined) tab = 0;
+    load(basePath + '/_teacher/_admin/users/index', 'Користувачі', '', tab);
 }
 
 function initUsersTable() {
@@ -84,7 +50,7 @@ function initUsersTable() {
             },
             {"data": "email"},
             {
-                type: 'de_date', targets: 1 ,
+                type: 'de_date', targets: 1,
                 "width": "15%",
                 "data": "register"
             },
@@ -157,12 +123,12 @@ function initAdminsTable() {
             {"data": "name"},
             {"data": "email"},
             {
-                type: 'de_date', targets: 1 ,
+                type: 'de_date', targets: 1,
                 "width": "15%",
                 "data": "register"
             },
             {
-                type: 'de_date', targets: 1 ,
+                type: 'de_date', targets: 1,
                 "width": "15%",
                 "data": "cancelDate"
             },
@@ -185,7 +151,7 @@ function initAdminsTable() {
                 "width": "5%",
                 "data": "cancel",
                 "render": function (params) {
-                    return '<a href="#" onclick="cancelAdmin(' + params + ')"><i class="fa fa-trash fa-fw"></i></a>';
+                    return '<a href="#" onclick="cancelRole(' + params + ')"><i class="fa fa-trash fa-fw"></i></a>';
                 }
             }],
         "createdRow": function (row, data, index) {
@@ -208,12 +174,12 @@ function initAccountantsTable() {
             {"data": "name"},
             {"data": "email"},
             {
-                type: 'de_date', targets: 1 ,
+                type: 'de_date', targets: 1,
                 "width": "15%",
                 "data": "register"
             },
             {
-                type: 'de_date', targets: 1 ,
+                type: 'de_date', targets: 1,
                 "width": "15%",
                 "data": "cancelDate"
             },
@@ -236,7 +202,7 @@ function initAccountantsTable() {
                 "width": "5%",
                 "data": "cancel",
                 "render": function (params) {
-                    return '<a href="#" onclick="cancelAccountant(' + params + ')"><i class="fa fa-trash fa-fw"></i></a>';
+                    return '<a href="#" onclick="cancelRole(' + params + ')"><i class="fa fa-trash fa-fw"></i></a>';
                 }
             }],
         "createdRow": function (row, data, index) {
@@ -246,4 +212,49 @@ function initAccountantsTable() {
             "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Ukranian.json"
         }
     });
+}
+
+function assignTeacherConsultantModule(url, module) {
+    user = $jq("#userId").val();
+    if (user == 0) {
+        bootbox.alert('Виберіть викладача.');
+    } else {
+        var posting = $jq.post(url, {userId: user, module: module});
+        posting.done(function (response) {
+                bootbox.alert(response, window.history.back());
+            })
+            .fail(function () {
+                bootbox.alert("Викладачу не вдалося призначити обраний модуль. Спробуйте повторити " +
+                    "операцію пізніше або напишіть на адресу " + adminEmail, window.history.back());
+            });
+    }
+}
+
+
+function assignTeacherConsultantForStudent(url, student, module) {
+    teacher = $jq("#teacherId").val();
+    if (user == 0) {
+        bootbox.alert('Виберіть викладача.');
+    } else {
+        var posting = $jq.post(url, {teacher: teacher, module: module, student: student});
+        posting.done(function (response) {
+                bootbox.alert(response, window.history.back());
+            })
+            .fail(function () {
+                bootbox.alert("Викладачу не вдалося призначити обраний модуль. Спробуйте повторити " +
+                    "операцію пізніше або напишіть на адресу " + adminEmail, window.history.back());
+            });
+    }
+}
+
+function cancelTeacherConsultantForStudent(url, student, module) {
+    var posting = $jq.post(url, {teacher: teacher, module: module, student: student});
+    posting.done(function (response) {
+            bootbox.alert(response, window.history.back());
+        })
+        .fail(function () {
+            bootbox.alert("Операцію не вдалося виконати. Спробуйте повторити " +
+                "операцію пізніше або напишіть на адресу " + adminEmail, window.history.back());
+        });
+
 }

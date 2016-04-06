@@ -30,7 +30,7 @@
  * @property string $token
  * @property string $activkey_lifetime
  * @property string $status
- * property string $reg_time
+ * @property string $reg_time
  * @property string $avatar
  * @property string $identity
  */
@@ -70,8 +70,8 @@ class StudentReg extends CActiveRecord
             array('facebook, googleplus, linkedin, vkontakte, twitter', 'networkValidation'),
             array('avatar', 'file', 'types' => 'jpg, gif, png, jpeg', 'maxSize' => 1024 * 1024 * 5, 'allowEmpty' => true, 'tooLarge' => Yii::t('error', '0302'), 'on' => 'reguser,edit', 'except' => 'socialLogin'),
             array('email, password, password_repeat', 'required', 'message' => Yii::t('error', '0268'), 'on' => 'reguser'),
-            array('email', 'required', 'message' => Yii::t('error', '0268'), 'on' => 'recovery,resetemail'),
-            array('email', 'email', 'message' => Yii::t('error', '0271'), 'on' => 'recovery,resetemail,fromraptoext'),
+            array('email', 'required', 'message' => Yii::t('error', '0268'), 'on' => 'recovery,resetemail,linkingemail'),
+            array('email', 'email', 'message' => Yii::t('error', '0271'), 'on' => 'recovery,resetemail,fromraptoext,linkingemail'),
             array('email', 'authenticateEmail', 'on' => 'recovery'),
             array('password, new_password_repeat, new_password', 'required', 'message' => Yii::t('error', '0268'), 'on' => 'changepass'),
             array('new_password_repeat, new_password', 'required', 'message' => Yii::t('error', '0268'), 'on' => 'recoverypass'),
@@ -901,14 +901,15 @@ class StudentReg extends CActiveRecord
 
     public static function getStudentsList($startDate, $endDate) {
 
-        $sql = 'select user.id,concat(IFNULL(user.firstName, ""), " ", IFNULL(user.secondName, "")) as studentName, user.email, user_student.start_date, u.id as trainer, concat(IFNULL(u.firstName, ""), " ", IFNULL(u.secondName, "")) as trainerName
-              from user inner join user_student on user.id = user_student.id_user
-              left join trainer_student ts on user_student.id_user=ts.student
-              left join user u on ts.trainer = u.id where ts.end_time IS NULL';
+        $sql = 'select user.id,concat(IFNULL(user.firstName, ""), " ", IFNULL(user.secondName, "")) as studentName, user.email, us.start_date, u.id as trainer, IF((ts.end_time IS NULL), concat(IFNULL(u.firstName, ""), " ", IFNULL(u.secondName, "")), "") as trainerName
+              from user inner join user_student us on user.id = us.id_user
+              left join trainer_student ts on us.id_user=ts.student
+              left join user u on ts.trainer = u.id where ts.end_time IS NULL ';
 
         if (isset($startDate) && isset($endDate)){
             $sql .= " and TIMESTAMP(user_student.start_date) BETWEEN " . "'$startDate'". " AND " . "'$endDate';";
         }
+        $sql .= ' group by user.id';
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $return = array('data' => array());
 
@@ -940,34 +941,6 @@ class StudentReg extends CActiveRecord
      * @param $query string - query from typeahead
      * @return string - json for typeahead field in user manage page (cabinet, add)
      */
-    public static function usersWithoutAdmins($query)
-    {
-        $criteria = new CDbCriteria();
-        $criteria->select = "id, secondName, firstName, middleName, email, avatar";
-        $criteria->alias = "s";
-        $criteria->addSearchCondition('firstName', $query, true, "OR", "LIKE");
-        $criteria->addSearchCondition('secondName', $query, true, "OR", "LIKE");
-        $criteria->addSearchCondition('middleName', $query, true, "OR", "LIKE");
-        $criteria->addSearchCondition('email', $query, true, "OR", "LIKE");
-        $criteria->join = 'LEFT JOIN user_admin u ON u.id_user = s.id';
-        $criteria->addCondition('u.id_user IS NULL or u.end_date IS NOT NULL');
-
-        $data = StudentReg::model()->findAll($criteria);
-
-        $result = [];
-        foreach ($data as $key=>$model) {
-            $result["results"][$key]["id"] = $model->id;
-            $result["results"][$key]["name"] = $model->secondName . " " . $model->firstName . " " . $model->middleName;
-            $result["results"][$key]["email"] = $model->email;
-            $result["results"][$key]["url"] = $model->avatarPath();
-        }
-        return json_encode($result);
-    }
-
-    /**
-     * @param $query string - query from typeahead
-     * @return string - json for typeahead field in user manage page (cabinet, add)
-     */
     public static function usersWithoutAccountants($query)
     {
         $criteria = new CDbCriteria();
@@ -990,50 +963,6 @@ class StudentReg extends CActiveRecord
             $result["results"][$key]["url"] = $model->avatarPath();
         }
         return json_encode($result);
-    }
-
-    public function addAdmin()
-    {
-        if (Yii::app()->db->createCommand()->insert('user_admin', array(
-            'id_user' => $this->id,
-        ))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function addAccountant()
-    {
-        if (Yii::app()->db->createCommand()->insert('user_accountant', array(
-            'id_user' => $this->id,
-        ))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function cancelAdmin()
-    {
-        if (Yii::app()->db->createCommand()->update('user_admin', array(
-            'end_date'=>date('Y-m-d H:i:s'),
-        ), 'id_user=:id', array(':id'=>$this->id))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function cancelAccountant()
-    {
-        if (Yii::app()->db->createCommand()->update('user_accountant', array(
-            'end_date'=>date('Y-m-d H:i:s'),
-        ), 'id_user=:id', array(':id'=>$this->id))) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -1126,7 +1055,7 @@ class StudentReg extends CActiveRecord
                 'scenario' => 'message',
                 'receiver' => $record["id"]
             ));
-            $row["cancel"] = "'".Yii::app()->createUrl('/_teacher/_admin/users/cancelAdmin')."'".", '".$record["id"]."'";
+            $row["cancel"] = "'".Yii::app()->createUrl('/_teacher/_admin/users/cancelRole')."'".", 'admin', '".$record["id"]."', '2'";
             array_push($return['data'], $row);
         }
 
@@ -1149,7 +1078,7 @@ class StudentReg extends CActiveRecord
                 'scenario' => 'message',
                 'receiver' => $record["id"]
             ));
-            $row["cancel"] = "'".Yii::app()->createUrl('/_teacher/_admin/users/cancelAccountant')."'".", '".$record["id"]."'";
+            $row["cancel"] = "'".Yii::app()->createUrl('/_teacher/_admin/users/cancelRole')."'".", 'accountant', '".$record["id"]."', '3'";
             array_push($return['data'], $row);
         }
 
@@ -1209,5 +1138,15 @@ class StudentReg extends CActiveRecord
             $result["results"][$key]["url"] = $model->avatarPath();
         }
         return json_encode($result);
+    }
+
+    public static function authRedirect($callBack)
+    {
+        if($callBack && isset($_SERVER["HTTP_REFERER"])){
+            $callBack=$_SERVER["HTTP_REFERER"];
+        }else if($callBack && !isset($_SERVER["HTTP_REFERER"])){
+            $callBack=Yii::app()->request->baseUrl;
+        }else $callBack='';
+        return $callBack;
     }
 }

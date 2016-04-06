@@ -28,6 +28,7 @@ return array(
         'application.models.message.*',
         'application.models.quiz.*',
         'application.models.slider.*',
+        'application.models.revision.*',
         'application.models.user.*',
         'application.components.*',
         'application.components.widgets.*',
@@ -173,5 +174,6 @@ return array(
         // this is used in teacher profile page
         'adminEmail' => 'Wizlightdragon@gmail.com',
         'languages' => array('en' => 'English', 'ua' => 'Ukrainian', 'ru' => 'Russian'),
+        'dbDateFormat'=>'Y-m-d H:i:s'
     ),
 );

@@ -15,7 +15,8 @@
             </div>
 
             <button class="btn btn-primary"
-                    onclick="sendNewAccountantData('<?php echo Yii::app()->createUrl("/_teacher/_admin/users/createAccountant"); ?>'); return false;">
+                    onclick="assignRole('<?php echo Yii::app()->createUrl("/_teacher/_admin/users/assignRole"); ?>',
+                        'accountant', '3'); return false;">
                 Призначити бухгалтера
             </button>
 
@@ -31,7 +32,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-            url: basePath + '/_teacher/_admin/users/usersWithoutAccountants?query=%QUERY',
+            url: basePath + '/_teacher/_admin/users/usersAddForm?role=accountant&query=%QUERY',
             wildcard: '%QUERY',
             filter: function (users) {
                 return $jq.map(users.results, function (user) {
