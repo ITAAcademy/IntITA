@@ -3,6 +3,10 @@
 class CabinetController extends TeacherCabinetController
 {
 
+    public function hasRole(){
+        return !Yii::app()->user->isGuest;
+    }
+
     public function actionIndex($scenario = "dashboard", $receiver = 0)
     {
         $model = Yii::app()->user->model;
@@ -11,14 +15,14 @@ class CabinetController extends TeacherCabinetController
             throw new \application\components\Exceptions\IntItaException(400, 'Користувача не знайдено.');
         }
         $newReceivedMessages = $model->newReceivedMessages();
-        $authorRequests = $model->authorRequests();
+        $requests = $model->requests();
 
         $this->render('index', array(
             'model' => $model,
             'newMessages' => $newReceivedMessages,
             'scenario' => $scenario,
             'receiver' => $receiver,
-            'authorRequests' => $authorRequests
+            'requests' => $requests
         ));
     }
 
@@ -60,61 +64,6 @@ class CabinetController extends TeacherCabinetController
         return $model;
     }
 
-    public function actionModule($id)
-    {
-        $modules = Teacher::model()->findByPk($id)->modules;
-
-        $this->render('moduleList', array(
-            'modules' => $modules,
-        ));
-    }
-
-    public function actionMyPlainTask($id)
-    {
-
-        $lectureArr = [];
-        $modules = Teacher::model()->findByPk($id)->modules;
-        foreach ($modules as $module) {
-            $lect = $module->lectures;
-            if ($lect) {
-                array_push($lectureArr, $lect);
-            }
-        }
-        $lectureElementsArr = [];
-
-        foreach ($lectureArr as $lectures) {
-            foreach ($lectures as $lecture) {
-                $lecEl = $lecture->lectureEl;
-                if ($lecEl) {
-                    array_push($lectureElementsArr, $lecEl);
-
-                }
-            }
-        }
-        $plainTaskArr = [];
-
-        foreach ($lectureElementsArr as $lectureElements) {
-            foreach ($lectureElements as $lectureElement) {
-                $plainTask = $lectureElement->plainTask;
-                if ($plainTask) {
-                    array_push($plainTaskArr, $plainTask);
-                }
-            }
-        }
-        $this->render('plainTaskList', array(
-            'plainTasks' => $plainTaskArr,
-        ));
-    }
-
-    public function actionShowPlainTask($id)
-    {
-        $plainTask = PlainTask::model()->findByPk($id);
-
-        $this->render('../plainTask/show', array(
-            'plainTask' => $plainTask,
-        ));
-    }
-
     public function actionLoadDashboard($user)
     {
         $model = RegisteredUser::userById($user);
@@ -141,13 +90,13 @@ class CabinetController extends TeacherCabinetController
         foreach ($roles as $role) {
             switch ($role) {
                 case "trainer":
-                    $this->renderTrainerDashboard($user);
-                    break;
                 case "author":
-                    $this->renderAuthorDashboard($user);
-                    break;
                 case 'consultant':
-                    $this->renderConsultantDashboard($user);
+                case 'student':
+                case 'tenant':
+                case 'content_manager':
+                case 'teacher_consultant':
+                    $this->renderDashboard($role, $user);
                     break;
                 case 'admin':
                     $this->renderAdminDashboard();
@@ -155,9 +104,7 @@ class CabinetController extends TeacherCabinetController
                 case 'accountant':
                     $this->renderAccountantDashboard();
                     break;
-                case 'student':
-                    $this->renderStudentDashboard($user);
-                    break;
+
                 default:
                     throw new CHttpException(400, 'Неправильно вибрана роль!');
                     break;
@@ -165,64 +112,10 @@ class CabinetController extends TeacherCabinetController
         }
     }
 
-    public function renderSidebarByRole(UserRoles $role)
-    {
-        $user = Yii::app()->user->model;
-        switch ($role) {
-            case 'author' :
-                $this->renderPartial('/author/sidebar', array(
-                    'user' => $user
-                ));
-                break;
-            case 'trainer' :
-                $this->renderPartial('/trainer/sidebar', array(
-                    'user' => $user
-                ));
-                break;
-            case 'consultant' :
-                $this->renderPartial('/consultant/sidebar', array(
-                    'user' => $user
-                ));
-                break;
-        }
-    }
-
-    private function renderTrainerDashboard(RegisteredUser $user)
-    {
-        return $this->renderPartial('/trainer/_trainerDashboard', array(
+    private function renderDashboard(UserRoles $role, RegisteredUser $user){
+        $view = '/'.$role.'/_dashboard';
+        return $this->renderPartial($view, array(
             'teacher' => $user->getTeacher(),
-            'user' => $user->registrationData
-        ));
-    }
-
-    private function renderAuthorDashboard(RegisteredUser $user)
-    {
-        return $this->renderPartial('/author/_authorDashboard', array(
-            'teacher' => $user->getTeacher(),
-            'user' => $user->registrationData
-        ));
-    }
-
-    private function renderStudentDashboard(RegisteredUser $user)
-    {
-        return $this->renderPartial('/student/_dashboard', array(
-            'user' => $user->registrationData
-        ));
-    }
-
-
-    private function renderConsultantDashboard(RegisteredUser $user)
-    {
-        return $this->renderPartial('/consultant/_consultantDashboard', array(
-            'teacher' => $user->getTeacher(),
-            'user' => $user->registrationData
-        ));
-    }
-
-    private function renderLeaderDashboard(Teacher $teacher, RegisteredUser $user)
-    {
-        return $this->renderPartial('/leader/_leaderDashboard', array(
-            'teacher' => $teacher,
             'user' => $user->registrationData
         ));
     }

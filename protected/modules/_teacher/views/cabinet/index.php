@@ -3,9 +3,8 @@
  * @var $model StudentReg
  * @var $scenario
  * @var $receiver
- * @var $authorRequests array
+ * @var $requests array
  * @var $newMessages array
- *
  */
 ?>
 <!DOCTYPE html>
@@ -22,7 +21,6 @@
     <link href="<?php echo StaticFilesHelper::fullPathTo('css', '_teacher/consult.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?= StaticFilesHelper::fullPathTo('css', 'formattedForm.css') ?>"/>
     <!-- Bootstrap Core CSS -->
-    <link href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.css'); ?>" rel="stylesheet">
     <link href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap-theme.css'); ?>" rel="stylesheet">
     <!-- Bootstrap Core CSS -->
 
@@ -72,9 +70,9 @@
         <?php echo $this->renderPartial('_top_navigation', array(
             'model' => $model,
             'newMessages' => $newMessages,
-            'authorRequests' => $authorRequests
+            'requests' => $requests
         )); ?>
-        <?php echo $this->renderPartial('_sidebar_navigation', array('model' => $model)); ?>
+        <?php echo $this->renderPartial('_sidebar_navigation', array('model' => $model, 'newMessages' => $newMessages)); ?>
     </nav>
     <?php echo $this->renderPartial('_page_wrapper', array('model' => $model)); ?>
 </div>
@@ -117,11 +115,15 @@
 <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'dist/js/sb-admin-2.js');?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', '_teacher.js');?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', '_teachers/newPlainTask.js'); ?>"></script>
+<script src="<?php echo StaticFilesHelper::fullPathTo('js', '_trainer/trainer.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/morrisjs/morris.min.js');?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/datatables/media/js/jquery.dataTables.min.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js'); ?>"></script>
 <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-de.js"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', '_teachers/newPlainTask.js'); ?>"></script>
+<?php if(Yii::app()->user->model->isContentManager()){?>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'cabinet/contentManager.js'); ?>"></script>
+<?php }?>
 <!--Typeahead  scripts -->
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'handlebars.js');?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'typeahead.js'); ?>"></script>

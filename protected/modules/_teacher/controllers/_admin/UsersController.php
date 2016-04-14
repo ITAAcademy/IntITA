@@ -2,31 +2,46 @@
 
 class UsersController extends TeacherCabinetController
 {
+    public function hasRole(){
+        return Yii::app()->user->model->isAdmin();
+    }
+
     public function actionIndex()
     {
-        $countAdmins = UserAdmin::model()->count();
-        $countAccountants = UserAccountant::model()->count();
-        $countTeachers = Teacher::model()->count();
-        $countUsers = StudentReg::model()->count();
-        $countStudents = UserStudent::model()->count();
+        $counters = [];
+
+        $counters["admins"] = UserAdmin::model()->count("end_date IS NULL");
+        $counters["accountants"] = UserAccountant::model()->count("end_date IS NULL");
+        $counters["teachers"] = Teacher::model()->count("isPrint=:print", array(':print' => Teacher::ACTIVE));
+        $counters["students"] = UserStudent::model()->count("end_date IS NULL");
+        $counters["users"] = StudentReg::model()->count();
+        $counters["tenants"] = UserTenant::model()->count("end_date IS NULL");
+        $counters["contentManagers"] = UserContentManager::model()->count("end_date IS NULL");
+        $counters["teacherConsultants"] = UserTeacherConsultant::model()->count("end_date IS NULL");
 
         $this->renderPartial('index', array(
-            'countAdmins' => $countAdmins,
-            'countAccountants' => $countAccountants,
-            'countTeachers' => $countTeachers,
-            'countUsers' => $countUsers,
-            'countStudents' => $countStudents
+            'counters' => $counters
         ), false, true);
     }
 
-    public function actionRenderAdminForm()
+    public function actionRenderAddRoleForm($role)
     {
-        $this->renderPartial('_addAdmin', array(), false, true);
+        if($role == ""){
+            throw new \application\components\Exceptions\IntItaException(400, 'Неправильна роль.');
+        }
+        $view = "addForms/_add".ucfirst($role);
+        $this->renderPartial($view, array(), false, true);
     }
 
-    public function actionRenderAccountantForm()
-    {
-        $this->renderPartial('_addAccountant', array(), false, true);
+    public function actionAssignRole(){
+        $userId = Yii::app()->request->getPost('userId');
+        $role = Yii::app()->request->getPost('role');
+        $user = RegisteredUser::userById($userId);
+
+        if ($user->setRole($role))
+            echo "Користувачу ".$user->registrationData->userNameWithEmail()." призначена обрана роль ".$role;
+        else echo "Користувачу ".$user->registrationData->userNameWithEmail()." не вдалося призначити роль ".$role.".
+        Спробуйте повторити операцію пізніше або напишіть на адресу ".Config::getAdminEmail();
     }
 
     public function actionAddAdmin()
@@ -49,35 +64,23 @@ class UsersController extends TeacherCabinetController
         Спробуйте повторити операцію пізніше або напишіть на адресу ".Config::getAdminEmail();
     }
 
-    public function actionCancelAdmin()
+    public function actionCancelRole()
     {
-        $user = Yii::app()->request->getPost('user', '0');
-        $model = StudentReg::model()->findByPk($user);
-        echo $model->cancelAdmin();
-    }
-
-    public function actionCancelAccountant()
-    {
-        $user = Yii::app()->request->getPost('user', '0');
-        $model = StudentReg::model()->findByPk($user);
-        echo $model->cancelAccountant();
-    }
-
-    public function actionUsersWithoutAdmins($query)
-    {
-        if ($query) {
-            $users = StudentReg::usersWithoutAdmins($query);
-            echo $users;
+        $user = Yii::app()->request->getPost('userId', '0');
+        $role = Yii::app()->request->getPost('role', '');
+        if($user && $role){
+            $model = RegisteredUser::userById($user);
+            echo $model->cancelRoleMessage(new UserRoles($role));
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            echo "Неправильний запит. Зверніться до адміністратора ".Config::getAdminEmail();
         }
     }
 
-    public function actionUsersWithoutAccountants($query)
+    public function actionUsersAddForm($role, $query)
     {
-        if ($query) {
-            $users = StudentReg::usersWithoutAccountants($query);
-            echo $users;
+        $roleModel = Role::getInstance(new UserRoles($role));
+        if ($query && $roleModel) {
+            echo $roleModel->addRoleFormList($query);
         } else {
             throw new \application\components\Exceptions\IntItaException('400');
         }
@@ -93,6 +96,21 @@ class UsersController extends TeacherCabinetController
     public function actionGetUsersList()
     {
         echo StudentReg::usersList();
+    }
+
+    public function actionGetTenantsList()
+    {
+        echo UserTenant::tenantsList();
+    }
+
+    public function actionGetContentManagersList()
+    {
+        echo UserContentManager::contentManagersList();
+    }
+
+    public function actionGetTeacherConsultantsList()
+    {
+        echo UserTeacherConsultant::teacherConsultantsList();
     }
 
     public function actionGetTeachersList()

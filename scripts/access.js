@@ -34,7 +34,7 @@
 
     }
 
-    function cancelTeacherAccess(url) {
+    function cancelTeacherAccess(url,header,redirect) {
         var user = $jq("#user").val();
         var moduleId = $jq("select[name=modules] option:selected").val();
 
@@ -52,7 +52,9 @@
                 success: function (data) {
                    if(data == "success"){
                        showDialog("Операцію успішно виконано.");
-                       loadCancelAuthorModule();
+                       //if(redirect=='teacherAccess')
+                       //    loadAddTeacherAccess(header,'1');
+                       //else loadCancelAuthorModule();
                    } else {
                        showDialog("Операцію не вдалося виконати.");
                    }
@@ -81,10 +83,6 @@
         }
     }
 
-    function changeUserStatus() {
-        document.getElementById('').style.display = 'block';
-    }
-
     function selectModule(url) {
         var course = $('select[name="course"]').val();
         if (!course) {
@@ -101,19 +99,6 @@
                 }
             });
         }
-    }
-
-    function selectLecture() {
-        var module = $('select[name="module"]').val();
-        $.ajax({
-            type: "POST",
-            url: "/_admin/permissions/showLectures",
-            data: {module: module},
-            cache: false,
-            success: function (response) {
-                $('div[name="selectLecture"]').html(response);
-            }
-        });
     }
 
     function newPermissions(url)

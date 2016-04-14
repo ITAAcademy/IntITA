@@ -196,6 +196,10 @@ class StudentRegController extends Controller
 
     public function actionProfile($idUser, $course = 0, $schema = 1, $module = 0)
     {
+        if (Yii::app()->user->isGuest) {
+            $this->render('/site/authorize');
+            die();
+        }
         if (Yii::app()->user->isGuest || $idUser==0)
             throw new \application\components\Exceptions\IntItaException('403', 'Гість не може проглядати профіль користувача');
         $user = RegisteredUser::userById($idUser);
@@ -298,6 +302,7 @@ class StudentRegController extends Controller
             $model->updateByPk($id, array('linkedin' => $_POST['StudentReg']['linkedin']));
             $model->updateByPk($id, array('vkontakte' => $_POST['StudentReg']['vkontakte']));
             $model->updateByPk($id, array('twitter' => $_POST['StudentReg']['twitter']));
+            $model->updateByPk($id, array('skype' => $_POST['StudentReg']['skype']));
 
             // Uncomment the following line if AJAX validation is needed
             // $this->performAjaxValidation($model);
