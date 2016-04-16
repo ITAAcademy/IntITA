@@ -1,5 +1,8 @@
 <?php
-/* @var $model StudentReg */
+/**
+ * @var $model StudentReg
+ * @var $countNewMessages int
+ */
 ?>
 
 <div class="navbar-default sidebar" role="navigation">
@@ -23,7 +26,11 @@
             </li>
             <li>
                 <a href="#"  onclick="load('<?php echo Yii::app()->createUrl('/_teacher/messages/index');?>','Повідомлення')">
-                    <i class="fa fa-envelope fa-fw"></i> Повідомлення</a>
+                    <i class="fa fa-envelope fa-fw"></i> Повідомлення
+                <?php if($countNewMessages > 0){?>
+                    <span class="label label-success"><?=$countNewMessages?></span>
+                <?php }?>
+                </a>
             </li>
 
             <?php

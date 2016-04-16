@@ -212,10 +212,10 @@ class MessagesTeacherConsultantRequest extends Messages implements IMessage, IRe
 
     public function approve(StudentReg $userApprove)
     {
-        $user = RegisteredUser::userById($this->message0->sender);
+        $user = RegisteredUser::userById($this->id_teacher);
         //add rights to edit module
         $role = new TeacherConsultant();
-        if ($role->checkModule($user->registrationData->id, $this->id_module)) {
+        if ($role->checkModule($this->id_teacher, $this->id_module)) {
             if ($user->setRoleAttribute(UserRoles::TEACHER_CONSULTANT, 'module', $this->id_module)) {
                 //update current request, set approved status
                 $this->user_approved = $userApprove->id;
@@ -263,5 +263,28 @@ class MessagesTeacherConsultantRequest extends Messages implements IMessage, IRe
     public function type()
     {
         return Request::TEACHER_CONSULTANT_REQUEST;
+    }
+
+    public function subject(){
+        return "Запит на призначення викладача-консультанта для модуля";
+    }
+
+    // return true if message read by $receiver (param "read" is NULL)
+    public function isRead(StudentReg $receiver)
+    {
+        $read = Yii::app()->db->createCommand()
+            ->select('read')
+            ->from('message_receiver')
+            ->where('id_message=:message and id_receiver=:receiver',
+                array(':message' => $this->id_message, ':receiver' => $receiver->id)
+            )->queryRow();
+
+        if ($read["read"])
+            return true;
+        else return false;
+    }
+
+    public function message(){
+        return $this->message0;
     }
 }

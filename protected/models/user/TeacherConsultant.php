@@ -115,8 +115,9 @@ class TeacherConsultant extends Role
         $criteria->addSearchCondition('secondName', $query, true, "OR", "LIKE");
         $criteria->addSearchCondition('middleName', $query, true, "OR", "LIKE");
         $criteria->addSearchCondition('email', $query, true, "OR", "LIKE");
-        $criteria->join = 'LEFT JOIN user_teacher_consultant u ON u.id_user = s.id';
-        $criteria->addCondition('u.id_user IS NULL or u.end_date IS NOT NULL');
+        $criteria->join = 'LEFT JOIN teacher t on t.user_id=s.id';
+        $criteria->join .= ' LEFT JOIN user_teacher_consultant u ON u.id_user = s.id';
+        $criteria->addCondition('t.user_id IS NOT NULL and (u.id_user IS NULL or u.end_date IS NOT NULL)');
 
         $data = StudentReg::model()->findAll($criteria);
 
@@ -175,9 +176,8 @@ class TeacherConsultant extends Role
 
     public function checkModule($teacher, $module)
     {
-        if (Yii::app()->db->createCommand('select id_module from teacher_consultant_module where id_module=' . $module .
-                ' and id_teacher=' . $teacher . ' and end_date IS NULL')->execute() > 0
-        ) {
+        if (empty(Yii::app()->db->createCommand('select count(id_module) from teacher_consultant_module where id_module=' . $module .
+                ' and id_teacher=' . $teacher . ' and end_date IS NULL')->queryAll())) {
             return false;
         } else return true;
     }
