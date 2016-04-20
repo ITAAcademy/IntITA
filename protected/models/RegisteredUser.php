@@ -22,7 +22,7 @@ class RegisteredUser
     private $_teacher;
     private $_isTeacher = false;
     private $_roleAttributes = array();
-    private $_teacherRoles = array( UserRoles::TRAINER, UserRoles::CONSULTANT);
+    private $_teacherRoles = array( UserRoles::TRAINER, UserRoles::CONSULTANT, UserRoles::TEACHER_CONSULTANT);
 
     public function __construct(StudentReg $registrationData)
     {
@@ -60,15 +60,29 @@ class RegisteredUser
 
     private function loadRoles()
     {
-        $sql = '(select "admin",id_user from user_admin a where a.id_user = ' . $this->id . ' and end_date IS NULL)
+        $sql = '(select "admin" from user_admin a where a.id_user = ' . $this->id . ' and end_date IS NULL)
                     union
-                (select "accountant", id_user from user_accountant ac where ac.id_user = ' . $this->id . ' and end_date IS NULL)
+                (select "accountant" from user_accountant ac where ac.id_user = ' . $this->id . ' and end_date IS NULL)
                     union
-                (select "student", id_user from user_student st where st.id_user = ' . $this->id . ' and end_date IS NULL)
+                (select "trainer" from user_trainer at where at.id_user = ' . $this->id . ' and end_date IS NULL)
                      union
-                (select "trainer", id_user from user_trainer at where at.id_user = ' . $this->id . ' and end_date IS NULL)
+                (select "author" from teacher_module tm left join teacher t on t.user_id = '.$this->id.' where tm.idTeacher = t.teacher_id and end_time IS NULL)
                      union
-                (select "consultant", id_user from user_consultant acs where acs.id_user = ' . $this->id . ' and end_date IS NULL)';
+                (select "consultant" from user_consultant acs where acs.id_user = ' . $this->id . ' and end_date IS NULL)
+                    union
+                (select "teacher_consultant" from user_teacher_consultant utc where utc.id_user = ' . $this->id . ' and end_date IS NULL)
+                     union
+                (select "content_manager" from user_content_manager ucm where ucm.id_user = ' . $this->id . ' and ucm.end_date IS NULL)
+                    union
+                (select "tenant" from user u
+                    right join chat_user as cu on u.id = cu.intita_user_id
+                    right join user_tenant ut on ut.chat_user_id=cu.id
+                    where cu.intita_user_id = ' . $this->id . ' and ut.end_date IS NULL)
+                     union
+                (select "content_manager" from user_content_manager ucm where ucm.id_user = ' . $this->id . ' and ucm.end_date IS NULL)
+                    union
+                (select "student" from user_student st where st.id_user = ' . $this->id . ' and end_date IS NULL)';
+
         $rolesArray = Yii::app()->db->createCommand($sql)->queryAll();
 
         $result = array_map(function ($row) {
@@ -152,6 +166,22 @@ class RegisteredUser
         return $this->hasRole(UserRoles::TRAINER);
     }
 
+    public function isTeacherConsultant()
+    {
+        return $this->hasRole(UserRoles::TEACHER_CONSULTANT);
+    }
+
+    public function isContentManager()
+    {
+        return $this->hasRole(UserRoles::CONTENT_MANAGER);
+    }
+
+    public function isTenant()
+    {
+        return $this->hasRole(UserRoles::TENANT);
+    }
+
+
     public function isConsultant()
     {
         return $this->hasRole(UserRoles::CONSULTANT);
@@ -169,6 +199,10 @@ class RegisteredUser
         } else {
             return false;
         }
+    }
+
+    public function canApprove() {
+        return $this->isAdmin();
     }
 
     //todo author role check
@@ -198,6 +232,21 @@ class RegisteredUser
         return $roleObj->cancelRole($this->registrationData);
     }
 
+    public function cancelRoleMessage(UserRoles $role)
+    {
+        if (!$this->hasRole($role)) {
+            return "Користувачу не була призначена обрана роль.";
+        }
+        $roleObj = Role::getInstance($role);
+        if($roleObj->cancelRole($this->registrationData)){
+            return "Роль успішно відмінено.";
+        } elseif ($roleObj->getErrorMessage() != ""){
+            return $roleObj->getErrorMessage();
+        } else {
+            return "Роль не вдалося відмінити. Спробуйте пізніше або зверніться до адміністратора.";
+        }
+    }
+
     public function teacherRoles()
     {
         return array_intersect($this->getRoles(), $this->_teacherRoles);
@@ -208,12 +257,19 @@ class RegisteredUser
         return array_diff($this->_teacherRoles, array_intersect($this->getRoles(), $this->_teacherRoles));
     }
 
-    public function authorRequests(){
-        if (!$this->isAdmin())
+    public function requests(){
+        if (!$this->isAdmin() && !$this->isContentManager())
             return [];
         else {
-            return MessagesAuthorRequest::notApprovedRequests();
+            return $this->loadRequests();
         }
+    }
+
+    private function loadRequests(){
+        $authorRequests = MessagesAuthorRequest::notApprovedRequests();
+        $consultantRequests = MessagesTeacherConsultantRequest::notApprovedRequests();
+
+        return array_merge($authorRequests, $consultantRequests);
     }
 
     public function canPlanConsultation(Teacher $teacher){
@@ -224,7 +280,8 @@ class RegisteredUser
         if(!$this->isTeacher())
             return false;
         else {
-            return !MessagesAuthorRequest::isRequestOpen($module, $this->registrationData->id);
+            $request = new MessagesAuthorRequest();
+            return !$request->isRequestOpen($module, $this->registrationData->id);
         }
     }
 }

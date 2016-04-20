@@ -15,7 +15,9 @@ function lessonPageCtrl($rootScope,$scope, ipCookie,openDialogsService) {
         }
     };
 
-
+    angular.element(document.querySelector("#ui-id-2")).on('click', function() {
+        alert(11);
+    });
     angular.element(document.querySelector("#MyTab-Menu")).children("ul").children("li").on('click', function() {
         var tabId=angular.element(this).attr('aria-controls');
         switch (tabId) {
@@ -23,7 +25,11 @@ function lessonPageCtrl($rootScope,$scope, ipCookie,openDialogsService) {
                 ipCookie('lessonTab', 0, { path: '/' });
                 break;
             case 'text':
+                $scope.startLogText();
                 ipCookie('lessonTab', 1, { path: '/' });
+                break;
+            case 'quiz':
+                $scope.startLogQuiz();
                 break;
         }
     });
@@ -48,4 +54,16 @@ function lessonPageCtrl($rootScope,$scope, ipCookie,openDialogsService) {
             $('#ui-id-'+tab+'').click();
         }
     };
+    $scope.startLogQuiz=function(){
+        $.post("/track/index", {  events: "Open_quiz", lesson: idLecture,part: $rootScope.currentPage } );
+
+    };
+    $scope.startLogText=function(){
+        $.post("/track/index", {  events: "Open_text", lesson: idLecture,part: $rootScope.currentPage } );
+
+    };
+    $scope.startLogVideo=function(){
+      $.post("/track/index", {  events: "Start_video", lesson: idLecture,part: $rootScope.currentPage } );
+
+       }
 }

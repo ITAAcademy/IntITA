@@ -33,6 +33,8 @@ if (StudentReg::isAdmin()) $post->setScenario('canedit');
                 </td>
                 <?php if(isset($_GET['idCourse']) && $_GET['idCourse'] > 0 && Course::getStatus($_GET['idCourse']) == 1){?>
                 <td>
+<!--                    <div>-->
+<!--                    </div>-->
                     <div class="startCourse">
                         <?php
                         if(Yii::app()->user->isGuest) {
