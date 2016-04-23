@@ -44,7 +44,7 @@ class ConsultationscalendarController extends Controller
 			throw new \application\components\Exceptions\IntItaException('404', 'Заняття не існує');
 
 		$enabledLessonOrder = Lecture::getLastEnabledLessonOrder($lecture->idModule);
-		if (StudentReg::isAdmin() || $editMode) {
+		if (Yii::app()->user->model->isAdmin() || $editMode) {
 			return true;
 		}
 		if($idCourse!=0){
@@ -75,7 +75,7 @@ class ConsultationscalendarController extends Controller
 		$this->initialize($lectureId,$idCourse);
 
         $lecture = Lecture::model()->findByPk($lectureId);
-        $dataProvider = Teacher::getTeacherConsult($lectureId);
+        $dataProvider = Teacher::getTeacherConsult($lecture);
 
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,

@@ -4,6 +4,7 @@ class Author extends Role
 {
     private $dbModel;
     private $modules;
+    private $errorMessage = "";
 
     /**
      * @return string the associated database table name
@@ -14,10 +15,21 @@ class Author extends Role
     }
 
     /**
+     * @return string sql for check role author.
+     */
+    public function checkRoleSql(){
+        return 'select "author" from teacher_module tm left join teacher t on t.user_id = :id where tm.idTeacher = t.teacher_id and end_time IS NULL';
+    }
+
+    /**
      * @return string the role title (ua)
      */
     public function title(){
         return 'Автор';
+    }
+
+    public function getErrorMessage(){
+        return $this->errorMessage;
     }
 
     public function attributes(StudentReg $user)
@@ -94,5 +106,10 @@ class Author extends Role
 
     public function checkBeforeDeleteRole(StudentReg $user){
         return true;
+    }
+
+    //not supported
+    public function addRoleFormList($query){
+        return array();
     }
 }

@@ -1,0 +1,12 @@
+#revisionMainBox {
+    margin: 0 auto;
+    width: 1200px;
+    /*overflow: hidden;*/
+    overflow: visible
+}
+.editIco{
+    cursor: pointer;
+}
+.dropdown-menu a{
+    cursor: pointer;
+}

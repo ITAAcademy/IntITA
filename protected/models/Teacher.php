@@ -211,15 +211,15 @@ class Teacher extends CActiveRecord
     }
 
     //todo
-    public static function getTeacherConsult($lectureId)
+    public static function getTeacherConsult(Lecture $lecture)
     {
-        $lecture = Lecture::model()->findByPk($lectureId);
         $teachersconsult = [];
 
         $criteria = new CDbCriteria;
         $criteria->alias = 'consultant_modules';
         $criteria->select = 'consultant';
         $criteria->addCondition('module=' . $lecture->idModule);
+        $criteria->addCondition('end_time IS NULL');
         $temp = ConsultantModules::model()->findAll($criteria);
         for ($i = 0; $i < count($temp); $i++) {
             array_push($teachersconsult, $temp[$i]->consultant);
@@ -435,27 +435,6 @@ class Teacher extends CActiveRecord
         if (isset($author)) return true; else return false;
     }
 
-    public function notCheckedPlainTask()
-    {
-        $teacherPlainTasksId = PlainTaskAnswer::TeacherPlainTask($this->user_id);
-
-        if ($teacherPlainTasksId) {
-            $newPlainTasksId = PlainTaskAnswer::newTeacherPlainTask($teacherPlainTasksId);
-
-            $criteria = new CDbCriteria();
-            $criteria->condition = 'id = :id';
-            $criteria->params = array(':id' => $newPlainTasksId);
-
-            $newPlainTasksModel = PlainTaskAnswer::model()->findAllByPk($newPlainTasksId);
-
-            return $newPlainTasksModel;
-        } else return null;
-    }
-
-    public function countNotCheckedPlainTask()
-    {
-        return count($this->notCheckedPlainTask());
-    }
 
     public static function addTeacherAccess($teacher, $module)
     {
@@ -487,8 +466,10 @@ class Teacher extends CActiveRecord
 
         foreach ($users as $record) {
             $row = array();
-            $row["name"] = $record->user->secondName." ".$record->user->firstName." ".$record->user->middleName;
-            $row["email"] = $record->user->email;
+            $row["name"]["title"] = $record->user->secondName." ".$record->user->firstName." ".$record->user->middleName;
+            $row["email"]["title"] = $record->user->email;
+            $row["email"]["url"] = $row["name"]["url"] = Yii::app()->createUrl('/_teacher/_admin/teachers/showTeacher',
+                array('id' => $record->user_id));
             $row["profile"] = Config::getBaseUrl()."/teacher/".$record->teacher_id;
             $row["mailto"] = Yii::app()->createUrl('/_teacher/cabinet/index', array(
                 'scenario' => 'message',
@@ -594,6 +575,55 @@ class Teacher extends CActiveRecord
         $criteria->join = 'LEFT JOIN teacher t ON t.user_id = s.id';
         $criteria->addCondition('t.user_id IS NOT NULL');
         $data = StudentReg::model()->findAll($criteria);
+        $result = array();
+        foreach ($data as $key => $model) {
+            $result["results"][$key]["id"] = $model->id;
+            $result["results"][$key]["name"] = $model->secondName." ".$model->firstName." ".$model->middleName;
+            $result["results"][$key]["email"] = $model->email;
+            $result["results"][$key]["tel"] = $model->phone;
+            $result["results"][$key]["skype"] = $model->skype;
+            $result["results"][$key]["url"] = $model->avatarPath();
+        }
+        return json_encode($result);
+    }
+
+    public static function teachersByQueryAndModule($query, $module)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = "id, secondName, firstName, middleName, email, phone, skype, avatar";
+        $criteria->alias = "s";
+        $criteria->addSearchCondition('firstName', $query, true, "OR", "LIKE");
+        $criteria->addSearchCondition('secondName', $query, true, "OR", "LIKE");
+        $criteria->addSearchCondition('middleName', $query, true, "OR", "LIKE");
+        $criteria->addSearchCondition('email', $query, true, "OR", "LIKE");
+        $criteria->join = 'LEFT JOIN teacher_consultant_module tcm ON tcm.id_teacher = s.id';
+        $criteria->addCondition('tcm.id_teacher IS NOT NULL and end_date IS NULL and tcm.id_module='.$module);
+        $data = StudentReg::model()->findAll($criteria);
+        $result = array();
+        foreach ($data as $key => $model) {
+            $result["results"][$key]["id"] = $model->id;
+            $result["results"][$key]["name"] = $model->secondName." ".$model->firstName." ".$model->middleName;
+            $result["results"][$key]["email"] = $model->email;
+            $result["results"][$key]["tel"] = $model->phone;
+            $result["results"][$key]["skype"] = $model->skype;
+            $result["results"][$key]["url"] = $model->avatarPath();
+        }
+        return json_encode($result);
+    }
+
+    public static function teacherConsultantsByQueryAndModule($query, $module)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = "id, secondName, firstName, middleName, email, phone, skype, avatar";
+        $criteria->alias = "s";
+        $criteria->addSearchCondition('firstName', $query, true, "OR", "LIKE");
+        $criteria->addSearchCondition('secondName', $query, true, "OR", "LIKE");
+        $criteria->addSearchCondition('middleName', $query, true, "OR", "LIKE");
+        $criteria->addSearchCondition('email', $query, true, "OR", "LIKE");
+        $criteria->join = 'LEFT JOIN user_teacher_consultant utc ON utc.id_user = s.id';
+        $criteria->addCondition('utc.id_user IS NOT NULL and utc.end_date IS NULL');
+        $data = StudentReg::model()->findAll($criteria);
+
         $result = array();
         foreach ($data as $key => $model) {
             $result["results"][$key]["id"] = $model->id;

@@ -1,12 +1,16 @@
 <?php
 /* @var $post Module*/
-if (StudentReg::isAdmin()) $post->setScenario('canedit');
+if (!Yii::app()->user->isGuest) {
+   if (Yii::app()->user->model->isAdmin()) $post->setScenario('canedit');
+}
 ?>
 <div class="leftModule">
     <div class="headerLeftModule">
         <?php
-        if (StudentReg::isAdmin())
-        $this->renderPartial('_moduleInfoForAdmin', array('post'=>$post));
+        if (!Yii::app()->user->isGuest) {
+            if (Yii::app()->user->model->isAdmin())
+                $this->renderPartial('_moduleInfoForAdmin', array('post' => $post));
+        }
         else $this->renderPartial('_moduleInfo', array('post'=>$post));
         ?>
         <table>
@@ -33,6 +37,8 @@ if (StudentReg::isAdmin()) $post->setScenario('canedit');
                 </td>
                 <?php if(isset($_GET['idCourse']) && $_GET['idCourse'] > 0 && Course::getStatus($_GET['idCourse']) == 1){?>
                 <td>
+<!--                    <div>-->
+<!--                    </div>-->
                     <div class="startCourse">
                         <?php
                         if(Yii::app()->user->isGuest) {

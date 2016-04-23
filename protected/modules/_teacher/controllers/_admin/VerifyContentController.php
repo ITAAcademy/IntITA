@@ -2,6 +2,9 @@
 
 class VerifyContentController extends TeacherCabinetController
 {
+    public function hasRole(){
+        return Yii::app()->user->model->isAdmin();
+    }
 
     public function actionIndex()
     {
@@ -64,6 +67,7 @@ class VerifyContentController extends TeacherCabinetController
 
         if ($model) {
             $model->setNoVerified();
+            $this->deleteLecturePages($model);
         } else {
             throw new \application\components\Exceptions\IntItaException(404, "Такої лекції немає!");
         }
@@ -73,7 +77,10 @@ class VerifyContentController extends TeacherCabinetController
     {
         $this->redirect(Config::getBaseUrl() . '/lesson/saveLectureContent/?idLecture=' . $model->id);
     }
-
+    public function deleteLecturePages(Lecture $model)
+    {
+        $this->redirect(Config::getBaseUrl() . '/lesson/deleteLectureContent/?idLecture=' . $model->id);
+    }
     public function actionWaitLecturesList(){
         echo Lecture::getLecturesListByStatus(Lecture::NOVERIFIED);
     }
