@@ -31,7 +31,7 @@ class LessonController extends Controller
             throw new \application\components\Exceptions\IntItaException('404', Yii::t('lecture', '0810'));
 
         $enabledLessonOrder = Lecture::getLastEnabledLessonOrder($lecture->idModule);
-        if (StudentReg::isAdmin() || $editMode) {
+        if (Yii::app()->user->model->isAdmin() || $editMode) {
             return true;
         }
         if($idCourse!=0){
@@ -57,16 +57,22 @@ class LessonController extends Controller
     public function actionIndex($id, $idCourse = 0, $page = 1)
     {
         $lecture = Lecture::model()->findByPk($id);
-        $editMode = Teacher::isTeacherAuthorModule(Yii::app()->user->getId(), $lecture->idModule);
-
-        $this->initialize($id, $editMode, $idCourse);
 
         if (Yii::app()->user->isGuest) {
             $user = 0;
         } else {
             $user = Yii::app()->user->getId();
         }
-        $passedPages = $lecture->accessPages($user, $editMode, StudentReg::isAdmin());
+
+        $editMode = false;
+        $author = new Author();
+        if(Yii::app()->user->model->isAuthor()) {
+            $editMode = $author->isTeacherAuthorModule(Yii::app()->user->getID(), $lecture->idModule);
+        }
+
+        $this->initialize($id, $editMode, $idCourse);
+
+        $passedPages = $lecture->accessPages($user, $editMode, Yii::app()->user->model->isAdmin());
 
         $lastAccessPage = LecturePage::lastAccessPage($passedPages) + 1;
 
@@ -80,8 +86,7 @@ class LessonController extends Controller
             $page = $_GET['page'];
         }
 
-
-        $pageModel = LecturePage::model()->findByAttributes(array('id_lecture' => $id, 'page_order' => $page));
+        $pageModel=$lecture->pages[$page-1];
         if(!$pageModel){
             throw new \application\components\Exceptions\IntItaException('404', Yii::t('lecture', '0812'));
         }
@@ -89,7 +94,6 @@ class LessonController extends Controller
 
         $dataProvider = LectureElement::getLectureText($textList);
 
-        $teacher = $lecture->lectureTeacher();
         $isLastLecture=$lecture->isLastLecture();
 
         if($lecture->verified && !$editMode) {
@@ -101,7 +105,7 @@ class LessonController extends Controller
             'lecture' => $lecture,
             'editMode' => $editMode,
             'passedPages' => $passedPages,
-            'teacher' => $teacher,
+          //  'teacher' => $teacher,
             'idCourse' => $idCourse,
             'user' => $user,
             'page' => $pageModel,
@@ -426,8 +430,8 @@ class LessonController extends Controller
     public function actionNextLecture($lectureId, $idCourse = 0)
     {
         $lecture = Lecture::model()->findByPk($lectureId);
-        if ($lecture->order < Module::getLessonsCount($lecture->idModule)) {
-            $nextId = Lecture::getNextId($lecture['id']);
+        if ($lecture->order < $lecture->lastLectureOrder()) {
+            $nextId = $lecture->nextLectureId();
             $this->redirect(Yii::app()->createUrl('lesson/index', array('id' => $nextId, 'idCourse' => $idCourse)));
         } else {
             $this->redirect($_SERVER["HTTP_REFERER"]);
@@ -570,7 +574,7 @@ class LessonController extends Controller
             throw new CHttpException(403, Yii::t('lecture', '0813'));
         }
 
-        $pageModel = LecturePage::model()->findByAttributes(array('id_lecture' => $id, 'page_order' => $page));
+        $pageModel=$lecture->pages[$page-1];
         if(!$pageModel){
             throw new \application\components\Exceptions\IntItaException('404', Yii::t('lecture', '0812'));
         }
@@ -621,6 +625,12 @@ class LessonController extends Controller
         $model->saveLectureContent();
         $this->redirect(Config::getBaseUrl() . '/_teacher/cabinet/index');
     }
+    public function actionDeleteLectureContent($idLecture)
+    {
+        $model = Lecture::model()->findByPk($idLecture);
+        $model->deleteLectureContent();
+        $this->redirect(Config::getBaseUrl() . '/_teacher/cabinet/index');
+    }
 
     public function actionGetPageData()
     {
@@ -630,26 +640,43 @@ class LessonController extends Controller
         $lecture = Lecture::model()->findByPk($id);
         $editMode = Teacher::isTeacherAuthorModule(Yii::app()->user->getId(), $lecture->idModule);
 
-        $passedPages = LecturePage::getAccessPages($id, $user, $editMode, StudentReg::isAdmin());
+        $passedPages = LecturePage::getAccessPages($id, $user, $editMode, Yii::app()->user->model->isAdmin());
 
         echo json_encode($passedPages);
     }
 
     public function actionGetAccessLectures()
     {
-        $lectures = [];
+        $lecturesData=[];
         $idModule = Yii::app()->request->getPost('module');
+        $idCourse = Yii::app()->request->getPost('course');
+        $idLecture = Yii::app()->request->getPost('lecture');
+        $module=Module::model()->findByPk($idModule);
+        $lecturesInModule=$module->getLecturesDataProvider();
+        $iterator = new CDataProviderIterator($lecturesInModule);
         $enabledLessonOrder = Lecture::getLastEnabledLessonOrder($idModule);
-        for ($i = 0; $i < Module::getLessonsCount($idModule); $i++) {
-            $lectureId = Lecture::getLectureIdByModuleOrder($idModule, $i + 1)->id;
-            $lectureOrder = Lecture::getLectureIdByModuleOrder($idModule, $i + 1)->order;
-            if (Lecture::accessLecture($lectureId, $lectureOrder, $enabledLessonOrder)) {
-                $lectures[$i] = true;
+
+        $lang = (Yii::app()->session['lg']) ? Yii::app()->session['lg'] : 'ua';
+        $title = "title_" . $lang;
+        $moduleTitle = $title;
+
+        foreach ($iterator as $key =>$item) {
+            if (Lecture::accessLecture($item->id, $item->order, $enabledLessonOrder)) {
+                if($item->id==$idLecture) $currentOrder=$key+1;
+                $lectures[$key]['access'] = true;
+                $lectures[$key]['order'] = $item->order;
+                $lectures[$key]['title'] = $item->$moduleTitle?$item->$moduleTitle:$item->title_ua;
+                $lectures[$key]['link'] = Yii::app()->createUrl("lesson/index", array("id" => $item->id, "idCourse" => $idCourse));
             } else {
-                $lectures[$i] = false;
+                $lectures[$key]['access'] = false;
+                $lectures[$key]['order'] = $item->order;
+                $lectures[$key]['title'] = $item->$moduleTitle?$item->$moduleTitle:$item->title_ua;
+                $lectures[$key]['link'] = Yii::app()->createUrl("lesson/index", array("id" => $item->id, "idCourse" => $idCourse));
             }
         }
-        echo json_encode($lectures);
+        $data['lectures']=$lectures;
+        $data['currentOrder']=$currentOrder;
+        echo json_encode($data);
     }
 
     public function actionSaveFormulaImage()
@@ -672,13 +699,14 @@ class LessonController extends Controller
     {
         $user = Yii::app()->user->getId();
         $id = $_GET['lectureId'];
-        $page_order = $_GET['page'];
+        $actualOrder = $_GET['page'];
         $lecture = Lecture::model()->findByPk($id);
+
         $editMode = Teacher::isTeacherAuthorModule($user, $lecture->idModule);
 
         $this->initialize($id, $editMode);
 
-        $page = LecturePage::model()->findByAttributes(array('id_lecture' => $id, 'page_order' => $page_order));
+        $page=$lecture->pages[$actualOrder-1];
 
         echo $this->renderPartial('/lesson/_videoTab',
             array('page' => $page), true);
@@ -689,12 +717,12 @@ class LessonController extends Controller
         $user = Yii::app()->user->getId();
         $id = $_GET['lectureId'];
         $lecture = Lecture::model()->findByPk($id);
-        $page_order = $_GET['page'];
+        $actualOrder = $_GET['page'];
         $editMode = Teacher::isTeacherAuthorModule($user, $lecture->idModule);
 
         $this->initialize($id, $editMode);
 
-        $page = LecturePage::model()->findByAttributes(array('id_lecture' => $id, 'page_order' => $page_order));
+        $page=$lecture->pages[$actualOrder-1];
 
         $textList = $page->getBlocksListById();
 
@@ -708,13 +736,12 @@ class LessonController extends Controller
     {
         $user = Yii::app()->user->getId();
         $id = $_GET['lectureId'];
-        $page_order = $_GET['page'];
+        $actualOrder = $_GET['page'];
         $lecture = Lecture::model()->findByPk($id);
         $editMode = Teacher::isTeacherAuthorModule(Yii::app()->user->getId(),$lecture->idModule);
 
         $this->initialize($id, $editMode);
-
-        $page = LecturePage::model()->findByAttributes(array('id_lecture' => $id, 'page_order' => $page_order));
+        $page=$lecture->pages[$actualOrder-1];
 
         echo $this->renderPartial('/lesson/_quiz',
             array('page' => $page, 'editMode' => $editMode, 'user' => $user), true);
@@ -757,13 +784,15 @@ class LessonController extends Controller
 
         $lastLectureId=Module::model()->findByPk($idModule)->lastLectureID();
         $lastLecture=Lecture::model()->findByPk($lastLectureId);
-        $lastLecturePassedPages=$lastLecture->accessPages($user, $editMode, StudentReg::isAdmin());
+        $lastLecturePassedPages=$lastLecture->accessPages($user, $editMode, Yii::app()->user->model->isAdmin());
 
         $enabledLessonOrder = Lecture::getLastEnabledLessonOrder($idModule);
         $accessLecture=Lecture::accessLecture($lastLectureId, $lastLecture->order, $enabledLessonOrder);
 
         $lectures['lectures']=$lastLecturePassedPages;
         $lectures['access']=$accessLecture;
+        $lectures['icoPath']=StaticFilesHelper::createPath('image', 'lecture', '');
+
         echo json_encode($lectures);
     }
 }

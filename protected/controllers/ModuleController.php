@@ -28,11 +28,14 @@ class ModuleController extends Controller
         $isPaidModule=false;
         if (!Yii::app()->user->isGuest) {
             $userId=Yii::app()->user->getID();
-            $editMode = Teacher::isTeacherAuthorModule($userId,$idModule);
-            if($idCourse!=0 && (StudentReg::isAdmin() || PayCourses::model()->checkCoursePermission($userId, $idCourse, array('read')))){
+            $author = new Author();
+            if(Yii::app()->user->model->isAuthor()) {
+                $editMode = $author->isTeacherAuthorModule($userId, $idModule);
+            }
+            if($idCourse!=0 && PayCourses::model()->checkCoursePermission($userId, $idCourse, array('read'))){
                 $isPaidCourse=true;
             }
-            if(StudentReg::isAdmin() || PayModules::model()->checkModulePermission($userId, $idModule, array('read'))){
+            if(PayModules::model()->checkModulePermission($userId, $idModule, array('read'))){
                 $isPaidModule=true;
             }
         }
@@ -62,7 +65,12 @@ class ModuleController extends Controller
 
         $this->checkModelInstance($model);
 
-        $editMode = Teacher::isTeacherAuthorModule(Yii::app()->user->getID(),$idModule);
+        $editMode = false;
+        $author = new Author();
+        if(Yii::app()->user->model->isAuthor()) {
+            $editMode = $author->isTeacherAuthorModule(Yii::app()->user->getID(), $idModule);
+        }
+
         if(!$editMode) {
             throw new \application\components\Exceptions\IntItaException('403', 'Ти запросив сторінку, доступ до якої обмежений спеціальними правами. Для отримання доступу увійди на сайт з логіном автора модуля.');
         }
