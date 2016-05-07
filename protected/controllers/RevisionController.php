@@ -541,6 +541,7 @@ class RevisionController extends Controller {
         echo $json;
     }
     //build revisions tree in branch from approved lecture
+    //todo refactor
     public function actionBuildApprovedLectureRevisions() {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->findByPk($idRevision);
@@ -977,8 +978,8 @@ class RevisionController extends Controller {
             $data[$key]['id'] = $lecture->id;
             $data[$key]['revisionsLink'] = Yii::app()->createUrl('/revision/editLecture',array('idLecture'=>$lecture->id));
             $data[$key]['lecturePreviewLink'] = Yii::app()->createUrl("lesson/index", array("id" => $lecture->id, "idCourse" => 0));
-            $lectureRev = RevisionLecture::model()->with('parent')->findByAttributes(["id_lecture" => $lecture->id]);
-            $data[$key]['approvedFromRevision'] = ($lectureRev && $lectureRev->parent)?$lectureRev->parent->id_revision:null;
+            $lectureRev = RevisionLecture::getParentRevisionForLecture($lecture->id);
+            $data[$key]['approvedFromRevision'] = ($lectureRev)?$lectureRev->id_revision:null;
         }
         echo CJSON::encode($data);
     }
