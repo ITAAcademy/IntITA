@@ -55,7 +55,7 @@
             <div class="panel-body">
                 <ul>
                     <li>
-                        <a href="#/students">Студенти</a>
+                        <a href="#/studentsTable/main">Студенти</a>
                     </li>
                     <li>
                         <a href="#/students/progress">Прогрес навчання студентів</a>

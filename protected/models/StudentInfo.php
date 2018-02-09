@@ -90,6 +90,7 @@ class StudentInfo extends CActiveRecord
             'group_id' => array(self::HAS_MANY, 'OfflineSubgroups', ['id_subgroup'=>'id'], 'through'=>'group'),
             'group_name' => array(self::HAS_MANY, 'OfflineGroups', ['group'=>'id'], 'through'=>'group_id'),
             'cancel_name' => array(self::HAS_MANY, 'OfflineStudentCancelType', ['cancel_type'=>'id'], 'through'=>'group'),
+            'user_agreements' => array(self::HAS_MANY, 'UserAgreements', ['user_id'=>'id_student']),
         );
 	}
 
