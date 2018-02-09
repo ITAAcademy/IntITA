@@ -77,7 +77,6 @@ $this->breadcrumbs = array(
         </div>
         <br>
         <label>Перелік модулів в ревізії курсу: </label>
-        <button class="btn btn-primary" ng-click="editCourseRevision(moduleInCourse)">Зберегти зміни</button>
         <br>
     </div>
     <br>

@@ -74,8 +74,7 @@ function courseRevisionCtrl($rootScope,$scope, $http, getCourseData, courseRevis
 
         return false;
     }
-
-
+    var canceledRevisions = [];
     $scope.addRevisionToCourseFromCurrentList = function (moduleId, index, status,model) {
         var module=$scope.readyModules.current[status][index];
         module.list='current';
@@ -83,6 +82,7 @@ function courseRevisionCtrl($rootScope,$scope, $http, getCourseData, courseRevis
         $scope.readyModules.current[status].splice(index, 1);
         module.module_order = model.length+1;
         $scope.model.push(module);
+        canceledRevisions.push(module);
     };
     $scope.addRevisionToCourseFromForeignList= function (moduleId, index, status,model) {
         var module=$scope.readyModules.foreign[status][index];
@@ -91,31 +91,33 @@ function courseRevisionCtrl($rootScope,$scope, $http, getCourseData, courseRevis
         $scope.readyModules.foreign[status].splice(index, 1);
         module.module_order = model.length+1;
         $scope.model.push(module);
-
+        canceledRevisions.push(module);
     };
 
     $scope.removeModuleFromCourse= function (moduleId, index) {
-        var module=$scope.model;
         $scope.model.splice(index, 1);
         for(var i=1; i<=$scope.model.length-index;i++){
             $scope.model[index-1+i].module_order-=1;
         }
-        if(module.list=='foreign'){
-            $scope.readyModules.foreign[module.status].push(module);
-        }else{
-            if($scope.readyModules.current[module.status]){
-                $scope.readyModules.current[module.status].push(module);
+        for(var i=0; i<canceledRevisions.length;i++){
+            if(canceledRevisions[i].list=='foreign'){
+                $scope.readyModules.foreign[canceledRevisions[i].status].push(canceledRevisions[i]);
             }else{
-                switch (module.status) {
-                    case "Готовий":
-                        $scope.readyModules.current['ready_module'].push(module);
-                        break;
-                    case "В розробці":
-                        $scope.readyModules.current['develop_module'].push(module);
-                        break;
+                if($scope.readyModules.current[canceledRevisions[i].status]){
+                    $scope.readyModules.current[canceledRevisions[i].status].push(canceledRevisions[i]);
+                }else{
+                    switch (canceledRevisions[i].status) {
+                        case "Готовий":
+                            $scope.readyModules.current['ready_module'].push(canceledRevisions[i]);
+                            break;
+                        case "В розробці":
+                            $scope.readyModules.current['develop_module'].push(canceledRevisions[i]);
+                            break;
+                    }
                 }
             }
         }
+        canceledRevisions = [];
     };
     $scope.editCourseRevision = function (modulesList) {
         if($scope.enabled!=false){
