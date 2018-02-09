@@ -1,9 +1,6 @@
 <div  ng-controller="careerStudentsCtrl">
     <table ng-table="studentCareerInfoTableParams" class="table table-bordered table-striped table-condensed" style="margin-right: 20px; table-layout: inherit;">
         <tr ng-repeat="row in $data track by $index">
-            <td data-title="'Примітки'" filter="{'notes': 'text'}" sortable="'notes'">
-                <a href="" ng-click="updateCareerInfo(row.id_student, 'notes', row.notes)">{{ row.notes ? row.notes : "Редагувати" }}</a>
-            </td>
             <td style="word-wrap:break-word" data-title="'Імя'" filter="{'first_name': 'text'}" sortable="'first_name'">
                 <a ng-href="" ng-click="updateCareerInfo(row.id_student ,'first_name', row.first_name)">{{ row.first_name ? row.first_name : 'Редагувати' }}</a>
             </td>
@@ -15,6 +12,12 @@
             </td>
             <td data-title="'Еmail'" filter="{'email': 'text'}">
                 <a ng-href="#/users/profile/{{row.id_student}}">{{row.email}}</a>
+            </td>
+            <td data-title="'Група'" filter="{ 'group_name.id' : 'select' }" filter-data="groupsNames">
+                <span ng-repeat="item in row.group_name">{{ item.name + ' ' }}</span>
+            </td>
+            <td data-title="'Примітки'" filter="{'notes': 'text'}" sortable="'notes'">
+                <a href="" ng-click="updateCareerInfo(row.id_student, 'notes', row.notes)">{{ row.notes ? row.notes : "Редагувати" }}</a>
             </td>
             <td data-title="'Місце роботи'" filter="{'current_job': 'text'}" sortable="'current_job'">
                 <a ng-href="" ng-click="updateCareerInfo(row.id_student ,'current_job', row.current_job)">{{ row.current_job ? row.current_job : 'Редагувати' }}</a>
@@ -29,9 +32,6 @@
                 <a ng-href="" ng-click="updateCareerInfo(row.id_student ,'english_level', row.english_level)">
                     {{ row.english_level ? row.english_level : 'Редагувати' }}
                 </a>
-            </td>
-            <td data-title="'Резюме на robota molodi'">
-                ???
             </td>
             <td data-title="'Спеціалізації'" filter="{'specializations.id': 'select'}" filter-data="studentsSpecializations">
                 <a href="" ng-if="!isEmpty(row.specializations)" ng-click="selectSpecialization(row.id, row.id_student)">
