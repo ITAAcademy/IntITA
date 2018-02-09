@@ -100,7 +100,7 @@ class GraduateController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex($selector='')
+    public function actionIndex()
     {
 
         $dataProvider = new CActiveDataProvider('Graduate', array(
@@ -170,8 +170,9 @@ class GraduateController extends Controller
     {
         $selector = $_GET["selector"];
         $string = $_GET['input'];
+        $pageSize = $_GET['size'];
 
-        $dataProvider = Graduate::getGraduateBySelector($selector, $string);
+        $dataProvider = Graduate::getGraduateBySelector($selector, $string, $pageSize);
 
         if (!Yii::app()->session['lg'] || Yii::app()->session['lg']=='ua') {
             $lang = 'uk';
@@ -207,4 +208,26 @@ class GraduateController extends Controller
         }
         else throw new CHttpException(404,'Випускника не знайдено');
     }
+
+    /**
+     * @throws CException
+     */
+    public function actionShowMoreGraduateAjaxFilter()
+    {
+        $pageSize = $_GET['size'];
+
+        $dataProvider = Graduate::showMoreGraduate($pageSize);
+
+        if (!Yii::app()->session['lg'] || Yii::app()->session['lg']=='ua') {
+            $lang = 'uk';
+        }else{
+            $lang = Yii::app()->session['lg'];
+        }
+
+        $this->renderPartial('_graduatesList', array(
+            'dataProvider' => $dataProvider,
+            'lang' => $lang
+            ));
+    }
+
 }

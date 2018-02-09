@@ -149,7 +149,7 @@ class Graduate extends CActiveRecord
 		return parent::model($className);
 	}
 
-    public static function getGraduateBySelector($selector, $string)
+    public static function getGraduateBySelector($selector, $string, $sizeGraduate)
     {
         $criteria = new CDbCriteria();
         $criteria->with = ['user'];
@@ -174,12 +174,29 @@ class Graduate extends CActiveRecord
         $dataProvider = new CActiveDataProvider( 'Graduate', array(
             'criteria' => $criteria,
             'pagination'=>array(
-                'pageSize'=>20,
+                'pageSize'=>$sizeGraduate,
             ),
         ));
 
         return $dataProvider;
     }
+
+    public static function showMoreGraduate($sizeGraduate)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->with = ['user'];
+
+        $criteria->addCondition('published=1');
+        $dataProvider = new CActiveDataProvider( 'Graduate', array(
+            'criteria' => $criteria,
+            'pagination'=>array(
+                'pageSize'=>20*$sizeGraduate,
+            ),
+        ));
+
+        return $dataProvider;
+    }
+
 
     public function name(){
         if(isset(Yii::app()->session['lg'])){

@@ -672,7 +672,7 @@ class Teacher extends CActiveRecord
         return $result;
     }
 
-    public static function getTeacherBySelector($selector, $string)
+    public static function getTeacherBySelector($selector, $string, $size)
     {
         $criteria = new CDbCriteria();
         $criteria->with = ['user','responses','modulesActive'];
@@ -697,8 +697,27 @@ class Teacher extends CActiveRecord
         $dataProvider = new CActiveDataProvider( 'Teacher', array(
             'criteria' => $criteria,
             'pagination'=>array(
-                'pageSize'=>40,
+                'pageSize'=>$size,
             ),
+        ));
+
+        return $dataProvider;
+    }
+
+    public static function showMoreTeachers($size)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->with = ['user','responses','modulesActive'];
+        $criteria->join = 'LEFT JOIN teacher_organization tor ON tor.id_user = t.user_id';
+
+        $criteria->addCondition('t.cancelled='.Teacher::ACTIVE.' and tor.end_date IS NULL and tor.isPrint='.TeacherOrganization::SHOW);
+
+        $dataProvider = new CActiveDataProvider( 'Teacher', array(
+            'criteria' => $criteria,
+            'pagination'=>array(
+                'pageSize'=>20*$size,
+                'pageVar' => $size
+            )
         ));
 
         return $dataProvider;

@@ -53,4 +53,26 @@ angular
            300);
        };
 
+    })
+    .controller('showMoreGraduateCtrl', function($scope) {
+        var sizeGraduate = 2;
+
+        $scope.showMoreGraduate = function () {
+            $.fn.yiiListView.update(
+                // this is the id of the CListView
+                'ajaxListView',
+                {
+                    url: 'graduate/ShowMoreGraduateAjaxFilter',
+                    data: {
+                        size: sizeGraduate
+                    },
+                    complete: function () {
+                        $scope.currentGraduateCount = $('.GraduatesBlock').length;
+                        console.log($scope.currentGraduateCount);
+                        $scope.$apply();
+                    }
+                }
+            );
+            sizeGraduate++;
+        };
     });

@@ -87,8 +87,24 @@ class TeachersController extends Controller
     {
         $selector = $_GET["selector"];
         $string = $_GET['input'];
+        $pageSize = $_GET['size'];
 
-        $dataProvider = Teacher::getTeacherBySelector($selector, $string);
+        $dataProvider = Teacher::getTeacherBySelector($selector, $string, $pageSize);
+
+        $teacherLetter = new TeacherLetter;
+        $teachers = Teacher::getAllTeachersId();
+        $this->render('index', array(
+            'post' => $dataProvider,
+            'teachers' => $teachers,
+            'teacherletter' => $teacherLetter
+        ));
+    }
+
+    public function actionShowMoreAjaxFilter()
+    {
+        $pageSize = $_GET['size'];
+
+        $dataProvider = Teacher::showMoreTeachers($pageSize);
 
         $teacherLetter = new TeacherLetter;
         $teachers = Teacher::getAllTeachersId();
