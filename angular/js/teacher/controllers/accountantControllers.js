@@ -4,8 +4,8 @@
 
 angular
     .module('teacherApp')
-    .controller('agreementsCtrl', ['$scope', 'agreementsService', 'paymentSchemaService', 'NgTableParams', 'lodash', 'agreementsInformation',
-        function ($scope, agreements, paymentSchema, NgTableParams, _, agreementsInformation) {
+    .controller('agreementsCtrl', ['$scope', 'agreementsService', 'paymentSchemaService', 'NgTableParams', 'lodash', 'agreementsInformation','usersService',
+        function ($scope, agreements, paymentSchema, NgTableParams, _, agreementsInformation, usersService) {
             $scope.changePageHeader('Список договорів');
             $scope.currentDate = currentDate;
             $scope.agreementsTableParams = new NgTableParams({sorting: {create_date: "desc"}}, {
@@ -52,6 +52,19 @@ angular
                     return data.map(function (item) {
                         return {id: item.pay_count, title: item.title_ua}
                     })
+                });
+
+            $scope.groupsNames = usersService
+                .getGroupNumber()
+                .$promise
+                .then(function (data) {
+                    var res = data;
+                    $scope.temp = [];
+                    $scope.temp = $scope.temp.concat(res);
+                    return $scope.temp;
+                })
+                .catch(function () {
+                    bootbox.alert('Помилка, зверніться до адміністратора');
                 });
         }])
 
@@ -1924,6 +1937,14 @@ angular
                     .catch(function (error) {
                         bootbox.alert("Отримати файл договору не вдалося");
                     })
+            }
+
+            $scope.getDocument = function (documentID) {
+                bootbox.alert({
+                    message: "<img width='100%' src='" + basePath + '/_teacher/_accountant/accountant/getDocument?id=' + documentID + "'>",
+                    size: 'large'
+                })
+
             }
         }])
     .controller('writtenAgreementTemplate', ['$scope', '$http', '$stateParams', '$state', 'agreementsService',

@@ -19,12 +19,6 @@ ul[dnd-list] > li.dndPlaceholder {
     background-color: #ddd;
     min-height: 42px;
 }
-.panel{
-    margin-bottom: 0;
-}
-.panel .panel-body {
-    padding: 0;
-}
 .main-list{
     padding-left: 0;
     padding-right: 0;
@@ -36,13 +30,8 @@ ul[dnd-list] > li.dndPlaceholder {
     padding: 15px 0 31px;
     color: black !important;
 }
-.list-group-item{
-    padding: 0;
-    text-align: center;
-}
 #pageContainer{
     margin-bottom: 20px;
-    overflow: auto;
 }
 @media screen and (max-width: 1040px) {
     .header-list{

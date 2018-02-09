@@ -513,6 +513,51 @@ angular
                         return basePath + "/_teacher/users/offlineSubgroup/?id=" + $stateParams.id
                     }
                 })
+                .state('studentsTable/students', {
+                    url: "/studentsTable",
+                    cache: false,
+                    templateUrl: basePath+"/_teacher/users/students?organization=1",
+                })
+                .state('studentsTable/students.main', {
+                    url: '/main',
+                    views: {
+                        'studentsTabs': {
+                            templateUrl: basePath+"/_teacher/users/attachStudents",
+                        }
+                    }
+                })
+                .state('studentsTable/students.personalInfo', {
+                    url: '/personalInfo',
+                    views: {
+                        'studentsTabs': {
+                            templateUrl: basePath+"/_teacher/users/personalInfo"
+                        }
+                    }
+                })
+                .state('studentsTable/students.career', {
+                    url: '/career',
+                    views: {
+                        'studentsTabs': {
+                            templateUrl: basePath+"/_teacher/users/careerInfo"
+                        }
+                    }
+                })
+                .state('studentsTable/students.contract', {
+                    url: '/contract',
+                    views: {
+                        'studentsTabs': {
+                            templateUrl: basePath+"/_teacher/users/contractInfo"
+                        }
+                    }
+                })
+                .state('studentsTable/students.visit', {
+                    url: '/visit',
+                    views: {
+                        'studentsTabs': {
+                            templateUrl: basePath+"/_teacher/users/visitInfo",
+                        }
+                    }
+                })
     }
     );
 
