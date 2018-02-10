@@ -5,10 +5,10 @@
 ?>
 <!-- Hamburger menu -->
 <div id="hambNav">
-    <div id="hambButton">
+    <div id="hambButton" data-toggle="collapse" data-target="#hambMenu">
         <img src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'hamburger.png'); ?>">
     </div>
-    <div id="hambMenu">
+    <div class="collapse" id="hambMenu">
         <?php
         if ($idCourse != 0) {
             $this->renderPartial('/site/_shareMetaTag', array(
@@ -43,7 +43,7 @@
             <li><a href="<?php echo Config::getBaseUrl().'/courses'; ?>"><?php echo Yii::t('header', '0016'); ?></a></li>
             <li><a href="<?php echo Config::getBaseUrl().'/teachers'; ?>"><?php echo Yii::t('header', '0021'); ?></a></li>
             <li><a href="<?php echo Config::getBaseUrl().'/graduate'; ?>"><?php echo Yii::t('header', '0137'); ?></a></li>
-<!--            <li><a href="--><?php //echo Config::getBaseUrl().'/crmForum'; ?><!--" target="_blank">--><?php //echo Yii::t('header', '0017'); ?><!--</a></li>-->
+            <?php //echo Config::getBaseUrl().'/crmForum'; ?><!--" target="_blank">--><?php //echo Yii::t('header', '0017'); ?><!--</a></li>-->
             <li><a href="<?php echo Config::getBaseUrl().'/aboutus'; ?>"><?php echo Yii::t('header', '0018'); ?></a></li>
             <li><a href="http://www.robotamolodi.org/" target="_blank"><?php echo Yii::t('header', '0902'); ?></a></li>
             <li><a href="<?php echo Yii::app()->createUrl('/_teacher/cabinet/index'); ?>"><?php echo Yii::t('profile', '0815'); ?></a></li>
