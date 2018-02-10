@@ -221,11 +221,17 @@ class UsersController extends TeacherCabinetController
         $ngTable = new NgTableAdapter('UserStudent', $requestParams);
         $criteria =  new CDbCriteria();
         $criteria->alias = 't';
+        $criteria->with = ['studentTrainer'];
         $criteria->join = 'inner join user u on u.id = t.id_user';
         $criteria->condition = 'u.cancelled='.StudentReg::ACTIVE.' and t.end_date IS NULL';
 
-        if($_GET['organization'])
+        if($_GET['trainersScope']){
+            $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and 
+            t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        } else if($_GET['organization']){
             $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        }
+
         $criteria->group = 'u.id';
         if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
             $startDate=$_GET['startDate'];
@@ -901,14 +907,14 @@ class UsersController extends TeacherCabinetController
 
         $ngTable = new NgTableAdapter('StudentInfo', $requestParams);
         $criteria =  new CDbCriteria();
-        $criteria->join = 'left join trainer_student as ts on t.id_student=ts.student';
+        $criteria->with = ['studentTrainer'];
         if(isset($_GET['trainersScope'])){
-            $criteria->condition = 'ts.trainer='.Yii::app()->user->getId().' and ts.end_time is null
-        and ts.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id;
-        }else{
+            $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and
+            t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        } else if($_GET['organization']){
             $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         }
-        $criteria->order = 'ts.start_time DESC';
+        $criteria->order = 'studentTrainer.start_time DESC';
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
 
@@ -932,20 +938,19 @@ class UsersController extends TeacherCabinetController
 
         $ngTable = new NgTableAdapter('StudentInfo', $requestParams);
         $criteria =  new CDbCriteria();
-        $criteria->with=array('specializations');
-        $criteria->join = 'left join trainer_student as ts on t.id_student=ts.student';
-        $criteria->join .= ' left join user_specialization_organization as uso on t.id=uso.id_student_info';
+        $criteria->with=array('specializations','studentTrainer');
+        $criteria->join = 'left join user_specialization_organization as uso on t.id=uso.id_student_info';
         $criteria->join .= ' left join specializations_group as sg on uso.id_specialization=sg.id';
         if(isset($_GET['trainersScope'])){
-            $criteria->condition = 'ts.trainer='.Yii::app()->user->getId().' and ts.end_time is null
-        and ts.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id;
-        }else{
-            $criteria->condition ='t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id;
+            $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and
+            t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        } else if($_GET['organization']){
+            $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         }
         if($specialization_id != 0){
             $criteria->addCondition('sg.id='.$specialization_id);
         }
-        $criteria->order = 'ts.start_time DESC';
+        $criteria->order = 'studentTrainer.start_time DESC';
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
 
@@ -991,14 +996,12 @@ class UsersController extends TeacherCabinetController
         $ngTable = new NgTableAdapter('UserAgreements', $requestParams);
         $criteria =  new CDbCriteria();
         $criteria->alias = 't';
-        $criteria->with = array('organization');
-        $criteria->join = 'left join trainer_student as ts on t.user_id=ts.student';
+        $criteria->with = array('organization','studentTrainer');
         if(isset($_GET['trainersScope'])){
-            $criteria->join = 'left join trainer_student as ts on t.user_id=ts.student';
-            $criteria->condition = 'ts.trainer='.Yii::app()->user->getId().' and ts.end_time is null
-        and organization.id='.Yii::app()->user->model->getCurrentOrganization()->id;
-        }else{
-            $criteria->condition = 'organization.id='.Yii::app()->user->model->getCurrentOrganization()->id;
+            $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and
+            t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        } else if($_GET['organization']){
+            $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         }
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
@@ -1029,17 +1032,16 @@ class UsersController extends TeacherCabinetController
 
         $ngTable = new NgTableAdapter('StudentInfo', $requestParams);
         $criteria =  new CDbCriteria();
-        $criteria->with=['group'];
-        $criteria->join = 'left join trainer_student as ts on t.id_student=ts.student';
-        $criteria->join .= ' left join offline_students as os ON t.id_student=os.id_user';
+        $criteria->with=['group','studentTrainer'];
+        $criteria->join = 'left join offline_students as os ON t.id_student=os.id_user';
         $criteria->join .= ' left join offline_subgroups as osbgr ON os.id_subgroup=osbgr.id';
         $criteria->join .= ' left join offline_groups as ogr ON osbgr.group=ogr.id';
         $criteria->join .= ' left join offline_student_cancel_type as osct ON os.cancel_type=osct.id';
         if(isset($_GET['trainersScope'])){
-            $criteria->condition = 'ts.trainer='.Yii::app()->user->getId().' and ts.end_time is null
-        and ts.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id;
-        }else{
-            $criteria->condition ='t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id;
+            $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and
+            t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        } else if($_GET['organization']){
+            $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         }
         if($group_name_id != 0){
             $criteria->addCondition('ogr.id='.$group_name_id);
@@ -1047,7 +1049,7 @@ class UsersController extends TeacherCabinetController
         if($reason_id != 0){
             $criteria->addCondition('osct.id='.$reason_id);
         }
-        $criteria->order = 'ts.start_time DESC';
+        $criteria->order = 'studentTrainer.start_time DESC';
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
 

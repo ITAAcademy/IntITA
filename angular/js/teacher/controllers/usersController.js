@@ -1167,7 +1167,10 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
 
 function personalInfoCtrl($scope, trainerService, usersService, NgTableParams) {
     $scope.changePageHeader('Особиста інформація');
-    $scope.studentPersonalInfoTableParams = new NgTableParams({organization:$scope.organization},
+    $scope.studentPersonalInfoTableParams = new NgTableParams({
+            organization:$scope.organization,
+            trainersScope:$scope.trainer,
+        },
         {
             getData: function (params) {
                 return usersService
@@ -1240,7 +1243,10 @@ function careerStudentsCtrl($scope, trainerService, usersService, NgTableParams,
             bootbox.alert('Помилка, зверніться до адміністратора');
         });
 
-    $scope.studentCareerInfoTableParams = new NgTableParams({filter:{'specializations.id':'null'}},
+    $scope.studentCareerInfoTableParams = new NgTableParams(
+        {
+            trainersScope:$scope.trainer,
+            filter:{'specializations.id':'null'}},
         {
             getData: function (params) {
                 return usersService
@@ -1501,7 +1507,7 @@ function visitInfoCtrl($scope, trainerService, usersService, NgTableParams, myFa
     $scope.changePageHeader("Відвідування");
     $scope.myFactory = myFactory;
 
-    $scope.studentVisitInfoTableParams = new NgTableParams({},
+    $scope.studentVisitInfoTableParams = new NgTableParams({trainersScope:$scope.trainer},
         {
             getData: function (params) {
                 return usersService

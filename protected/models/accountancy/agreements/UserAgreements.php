@@ -101,6 +101,7 @@ class UserAgreements extends CActiveRecord {
             'group' => array(self::HAS_MANY, 'OfflineStudents', ['id_user'=>'user_id']),
             'group_id' => array(self::HAS_MANY, 'OfflineSubgroups', ['id_subgroup'=>'id'], 'through'=>'group'),
             'group_name' => array(self::HAS_MANY, 'OfflineGroups', ['group'=>'id'], 'through'=>'group_id'),
+            'studentTrainer' => array(self::HAS_ONE, 'TrainerStudent', array('student'=>'user_id'), 'on' => 'end_time IS NULL'),
             );
     }
 

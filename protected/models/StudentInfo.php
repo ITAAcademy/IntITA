@@ -91,6 +91,8 @@ class StudentInfo extends CActiveRecord
             'group_name' => array(self::HAS_MANY, 'OfflineGroups', ['group'=>'id'], 'through'=>'group_id'),
             'cancel_name' => array(self::HAS_MANY, 'OfflineStudentCancelType', ['cancel_type'=>'id'], 'through'=>'group'),
             'user_agreements' => array(self::HAS_MANY, 'UserAgreements', ['user_id'=>'id_student']),
+            'studentTrainer' => array(self::HAS_ONE, 'TrainerStudent', array('student'=>'id_student','id_organization'=>'id_organization'),
+                'on' => 'end_time IS NULL'),
         );
 	}
 
