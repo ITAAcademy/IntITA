@@ -150,6 +150,11 @@ class StudentController extends TeacherCabinetController
     public function actionGetAgreementsList()
     {
         $criteria = new CDbCriteria;
+        $criteria->with = array('studentTrainer');
+        if(isset($_GET['trainersScope'])){
+            $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and
+            t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        }
         $criteria->addCondition('user_id=' . Yii::app()->user->getId());
         $adapter = new NgTableAdapter('UserAgreements',$_GET);
         $adapter->mergeCriteriaWith($criteria);
