@@ -22,8 +22,7 @@ div.ifYouTeachers{
     -moz-box-sizing: border-box;
     display:inline-block;
     margin-bottom: 20px;
-    padding:20px;
-    padding-right:32px;
+    padding:5px;
     background:#4B75A4;
     overflow: hidden;
 }
@@ -312,7 +311,7 @@ div.aboutMore{
         display:none;
     }
     .one.column #minTeacherForm:first-child {
-        display: block;
+        display: none;
     }
 }
 @media only screen and (max-width: 360px) {
@@ -338,3 +337,50 @@ div.aboutMore{
     }
 }
 /*celebre*/
+.downTeacherBlock{
+    text-align: center;
+    color: white;
+    display: inline-block;
+    font-size: 20px;
+    margin-bottom: 12px;
+
+}
+#showMyTextLarge{
+    text-decoration: none;
+}
+#teacherletter-form{
+    padding-top: 15px;
+}
+.showTeacherForm{
+    color: white;
+    font-size: 10px;
+}
+
+.detailTeacherInfoLarge:after{
+    font-family: 'Glyphicons Halflings';
+    content:"\e260";
+    color: white;
+    font-size: 10px;
+}
+.detailTeacherInfoLarge.collapsed:after{
+    font-family: 'Glyphicons Halflings';
+    content:"\e259";
+    color: white;
+    font-size: 10px;
+}
+.formTeacher3 a:hover,.formTeacher3 a:active,.formTeacher3 a:focus{
+    text-decoration: none;
+}
+#detailTeacherInfoLarge1,#detailTeacherInfoLarge0{
+    margin-right: 110px;
+}
+@media screen and (max-width:800px) {
+    #minTeacherForm{
+        display: block !important;
+    }
+}
+@media screen and (max-width: 920px){
+    #detailTeacherInfoLarge1, #detailTeacherInfoLarge0{
+        margin-right: 20px;
+    }
+}

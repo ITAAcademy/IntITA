@@ -45,7 +45,7 @@
                     <span class="input-group-addon"><strong><?php echo Yii::t('edit', '0939'); ?>:</strong></span>
                     <span>
                         <span ng-repeat="item in document.documentsFiles track by $index">
-                            <a ng-href="/files/documents/{{document.id_user}}/{{document.type}}/{{item.file_name}}" target="_blank">doc{{$index}}</a>
+                            <a href="" ng-click="getDocument(item.id)">Переглянути документ {{$index+1}}</a>
                         </span>
                     </span>
                 </div>
@@ -54,10 +54,8 @@
             </div>
         </fieldset>
         <h2 style="text-align:center">Договір затверджений <span style="color:red" ng-if="writtenAgreement.agreement.cancel_date">(скасований)</span></h2>
-        <div style="text-align: center" ng-init="getAgreementPdf('<?php echo $agreementId ?>')">
-            <div ng-if="agreementPdf">
-                <embed embed-src="{{agreementPdf}}" width="90%" height="1200px">
-            </div>
+        <div style="text-align: center">
+            <embed src="/_teacher/_accountant/agreements/getAgreementFile?id=<?php echo $agreementId ?>" width="90%" height="1200px">
         </div>
     </form>
 </div>

@@ -26,7 +26,6 @@
     color: #ffffff;
     font-size:24px;
     text-align: center;
-    margin-right: 35px;
 }
 .leftColumn, .rightColumn{
     vertical-align: top;
@@ -124,10 +123,15 @@
 .courseLevelImage{
     margin: 0;
 }
-.starLevelIndex img{
+.starLevelIndex{
     position: relative;
-    vertical-align: top;
-    margin-left: 2px;
+    top: 12px;
+    left: 16px;
+}
+.moduleRating{
+    position: relative;
+    top: 12px;
+    left: 16px;
 }
 .courseLevel
 {
@@ -244,6 +248,15 @@ a#coursesLangs {
     display:inline-block;
     font-size: 14px;
 }
+.coursesInfoBlock {
+    position: relative;
+    padding-left: 3px;
+    padding-right: 10px;
+    color: #ffffff;
+    display:inline-block;
+    font-size: 14px;
+    text-align: left;
+}
 .courseStatus p{
     position: relative;
     color: #000000;
@@ -281,9 +294,6 @@ a#coursesLangs {
 .bgBlue table {
     width: 100%;
 }
-#coursesMainBox .bgBlue table td{
-   vertical-align: middle;
-}
 #coursesMainBox a:hover{
     color: #666666;
 }
@@ -292,8 +302,8 @@ a#coursesLangs {
     color: #ffffff;
     position: relative;
     margin-bottom: 20px;
-    display:inline-block;
     width: 100%;
+    display: block;
 }
 .bgBlue img{
     padding-top: 10px;
@@ -322,8 +332,8 @@ a#coursesLangs {
 }
 
 #coursesMainBox td{
-     vertical-align: top;
- }
+    vertical-align: top;
+}
 span.courseNum{
     display: inline-block;
     background: #4B75A4;
@@ -383,7 +393,7 @@ span.moduleNum{
     color: #ff0000;
     text-decoration: line-through;
 }
-#largeConcept{padding: 5px 10px 5px 10px;}
+#largeConcept{padding: 0 10px 0 10px;}
 #coursesTable .list-view .pager {
     clear: both;
     margin-bottom: 5px;
@@ -448,4 +458,28 @@ span.moduleNum{
     ul.yiiPager a:link, ul.yiiPager a:visited {
         font-size: 10px;
     }
+}
+#detailCourseInfoLarge, #detailCourseInfoLarge0{
+    padding-left: 3px;
+    padding-right: 10px;
+    font-size: 14px;
+    text-align: left;
+}
+#detailCourseInfoLarge p, #detailCourseInfoLarge0 p{
+    color: white;
+}
+.detailCourseInfoLarge:after{
+    font-family: 'Glyphicons Halflings';
+    content:"\e260";
+    color: white;
+    font-size: 10px;
+}
+.detailCourseInfoLarge.collapsed:after{
+    font-family: 'Glyphicons Halflings';
+    content:"\e259";
+    color: white;
+    font-size: 10px;
+}
+.coursesInfoBlock a:hover,.coursesInfoBlock a:active,.coursesInfoBlock a:focus{
+    text-decoration: none;
 }

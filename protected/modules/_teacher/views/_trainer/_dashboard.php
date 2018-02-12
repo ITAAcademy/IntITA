@@ -13,7 +13,7 @@
             <div class="panel-body">
                 <ul>
                     <li>
-                        <a ui-sref="trainer/students.trainerStudents">Студенти</a>
+                        <a href="#/trainerStudentsTable/main">Студенти</a>
                     </li>
                     <li>
                         <a ui-sref="students/progress">Прогрес навчання студентів</a>

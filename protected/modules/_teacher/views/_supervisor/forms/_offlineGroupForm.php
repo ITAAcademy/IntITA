@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Дата створення групи*</label>
+                        <label>Дата початку навчання*</label>
                         <input type="text" id="start_date" ng-model="group.start_date" name="start_date" ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])/" style="border-radius: 4px;border: 1px solid #ccc;" size="16" value="" required/>
                         <div ng-cloak  class="clientValidationError" ng-show="offlineGroupForm['start_date'].$dirty && offlineGroupForm['start_date'].$invalid">
                             <span ng-show="offlineGroupForm['start_date'].$error.required"><?php echo Yii::t('error','0268') ?></span>

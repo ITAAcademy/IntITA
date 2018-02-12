@@ -1,9 +1,6 @@
 <div ng-controller="visitInfoCtrl">
     <table ng-table="studentVisitInfoTableParams" class="table table-bordered table-striped table-condensed">
         <tr ng-repeat="row in $data track by $index">
-            <td data-title="'Примітки'" filter="{'notes': 'text'}" sortable="'notes'">
-                <a ng-href="" ng-click="updateVisitInfo(row.id_student ,'notes', row.notes)">{{ row.notes ? row.notes : 'Редагувати' }}</a>
-            </td>
             <td style="word-wrap:break-word" data-title="'Імя'" filter="{'first_name': 'text'}" sortable="'first_name'">
                 <a ng-href="" ng-click="updateVisitInfo(row.id_student ,'first_name', row.first_name)">{{ row.first_name ? row.first_name : 'Редагувати' }}</a>
             </td>
@@ -18,6 +15,9 @@
             </td>
             <td data-title="'Група'" filter="{ 'group_name.id' : 'select' }" filter-data="groupsNames">
                 <span ng-repeat="item in row.group_name">{{ item.name + ' ' }}</span>
+            </td>
+            <td data-title="'Примітки'" filter="{'notes': 'text'}" sortable="'notes'">
+                <a ng-href="" ng-click="updateVisitInfo(row.id_student ,'notes', row.notes)">{{ row.notes ? row.notes : 'Редагувати' }}</a>
             </td>
             <td data-title="'Бажана форма навчання'"  filter="{ 'studyForm.id' : 'select' }" filter-data="educationForm">
                 <a href="" ng-click="studyOption(row.studyForm.id, row.id_student)">
@@ -37,7 +37,6 @@
             </td>
             <td data-title="'Причини виключення з групи'" filter="{ 'reason.id' : 'select' }" filter-data="cancelType">
                 <span ng-repeat="cancel in row.cancel_name">{{ cancel.description }}</span>
-
             </td>
             <td data-title="'Дата виключення / ак.відпустки'">
                 <span ng-repeat="group in row.group">{{group.end_study_leave}}<br></span>

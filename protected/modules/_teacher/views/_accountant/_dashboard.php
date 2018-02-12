@@ -65,7 +65,7 @@
                         <a href="#/registeredUsers">Зареєстровані користувачі</a>
                     </li>
                     <li>
-                        <a href="#/students">Студенти</a>
+                        <a ui-sref="studentsTable/students.main">Студенти</a>
                     </li>
                     <li>
                         <a href="#/accountant/offlineGroups">Офлайнові групи</a>
