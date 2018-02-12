@@ -33,8 +33,8 @@ class StudentsProjects extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, repository, branch', 'required'),
-			array('title, branch', 'match', 'pattern'=>'/^[a-z0-9\.]+$/i'),
+			array('title, repository, branch', 'required', 'message' => 'Поле не може бути пустим'),
+			array('title, branch', 'match', 'pattern'=>'/^[a-z0-9\._]+$/i', 'message' => "Введіть коректну назву: цифри, латинські літери та '_'"),
 			array('repository', 'match', 'pattern'=>'!\.git$!i'),
 			array('id_student, need_check', 'numerical', 'integerOnly'=>true),
 			array('title, repository, branch', 'length', 'max'=>255),

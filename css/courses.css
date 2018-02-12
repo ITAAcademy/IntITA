@@ -388,7 +388,7 @@ span.moduleNum{
     color: #ff0000;
     text-decoration: line-through;
 }
-#largeConcept{padding: 5px 10px 5px 10px;}
+#largeConcept{padding: 0 10px 0 10px;}
 #coursesTable .list-view .pager {
     clear: both;
     margin-bottom: 5px;
