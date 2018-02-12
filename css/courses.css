@@ -26,7 +26,6 @@
     color: #ffffff;
     font-size:24px;
     text-align: center;
-    /*margin-right: 35px;*/
 }
 .leftColumn, .rightColumn{
     vertical-align: top;
@@ -470,16 +469,17 @@ span.moduleNum{
     color: white;
 }
 .detailCourseInfoLarge:after{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    content: "згорнути▲";
+    font-family: 'Glyphicons Halflings';
+    content:"\e260";
     color: white;
-    font-size: 14px;
-    text-decoration: underline;
+    font-size: 10px;
 }
 .detailCourseInfoLarge.collapsed:after{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    content: "розгорнути▼";
+    font-family: 'Glyphicons Halflings';
+    content:"\e259";
     color: white;
-    font-size: 14px;
-    text-decoration: underline;
+    font-size: 10px;
+}
+.coursesInfoBlock a:hover,.coursesInfoBlock a:active,.coursesInfoBlock a:focus{
+    text-decoration: none;
 }

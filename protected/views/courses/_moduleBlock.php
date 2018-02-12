@@ -3,6 +3,7 @@
  * @var $data Module
  */
 ?>
+<?php $price = $data->modulePrice(); ?>
 <div class='courseBox'>
     <div class="displayMini">
         <img class="courseLogo" src='<?php echo StaticFilesHelper::createPath('image', 'module', $data->module_img); ?>'>

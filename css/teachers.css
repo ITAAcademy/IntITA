@@ -357,18 +357,19 @@ div.aboutMore{
 }
 
 .detailTeacherInfoLarge:after{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    content: "згорнути▲";
+    font-family: 'Glyphicons Halflings';
+    content:"\e260";
     color: white;
-    font-size: 14px;
-    text-decoration: underline;
+    font-size: 10px;
 }
 .detailTeacherInfoLarge.collapsed:after{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    content: "розгорнути▼";
+    font-family: 'Glyphicons Halflings';
+    content:"\e259";
     color: white;
-    font-size: 14px;
-    text-decoration: underline;
+    font-size: 10px;
+}
+.formTeacher3 a:hover,.formTeacher3 a:active,.formTeacher3 a:focus{
+    text-decoration: none;
 }
 #detailTeacherInfoLarge1,#detailTeacherInfoLarge0{
     margin-right: 110px;
