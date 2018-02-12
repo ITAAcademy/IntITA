@@ -26,7 +26,7 @@
     color: #ffffff;
     font-size:24px;
     text-align: center;
-    margin-right: 35px;
+    /*margin-right: 35px;*/
 }
 .leftColumn, .rightColumn{
     vertical-align: top;
@@ -249,6 +249,15 @@ a#coursesLangs {
     display:inline-block;
     font-size: 14px;
 }
+.coursesInfoBlock {
+    position: relative;
+    padding-left: 3px;
+    padding-right: 10px;
+    color: #ffffff;
+    display:inline-block;
+    font-size: 14px;
+    text-align: left;
+}
 .courseStatus p{
     position: relative;
     color: #000000;
@@ -286,9 +295,6 @@ a#coursesLangs {
 .bgBlue table {
     width: 100%;
 }
-#coursesMainBox .bgBlue table td{
-    vertical-align: middle;
-}
 #coursesMainBox a:hover{
     color: #666666;
 }
@@ -297,8 +303,8 @@ a#coursesLangs {
     color: #ffffff;
     position: relative;
     margin-bottom: 20px;
-    display:inline-block;
     width: 100%;
+    display: block;
 }
 .bgBlue img{
     padding-top: 10px;
@@ -453,4 +459,27 @@ span.moduleNum{
     ul.yiiPager a:link, ul.yiiPager a:visited {
         font-size: 10px;
     }
+}
+#detailCourseInfoLarge, #detailCourseInfoLarge0{
+    padding-left: 3px;
+    padding-right: 10px;
+    font-size: 14px;
+    text-align: left;
+}
+#detailCourseInfoLarge p, #detailCourseInfoLarge0 p{
+    color: white;
+}
+.detailCourseInfoLarge:after{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    content: "згорнути▲";
+    color: white;
+    font-size: 14px;
+    text-decoration: underline;
+}
+.detailCourseInfoLarge.collapsed:after{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    content: "розгорнути▼";
+    color: white;
+    font-size: 14px;
+    text-decoration: underline;
 }

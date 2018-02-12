@@ -9,32 +9,23 @@
 <div class="bgBlue" id="xex">
     <table>
         <tr>
-            <td valign="top" style="width: 80px">
-                <img src="<?php echo StaticFilesHelper::createPath('image', 'courses', 'course99.png');?>">
+            <td valign="top">
+                <img src="<?php echo StaticFilesHelper::createPath('image', 'courses', 'teacher1232.png');?>">
             </td>
             <td>
                 <div id='coursesHeader'>
-                    <?php echo Yii::t('courses', '0067'); ?>
-                </div>
+                    <p class="coursesInfoBlock">Спочатку навчання створюється стійкий фундамент для підготовки програмістів: необхідні знання елементарної математики, будови комп’ютера і основ програмування.
+                        <a href="#detailCourseInfoLarge<?echo $index?>" data-toggle="collapse" style="color: #000;" id="showMyTextLarge" class="detailCourseInfoLarge collapsed"></a>
+                    </p>
 
-            </td>
-            <td valign="top" style="float: right;width: 30px">
-                <div id="xex" onclick='xexx()' style="cursor: pointer;">
-                    <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'close_button.png');?>">
-                </div>
+                    <div id="detailCourseInfoLarge<?echo $index ?>" class="collapse">
+                        <div class="courseBox2">
+                            <p>Потім вивчаються основні принципи програмування на базі класичних комп’ютерних наук і методологій, алгоритмічна мова, eлементи вищої та дискретної математики і комбінаторики, структури даних, розробка і аналіз алгоритмів.</p>
+                            <p>Після чого формується база для переходу до сучасних технологій програмування об’єктно-орієнтоване програмування, проектування баз даних.</p>
+                            <p>Завершення процесу підготовки шляхом конкретного застосування отриманих знань на реальних проектах із засвоєнням сучасних методів і технологій, які використовуються в ІТ індустрії компаніями.</p></div>
+                        </div>
+                    </div>
             </td>
         </tr>
     </table>
-    <div class='courseBox2'>
-        <span id='courseText2'><?php echo Yii::t('courses', '0148'); ?></span>
-        <?php $tmp = Yii::t('courses', '0229');?>
-        <div class="razv"
-             onclick='wrt("<?php echo $tmp;?>")'>
-            <br>
-            <u><?php echo Yii::t('courses', '0146'); ?></u>
-        </div>
-        <br>
-        <div id="sver" onclick='wrt("");'></div>
-        <br>
-    </div>
 </div>

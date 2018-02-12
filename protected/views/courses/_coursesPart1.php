@@ -6,7 +6,7 @@
 ?>
 <div id='coursesPart1'>
     <div id="miniConcept">
-        <?php $this->renderPartial('_conceptBlock'); ?>
+        <?php $this->renderPartial('_conceptBlock',array('index'=>0)); ?>
     </div>
     <?php
     $j = 0;
