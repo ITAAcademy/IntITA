@@ -777,9 +777,8 @@ img {
 
 }
 #counter {
-    float:left;
-    display: block;
-    margin-bottom: -20px;
+    display: inline-block;
+    margin-bottom: -1px;
 }
 
 .lectureMainBlock p {
