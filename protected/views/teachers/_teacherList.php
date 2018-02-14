@@ -16,6 +16,11 @@ $this->widget('application.components.ColumnListView', array(
         'maxButtonCount' => 6,
         'cssFile' => Config::getBaseUrl() . '/css/pager.css'
     ),
+
     'id' => 'ajaxListTeacher'
 ));
 ?>
+
+<div class="showMore" ng-hide="currentCount=='<?php echo $dataProvider->totalItemCount?>'" align="right" ng-controller="showMoreTeacherCtrl">
+    <a href="" ng-click="showMore()" class="" style="">Показати ще ... </a>
+</div>

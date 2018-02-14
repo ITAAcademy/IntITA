@@ -207,4 +207,26 @@ class GraduateController extends Controller
         }
         else throw new CHttpException(404,'Випускника не знайдено');
     }
+
+    /**
+     * @throws CException
+     */
+    public function actionShowMoreGraduateAjaxFilter()
+    {
+        $pageSize = $_GET['size'];
+
+        $dataProvider = Graduate::showMoreGraduate($pageSize);
+
+        if (!Yii::app()->session['lg'] || Yii::app()->session['lg']=='ua') {
+            $lang = 'uk';
+        }else{
+            $lang = Yii::app()->session['lg'];
+        }
+
+        $this->renderPartial('_graduatesList', array(
+            'dataProvider' => $dataProvider,
+            'lang' => $lang
+            ));
+    }
+
 }
