@@ -149,7 +149,7 @@ class Graduate extends CActiveRecord
 		return parent::model($className);
 	}
 
-    public static function getGraduateBySelector($selector, $string, $sizeGraduate)
+    public static function getGraduateBySelector($selector, $string)
     {
         $criteria = new CDbCriteria();
         $criteria->with = ['user'];
@@ -174,7 +174,7 @@ class Graduate extends CActiveRecord
         $dataProvider = new CActiveDataProvider( 'Graduate', array(
             'criteria' => $criteria,
             'pagination'=>array(
-                'pageSize'=>$sizeGraduate,
+                'pageSize'=>20,
             ),
         ));
 

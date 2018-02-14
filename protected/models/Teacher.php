@@ -672,7 +672,7 @@ class Teacher extends CActiveRecord
         return $result;
     }
 
-    public static function getTeacherBySelector($selector, $string, $size)
+    public static function getTeacherBySelector($selector, $string)
     {
         $criteria = new CDbCriteria();
         $criteria->with = ['user','responses','modulesActive'];
@@ -697,7 +697,7 @@ class Teacher extends CActiveRecord
         $dataProvider = new CActiveDataProvider( 'Teacher', array(
             'criteria' => $criteria,
             'pagination'=>array(
-                'pageSize'=>$size,
+                'pageSize'=>20,
             ),
         ));
 

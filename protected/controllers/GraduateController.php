@@ -100,7 +100,7 @@ class GraduateController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex($selector='')
     {
 
         $dataProvider = new CActiveDataProvider('Graduate', array(
