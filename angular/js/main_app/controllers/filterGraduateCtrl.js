@@ -68,7 +68,6 @@ angular
                     },
                     complete: function () {
                         $scope.currentGraduateCount = $('.GraduatesBlock').length;
-                        console.log($scope.currentGraduateCount);
                         $scope.$apply();
                     }
                 }

@@ -87,9 +87,8 @@ class TeachersController extends Controller
     {
         $selector = $_GET["selector"];
         $string = $_GET['input'];
-        $pageSize = $_GET['size'];
 
-        $dataProvider = Teacher::getTeacherBySelector($selector, $string, $pageSize);
+        $dataProvider = Teacher::getTeacherBySelector($selector, $string);
 
         $teacherLetter = new TeacherLetter;
         $teachers = Teacher::getAllTeachersId();

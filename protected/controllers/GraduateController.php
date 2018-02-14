@@ -170,9 +170,8 @@ class GraduateController extends Controller
     {
         $selector = $_GET["selector"];
         $string = $_GET['input'];
-        $pageSize = $_GET['size'];
 
-        $dataProvider = Graduate::getGraduateBySelector($selector, $string, $pageSize);
+        $dataProvider = Graduate::getGraduateBySelector($selector, $string);
 
         if (!Yii::app()->session['lg'] || Yii::app()->session['lg']=='ua') {
             $lang = 'uk';
