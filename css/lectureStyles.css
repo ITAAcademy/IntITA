@@ -64,6 +64,7 @@ span.listTheme{
     display: inline-block;*/
 .spoilerLinks {
     padding:0;
+    vertical-align: top;
     display: inline-block;
 }
 span.spoilerLinks,span.spoilerLinksHidden {
