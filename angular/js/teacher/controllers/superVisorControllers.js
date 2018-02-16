@@ -303,7 +303,7 @@ function offlineGroupCtrl ($scope, $state, $http, $stateParams, superVisorServic
     };
 }
 
-function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, chatIntITAMessenger, lodash, trainerService){
+function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, chatIntITAMessenger, lodash, usersService){
     $scope.onSelectCurator = function ($item) {
         $scope.selectedCurator = $item;
     };
@@ -379,7 +379,7 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
             }
         });
 
-        $scope.types = trainerService
+        $scope.types = usersService
             .getCancelType()
             .$promise
             .then(function (data) {
