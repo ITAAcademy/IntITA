@@ -15,8 +15,6 @@ protected/config/database.php
 protected/config/databaseForum.php
 content/*
 /mail/
-images/
-images/*
 files/
 /protected/vendor/*
 /angular/bower_components/
