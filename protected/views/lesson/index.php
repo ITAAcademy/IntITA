@@ -31,6 +31,9 @@ $finishedLecture = $lecture->isFinished($user);
     partNotAvailable = '<?php echo Yii::t('lecture', '0638'); ?>';
     basePath = '<?php echo Config::getBaseUrl(); ?>';
     isAdmin = '<?php echo Yii::app()->user->model->isAdmin() ? 1 : 0; ?>';
+    trueDialogMessage = '<?php echo Yii::t('lecture', '0675')?>'+' '+
+    '<?php echo Yii::t('lecture', '0679'); ?>';
+    trueDialogMessage = trueDialogMessage.split("! ").join("!<br>");
     if (parseInt(editMode || isAdmin)) {
         lastAccessPage = 1;
     } else {

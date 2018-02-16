@@ -3,13 +3,14 @@
  */
 angular
     .module('lessonApp')
-    .service('openDialogsService',
-    function () {
+    .service('openDialogsService',['ngToast',
+    function (ngToast) {
         this.openTrueDialog = function () {
-            var dialogWidth=getDialogWidth();
-            $('#mydialog2').dialog({'width': dialogWidth, 'height': 'auto', 'modal': true, 'autoOpen': false});
-            $("#mydialog2").dialog("open");
-            $("#mydialog2").parent().css('border', '4px solid #339900');
+            ngToast.create({
+                content: trueDialogMessage,
+                className: 'success',
+                dismissOnTimeout: true
+            });
         };
         this.openLastTrueDialog = function () {
             var dialogWidth=getDialogWidth();
@@ -29,7 +30,7 @@ angular
             $("#informDialog").dialog("open");
             $("#informDialog").parent().css('border', '4px solid #339900');
         };
-    }
+    }]
 );
 
 function getDialogWidth() {
