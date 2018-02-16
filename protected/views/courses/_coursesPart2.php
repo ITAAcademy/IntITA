@@ -6,7 +6,7 @@
 ?>
 <div id='coursesPart2'>
     <div id="largeConcept">
-        <?php $this->renderPartial('_conceptBlock'); ?>
+        <?php $this->renderPartial('_conceptBlock',array('index'=>1)); ?>
     </div>
     <?php
     $j = 0;
