@@ -211,6 +211,7 @@
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers/specializationsControllers.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers/calendarController.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers/taskTypesControllers.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers/languageLevelsController.js'); ?>"></script>
 
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/crm/controllers/tasksControllers.js'); ?>"></script>
 

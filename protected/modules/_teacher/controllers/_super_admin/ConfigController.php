@@ -153,12 +153,12 @@ class ConfigController extends TeacherCabinetController {
         $title_ua=Yii::app()->request->getPost('title_ua');
         $title_ru=Yii::app()->request->getPost('title_ru');
         $title_en=Yii::app()->request->getPost('title_en');
-        
+
         $career=new Careers();
         $career->title_ua=$title_ua;
         $career->title_ru=$title_ru;
         $career->title_en=$title_en;
-        
+
         if($career->save()){
             echo "Кар'єру створено";
         }else{
@@ -282,4 +282,37 @@ class ConfigController extends TeacherCabinetController {
             $model->save(false);
         }
     }
+    public function actionLanguageLevels()
+    {
+        $levels = LanguageLevels::model()->findAll();
+        $values = [];
+        foreach ($levels as $item) {
+            $values[] = $item->getAttributes();
+        }
+        $this->renderPartial('//ajax/json', ['body' => json_encode($values)]);
+    }
+    public function actionLanguageLevelsCreate()
+    {
+        $this->renderPartial('/_super_admin/config/languageLevels/languageLevelsCreate', array(), false, true);
+    }
+
+    public function actionCreateLanguageLevels()
+    {
+        $title=Yii::app()->request->getPost('title');
+        $description=Yii::app()->request->getPost('description');
+        $order=Yii::app()->request->getPost('order');
+
+        $languageLevel=new LanguageLevels();
+
+        $languageLevel->title=$title;
+        $languageLevel->description=$description;
+        $languageLevel->order=$order;
+
+        if($languageLevel->save()){
+            echo "Рівні створено";
+        }else{
+            echo "Створити рівень не вдалося. Введені не вірні дані";
+        }
+    }
+
 }

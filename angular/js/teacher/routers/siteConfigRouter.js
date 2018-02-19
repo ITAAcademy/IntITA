@@ -6,6 +6,7 @@ angular
     .module('siteConfigRouter',['ui.router'])
     .config(function ($stateProvider) {
         var url = basePath+"/_teacher/_super_admin/config";
+        var templateUrl = basePath+"/angular/js/teacher/templates";
         $stateProvider
             .state('configuration/refreshcache', {
                 url: "/configuration/refreshcache",
@@ -109,4 +110,15 @@ angular
                 cache: false,
                 templateUrl: url+"/taskTypeCreate"
             })
+            .state('configuration/language_levels', {
+                url: "/configuration/language_levels",
+                cache: false,
+                templateUrl: templateUrl + "/languageLevels.html"
+            })
+            .state('configuration/create_language_levels', {
+                url: "/configuration/create_language_levels",
+                cache: false,
+                templateUrl: url +"/languageLevelsCreate"
+            })
+
 });
