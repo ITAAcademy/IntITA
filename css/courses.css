@@ -289,7 +289,7 @@ a#coursesLangs {
 }
 .sourse img{
     position: relative;
-    top: 4px;
+    top: auto;
 }
 .bgBlue table {
     width: 100%;

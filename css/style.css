@@ -1,5 +1,5 @@
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none!important;}
-a{-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box;}
+a, div#button_border, a#enter_button{-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box;}
 body{margin:0 auto;}
 img{border-style:none;}
 html, body{margin:0;padding:0;height:100%;font-family:"MyriadPro";box-sizing:border-box;font-size:inherit!important;}
@@ -13,7 +13,7 @@ p{font-family:"MyriadPro";color:#666666;}
 #navigation{border-collapse: collapse;display:table;max-width:1200px;width:100%;height:100px;margin:0 auto;background-color:white;box-sizing:content-box;}
 #navigation.down{height:60px;}
 #navigation.downmain{height:60px;}
-#menulist ul{float:right}
+#menulist ul{float:right;margin-top:16px;}
 #navigation.downmain div#menulist{width:940px;margin:0 auto;text-align:center;}
 #navigation ul{display:inline-block;margin-bottom:0;padding:0;}
 #navigation.down ul{display:inline-block;margin-top:0;float:right;margin-bottom:0;}
@@ -23,7 +23,8 @@ p{font-family:"MyriadPro";color:#666666;}
 #navigation ul a{text-decoration:none;font-family:"MyriadPro";font-size:18px;font-weight:normal;color:black;padding:10px 6px;}
 /*#navigation ul li:last-child a{padding-right:0;}*/
 #navigation ul a:hover{color:#003399;}
-#logo_img{margin-top:13px;padding-left:10px;padding-right: 10px}
+#logo {vertical-align: inherit;}
+#logo_img{margin-top:13px;padding-left:10px;padding-right: 10px;}
 #logo_img img{max-width:232px;max-height:75px;}
 #logo_img.down{margin-top:7px;}
 #logo_img.downmain{margin-top:7px;max-height:46px;max-width:142px;}
@@ -36,7 +37,7 @@ p{font-family:"MyriadPro";color:#666666;}
 #button_border, .button_border{position:absolute;border:2px solid #4b70a3;border-radius:10px 10px 0 0;margin-left:89px;margin-top:74px;z-index:6;height:20px;width:74px;}
 #button_border.down, .button_border.down{display:none;}
 #button_border.downmain, .button_border.downmain{display:none;}
-#enter_button, .enter_button{position:absolute;margin-left:91px;margin-top:76px;height:33px;width:70px;background:#4b70a3;border-radius:10px;border:2px solid #ffffff;color:white;vertical-align:middle;font:16px/30px "MyriadPro";text-align:center;text-decoration:none;z-index:7;cursor:pointer}
+#enter_button, .enter_button{position:absolute;margin-left:91px;margin-top:76px;height:33px;width:70px;background:#4b70a3;border-radius:10px;border:2px solid #ffffff;color:white;vertical-align:middle;font:16px/30px "MyriadPro";text-align:center;text-decoration:none;z-index:7;cursor:pointer;box-sizing: border-box;}
 #navigation.down #enter_button{position:inherit;}
 #enter_button:hover, .enter_button:hover{background:#454545;}
 #enter_button:active, .enter_button:active{background:#363636;}
@@ -65,7 +66,7 @@ p{font-family:"MyriadPro";color:#666666;}
 #mainfooter .footerlogo img{width:140px;display:block;margin-top:12px;}
 #mainfooter div.footerlogo{margin-left:20px;vertical-align:top;}
 #mainfooter div.footercontact{display:inline-block;position:relative;}
-#mainfooter .footercontact p{line-height:14px;margin-left:15px;color:#114988;font-size:14px}
+#mainfooter .footercontact p{line-height:14px;margin-left:15px;margin-top:15px;color:#114988;font-size:14px}
 #mainfooter .centerfooter .leftpart{display:table-cell;width: 48%}
 #mainfooter .centerfooter .footermenu{display:table-cell;position:relative;font-size:1em;margin-top:5px;width: 48%;vertical-align: top;}
 #mainfooter .footermenu ul{margin-top:10px;margin-left:0;padding-left:0;}
