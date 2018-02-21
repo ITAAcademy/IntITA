@@ -289,7 +289,7 @@ a#coursesLangs {
 }
 .sourse img{
     position: relative;
-    top: 4px;
+    top: auto;
 }
 .bgBlue table {
     width: 100%;
@@ -459,13 +459,13 @@ span.moduleNum{
         font-size: 10px;
     }
 }
-#detailCourseInfoLarge, #detailCourseInfoLarge0{
+#detailCourseInfoLarge1, #detailCourseInfoLarge0{
     padding-left: 3px;
     padding-right: 10px;
     font-size: 14px;
     text-align: left;
 }
-#detailCourseInfoLarge p, #detailCourseInfoLarge0 p{
+#detailCourseInfoLarge1 p, #detailCourseInfoLarge0 p{
     color: white;
 }
 .detailCourseInfoLarge:after{

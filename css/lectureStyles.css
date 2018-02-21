@@ -64,6 +64,7 @@ span.listTheme{
     display: inline-block;*/
 .spoilerLinks {
     padding:0;
+    vertical-align: top;
     display: inline-block;
 }
 span.spoilerLinks,span.spoilerLinksHidden {
@@ -777,9 +778,8 @@ img {
 
 }
 #counter {
-    float:left;
-    display: block;
-    margin-bottom: -20px;
+    display: inline-block;
+    margin-bottom: -1px;
 }
 
 .lectureMainBlock p {
