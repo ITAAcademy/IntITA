@@ -90,15 +90,13 @@
                 <div data-toggle="collapse" data-target="#demo"  style="text-align:center;">
                     <div ng-show="more">
                         <div ng-click="more=!more">
-                            <div class="arrowLess"ng-click="more=!more" style="width:30px;margin:0 auto" ng-include="pathToCrmTemplates+'/svg/less.svg'" title="Закрити"></div>
-                            <div class="thinRedLine">
-                            <hr>
-                            </div>
+                            <div class="arrowLess"ng-click="more=!more" style="width:30px;margin:10px auto 0 auto;" ng-include="pathToCrmTemplates+'/svg/less.svg'" title="Закрити"></div>
+                            <hr class="thinRedLine">
                         </div>
                     </div>
                     <div ng-show="!more">
                         <div ng-click="more=!more">
-                            <div class="rrowMore"  style="width:30px;margin:0 auto" ng-include="pathToCrmTemplates+'/svg/more.svg'" title="Відкрити"></div>
+                            <div class="rrowMore"  style="width: 30px; margin: 10px auto 0 auto;" ng-include="pathToCrmTemplates+'/svg/more.svg'" title="Відкрити"></div>
                         </div>
                     </div>
                  </div>

@@ -9,9 +9,9 @@
     text-align: center;
 }
 .kanbanButtons .fa{
-    margin: 4px;
+    margin: 15px 15px 4px 15px;
     font-size: 24px;
-    padding: 0;
+    padding: 0
 }
 .crmBodyBlock{
     padding: 5px;
@@ -20,12 +20,12 @@
 /*CSS for KANBAN*/
 
 .thinRedLine {
-    border: none; /* Убираем границу */
-    background-color: red; /* Цвет линии */
-    color: red; /* Цвет линии для IE6-7 */
-    height: 2px; /* Толщина линии */
-    margin-top:-14px;
-    margin-bottom:14px;
+    border: none;
+    background-color: red;
+    color: red;
+    height: 1px;
+    margin-top: -11px;
+    margin-bottom: 14px;
 }
 #kanban-container{
     text-align: center;
