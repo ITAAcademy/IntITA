@@ -51,7 +51,7 @@
                             <div ng-class="task.priorityTitle" ng-include="pathToCrmTemplates+'/svg/priority.svg'" title="Пріоритет: {{task.priority}}"></div>
                         </div>
                     </div>
-                    <div id="demo" class="collapse">
+                    <div id="task-card-{{task.id}}" class="collapse">
                         <div class="description">
                             <p ng-bind-html="task.description"></p>
                         </div>
@@ -87,7 +87,7 @@
                     <i ng-if="task.stage_id==4" class="fa fa-clock-o fa-2x expect_to_execute" aria-hidden="true" title="ВІДНОВИТИ" ng-click="changeKanbanState(task,1)" ng-disabled="isDisabled"></i>
                     <i ng-if="currentUser==task.createdBy" class="fa fa-remove fa-2x remove" aria-hidden="true" title="ВИДАЛИТИ" ng-click="cancelKanbanCrmTask(task)" ng-disabled="isDisabled"></i>
                 </div>
-                <div data-toggle="collapse" data-target="#demo"  style="text-align:center;">
+                <div data-toggle="collapse" data-target="#task-card-{{task.id}}"  style="text-align:center;">
                     <div ng-show="more">
                         <div ng-click="more=!more">
                             <div class="arrowLess"ng-click="more=!more" style="width:30px;margin:10px auto 0 auto;" ng-include="pathToCrmTemplates+'/svg/less.svg'" title="Закрити"></div>
