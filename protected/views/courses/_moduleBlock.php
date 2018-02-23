@@ -4,16 +4,6 @@
  */
 ?>
 <?php $price = $data->modulePrice(); ?>
-<?php if($index==0){ ?>
-    <div id="miniConcept">
-        <?php $this->renderPartial('_conceptBlock'); ?>
-    </div>
-<?php } ?>
-<?php if($index==1){ ?>
-    <div id="largeConcept">
-        <?php $this->renderPartial('_conceptBlock'); ?>
-    </div>
-<?php } ?>
 <div class='courseBox'>
     <div class="displayMini">
         <img class="courseLogo" src='<?php echo StaticFilesHelper::createPath('image', 'module', $data->module_img); ?>'>

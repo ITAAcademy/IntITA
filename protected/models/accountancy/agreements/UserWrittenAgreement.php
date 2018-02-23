@@ -64,7 +64,7 @@ class UserWrittenAgreement extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'agreement' => array(self::BELONGS_TO, 'UserAgreements', 'id_agreement'),
-            'service' => array(self::BELONGS_TO, 'Service', ['id' => 'service_id'], 'through' => 'agreement'),
+            'service' => array(self::BELONGS_TO, 'Service', ['service_id' => 'service_id'], 'through' => 'agreement'),
             'user' => array(self::BELONGS_TO, 'StudentReg', ['user_id' => 'id'], 'through' => 'agreement'),
             'lastEditedUserDocument' => [self::HAS_ONE, 'UserDocuments', ['id' => 'id_user'], 'scopes' => 'lastEditedDocuments', 'through' => 'user']
 		);

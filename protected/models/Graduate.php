@@ -181,6 +181,23 @@ class Graduate extends CActiveRecord
         return $dataProvider;
     }
 
+    public static function showMoreGraduate($sizeGraduate)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->with = ['user'];
+
+        $criteria->addCondition('published=1');
+        $dataProvider = new CActiveDataProvider( 'Graduate', array(
+            'criteria' => $criteria,
+            'pagination'=>array(
+                'pageSize'=>20*$sizeGraduate,
+            ),
+        ));
+
+        return $dataProvider;
+    }
+
+
     public function name(){
         if(isset(Yii::app()->session['lg'])){
             if(Yii::app()->session['lg'] == 'en'  && $this->last_name_en != 'не указано' && $this->last_name_en != ''){

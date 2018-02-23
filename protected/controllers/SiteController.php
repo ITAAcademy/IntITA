@@ -361,6 +361,7 @@ class SiteController extends Controller {
         }
 
         $getModel->activkey_lifetime = $getTime;
+        $getModel->password = $getModel->getPassword();
         $getModel->update();
         $sender = new MailTransport();
         $sender->renderBodyTemplate('_recoveryPassMail', array($getModel));

@@ -22,6 +22,7 @@ $header = new Header();
     <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'fontface.css'); ?>"/>
     <!-- fonts -->
     <!-- layouts style -->
+    <link href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'style.css') ?>"/>
     <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'regform.css');; ?>"/>
     <!--   hamburger menu style -->
@@ -74,7 +75,6 @@ $header = new Header();
 
 <body itemscope itemtype="https://schema.org/Product">
 <?php $switch_navigation = Header::model()->currentPage(); ?>
-
 <div id="main-wrapper" >
     <div id="mainheader">
         <?php $this->renderPartial('/site/_hamburgermenu'); ?>

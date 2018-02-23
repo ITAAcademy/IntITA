@@ -378,6 +378,9 @@ div.modal-footer {
     float: right;
     clear: both;
 }
+.one {
+    margin-bottom: 60px;
+}
 
 /*style for pagination*/
 /*celebre*/
