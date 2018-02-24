@@ -147,6 +147,10 @@ class TasksController extends TeacherCabinetController
             }
 
             $task->setRoles($params['roles']);
+            if(isset($params['rolesSubgroup'])){
+                $task->setSubgroupRoles($params['rolesSubgroup']);
+            }
+
             $result = ['message' => 'OK', 'id' => $task->id];
             if ($transaction) {
                 $transaction->commit();
@@ -197,10 +201,37 @@ class TasksController extends TeacherCabinetController
         $params = $_GET;
         $criteria = new CDbCriteria();
         $criteria->alias = 't';
-        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser'];
+        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName'];
+        $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
         $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, $params['id'] );
-        $criteria->addInCondition('t.id_task', $ids);
-        $criteria->group = 't.id_task';
+        if (isset($params['filter']['idTask.producerName.fullName'])) {
+            $criteria->addSearchCondition('producerName.firstName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
+            $criteria->addSearchCondition('producerName.secondName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
+            $criteria->addSearchCondition('producerName.middleName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
+            $criteria->addSearchCondition('producerName.email', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
+            unset($params['filter']['idTask.producerName.fullName']);
+        }
+        if (isset($params['filter']['idTask.executantName.fullName'])) {
+            $criteria->addSearchCondition('executantName.firstName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
+            $criteria->addSearchCondition('executantName.secondName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
+            $criteria->addSearchCondition('executantName.middleName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
+            $criteria->addSearchCondition('executantName.email', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
+            unset($params['filter']['idTask.executantName.fullName']);
+        }
+        if (isset($params['filter']['idTask.parentType'])) {
+            if($params['filter']['idTask.parentType']==CrmTasks::SUBTASK){
+                $criteria->addCondition("idTask.id_parent is not NULL");
+            }else if($params['filter']['idTask.parentType']==CrmTasks::MAIN_TASK){
+                $mainIds = CrmHelper::getMainTasksIds();
+                $criteria->addInCondition('t.id_task', $mainIds);
+            }
+            unset($params['filter']['idTask.parentType']);
+        }
+        if (isset($params['filter']['idTask.groupsNames']) && $params['filter']['idTask.groupsNames']) {
+            $mainIds = CrmHelper::getSubgroupTaskIds($params['filter']['idTask.groupsNames']);
+            $criteria->addInCondition('t.id_task', $mainIds);
+            unset($params['filter']['idTask.groupsNames']);
+        }
         if (isset($params['filter']['crmStates.id'])) {
             $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
             $criteria->join .= ' LEFT JOIN crm_task_status cts ON ct.id_state=cts.id';
@@ -218,7 +249,8 @@ class TasksController extends TeacherCabinetController
             unset($params['filter']['crmType.id']);
         }
         $criteria->addCondition("idTask.cancelled_date is NULL");
-
+        $criteria->addInCondition('t.id_task', $ids);
+        $criteria->group = 't.id_task';
         $adapter = new NgTableAdapter('CrmRolesTasks', $params);
         $adapter->mergeCriteriaWith($criteria);
         $rows = $adapter->getData();
@@ -255,6 +287,8 @@ class TasksController extends TeacherCabinetController
         $data = [];
         $collaborator = [];
         $observer = [];
+        $subgroupsCollaborators = [];
+        $subgroupsObservers = [];
 
         $crmTask = CrmTasks::model()->with('parentTask')->findByPk($id);
         $data['task'] = ActiveRecordToJSON::toAssocArray($crmTask);
@@ -293,6 +327,17 @@ class TasksController extends TeacherCabinetController
         $data['roles']['producer'] = $producer;
         $data['roles']['collaborator'] = $collaborator;
         $data['roles']['observer'] = $observer;
+
+        // subgroups
+        foreach ($crmTask->subgroupCollaborators as $item) {
+            array_push($subgroupsCollaborators, ['id' => $item->id_subgroup, 'name' => $item->idSubgroup->name, 'groupName' => $item->idSubgroup->groupName->name]);
+        }
+        foreach ($crmTask->subgroupObservers as $item) {
+            array_push($subgroupsObservers, ['id' => $item->id_subgroup, 'name' => $item->idSubgroup->name, 'groupName' => $item->idSubgroup->groupName->name]);
+        }
+
+        $data['rolesSubgroup']['collaborator'] = $subgroupsCollaborators;
+        $data['rolesSubgroup']['observer'] = $subgroupsObservers;
 
         echo json_encode($data);
     }
@@ -567,14 +612,9 @@ class TasksController extends TeacherCabinetController
 
         $counters["executant"] = CrmRolesTasks::model()->with('idTask')->count("idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND role=" . CrmTasks::EXECUTANT . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL");
         $counters["producer"] = CrmRolesTasks::model()->with('idTask')->count("idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND role=" . CrmTasks::PRODUCER . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL");
-        $counters["collaborator"] = CrmRolesTasks::model()->with('idTask')->count("idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND role=" . CrmTasks::COLLABORATOR . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL");
-        $counters["observer"] = CrmRolesTasks::model()->with('idTask')->count("idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND role=" . CrmTasks::OBSERVER . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL");
-        $counters["all"] = CrmRolesTasks::model()->with('idTask')->count(
-            array(
-                'condition' => "idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL",
-                'group' => 't.id_task'
-            )
-        );
+        $counters["collaborator"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::COLLABORATOR, true ));
+        $counters["observer"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::OBSERVER, true ));
+        $counters["all"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, false, true ));
 
         $i = 0;
         foreach ($counters as $key => $counter) {
@@ -649,7 +689,7 @@ class TasksController extends TeacherCabinetController
         //        tasks changed
         $criteria = new CDbCriteria();
         $criteria->alias = 't';
-        $criteria->with = ['idTask.createdBy', 'assignedBy', 'cancelledBy', 'role0', 'idUser', 'producer', 'producerName'];
+        $criteria->with = ['idTask.createdBy', 'assignedBy', 'cancelledBy', 'role0', 'idUser'];
         $criteria->condition = "t.id_user=" . Yii::app()->user->getId() . ' and idTask.created_by!=' . Yii::app()->user->getId();
         $criteria->group = 't.id_task';
         $tasksChanged = ActiveRecordToJSON::toAssocArrayWithRelations(CrmRolesTasks::model()->findAll($criteria));
@@ -673,7 +713,7 @@ class TasksController extends TeacherCabinetController
         //        roles changed
         $criteria = new CDbCriteria();
         $criteria->alias = 't';
-        $criteria->with = ['idTask.createdBy', 'assignedBy', 'cancelledBy', 'role0', 'idUser', 'producer', 'producerName'];
+        $criteria->with = ['idTask.createdBy', 'assignedBy', 'cancelledBy', 'role0', 'idUser'];
         $criteria->condition = "t.id_user=" . Yii::app()->user->getId() . ' and t.assigned_by!=' . Yii::app()->user->getId();
         $rolesChanged = ActiveRecordToJSON::toAssocArrayWithRelations(CrmRolesTasks::model()->findAll($criteria));
 
@@ -751,7 +791,7 @@ class TasksController extends TeacherCabinetController
         $last_visit = $lastVisitModel ? $lastVisitModel->date_of_visit : $date_now->format('Y-m-d H:i:s');
 
         $ids=CrmHelper::getUsersCrmTasks(Yii::app()->user->getId());
-        $in='('.implode(',',$ids).')';
+        $in = !empty($ids)?'('.implode(',',$ids).')':'(0)';
         $commentsAdded=0;
         $statesAdded=0;
 

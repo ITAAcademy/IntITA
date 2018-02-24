@@ -190,5 +190,10 @@ angular
                         url: url + '/changePayForm',
                         method: 'GET'
                     },
+                    // roles badges
+                    getNewPlainTasksAnswersCount: {
+                        url: basePath + '/_teacher/_teacher_consultant/teacherConsultant/getNewPlainTasksAnswersCount',
+                        method: 'GET'
+                    },
                 });
         }]);

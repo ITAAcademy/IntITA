@@ -1,13 +1,13 @@
 <?php
 
 /**
- * This is the model class for table "crm_roles_tasks".
+ * This is the model class for table "crm_subgroup_roles_tasks".
  *
- * The followings are the available columns in table 'crm_roles_tasks':
+ * The followings are the available columns in table 'crm_subgroup_roles_tasks':
  * @property integer $id
  * @property integer $role
  * @property integer $id_task
- * @property integer $id_user
+ * @property integer $id_subgroup
  * @property integer $assigned_by
  * @property string $assigned_date
  * @property integer $cancelled_by
@@ -16,18 +16,18 @@
  * The followings are the available model relations:
  * @property StudentReg $assignedBy
  * @property StudentReg $cancelledBy
+ * @property OfflineSubgroups $idSubgroup
  * @property CrmRoles $role0
  * @property CrmTasks $idTask
- * @property StudentReg $idUser
  */
-class CrmRolesTasks extends CActiveRecord
+class CrmSubgroupRolesTasks extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'crm_roles_tasks';
+		return 'crm_subgroup_roles_tasks';
 	}
 
 	/**
@@ -38,11 +38,12 @@ class CrmRolesTasks extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('role, id_task, id_user, assigned_by', 'required'),
-			array('role, id_task, id_user, assigned_by, cancelled_by', 'numerical', 'integerOnly'=>true),
+			array('role, id_task, id_subgroup, assigned_by', 'required'),
+			array('role, id_task, id_subgroup, assigned_by, cancelled_by', 'numerical', 'integerOnly'=>true),
+			array('cancelled_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, role, id_task, id_user, assigned_by, assigned_date, cancelled_by, cancelled_date', 'safe', 'on'=>'search'),
+			array('id, role, id_task, id_subgroup, assigned_by, assigned_date, cancelled_by, cancelled_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,11 +57,10 @@ class CrmRolesTasks extends CActiveRecord
 		return array(
 			'assignedBy' => array(self::BELONGS_TO, 'StudentReg', 'assigned_by'),
 			'cancelledBy' => array(self::BELONGS_TO, 'StudentReg', 'cancelled_by'),
+			'idSubgroup' => array(self::BELONGS_TO, 'OfflineSubgroups', 'id_subgroup'),
 			'role0' => array(self::BELONGS_TO, 'CrmRoles', 'role'),
 			'idTask' => array(self::BELONGS_TO, 'CrmTasks', 'id_task'),
-			'idUser' => array(self::BELONGS_TO, 'StudentReg', 'id_user'),
-            'lastStateHistory' => array(self::HAS_MANY, 'CrmTaskStateHistory', ['id_task'=>'id_task'], 'order' => 'lastStateHistory.change_date desc', 'limit'=>1),
-        );
+		);
 	}
 
 	/**
@@ -72,7 +72,7 @@ class CrmRolesTasks extends CActiveRecord
 			'id' => 'ID',
 			'role' => 'Role',
 			'id_task' => 'Id Task',
-			'id_user' => 'Id User',
+			'id_subgroup' => 'Id Subgroup',
 			'assigned_by' => 'Assigned By',
 			'assigned_date' => 'Assigned Date',
 			'cancelled_by' => 'Cancelled By',
@@ -101,11 +101,11 @@ class CrmRolesTasks extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('role',$this->role);
 		$criteria->compare('id_task',$this->id_task);
-		$criteria->compare('id_user',$this->id_user);
+		$criteria->compare('id_subgroup',$this->id_subgroup);
 		$criteria->compare('assigned_by',$this->assigned_by);
 		$criteria->compare('assigned_date',$this->assigned_date,true);
 		$criteria->compare('cancelled_by',$this->cancelled_by);
-		$criteria->compare('cancelled_date',$this->cancelled_date);
+		$criteria->compare('cancelled_date',$this->cancelled_date,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -116,7 +116,7 @@ class CrmRolesTasks extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return CrmRolesTasks the static model class
+	 * @return CrmSubgroupRolesTasks the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

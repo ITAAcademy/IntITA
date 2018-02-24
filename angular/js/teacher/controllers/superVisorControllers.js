@@ -303,7 +303,7 @@ function offlineGroupCtrl ($scope, $state, $http, $stateParams, superVisorServic
     };
 }
 
-function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, chatIntITAMessenger, lodash, trainerService){
+function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, chatIntITAMessenger, lodash, usersService){
     $scope.onSelectCurator = function ($item) {
         $scope.selectedCurator = $item;
     };
@@ -379,7 +379,7 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
             }
         });
 
-        $scope.types = trainerService
+        $scope.types = usersService
             .getCancelType()
             .$promise
             .then(function (data) {
@@ -837,9 +837,6 @@ function offlineStudentSubgroupCtrl ($scope, $http, superVisorService, $statePar
                             startDate: firstday
                         }).on('changeDate', function (e) {
                             $jq(this).datetimepicker('hide');
-                            // var dateObject  = $jq("#date_time_picker").data("datetimepicker").getDate();
-                            // angular.element(document.getElementById('date_time_picker')).scope().showTime(dateObject);
-                            // console.log('date', dateObject);
                         });
                     });
                 },
