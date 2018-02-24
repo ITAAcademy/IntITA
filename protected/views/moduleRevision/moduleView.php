@@ -97,28 +97,40 @@ $this->breadcrumbs = array(
         </div>
         <br>
         <label>Перелік ревізій занять: </label>
-
-        <table id="pages" class="table">
-            <tr>
-                <td>Номер ревізії</td>
-                <td class="titleCell" >Назва</td>
-                <td>Порядок</td>
-                <td>Навігація</td>
-            </tr>
-            <tr ng-repeat="lecture in lectureInModule track by $index">
-                <td><span ng-if="lecture.list!='foreign'">{{lecture.id_lecture_revision}}</span></td>
-                <td><a ng-href="<?php echo Yii::app()->createUrl("revision/previewLectureRevision", array('idRevision'=>'')) ?>{{lecture.id_lecture_revision}}" >{{lecture.title}}</a></td>
-                <td>{{$index+1}}</td>
-                <td>
-                    <div style="display: inline-block" >
-                        <img src="<?php echo StaticFilesHelper::createPath('image', 'editor', 'up.png');?>" class="editIco" ng-click="upRevisionInModule(lecture.id_lecture_revision, $index);">
-                        <img src="<?php echo StaticFilesHelper::createPath('image', 'editor', 'down.png');?>" class="editIco" ng-click="downRevisionInModule(lecture.id_lecture_revision, $index);">
-                        <img src="<?php echo StaticFilesHelper::createPath('image', 'editor', 'delete.png');?>" class="editIco" ng-click="removeRevisionFromModule(lecture.id_lecture_revision, $index);">
+        <div class="container">
+            <div class="row">
+                <div class="panel-body wrap-tabel-module">
+                    <div class="panel panel-info">
+                        <div class="panel-heading header-list">
+                            <div class="col-md-2 col-xs-2">Номер ревізії</div>
+                            <div class="col-md-6 col-xs-6">Назва</div>
+                            <div class="col-md-2 col-xs-2">Порядок</div>
+                            <div class="col-md-2 col-xs-2"></div>
+                        </div>
                     </div>
-                </td>
-            </tr>
-        </table>
-        <button class="btn btn-primary" ng-click="editModuleRevision(lectureInModule)">Зберегти зміни</button>
+                    <ul class="list-group" dnd-list dnd-drop="callback({targetList: model, targetIndex: index})"
+                    >
+                        <li class="list-group-item" ng-repeat="item in model track by $index"
+                            dnd-draggable="null" dnd-callback="onDrop(model, $index, targetList, targetIndex)">
+                            <div class="col-md-2 col-xs-2">
+                                {{item.id_lecture_revision}}
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <a ng-href="<?php echo Yii::app()->createUrl("revision/previewLectureRevision", array('idRevision'=>'')) ?>{{item.id_lecture_revision}}" >{{item.title}}</a>
+                            </div>
+                            <div class="col-md-2 col-xs-2">
+                                {{item.module_order}}
+                            </div>
+                            <div class="col-md-2 col-xs-2">
+                                <img src="<?php echo StaticFilesHelper::createPath('image', 'editor', 'delete.png');?>" class="editIco" ng-click="removeRevisionFromModule(item.labelFunc($index)[1].id, $index);">
+                            </div>
+                        </li>
+                    </ul>
+                    <br>
+                </div>
+                <button class="btn btn-primary" ng-click="editModuleRevision(model)">Зберегти зміни</button>
+            </div>
+        </div>
         <br>
     </div>
     <br>

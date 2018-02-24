@@ -15,6 +15,35 @@ function moduleRevisionCtrl($rootScope,$scope, $http, getModuleData, moduleRevis
     //load from service lecture data for scope
     getModuleData.getData(idRevision).then(function(response){
         $rootScope.moduleData=response;
+        $scope.model = generateList();
+        $scope.onDrop = function(srcList, srcIndex, targetList, targetIndex) {
+            if(srcIndex<targetIndex){
+                targetIndex-=1;
+            }
+            var deletedElement=srcList.splice(srcIndex,1)[0];
+            srcList.splice(targetIndex,0,deletedElement);
+            updateOrder($scope.model);
+            return true;
+        };
+        function updateOrder(arr) {
+            for(var i=0; i<arr.length;i++){
+                arr[i].module_order = i+1;
+            }
+        }
+        function generateList() {
+            return response.lectures.map(function(letter) {
+                return {
+                    labelFunc: function(index) {
+                        letter.module_order=index+1;
+                        return letter;
+                    }
+                };
+            });
+        }
+        $scope.model.map(function (currentValue,index) {
+            $scope.model[index] = currentValue.labelFunc(index);
+
+        });
         $scope.lectureInModule=$rootScope.moduleData.lectures;
         getModuleData.getApprovedLecture().then(function(response){
             $scope.approvedLecture=response;
@@ -53,19 +82,19 @@ function moduleRevisionCtrl($rootScope,$scope, $http, getModuleData, moduleRevis
         revision.list='current';
         revision.status=status;
         $scope.approvedLecture.current[status].splice(index, 1);
-        $scope.lectureInModule.push(revision);
+        revision.module_order = $scope.model.length+1;
+        $scope.model.push(revision);
     };
     $scope.addRevisionToModuleFromForeignList= function (lectureRevisionId, index, status) {
         var revision=$scope.approvedLecture.foreign[status][index];
         revision.list='foreign';
         revision.status=status;
         $scope.approvedLecture.foreign[status].splice(index, 1);
-        $scope.lectureInModule.push(revision);
+        revision.module_order = $scope.model.length+1;
+        $scope.model.push(revision);
     };
-
     $scope.removeRevisionFromModule= function (lectureRevisionId, index) {
-        var revision=$scope.lectureInModule[index];
-        $scope.lectureInModule.splice(index, 1);
+        var revision=$scope.model[index];
         if(revision.list=='foreign'){
             $scope.approvedLecture.foreign[revision.status].push(revision);
         }else{
@@ -85,23 +114,12 @@ function moduleRevisionCtrl($rootScope,$scope, $http, getModuleData, moduleRevis
                 }
             }
         }
+        $scope.model.splice(index, 1);
+        for(var i=1; i<=$scope.model.length-index;i++){
+            $scope.model[index-1+i].module_order-=1;
+        }
     };
     //reorder pages
-    $scope.upRevisionInModule = function(lectureRevisionId, index) {
-        if(index>0){
-            var prevRevision=$scope.lectureInModule[index-1];
-            $scope.lectureInModule[index-1]=$scope.lectureInModule[index];
-            $scope.lectureInModule[index]=prevRevision;
-        }
-    };
-    $scope.downRevisionInModule = function(lectureRevisionId, index) {
-        if(index<$scope.lectureInModule.length-1){
-            var nextRevision=$scope.lectureInModule[index+1];
-            $scope.lectureInModule[index+1]=$scope.lectureInModule[index];
-            $scope.lectureInModule[index]=nextRevision;
-        }
-    };
-
     $scope.editModuleRevision = function (lectureList) {
         if($scope.enabled!=false){
             $scope.revisionSaving=true;
