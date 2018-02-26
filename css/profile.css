@@ -1048,3 +1048,13 @@ body .grid-view table.items td{
     margin-bottom: 5px;
     margin-top: 5px;
 }
+.about_project.collapsed:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e259";
+    font-size: 10px;
+}
+.about_project:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e260";
+    font-size: 10px;
+}

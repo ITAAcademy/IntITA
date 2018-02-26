@@ -64,7 +64,7 @@ angular
                                     self.data.executant = data.roles.executant.name;
                                     self.loadTasksHistory(id);
                                     self.canEditCrmTasks = scope.rolesCanEditCrmTasks || self.data.created_by==self.currentUser || self.data.roles['producer'].id==self.currentUser;
-                                    self.editable = !(self.data.id_state==4 || (self.data.id && !self.canEditCrmTasks));
+                                    self.editable = !((self.data.id_state==4 && !scope.clone) || (self.data.id && !self.canEditCrmTasks));
                                 })
                                 .catch(function (error) {
                                     alert(JSON.parse(error.data.reason));

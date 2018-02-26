@@ -41,7 +41,7 @@ class CrmHelper
         $completed_sql='';
         if($active) $active_user_sql=' and t.cancelled_date is null and ct.cancelled_date is null';
         if($role) $role_sql=' and t.role=' . $role;
-        if(1) $completed_sql=' and ct.id_state!=' . CrmTaskStatus::COMPLETED;
+        if($completed) $completed_sql=' and ct.id_state!=' . CrmTaskStatus::COMPLETED;
         $sql_tasks="SELECT DISTINCT `id_task` FROM crm_subgroup_roles_tasks as t LEFT JOIN crm_tasks ct
 							ON ct.id = t.id_task WHERE id_subgroup in ".$userSubgroups.$active_user_sql.$role_sql.$completed_sql;
         $tasks=CrmSubgroupRolesTasks::model()->findAllBySql($sql_tasks);

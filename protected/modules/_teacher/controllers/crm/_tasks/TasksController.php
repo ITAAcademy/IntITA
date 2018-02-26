@@ -16,10 +16,11 @@ class TasksController extends TeacherCabinetController
 
     public function actionView($id)
     {
-        if (!CrmRolesTasks::model()->find('id_task=:taskID and id_user=:userID and cancelled_by is NULL',
-            array(':taskID' => $id, ':userID' => Yii::app()->user->getId()))) {
+        $criteria = new CDbCriteria();
+        $criteria->alias = 't';
+        $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId());
+        if(!in_array($id, $ids))
             throw new CException("У тебе немає доступу до завдання");
-        }
         $this->renderPartial('/crm/_tasks/view', array(), false, true);
     }
 
