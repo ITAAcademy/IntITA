@@ -1,15 +1,9 @@
 /**
  * Created by Ivanna on 11.05.2015.
  */
-function wrt(x)
-{
-    $(".razv").html(x);
-}
-
-function xexx()
-{
-    $('.bgBlue').hide();
-}
+/**
+ * Created by Ivanna on 08.05.2015.
+ * */
 function courseTypeSpoiler(el) {
     if ($('#typeList').css('display')=='none') {
         $('#trg').text("\u25B2");

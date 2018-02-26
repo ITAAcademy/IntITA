@@ -303,7 +303,7 @@ function offlineGroupCtrl ($scope, $state, $http, $stateParams, superVisorServic
     };
 }
 
-function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, chatIntITAMessenger){
+function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, chatIntITAMessenger, lodash, usersService){
     $scope.onSelectCurator = function ($item) {
         $scope.selectedCurator = $item;
     };
@@ -353,6 +353,7 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
     }
     if($stateParams.id) {
         $scope.shifts = [{id:'1', title:'ранкова'},{id:'2', title:'вечірня'},{id:'3', title:'байдуже'}];
+        $scope.types = [];
         $scope.subgroupId = $stateParams.id;
         $scope.offlineStudentsTableParams = new NgTableParams({'idSubgroup': $scope.subgroupId}, {
             getData: function (params) {
@@ -366,6 +367,30 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
             }
         });
         $scope.loadSubgroupData($scope.subgroupId);
+        $scope.offlineCanceledStudentsTableParams = new NgTableParams({}, {
+            getData: function (params) {
+                return superVisorService
+                    .offlineCanceledStudentsList(lodash.merge({idSubgroup:$scope.subgroupId}, params.url()))
+                    .$promise
+                    .then(function (data) {
+                        params.total(data.count);
+                        return data.rows;
+                    });
+            }
+        });
+
+        $scope.types = usersService
+            .getCancelType()
+            .$promise
+            .then(function (data) {
+                var temp = data;
+                $scope.reason = [];
+                $scope.reason = $scope.reason.concat(temp);
+                return $scope.reason;
+            })
+            .catch(function(){
+                bootbox.alert('Помилка, зверніться до адміністратора');
+            });
     };
 
     $scope.sendFormSubgroup= function (scenario, name, groupId, subgroupData, selectedTrainer,subgroupId, journal, link) {
@@ -812,9 +837,6 @@ function offlineStudentSubgroupCtrl ($scope, $http, superVisorService, $statePar
                             startDate: firstday
                         }).on('changeDate', function (e) {
                             $jq(this).datetimepicker('hide');
-                            // var dateObject  = $jq("#date_time_picker").data("datetimepicker").getDate();
-                            // angular.element(document.getElementById('date_time_picker')).scope().showTime(dateObject);
-                            // console.log('date', dateObject);
                         });
                     });
                 },

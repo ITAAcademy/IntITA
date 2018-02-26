@@ -11,7 +11,7 @@
  * @property string $unlocked_date
  *
  * The followings are the available model relations:
- * @property User $idUser
+ * @property StudentReg $idUser
  */
 class UserBlocked extends CActiveRecord
 {

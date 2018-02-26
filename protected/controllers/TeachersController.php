@@ -98,4 +98,19 @@ class TeachersController extends Controller
             'teacherletter' => $teacherLetter
         ));
     }
+
+    public function actionShowMoreAjaxFilter()
+    {
+        $pageSize = $_GET['size'];
+
+        $dataProvider = Teacher::showMoreTeachers($pageSize);
+
+        $teacherLetter = new TeacherLetter;
+        $teachers = Teacher::getAllTeachersId();
+        $this->render('index', array(
+            'post' => $dataProvider,
+            'teachers' => $teachers,
+            'teacherletter' => $teacherLetter
+        ));
+    }
 }

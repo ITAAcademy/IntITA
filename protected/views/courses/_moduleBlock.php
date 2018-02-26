@@ -4,22 +4,15 @@
  */
 ?>
 <?php $price = $data->modulePrice(); ?>
-<?php if($index==0){ ?>
-    <div id="miniConcept">
-        <?php $this->renderPartial('_conceptBlock'); ?>
-    </div>
-<?php } ?>
-<?php if($index==1){ ?>
-    <div id="largeConcept">
-        <?php $this->renderPartial('_conceptBlock'); ?>
-    </div>
-<?php } ?>
 <div class='courseBox'>
     <div class="displayMini">
         <img class="courseLogo" src='<?php echo StaticFilesHelper::createPath('image', 'module', $data->module_img); ?>'>
         <div class='courseNameMini'><a
                 href="<?php echo Yii::app()->createUrl('module/index', array('idModule' => $data->module_ID)); ?>"><?php
                 echo $data->getTitle(); ?></a>
+        </div>
+        <div class="moduleRating">
+            <?php echo CommonHelper::getRating($data->getAverageRating()); ?>
         </div>
     </div>
     <div class="courseInfo">
@@ -80,10 +73,6 @@
         <div class="coursePriceBox">
             <span id="titleModule"><?php echo Yii::t('module', '0221'); ?></span>
             <?php $this->renderPartial('/courses/_modulePrice', array('price'=>$price)); ?>
-        </div>
-        <div class="moduleRating">
-            <span id="titleModule"><?php echo Yii::t('module', '0224'); ?></span>
-            <?php echo CommonHelper::getRating($data->getAverageRating()); ?>
         </div>
     </div>
 </div>

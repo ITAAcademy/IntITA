@@ -1,6 +1,6 @@
 <? $css_version = 1; ?>
 <!-- teachers style -->
-<link href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">
+<!--<link href="--><?php //echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?><!--" rel="stylesheet">-->
 <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bootstrapRewrite.css') ?>"/>
 <link type="text/css" rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'teachers.css'); ?>" />
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers/filterTeacherCtrl.js'); ?>"></script>
@@ -22,7 +22,6 @@
     </div>
     <?php $this->renderPartial('_teacherList', array('dataProvider'=>$post, 'teacherletter'=>$teacherletter));  ?>
 </div>
-<script src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/bootbox.min.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'hideBlock.js'); ?>"></script>
 <?php $this->renderPartial('/site/_shareMetaTag', array(

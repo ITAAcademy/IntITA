@@ -13,55 +13,55 @@ config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             },
             templateUrl: basePath + "/_teacher/cabinet/loadPage/?page=trainer",
         })
-        .state('trainer/students', {
-            url: "/trainer",
+        .state('trainerStudentsTable/students', {
+            url: "/trainerStudentsTable",
             cache: false,
-            templateUrl: basePath + "/_teacher/_trainer/trainer/students"
+            templateUrl: basePath+"/_teacher/users/students?organization=1&trainer=1",
         })
-        .state('trainer/students.trainerStudents', {
-            url: '/trainerStudents',
+        .state('trainerStudentsTable/students.main', {
+            url: '/main',
             views: {
-                'trainerTabs': {
-                    templateUrl: basePath+"/_teacher/_trainer/trainer/attachStudents",
+                'studentsTabs': {
+                    templateUrl: basePath+"/_teacher/users/attachStudents?trainer=1",
                 }
             }
         })
-        .state('trainer/students.personalInfo', {
+        .state('trainerStudentsTable/students.personalInfo', {
             url: '/personalInfo',
             views: {
-                'trainerTabs': {
-                    templateUrl: basePath+"/_teacher/_trainer/trainer/personalInfo"
+                'studentsTabs': {
+                    templateUrl: basePath+"/_teacher/users/personalInfo?trainer=1"
                 }
             }
         })
-        .state('trainer/students.career', {
+        .state('trainerStudentsTable/students.career', {
             url: '/career',
             views: {
-                'trainerTabs': {
-                    templateUrl: basePath+"/_teacher/_trainer/trainer/careerInfo"
+                'studentsTabs': {
+                    templateUrl: basePath+"/_teacher/users/careerInfo?trainer=1"
                 }
             }
         })
-        .state('trainer/students.contract', {
+        .state('trainerStudentsTable/students.contract', {
             url: '/contract',
             views: {
-                'trainerTabs': {
-                    templateUrl: basePath+"/_teacher/_trainer/trainer/contractInfo"
+                'studentsTabs': {
+                    templateUrl: basePath+"/_teacher/users/contractInfo?trainer=1"
                 }
             }
         })
-        .state('trainer/students.visit', {
+        .state('trainerStudentsTable/students.visit', {
             url: '/visit',
             views: {
-                'trainerTabs': {
-                    templateUrl: basePath+"/_teacher/_trainer/trainer/visitInfo",
+                'studentsTabs': {
+                    templateUrl: basePath+"/_teacher/users/visitInfo?trainer=1",
                 }
             }
         })
-        .state('trainer/students.studentsProjects', {
+        .state('trainerStudentsTable/students.studentsProjects', {
             url: '/studentsProjects',
             views: {
-                'trainerTabs': {
+                'studentsTabs': {
                     templateUrl: basePath+"/_teacher/_trainer/trainer/studentsProjects",
                 }
             }

@@ -473,7 +473,7 @@ hr {
 }
 /* consult */
 div#page-wrapper {
-    /*overflow: inherit;!important;*/
+    overflow: auto;
 }
 /*offer*/
 pre.offer{
@@ -655,4 +655,11 @@ div.loader > div {
 }
 .form-horizontal .control-label.text-left{
     text-align: left;
+}
+.scroll-table{
+    height: 500px;
+    overflow: scroll
+}
+.scroll-table table{
+    table-layout: inherit;
 }

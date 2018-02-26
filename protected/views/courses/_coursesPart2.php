@@ -6,7 +6,7 @@
 ?>
 <div id='coursesPart2'>
     <div id="largeConcept">
-        <?php $this->renderPartial('_conceptBlock'); ?>
+        <?php $this->renderPartial('_conceptBlock',array('index'=>1)); ?>
     </div>
     <?php
     $j = 0;
@@ -20,6 +20,9 @@
                     <div class='courseNameMini'><a
                             href="<?php echo Yii::app()->createUrl('course/index', array('id' => $val[0]->course_ID)); ?>"><?php
                             echo $val[0]->getTitle(); ?></a>
+                    </div>
+                    <div class='starLevelIndex'>
+                        <?php echo CommonHelper::getRating($val[0]->rating); ?>
                     </div>
                 </div>
                 <div class="courseInfo">
@@ -131,11 +134,6 @@
                             <?php
                         }
                         ?>
-                    </div>
-                    <div class='starLevelIndex'>
-                        <br>
-                        <?php echo Yii::t('courses', '0145'); ?>
-                        <?php echo CommonHelper::getRating($val[0]->rating); ?>
                     </div>
                 </div>
             </div>

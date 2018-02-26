@@ -142,6 +142,7 @@ angular
         this.setInformation = function(data) {
             data.rows.forEach(function(row) {
                 var paid=0;
+                row.forPayment=0;
                 //get paid sum for agreement
                 row.internalPayment.forEach(function (pay) {
                     paid = paid+Number(pay.summa);
@@ -149,6 +150,13 @@ angular
                 row.paidAmount=parseFloat(paid).toFixed(2);
                 //get agreement payment_date and expiration_date
                 for (var index = 0; index < row.invoice.length; ++index) {
+                    var date1 = new Date(currentDate);
+                    var date2 = new Date(row.invoice[index].expiration_date);
+                    var timeDiff = date2.getTime() - date1.getTime();
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    if(diffDays>0){
+                        row.forPayment = row.forPayment + parseFloat(row.invoice[index].summa);
+                    }
                     var invoicePaid=0;
                     _.filter(row.internalPayment, ['invoice_id', row.invoice[index].id]).forEach(function (pay) {
                         invoicePaid = invoicePaid+Number(pay.summa);

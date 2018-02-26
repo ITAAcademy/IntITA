@@ -97,7 +97,12 @@ class UserAgreements extends CActiveRecord {
             'organization' => [self::BELONGS_TO, 'Organization', ['id_organization' => 'id'], 'through' => 'corporateEntity'],
             'checkingAccount' => [self::BELONGS_TO, 'CheckingAccounts', 'id_checking_account'],
             'actualWrittenAgreement' => [self::HAS_ONE, 'UserWrittenAgreement', ['id_agreement' => 'id'], 'scopes' => 'actualAgreement'],
-        );
+            'userInfo' => array(self::BELONGS_TO, 'StudentInfo', ['user_id'=>'id_student']),
+            'group' => array(self::HAS_MANY, 'OfflineStudents', ['id_user'=>'user_id']),
+            'group_id' => array(self::HAS_MANY, 'OfflineSubgroups', ['id_subgroup'=>'id'], 'through'=>'group'),
+            'group_name' => array(self::HAS_MANY, 'OfflineGroups', ['group'=>'id'], 'through'=>'group_id'),
+            'studentTrainer' => array(self::HAS_ONE, 'TrainerStudent', array('student'=>'user_id'), 'on' => 'end_time IS NULL'),
+            );
     }
 
     /**
@@ -669,7 +674,7 @@ class UserAgreements extends CActiveRecord {
         if(Yii::app()->user->model->isAuditor()){
             return true;
         }
-        if(Yii::app()->user->model->isAccountant() && $this->corporateEntity->id_organization==Yii::app()->user->model->getCurrentOrganizationId()){
+        if(Yii::app()->user->model->isAccountant() || Yii::app()->user->model->isSupervisor() && $this->corporateEntity->id_organization==Yii::app()->user->model->getCurrentOrganizationId()){
             return true;
         }
         if(Yii::app()->user->model->isTrainer() && TrainerStudent::model()->findByAttributes(array(

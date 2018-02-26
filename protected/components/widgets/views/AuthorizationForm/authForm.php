@@ -23,7 +23,15 @@
         <input type="hidden" name="callBack" value="<?php echo $callBack ?>">
         <div class="rowemail">
             <?php $placeHolderEmail = Yii::t('regform', '0014'); ?>
-            <?php echo $form->emailField($model, 'email', array('class' => 'signInEmail', 'placeholder' => $placeHolderEmail, 'size' => 60, 'maxlength' => 40, 'onKeyUp' => "hideSignServerValidationMes(this)", 'ng-model' => "formEmail", "ng-required" => "true")); ?>
+            <?php echo $form->emailField($model, 'email', array('id' => 'signInEmail','class' => 'signInEmail', 'placeholder' => $placeHolderEmail, 'size' => 60, 'maxlength' => 40, 'onKeyUp' => "hideSignServerValidationMes(this)", 'ng-model' => "formEmail", "ng-required" => "true")); ?>
+            <script>
+                $(function() {
+                    $('#signInEmail').on('click', function(e) {
+                        $(this).attr('id', 'StudentReg_email');
+                    });
+                });
+            </script>
+
             <?php echo $form->error($model, 'email'); ?>
             <div class="clientValidationError"
                  ng-show="authForm['StudentReg[email]'].$dirty && authForm['StudentReg[email]'].$invalid  && !regChecked">
@@ -39,7 +47,14 @@
         <div class="rowpass">
             <?php $placeHolderPassword = Yii::t('regform', '0015'); ?>
             <span class="passEye">
-                    <?php echo $form->passwordField($model, 'password', array('class' => 'signInPassM', 'placeholder' => $placeHolderPassword, 'size' => 60, 'maxlength' => 20, 'onKeyUp' => "hideSignServerValidationMes(this)", 'ng-model' => "formPass", "ng-required" => "true")); ?>
+                    <?php echo $form->passwordField($model, 'password', array('id' => 'signInPassM', 'class' => 'signInPassM', 'placeholder' => $placeHolderPassword, 'size' => 60, 'maxlength' => 20, 'onKeyUp' => "hideSignServerValidationMes(this)", 'ng-model' => "formPass", "ng-required" => "true")); ?>
+                <script>
+                $(function() {
+                    $('#signInPassM').on('click', function(e) {
+                        $(this).attr('id', 'StudentReg_password');
+                    });
+                });
+            </script>
                 </span>
             <?php echo $form->error($model, 'password'); ?>
             <div class="clientValidationError"
@@ -51,7 +66,7 @@
         <div ng-show="signMode=='signIn'">
             <div class="authLinks">
                 <div class="raw" style="clear:both;margin-top: 27px">
-                    <?php echo CHtml::submitButton('', array('id' => "signInButtonM", 'ng-disabled' => 'authForm.$invalid', 'value'=>Yii::t('regform', Yii::t('regform', '0093')))); ?>
+                    <?php echo CHtml::submitButton('', array('class' => "signInButtonM", 'ng-disabled' => 'authForm.$invalid', 'value'=>Yii::t('regform', Yii::t('regform', '0093')))); ?>
                 </div>
                 <?php echo CHtml::link(Yii::t('regform', '0092'), '', array('id' => 'authLinks', 'onclick' => 'openForgotpass("fromForm")')); ?>
                 <label for="signUpMode" class=registration><?php echo Yii::t('registration', '0591'); ?></label>
@@ -60,10 +75,10 @@
         </div>
         <div ng-show="signMode=='signUp'">
             <div class="authLinks">
-                <div class="row">
+
                     <div class="regCheckbox">
-                        <input type="checkbox" id="regCheckbox" ng-init='regChecked=false' ng-model="regChecked" name="isExtended" />
-                        <label for="regCheckbox"><?php echo Yii::t('regform','0011'); ?></label>
+                        <input type="checkbox" id="regCheckboxform" ng-init='regChecked=false' ng-model="regChecked" name="isExtended" />
+                        <label for="regCheckboxform"><?php echo Yii::t('regform','0011'); ?></label>
                     </div>
 
                     <div class="regFormEducation">
@@ -74,12 +89,12 @@
                     </div>
 
                     <div class="raw" style="clear:both;">
-                        <?php echo CHtml::submitButton('', array('id' => "signInButtonM", 'ng-disabled' => 'authForm.$invalid && !regChecked', 'value'=>Yii::t('regform', Yii::t('regform', '0013')))); ?>
+                        <?php echo CHtml::submitButton('', array('class' => "signInButtonM", 'ng-disabled' => 'authForm.$invalid && !regChecked', 'value'=>Yii::t('regform', Yii::t('regform', '0013')))); ?>
                     </div>
                     
                     <label for="signInMode" class="registration"><?php echo Yii::t('regform','0806') ?></label>
                     <input ng-hide=true ng-init="signMode='<?php echo $mode; ?>'" type="radio" ng-model="signMode" name="signMode" id="signInMode" value="signIn" />
-                </div>
+
             </div>
         </div>
 

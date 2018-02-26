@@ -61,7 +61,7 @@ angular
             .state('configuration/careers', {
                 url: "/configuration/careers",
                 cache: false,
-                templateUrl: url+"/careers",
+                templateUrl: url+"/careers"
             })
             .state('configuration/careers/update/:id', {
                 url: "/configuration/careers/update/:id",

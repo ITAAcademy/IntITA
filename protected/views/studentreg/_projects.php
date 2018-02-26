@@ -8,6 +8,24 @@
 
 ?>
 <?php if ($owner) {?>
+    <p class="text-right">
+        <a href="" ng-click="show_project=!show_project" class="about_project" ng-class="{'collapsed': !show_project}">Інструкція</a>
+    </p>
+    <div ng-if="show_project">
+        <div>
+            Якщо твій проект знаходиться на gitlab, виконай:
+            <ul>
+                <li>
+                    Settings->Repository->Deploy keys->CI Press Enable
+                </li>
+                <li>
+                    Дочекайся затвердження проекта тренером
+                </li>
+            </ul>
+        </div>
+        <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'project1.jpg');?>">
+        <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'project2.jpg');?>">
+    </div>
 <div class="col-md-12 col-sm-12" >
     <button class="btn btn-primary" ng-click="addProject()"> Додати проект</button>
 </div>

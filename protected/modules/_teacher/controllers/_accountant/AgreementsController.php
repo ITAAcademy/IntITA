@@ -2,11 +2,12 @@
 
 class AgreementsController extends TeacherCabinetController {
     public function hasRole() {
-        $allowedTrainerActions = ['renderUserAgreements','getUserAgreementsList','agreement','getAgreement'];
         $allowedAuditorsActions = ['index','getAgreementsList','agreement','getAgreement'];
+        $allowedStudentInfoActions = ['agreement', 'renderUserAgreements','getUserAgreementsList','agreement','getAgreement', 'getAgreementsList'];
+
         $action = Yii::app()->controller->action->id;
         return Yii::app()->user->model->isAccountant() ||
-            (Yii::app()->user->model->isTrainer() && in_array($action, $allowedTrainerActions)) ||
+            ((Yii::app()->user->model->isTrainer() || Yii::app()->user->model->isSupervisor()) && in_array($action, $allowedStudentInfoActions)) ||
             (Yii::app()->user->model->isAuditor() && in_array($action, $allowedAuditorsActions));
     }
 
@@ -45,8 +46,23 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionGetAgreementsList() {
         $requestParams = $_GET;
+        $group_name_id = 0;
         $organization = Yii::app()->user->model->getCurrentOrganization();
+        if(isset($requestParams['filter']['group_name.id'])){
+            $group_name_id = $requestParams['filter']['group_name.id'];
+            unset($requestParams['filter']['group_name.id']);
+        }
         $ngTable = new NgTableAdapter(UserAgreements::model()->with('service')->belongsToOrganization($organization), $requestParams);
+        $criteria =  new CDbCriteria();
+        $criteria->join = 'left join offline_students os on os.id_user=t.user_id';
+        $criteria->join .= ' left join offline_subgroups sg on sg.id=os.id_subgroup';
+        $criteria->join .= ' left join offline_groups g on g.id=sg.group';
+        if($group_name_id != 0){
+            $criteria->addCondition('g.id=:groupId');
+            $criteria->params = [':groupId'=>$group_name_id];
+        }
+
+        $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
         echo json_encode($result);
     }
