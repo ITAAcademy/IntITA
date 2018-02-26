@@ -9,14 +9,7 @@
          uib-alert="" ng-class="'alert-' + (message.type || 'warning')"
          class="ng-scope ng-isolate-scope alert alert-dismissible alert-success">
     </div>
-    <div id="pageContainer" ui-view>
-        <div class="row">
-            <div class="col-lg-12">
-    <?php echo $this->renderPartial('_dashboard',array(
-            'model' => $model,
-    )) ?>
-            </div>
-         </div>
-    </div>
+    <div ng-controller="rolesBadgesCount"></div>
+    <div id="pageContainer" ui-view></div>
 </div>
 

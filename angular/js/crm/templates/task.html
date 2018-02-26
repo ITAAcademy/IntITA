@@ -73,7 +73,7 @@
         <div class="form-group">
             <div ng-include="pathToTemplates+'/crmDeadLineBlock.html'"></div>
         </div>
-        <div class="form-group" id="mailNotifivation" ng-show="crmTask.editable">
+        <div ng-if="crmTask.teacherMode" class="form-group" id="mailNotifivation" ng-show="crmTask.editable">
             <div ng-include="pathToTemplates+'/crmMailNotificationBlock.html'"></div>
         </div>
     </div>

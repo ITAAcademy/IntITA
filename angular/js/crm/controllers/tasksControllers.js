@@ -31,9 +31,10 @@ angular
                 {'skipSubprotocolCheck': true}
             );
         }])
-    .controller('crmTasksCtrl', ['$attrs', '$scope', 'crmTaskServices', 'ngToast', '$rootScope', 'NgTableParams', '$state', 'lodash', '$filter', '$uibModal', '$timeout', '$window',
-        function ($attrs, $scope, crmTaskServices, ngToast, $rootScope, NgTableParams, $state, lodash, $filter, $uibModal, $timeout, $window) {
+    .controller('crmTasksCtrl', ['$attrs', '$scope', 'crmTaskServices', 'ngToast', '$rootScope', 'NgTableParams', '$state', 'lodash', '$filter', '$uibModal', '$timeout', '$window','usersService',
+        function ($attrs, $scope, crmTaskServices, ngToast, $rootScope, NgTableParams, $state, lodash, $filter, $uibModal, $timeout, $window, usersService) {
             $scope.changePageHeader('Завдання');
+            var initializing = true;
 
             $rootScope.$on('$stateChangeStart',
                 function(event, toState, toParams, fromState, fromParams){
@@ -117,6 +118,20 @@ angular
                 {id: "3", title: 'Високий'},
                 {id: "4", title: 'Терміновий'},
             ];
+            $scope.crmParentTypes = [
+                {id: "1", title: 'Основні задачі'},
+                {id: "2", title: 'Підзадачі'},
+            ];
+
+            $scope.getGroupsNames = function () {
+                usersService
+                    .getGroupNumber()
+                    .$promise
+                    .then(function (data) {
+                        $scope.groupsNames = data;
+                    })
+            };
+            $scope.getGroupsNames();
 
             $scope.getCrmTasksTypeList = function () {
                 crmTaskServices
@@ -176,9 +191,9 @@ angular
                 }
             }
 
-            $rootScope.loadTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType) {
+            $rootScope.loadTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
                 if ($scope.board == 1) {
-                    return $scope.loadKanbanTasks(idRole, filterName, fullName, filterId, filterPriority, filterType).then(function (data) {
+                    return $scope.loadKanbanTasks(idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName).then(function (data) {
                         $scope.setKanbanHeight();
                     });
                 } else {
@@ -194,7 +209,9 @@ angular
                         $scope.filter.fullName,
                         $scope.filter.id,
                         $scope.filter.priority,
-                        $scope.filter.type
+                        $scope.filter.type,
+                        $scope.filter.parentType,
+                        $scope.filter.groupsNames
                     );
                 }
             },
@@ -234,7 +251,7 @@ angular
                 return promise;
             };
 
-            $scope.loadKanbanTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType) {
+            $scope.loadKanbanTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
                 var promise = $scope.crmCanbanTasksList =
                     crmTaskServices
                         .getTasks({
@@ -245,6 +262,8 @@ angular
                             'filter[idTask.id]': filterId,
                             'filter[idTask.priority]': filterPriority,
                             'filter[idTask.type]': filterType,
+                            'filter[idTask.parentType]': filterParentType,
+                            'filter[idTask.groupsNames]': groupsName,
                         })
                         .$promise
                         .then(function (data) {
@@ -252,10 +271,10 @@ angular
                                 return {
                                     id: item.idTask.id,
                                     title: item.idTask.name,
-                                    producerName: item.producerName.fullName,
-                                    producerAvatar: basePath + '/images/avatars/' + item.producerName.avatar,
-                                    executantName: item.executantName.fullName,
-                                    executantAvatar: basePath + '/images/avatars/' + item.executantName.avatar,
+                                    producerName: item.idTask.producerName.fullName,
+                                    producerAvatar: basePath + '/images/avatars/' + item.idTask.producerName.avatar,
+                                    executantName: item.idTask.executantName.fullName,
+                                    executantAvatar: basePath + '/images/avatars/' + item.idTask.executantName.avatar,
                                     description: $filter('limitTo')(item.idTask.body, 70),
                                     changeDate: item.idTask.change_date,
                                     status: "concept",
@@ -294,7 +313,11 @@ angular
             };
 
             $scope.$watch('board', function () {
-                if (typeof $rootScope.roleId != 'undefined') $rootScope.loadTasks($rootScope.roleId);
+                if (initializing) {
+                    $timeout(function() { initializing = false; });
+                } else {
+                    if (typeof $rootScope.roleId != 'undefined') $rootScope.loadTasks($rootScope.roleId);
+                }
             });
 
             $scope.getKanban = function () {

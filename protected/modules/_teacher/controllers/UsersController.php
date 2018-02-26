@@ -8,13 +8,15 @@ class UsersController extends TeacherCabinetController
         $allowedUsersTables = ['users','getUsersList','getTrainersList','coworkers','getTeachersList','students','getStudentsList'];
         $allowedCMActions = ['contentAuthors','getAuthorsList','teacherConsultants','getTeacherConsultantsList'];
         $allowedGroups = ['offlineGroups','offlineGroup','offlineSubgroup'];
+        $allowedForStudent = ['getGroupNumber'];
 
         $action = Yii::app()->controller->action->id;
         return (Yii::app()->user->model->isDirector() || Yii::app()->user->model->isSuperAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isAccountant() && !in_array($action, $allowedDenySetActions)) ||
         (Yii::app()->user->model->isSuperVisor() && in_array($action, $allowedUsersTables)) ||
         Yii::app()->user->model->isAdmin() ||
         (Yii::app()->user->model->isContentManager() && in_array($action, $allowedCMActions)) ||
-            (Yii::app()->user->model->isTeacherConsultant() || Yii::app()->user->model->isTrainer() && in_array($action, $allowedGroups));
+            (Yii::app()->user->model->isTeacherConsultant() || Yii::app()->user->model->isTrainer() && in_array($action, $allowedGroups) ||
+                (Yii::app()->user->model->isStudent() && in_array($action, $allowedForStudent)));
     }
 
     public function actionIndex($id=0)

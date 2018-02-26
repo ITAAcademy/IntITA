@@ -22,7 +22,22 @@ angular
 
 angular
     .module('teacherApp')
-    .controller('mainTeacherConsultantCtrl', mainTeacherConsultantCtrl);
+    .controller('mainTeacherConsultantCtrl', ['$scope', '$rootScope', '$http','usersService',
+        function ($scope, $rootScope, $http, usersService) {
+            $scope.getNewPlainTasksAnswers = function () {
+                usersService
+                    .getNewPlainTasksAnswersCount()
+                    .$promise
+                    .then(function (response) {
+                        $rootScope.countOfNewPlainTasksAnswers = response.data;
+                    })
+                    .catch(function () {
+                        bootbox.alert('Отримати дані про нові відповіді по простих завданнях не вдалося');
+                    });
+            };
+
+            $scope.getNewPlainTasksAnswers();
+        }])
 
 angular
     .module('teacherApp')
@@ -35,6 +50,30 @@ angular
 angular
     .module('teacherApp')
     .controller('addGraduateCtrl', addGraduateCtrl);
+
+angular
+    .module('teacherApp')
+    .controller('rolesBadgesCount', ['$scope', '$http','$rootScope','usersService','paymentSchemaService','agreementsService',
+        function ($scope, $http, $rootScope, usersService, paymentSchemaService, agreementsService) {
+            $http({
+                method: 'POST',
+                url: basePath + '/_teacher/cabinet/getUserRoles',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (response) {
+                $jq.each(response, function( index, role ) {
+                    switch(role) {
+                        case 'teacher_consultant':
+                            usersService.getNewPlainTasksAnswersCount().$promise.then(function (response) {
+                                    $rootScope.countOfNewPlainTasksAnswers = response.data;
+                                });
+                            break;
+                        default:
+                    }
+                });
+            }).error(function () {
+                console.log("Отримати дані про ролі користувача не вдалося");
+            })
+        }])
 
 
 function addGraduateCtrl($scope, $http, $timeout, $httpParamSerializerJQLike, $ngBootbox) {
@@ -780,22 +819,6 @@ function mailCtrl($scope, $http, $stateParams, $ngBootbox) {
 
     };
 
-}
-
-function mainTeacherConsultantCtrl($scope, $rootScope, $http) {
-    $scope.getNewPlainTasksAnswers = function () {
-        $http({
-            method: 'POST',
-            url: basePath + '/_teacher/_teacher_consultant/teacherConsultant/getNewPlainTasksAnswersCount',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).success(function (response) {
-            ;
-            $rootScope.countOfNewPlainTasksAnswers = response;
-        }).error(function () {
-            console.log("Отримати дані про нові відповіді по простих завданнях не вдалося");
-        })
-    };
-    $scope.getNewPlainTasksAnswers();
 }
 
 function mainAccountantCtrl($rootScope, paymentSchemaService, agreementsService) {

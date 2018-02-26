@@ -189,7 +189,8 @@ class TeacherConsultantController extends TeacherCabinetController
     public function actionGetNewPlainTasksAnswersCount()
     {
         $newAnswersCount = count(PlainTaskAnswer::newPlainTaskListByTeacher(Yii::app()->user->getId()));
-        echo $newAnswersCount;
+        $data['data']=$newAnswersCount;
+        echo json_encode($data);
     }
 
     public function actionReadNewPlainTasksAnswers()
