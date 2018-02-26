@@ -424,13 +424,11 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
                 bootbox.alert("Отримати файл договору не вдалося");
             })
     }
-
     $scope.getDocument = function (documentID) {
         bootbox.alert({
             message: "<img width='100%' src='" + basePath + '/_teacher/_accountant/accountant/getDocument?id=' + documentID + "'>",
             size: 'large'
         })
-
     }
 }
 
