@@ -13,3 +13,6 @@
     </uib-tabset>
     <div ui-view="studentsTabs"></div>
 </div>
+<script>
+    $jq('.scroll-table').height($jq(window).height()-100);
+</script>
