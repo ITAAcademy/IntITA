@@ -11,6 +11,7 @@ angular
     });
 
 function taskCtrl($rootScope,$compile, $http, $timeout, $scope, openDialogsService, pagesUpdateService, interpreterServices, accessLectureService, ipCookie) {
+    var interpreterServer = document.querySelector("#scriptData [data-interpreter-server]").getAttribute("data-interpreter-server");
     $scope.init = function(taskLang)
     {
         $scope.taskLang=taskLang;

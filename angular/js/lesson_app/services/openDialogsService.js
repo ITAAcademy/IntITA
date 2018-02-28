@@ -6,8 +6,10 @@ angular
     .service('openDialogsService',['ngToast',
     function (ngToast) {
         this.openTrueDialog = function () {
+            var successMessage = document.querySelector("#scriptData [data-success-message]").getAttribute("data-success-message");
+            successMessage = successMessage.split("! ").join("!<br>");
             ngToast.create({
-                content: trueDialogMessage,
+                content: successMessage,
                 className: 'success',
                 dismissOnTimeout: true
             });
