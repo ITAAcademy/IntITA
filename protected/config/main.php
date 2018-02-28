@@ -248,7 +248,7 @@ return array(
             ),
         ),
     ),
-    'params' => $params_config['params'],
+    'params' => array_merge(['versionOfFile'=>1], $params_config['params'])
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
 
