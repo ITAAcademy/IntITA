@@ -75,9 +75,6 @@ $startOfDay = date('Y-m-d H:i:s', strtotime(date('Y-m-d')));
                         <td style="word-wrap:break-word" data-title="'Студент'" sortable="'idUser.fullName'" filter="{'idUser.fullName': 'text'}" >
                             <a ng-href="#/users/profile/{{row.id_user}}">{{row.idUser.fullName}}</a>
                         </td>
-                        <td data-title="'Група'" filter="{ 'group_name.id' : 'select' }" filter-data="groupsNames">
-                            <span ng-repeat="item in row.group_name">{{ item.name + ' ' }}</span>
-                        </td>
                         <td data-title="'Надано роль'" filter="{'start_date': 'text'}" sortable="'start_date'">{{row.start_date}}</td>
                         <td data-title="'Форма'" filter="{'idUser.education_shift': 'select'}" filter-data="educationForms">
                             {{row.idUser.education_shift==1? "онлайн":"онлайн/оффлайн"}}
