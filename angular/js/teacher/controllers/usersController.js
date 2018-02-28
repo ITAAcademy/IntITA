@@ -1472,7 +1472,6 @@ function contractStudentsCtrl($scope, trainerService, usersService, NgTableParam
         });
 
     $scope.updateContractInfo = function (id_student, attr, text) {
-        console.log(id_student);
         text = text?text:'';
         bootbox.dialog({
                 title: "Введіть нову назву:",
