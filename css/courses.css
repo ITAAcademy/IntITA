@@ -128,6 +128,16 @@
     top: 12px;
     left: 16px;
 }
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+    .starLevelIndex {
+        position: relative;
+        top: 4px;
+        left: 16px;
+    }
+}
+
 .moduleRating{
     position: relative;
     top: 12px;
