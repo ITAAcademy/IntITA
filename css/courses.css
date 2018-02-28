@@ -124,10 +124,22 @@
     margin: 0;
 }
 .starLevelIndex{
+    display: inline-block;
     position: relative;
     top: 12px;
     left: 16px;
 }
+
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+    .starLevelIndex {
+        position: relative;
+        top: 4px;
+        left: 16px;
+    }
+}
+
 .moduleRating{
     position: relative;
     top: 12px;
@@ -455,6 +467,7 @@ span.moduleNum{
     .displayMini{display: table;margin-bottom: 5px}
     .displayMini .courseLogo{display: table-cell;vertical-align:bottom}
     .displayMini .courseNameMini{display: table-cell;vertical-align:middle}
+
     ul.yiiPager a:link, ul.yiiPager a:visited {
         font-size: 10px;
     }
