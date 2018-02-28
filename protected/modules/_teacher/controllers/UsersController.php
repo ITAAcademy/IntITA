@@ -227,10 +227,10 @@ class UsersController extends TeacherCabinetController
         $criteria->join = 'inner join user u on u.id = t.id_user';
         $criteria->condition = 'u.cancelled='.StudentReg::ACTIVE.' and t.end_date IS NULL';
 
-        if($_GET['trainersScope']){
+        if(isset($_GET['trainersScope'])){
             $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and 
             t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
-        } else if($_GET['organization']){
+        } else if(isset($_GET['organization']) && $_GET['organization']){
             $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         }
 
@@ -946,7 +946,7 @@ class UsersController extends TeacherCabinetController
         if(isset($_GET['trainersScope'])){
             $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and
             t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
-        } else if($_GET['organization']){
+        } else if(isset($_GET['organization']) && $_GET['organization']){
             $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         }
         if($specialization_id != 0){
@@ -1002,7 +1002,7 @@ class UsersController extends TeacherCabinetController
         if(isset($_GET['trainersScope'])){
             $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and
             t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
-        } else if($_GET['organization']){
+        } else if(isset($_GET['organization']) && $_GET['organization']){
             $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         }
         $ngTable->mergeCriteriaWith($criteria);
@@ -1042,7 +1042,7 @@ class UsersController extends TeacherCabinetController
         if(isset($_GET['trainersScope'])){
             $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and
             t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
-        } else if($_GET['organization']){
+        } else if(isset($_GET['organization']) && $_GET['organization']){
             $criteria->addCondition('t.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         }
         if($group_name_id != 0){

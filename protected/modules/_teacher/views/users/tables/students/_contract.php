@@ -59,8 +59,10 @@
             <?php } ?>
         </tr>
     </table>
-    <em style="color:red">*</em>Скасувати можна договір, по якому ще не було жодної проплати та, який ще не скасований<br>
-    <span style="background-color: rgba(92,184,92,.6);">Проплачений повністю</span><br>
-    <span style="background-color: #f0b370">Збігає термін проплати</span><br>
-    <span style="background-color: rgba(217,82,82,.6)">Термін проплати збіг або не оплачений жодний рахунок по договору</span><br>
+    <div style="clear: both">
+        <em style="color:red">*</em>Скасувати можна договір, по якому ще не було жодної проплати та, який ще не скасований<br>
+        <span style="background-color: rgba(92,184,92,.6);">Проплачений повністю</span><br>
+        <span style="background-color: #f0b370">Збігає термін проплати</span><br>
+        <span style="background-color: rgba(217,82,82,.6)">Термін проплати збіг або не оплачений жодний рахунок по договору</span><br>
+    </div>
 </div>

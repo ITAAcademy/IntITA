@@ -25,7 +25,7 @@
                         <a href="#/offlineGroups">Офлайнові групи</a>
                     </li>
                     <li>
-                        <a href="#/trainer/studentsProjects">Затвердження курсової роботи</a>
+                        <a href="#/trainerStudentsTable/studentsProjects">Затвердження курсової роботи</a>
                     </li>
                 </ul>
             </div>
