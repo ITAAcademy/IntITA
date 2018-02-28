@@ -998,13 +998,13 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
     if($scope.trainer){
         $scope.tabs.push({ title: "Проекти", route: "studentsProjects"});
         $scope.tabs.forEach(function(item, i) {
-            if('studentsTable/students.'+item.route==$state.current.name) {
+            if('trainerStudentsTable/students.'+item.route==$state.current.name) {
                 $scope.active=i;
             }
         });
     }else{
         $scope.tabs.forEach(function(item, i) {
-            if('trainerStudentsTable/students.'+item.route==$state.current.name) {
+            if('studentsTable/students.'+item.route==$state.current.name) {
                 $scope.active=i;
             }
         });

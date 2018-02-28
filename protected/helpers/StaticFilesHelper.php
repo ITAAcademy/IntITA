@@ -61,6 +61,9 @@ class StaticFilesHelper {
             case 'angular':
                 return StaticFilesHelper::fullPathToAngular($name).self::setFilesVersion();
                 break;
+            case 'angular_non_version':
+                return StaticFilesHelper::fullPathToAngular($name);
+                break;
             default:
                 return StaticFilesHelper::fullPathToFiles($name).self::setFilesVersion();
                 break;
