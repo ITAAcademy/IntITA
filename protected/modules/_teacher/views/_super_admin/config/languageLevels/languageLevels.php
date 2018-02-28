@@ -14,10 +14,16 @@
                     <th class="col-sm-2">Order</th>
                 </tr>
 
-                <tr ng-repeat="row in languageLevels">
-                    <td>{{row.id}}</td>
-                    <td>{{row.title}}</td>
-                    <td>{{row.description}}</td>
+                <tr ng-repeat="row in languageLevels track by $index">
+                    <td><a ng-href="#/configuration/language_levels/update/{{row.id}}">
+                            {{row.id}}</a>
+                    </td>
+                    <td><a ng-href="#/configuration/language_levels/update/{{row.id}}">
+                            {{row.title}}</a>
+                    </td>
+                    <td><a ng-href="#/configuration/language_levels/update/{{row.id}}">
+                            {{row.description}}</a>
+                    </td>
                     <td>{{row.order}}</td>
                 </tr>
             </table>

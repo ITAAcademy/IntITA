@@ -113,12 +113,18 @@ angular
             .state('configuration/language_levels', {
                 url: "/configuration/language_levels",
                 cache: false,
-                templateUrl: templateUrl + "/languageLevels.html"
+                templateUrl: url + "/languageLevels"
             })
             .state('configuration/create_language_levels', {
                 url: "/configuration/create_language_levels",
                 cache: false,
                 templateUrl: url +"/languageLevelsCreate"
             })
-
+            .state('configuration/language_levels/update/:id', {
+                url: "/configuration/language_levels/update/:id",
+                cache: false,
+                templateUrl: function ($stateParams) {
+                    return url+"/languageLevelsUpdate/id/"+$stateParams.id;
+                }
+            })
 });

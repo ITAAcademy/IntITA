@@ -22,43 +22,11 @@ class m180212_215938_create_language_levels_table extends CDbMigration
                 'description' => 'Pre-Intermidiate',
                 'order' => '2',
             ],
-            [
-                'title' => 'B1',
-                'description' => 'Intermidiate',
-                'order' => '3',
-            ],
-            [
-                'title' => 'B2',
-                'description' => 'Upper-Intermidiate',
-                'order' => '4',
-            ],
-            [
-                'title' => 'C1',
-                'description' => 'Advanced',
-                'order' => '5',
-            ],
-            [
-                'title' => 'C2',
-                'description' => 'Proficiency',
-                'order' => '6',
-            ],
+
         ]);
     }
 	public function safeDown()
 	{
-		//echo "m180212_215938_create_language_levels_table does not support migration down.\n";
-		//return false;
         $this->dropTable('language_levels');
 	}
-
-    //
-	/* Use safeUp/safeDown to do migration with transaction
-	public function safeUp()
-	{
-	}
-
-	public function safeDown()
-	{
-	}
-	*/
 }

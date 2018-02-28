@@ -282,7 +282,7 @@ class ConfigController extends TeacherCabinetController {
             $model->save(false);
         }
     }
-    public function actionLanguageLevels()
+    public function actionLanguageLevel()
     {
         $levels = LanguageLevels::model()->findAll();
         $values = [];
@@ -291,28 +291,51 @@ class ConfigController extends TeacherCabinetController {
         }
         $this->renderPartial('//ajax/json', ['body' => json_encode($values)]);
     }
+    public function actionlanguageLevels()
+    {
+        $this->renderPartial('/_super_admin/config/languageLevels/languageLevels', array(), false, true);
+    }
     public function actionLanguageLevelsCreate()
     {
-        $this->renderPartial('/_super_admin/config/languageLevels/languageLevelsCreate', array(), false, true);
+        $this->renderPartial('/_super_admin/config/languageLevels/languageLevelsForm', array('scenario'=>'create'), false, true);
     }
-
+    public function actionLanguageLevelsUpdate()
+    {
+        $this->renderPartial('/_super_admin/config/languageLevels/languageLevelsForm', array('scenario'=>'update'), false, true);
+    }
     public function actionCreateLanguageLevels()
     {
-        $title=Yii::app()->request->getPost('title');
-        $description=Yii::app()->request->getPost('description');
-        $order=Yii::app()->request->getPost('order');
-
+        $data = Yii::app()->request->getPost('form_data');
         $languageLevel=new LanguageLevels();
-
-        $languageLevel->title=$title;
-        $languageLevel->description=$description;
-        $languageLevel->order=$order;
+        $languageLevel->attributes = $data;
+        $count = LanguageLevels::model()->count();
+        $languageLevel->order=++$count;
 
         if($languageLevel->save()){
-            echo "Рівні створено";
+            echo "Рівень створено";
         }else{
-            echo "Створити рівень не вдалося. Введені не вірні дані";
+            throw new CHttpException(500, 'Створити рівень не вдалося. Введені не вірні дані');
         }
     }
+    public function actionGetLanguageLevelsData()
+    {
+        echo CJSON::encode(LanguageLevels::model()->findByPk(Yii::app()->request->getParam('id')));
+    }
+    public function actionUpdateLanguageLevels()
+    {
+        $id=Yii::app()->request->getPost('id');
+        $data=Yii::app()->request->getPost('data');
+
+        $languageLevel=LanguageLevels::model()->findByPk($id);
+        $languageLevel->attributes = $data;
+
+        if($languageLevel->update()){
+            echo 'Рівень оновлено';
+        }else{
+            echo 'Оновити рівень не вдалося. Введені не вірні дані';
+        }
+
+    }
+
 
 }

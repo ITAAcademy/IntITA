@@ -27,7 +27,8 @@ class LanguageLevels extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, description, order', 'required'),
+			array('title, description', 'required'),
+            array('order', 'unique'),
 			array('order', 'numerical', 'integerOnly'=>true),
 			array('title, description', 'length', 'max'=>50),
 			// The following rule is used by search().
