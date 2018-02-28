@@ -10,7 +10,7 @@
             <td data-title="'Прізвище'" filter="{'second_name': 'text'}" sortable="'second_name'">
                 <a ng-href="" ng-click="updateVisitInfo(row.id_student ,'second_name', row.second_name)">{{ row.second_name ? row.second_name : 'Редагувати' }}</a>
             </td>
-            <td data-title="'Еmail'" filter="{'email': 'text'}">
+            <td data-title="'Еmail'" filter="{'email': 'text'}" sortable="'email'">
                 <a ng-href="#/users/profile/{{row.id_student}}">{{row.email}}</a>
             </td>
             <td data-title="'Група'" filter="{ 'group_name.id' : 'select' }" filter-data="groupsNames">
