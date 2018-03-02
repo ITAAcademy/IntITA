@@ -73,6 +73,7 @@ return array(
         '_admin',
         '_teacher',
         '_accountancy',
+        'cms',
         //'debug',
     ),
 
@@ -139,7 +140,7 @@ return array(
                 'cabinet/mail' => '_teacher/cabinet/mail',
                 'profile/edit' => 'studentreg/edit',
                 'agreement/<id:\d+>' => 'payments/showAgreement',
-
+                'cms' => 'cms/cms/index',
 
                 array('class' => 'CourseRule'),//rules for course page ($routes: 'course/index', 'module/index', 'lesson/index')
                 '<module:\w+>/<controller:\w+>/<id:\d+>' => '<module>/<controller>/view',
