@@ -24,9 +24,6 @@ $this->widget('application.components.ColumnListView', array(
 
 ?>
 
-
-
-
 <div class="showMoreGraduate" ng-hide="currentGraduateCount=='<?php echo $dataProvider->totalItemCount?>'" align="right"
      ng-controller="showMoreGraduateCtrl">
     <a href="" ng-click="showMoreGraduate()" class="" style="">Показати ще ... </a>
