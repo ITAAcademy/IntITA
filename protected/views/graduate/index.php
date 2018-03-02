@@ -18,13 +18,16 @@
     'description'=>Yii::t('sharing','0644'),
 ));
 ?>
+
+
 <div class="graduateBlock">
     <div  class="graduates">
         <h1><?php echo Yii::t('graduates', '0297')?></h1>
         <?php echo $this->renderPartial('_graduateFilter'); ?>
     </div>
-    <div id="graduateBlock">
+</div>
 
-        <?php echo $this->renderPartial('_graduatesList', array('dataProvider'=>$dataProvider,'lang'=>$lang)); ?>
-    </div>
+
+<div id="graduateBlock">
+    <?php echo $this->renderPartial('_graduatesList', array('dataProvider'=>$dataProvider,'lang'=>$lang)); ?>
 </div>

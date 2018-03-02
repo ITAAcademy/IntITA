@@ -203,6 +203,8 @@ $header = new Header();
         <!--forgot pass modal-->
     </div>
 </div>
+
+
 <div id="mainfooter">
 
     <div class="footercontent">

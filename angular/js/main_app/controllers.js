@@ -10,6 +10,10 @@ angular
     .controller('studentProjectsCtrl',studentProjectsCtrl)
     .controller('bannersSliderCtrl',bannersSliderCtrl)
 
+
+
+
+
 /* Controllers */
 function editProfileController($scope, $http, countryCity, careerService, specializations, $q, $timeout, FileUploader, documentsServices) {
     $scope.focusField = function(model,select){

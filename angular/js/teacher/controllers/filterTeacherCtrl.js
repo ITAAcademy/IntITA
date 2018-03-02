@@ -53,15 +53,14 @@ angular
         };
     })
     .controller('showMoreTeacherCtrl', function($scope){
-        var size=2;
+        var sizeTeacher=2;
         $scope.showMore = function(){
-            $.fn.yiiListView.update(
+            $.fn.yiiListView.update('ajaxListTeacher',
                 // this is the id of the CListView
-                'ajaxListTeacher',
                 {
                     url:'teachers/ShowMoreAjaxFilter',
                     data: {
-                        size: size
+                        size: sizeTeacher
                     },
                     complete: function () {
                         $scope.currentCount = $('.teacherBlock').length;

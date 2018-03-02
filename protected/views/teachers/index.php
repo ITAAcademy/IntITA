@@ -15,13 +15,8 @@
         Yii::t('breadcrumbs', '0052'));
     ?>
 </div>
-<div class='teachersList'>
-    <div class="titleTeachers">
-        <h1><?php echo Yii::t('teachers', '0058'); ?></h1>
-        <?php echo $this->renderPartial('_teacherFilter'); ?>
-    </div>
-    <?php $this->renderPartial('_teacherList', array('dataProvider'=>$post, 'teacherletter'=>$teacherletter));  ?>
-</div>
+
+
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/bootbox.min.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'hideBlock.js'); ?>"></script>
 <?php $this->renderPartial('/site/_shareMetaTag', array(
@@ -30,4 +25,17 @@
     'description'=>Yii::t('sharing','0645'),
 ));
 ?>
+
+<div class='teachersList'>
+    <div class="titleTeachers">
+        <h1><?php echo Yii::t('teachers', '0058'); ?></h1>
+        <?php echo $this->renderPartial('_teacherFilter'); ?>
+    </div>
+</div>
+
+
+<div id="teachersList">
+    <?php $this->renderPartial('_teacherList', array('dataProvider'=>$post, 'teacherletter'=>$teacherletter));  ?>
+</div>
+
 

@@ -102,7 +102,8 @@ class GraduateController extends Controller
      */
     public function actionIndex($selector='')
     {
-
+        //$a = array (1, 2, array ("a", "b", "c"));
+        //var_dump ($a); die;
         $dataProvider = new CActiveDataProvider('Graduate', array(
             'criteria'=>array(
                 'condition'=>'published=1',

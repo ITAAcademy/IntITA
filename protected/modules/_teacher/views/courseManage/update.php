@@ -18,7 +18,7 @@
             </a>
         </li>
         <li>
-            <button type="button" class="btn btn-primary" ng-click="changeCourse('<?php echo $model->course_ID ?>')">
+            <button type="button" class="btn  "   ng-class="{'btn-danger': $model->isActive()}"  ng-click="changeCourse('<?php echo $model->course_ID ?>')">
                 <?= ($model->isActive()) ? 'Видалити' : 'Відновити'; ?>
             </button>
         </li>

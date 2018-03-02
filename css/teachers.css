@@ -1,4 +1,15 @@
 /*header navigation*/
+
+.showMore{
+    horiz-align: right;
+    text-align: right;
+}
+.teacherBlock{
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 95%;
+}
+
 .subNavBlockTeachers {
     position: relative;
     margin: 0 auto;
