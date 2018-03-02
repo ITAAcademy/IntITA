@@ -530,7 +530,15 @@ angular
                                 self.data.executant = null;
                             }
                         }
-                    }
+                    },
+                    isObserver: function (user) {
+                        var observer = _.find(self.data.roles['observer'], {id: String(user)});
+                        if(_.isObject(observer)){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    },
                 };
 
                 crmTaskServices

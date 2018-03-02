@@ -7,9 +7,9 @@
         <col width="5%"/>
     </colgroup>
     <tr ng-repeat="row in $data track by $index"
-        ng-if="!(crmTask.data.rolesSubgroup.observer.length+crmTask.data.rolesSubgroup.collaborator.length)
+        ng-if="!crmTask.data.rolesSubgroup.collaborator.length
         || row.id_user==crmTask.currentUser || row.id_user==crmTask.data.roles.producer.id || row.id_user==crmTask.data.roles.executant.id
-        || crmTask.currentUser==crmTask.data.roles.executant.id || crmTask.currentUser==crmTask.data.roles.producer.id">
+        || crmTask.currentUser==crmTask.data.roles.executant.id || crmTask.currentUser==crmTask.data.roles.producer.id || crmTask.isObserver(row.id_user)|| crmTask.isObserver(crmTask.currentUser)">
         <td data-title="'Автор'">
             <img style="width: 48px;height: 48px" ng-src="/images/avatars/{{row.idUser.avatar}}">
             <a ng-href="#/users/profile/{{row.id_user}}" target="_blank">{{row.idUser.fullName}}</a>
