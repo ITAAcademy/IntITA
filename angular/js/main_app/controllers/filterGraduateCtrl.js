@@ -5,7 +5,6 @@ angular
     .module('mainApp')
     .controller('filterGraduateCtrl', function($scope){
 
-
        $scope.selectFilter = function(){
 
             if($scope.input === undefined){
@@ -56,11 +55,9 @@ angular
     })
     .controller('showMoreGraduateCtrl', function($scope) {
         var sizeGraduate = 2;
-
         $scope.showMoreGraduate = function () {
-            $.fn.yiiListView.update(
+            $.fn.yiiListView.update('ajaxListView',
                 // this is the id of the CListView
-                'ajaxListView',
                 {
                     url: 'graduate/ShowMoreGraduateAjaxFilter',
                     data: {

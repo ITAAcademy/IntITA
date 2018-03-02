@@ -1,10 +1,13 @@
+
+<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'SpoilerContent.js'); ?>"></script>
+
 <?php
 
 $this->widget('application.components.ColumnListView', array(
     'dataProvider' => $dataProvider,
     'itemView' => '_graduateBlock',
     'emptyText' => Yii::t('coursemanage', '0517'),
-    'viewData'=>array( 'lang' => $lang ),
+    'viewData'=>array( 'lang' => $lang),
     'summaryText' => '',
     'columns' => array("one row", "two row"),
     'pager' => array(
@@ -17,9 +20,12 @@ $this->widget('application.components.ColumnListView', array(
     ),
     'id'=>'ajaxListView',
 ));
+
+
 ?>
-<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'SpoilerContent.js'); ?>"></script>
+
 <div class="showMoreGraduate" ng-hide="currentGraduateCount=='<?php echo $dataProvider->totalItemCount?>'" align="right"
-     style="horiz-align: right;" ng-controller="showMoreGraduateCtrl">
+     ng-controller="showMoreGraduateCtrl">
     <a href="" ng-click="showMoreGraduate()" class="" style="">Показати ще ... </a>
 </div>
+

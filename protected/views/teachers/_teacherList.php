@@ -1,3 +1,4 @@
+
 <?php
 
 $this->widget('application.components.ColumnListView', array(
@@ -17,7 +18,7 @@ $this->widget('application.components.ColumnListView', array(
         'cssFile' => Config::getBaseUrl() . '/css/pager.css'
     ),
 
-    'id' => 'ajaxListTeacher'
+    'id' => 'ajaxListTeacher',
 ));
 ?>
 

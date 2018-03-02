@@ -1,3 +1,8 @@
+.showMoreGraduate{
+    horiz-align: right;
+    text-align: right;
+}
+
 .graduateBlock{
     max-width: 1200px;
     margin: 0 auto;
@@ -381,6 +386,8 @@ div.modal-footer {
 .one {
     margin-bottom: 60px;
 }
+
+
 
 /*style for pagination*/
 /*celebre*/
