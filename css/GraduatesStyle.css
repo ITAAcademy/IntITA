@@ -1,3 +1,11 @@
+.showMoreGraduate{
+    display: flex;
+    justify-content: center; /*Центрирование по горизонтали*/
+    margin-left: 25%;
+    font-size: 14pt;
+    font-family:sans-serif ;
+}
+
 .graduateBlock{
     max-width: 1200px;
     margin: 0 auto;
