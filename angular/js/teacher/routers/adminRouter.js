@@ -74,6 +74,11 @@ angular
                 return basePath+"/_teacher/users/emailsCategoryUpdate/id/"+$stateParams.id;
             }
         })
+        .state('admin/intita_cms', {
+            url: "/admin/intita_cms",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_admin/cms/index",
+        })
 });
 
 
