@@ -24,3 +24,4 @@ files/
 /test/
 /docker_data
 .env
+index.php
