@@ -1,40 +1,54 @@
-php:
-    image: devopsintita/intita:php5.6-fpm
+  app:
+    image: nickzorych/php:IntITA
+    user: ${USER_ID}:${USER_GID}
+    container_name: "IntITA_app"
+    volumes:
+      - ./:/app
+    links:
+      - db
+      - redis
+    environment:
+      XDEBUG_CONFIG: ${XDEBUG_CONFIG}
+
+  nginx:
+    container_name: "IntITA_nginx"
+    image: nginx:1.12-alpine
+    user: ${USER_ID}:${USER_GID}
     ports:
-        - "9001:9001"
-    links:
-        - db
-        - redis
+      - ${HTTP_PORT}:80
     volumes:
-        - ./code:/code
-        - ./mysql:/var/lib/mysql
-db:
-  image: devopsintita/intita:mysql
-  volumes:
-  - ./mysql:/var/lib/mysql
-  environment:
-    MYSQL_ROOT_PASSWORD: 1
-    MYSQL_USER: intita
-    MYSQL_PASSWORD: 1
-    MYSQL_DATABASE: intita
-redis:
-    image: redis
-chat:
-    image: devopsintita/intita:chat
-    entrypoint: sh /chat/chat.sh
+      - ./:/app
+      - ./docker_conf/nginx/intita.conf:/etc/nginx/conf.d/vhost.conf
     links:
-        - db
-        - redis
+      - app
+
+  mailcatcher:
+      container_name: "IntITA_mailcatcher"
+      image: schickling/mailcatcher:latest
+      ports:
+        - 1080:1080
+
+  db:
+    image: mysql:5.7
+    user: ${USER_ID}:${USER_GID}
+    container_name: "IntITA_db"
     volumes:
-       - ./chat:/chat
-web:
-    image: devopsintita/intita:nginx
+      - ./docker_data/mysql:/var/lib/mysql
+      - ./docker_conf/mysql/config.cnf:/etc/mysql/conf.d/config.cnf
     ports:
-        - "80:80"
-        - "443:443"
-    volumes:
-        - ./code:/code
-        - ./mysql:/var/lib/mysql
-    links:
-       - php
-       - chat
+      - ${MYSQL_LOCAL_PORT}:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWD}
+  redis:
+    image: redis:latest
+
+  bower:
+       container_name: "IntITA_bower"
+       user: ${USER_ID}:${USER_GID}
+       image: digitallyseamless/nodejs-bower-grunt:latest
+       volumes:
+        - ./angular:/data
+       command: bower install

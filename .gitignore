@@ -19,5 +19,8 @@ images/
 images/*
 files/
 /protected/vendor/*
-/angular/bower_components/
+/angular/bower_components
+/angular/bower_components/*
 /test/
+/docker_data
+.env
