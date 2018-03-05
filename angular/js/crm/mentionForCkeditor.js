@@ -203,6 +203,7 @@ function initMention(el, charUser, charTask, min) {
 
         //Takes the input event when users write or delete something
         window.onInputBoxInput = function(e) {
+            settings.currentEditorName=e.sender.editor.name;
             updateMentionsCollection();
             hideAutoComplete();
             var triggerCharIndexUser = _.lastIndexOf(inputBuffer, settings.triggerCharUser);
@@ -211,15 +212,12 @@ function initMention(el, charUser, charTask, min) {
             if(triggerCharIndexTask > -1) var firstKey = settings.triggerCharTask;
             var triggerCharIndex = Math.max(triggerCharIndexUser, triggerCharIndexTask);
             if (triggerCharIndex > -1) {
-                settings.currentEditorName=e.sender.editor.name;
                 elmInputBox = jQuery('#'+settings.currentEditorName); //Get the text area target
                 elmInputWrapper = elmInputBox.parent(); //Get the DOM element parent
 
                 elmAutocompleteList = jQuery(settings.templates.autocompleteList()); //Get the HTML code for the list
-                elmAutocompleteList.appendTo(jQuery('.mentions-input-box_'+settings.currentEditorName)); //Append to elmWrapperBox element
-                console.log('.mentions-input-box_'+settings.currentEditorName);
-                console.log(jQuery('.mentions-input-box_'+settings.currentEditorName));
-                console.log(elmAutocompleteList);
+                // elmAutocompleteList.appendTo(jQuery('.mentions-input-box_'+settings.currentEditorName)); //Append to elmWrapperBox element
+                elmAutocompleteList.appendTo(jQuery('#'+settings.currentEditorName).parent());
                 elmAutocompleteList.delegate('li', 'click', onAutoCompleteItemClick); //Delegate the event
 
                 settings.currentTriggerChar = firstKey;
