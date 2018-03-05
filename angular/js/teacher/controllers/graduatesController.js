@@ -5,7 +5,16 @@ angular
     .module('teacherApp')
     .controller('graduateCtrl',graduateCtrl)
     .controller('editGraduateCtrl',editGraduateCtrl);
+
 function graduateCtrl ($rootScope, $scope, $filter, $http, NgTableDataService,  NgTableParams, translitService, typeAhead, $httpParamSerializerJQLike, $state, $stateParams, $ngBootbox, $timeout){
+
+    $scope.$on('$stateChangeStart', function(event, next, current) {
+        if (typeof(current) !== 'undefined'){
+            $templateCache.remove(next.templateUrl);
+            console.log(next);
+            console.log(current);
+        }
+    });
 
     $scope.courseCollapsed = true;
     $scope.modulesCollapsed = true;
@@ -189,7 +198,7 @@ function graduateCtrl ($rootScope, $scope, $filter, $http, NgTableDataService,  
                 return false;
             }
             else{
-                $state.go('graduate');
+                $state.go('graduate/view/:graduateId',{graduateId:$stateParams.graduateId});
             }
         })
     }
