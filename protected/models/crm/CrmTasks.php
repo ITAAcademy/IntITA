@@ -388,6 +388,13 @@ class CrmTasks extends CTaskUnitActiveRecord
             if(!$schedulerTask){
                 $schedulerTask = new SchedulerTasks();
             }
+            else{
+                if (!$notificationParams['notify']){
+                    $schedulerTask->status = SchedulerTasks::STATUSOK;
+                    $schedulerTask->save(false);
+                    return false;
+                }
+            }
         }
         $notifyMessage->setScenario('crmTaskNotification');
         $notifyMessageTemplate = MailTemplates::model()->findByPk((int)$notificationParams['template']['id']);
