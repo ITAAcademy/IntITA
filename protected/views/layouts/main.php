@@ -71,6 +71,8 @@ $header = new Header();
         basePath = '<?php echo Config::getBaseUrl(); ?>';
         studentProjectPath = '<?php echo Config::getStudentsProjectsUrl();?>';
     </script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 </head>
 
 <body itemscope itemtype="https://schema.org/Product">

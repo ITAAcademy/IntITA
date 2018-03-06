@@ -63,6 +63,12 @@ table.titleProfile{
     font-size: smaller;
     line-height: 120%;
     width: 90%;
+    border-collapse: separate;
+    border-spacing: 4px 10px;
+}
+
+table.titleProfile div{
+    margin-right: 10px;
 }
 
 table.titleProfile td{
