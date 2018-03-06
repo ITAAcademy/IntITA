@@ -3,13 +3,17 @@
  */
 angular
     .module('lessonApp')
-    .service('openDialogsService',
-    function () {
+    .service('openDialogsService',['ngToast',
+    function (ngToast) {
         this.openTrueDialog = function () {
-            var dialogWidth=getDialogWidth();
-            $('#mydialog2').dialog({'width': dialogWidth, 'height': 'auto', 'modal': true, 'autoOpen': false});
-            $("#mydialog2").dialog("open");
-            $("#mydialog2").parent().css('border', '4px solid #339900');
+            var successMessage = document.querySelector("#scriptData [data-success-message]").getAttribute("data-success-message");
+            successMessage = successMessage.split("! ").join("!<br>");
+            ngToast.create({
+                content: successMessage,
+                className: 'success',
+                dismissOnTimeout: true,
+                timeout: 4000
+            });
         };
         this.openLastTrueDialog = function () {
             var dialogWidth=getDialogWidth();
@@ -29,7 +33,7 @@ angular
             $("#informDialog").dialog("open");
             $("#informDialog").parent().css('border', '4px solid #339900');
         };
-    }
+    }]
 );
 
 function getDialogWidth() {

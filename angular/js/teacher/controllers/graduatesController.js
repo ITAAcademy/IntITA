@@ -5,7 +5,14 @@ angular
     .module('teacherApp')
     .controller('graduateCtrl',graduateCtrl)
     .controller('editGraduateCtrl',editGraduateCtrl);
-function graduateCtrl ($rootScope, $scope, $filter, $http, NgTableDataService,  NgTableParams, translitService, typeAhead, $httpParamSerializerJQLike, $state, $stateParams, $ngBootbox, $timeout){
+
+function graduateCtrl ($scope, $filter, $http, NgTableDataService,  NgTableParams, translitService, typeAhead, $httpParamSerializerJQLike, $state, $stateParams, $ngBootbox, $timeout){
+
+    $scope.$on('$stateChangeStart', function(event, next, current) {
+        if (typeof(current) !== 'undefined'){
+            $templateCache.remove(next.templateUrl);
+        }
+    });
 
     $scope.courseCollapsed = true;
     $scope.modulesCollapsed = true;
@@ -24,8 +31,6 @@ function graduateCtrl ($rootScope, $scope, $filter, $http, NgTableDataService,  
             $scope.courses = [];
             $scope.courses.push(data);
         }
-
-
     });
 
     $rootScope.$on('moduleAdded', function (event, data) {
@@ -37,7 +42,6 @@ function graduateCtrl ($rootScope, $scope, $filter, $http, NgTableDataService,  
             $scope.modules = [];
             $scope.modules.push(data);
         }
-
     });
 
     if ($state.is('graduate/edit/:graduateId')){
@@ -46,7 +50,6 @@ function graduateCtrl ($rootScope, $scope, $filter, $http, NgTableDataService,  
             $scope.graduate = response.data;
             $scope.graduate.graduate_date = new Date($scope.graduate.graduate_date);
         });
-
     }
     if ($state.is('graduate/create')){
         $scope.graduate  = {ratingScale : 10};
@@ -189,7 +192,7 @@ function graduateCtrl ($rootScope, $scope, $filter, $http, NgTableDataService,  
                 return false;
             }
             else{
-                $state.go('graduate');
+                $state.go('graduate/view/:graduateId',{graduateId:$stateParams.graduateId});
             }
         })
     }

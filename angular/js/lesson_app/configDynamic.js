@@ -6,6 +6,7 @@ angular
     .run([
         '$rootScope', '$state', '$stateParams','$http','paramService','accessLectureService','pagesUpdateService', 'ipCookie',
         function ($rootScope, $state, $stateParams, $http, paramService,accessLectureService,pagesUpdateService, ipCookie) {
+            var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
             paramService.getStartParam($rootScope, $state, $stateParams);
             accessLectureService.getAccessLectures();
             pagesUpdateService.updateRating();
@@ -13,7 +14,7 @@ angular
             $rootScope.$on('$stateChangeStart',
                 function (event, toState, toParams, fromState, fromParams) {
                     //перевіряємо при завантажені стейта чи є модель pageData, якщо нема - дістаєм з сервера\
-                    if(toParams.page==undefined) toParams.page=lastAccessPage;//при завантажені по дефолту робимо останю доступну частину
+                    if(toParams.page==undefined) toParams.page=$rootScope.lastAccessPage;//при завантажені по дефолту робимо останю доступну частину
                     if($rootScope.pageData==undefined){
                         return $http({
                             url: basePath + '/lesson/GetPageData',
@@ -79,6 +80,7 @@ angular
 angular
     .module('lessonApp')
     .config(['$locationProvider','$stateProvider','$urlRouterProvider', function($locationProvider,$stateProvider,$urlRouterProvider){
+        var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
         $urlRouterProvider.otherwise("/page1");
         $stateProvider
             .state('page', {
@@ -109,17 +111,17 @@ angular
                 views: {
                     "viewVideo": {
                         templateUrl: function (){
-                            return basePath+'/lesson/loadVideoPage?page='+lastAccessPage+'&lectureId='+idLecture;
+                            return basePath+'/lesson/loadVideoPage?page='+$rootScope.lastAccessPage+'&lectureId='+idLecture;
                         }
                     },
                     "viewText": {
                         templateUrl: function (){
-                            return basePath+'/lesson/loadTextPage?page='+lastAccessPage+'&lectureId='+idLecture;
+                            return basePath+'/lesson/loadTextPage?page='+$rootScope.lastAccessPage+'&lectureId='+idLecture;
                         }
                     },
                     "viewQuiz": {
                         templateUrl: function (){
-                            return basePath+'/lesson/loadQuizPage?page='+lastAccessPage+'&lectureId='+idLecture;
+                            return basePath+'/lesson/loadQuizPage?page='+$rootScope.lastAccessPage+'&lectureId='+idLecture;
                         }
                     }
                 },
