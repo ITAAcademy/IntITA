@@ -1,7 +1,7 @@
 angular
     .module('lessonApp')
     .controller('starsBlockCtrl', function ($scope, $http, ratingService) {
-
+        var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
         ratingService.getOldRating({'id_lecture': idLecture})
             .$promise
             .then(function successCallback(data) {
@@ -50,6 +50,7 @@ angular
 
     .controller('starsModuleCtrl', function($scope, $http, ratingService){
              // get average rating on modules and set show on stars
+        var idModule = document.querySelector("#scriptData [data-module-id]").getAttribute("data-module-id");
         ratingService.averageRating({'idModule': idModule})
             .$promise
             .then(function successCallback(data) {

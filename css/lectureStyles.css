@@ -1973,3 +1973,6 @@ a.cke_dialog_ui_fileButton{
         transition: none;
         -webkit-transition: none;
     }
+    .ng-toast .ng-toast__message .alert {
+        text-align: left;
+    }
