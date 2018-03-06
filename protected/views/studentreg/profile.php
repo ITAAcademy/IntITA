@@ -21,20 +21,37 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
 <div class="formStudProf" ng-cloak ng-controller="profileCtrl">
     <div class="studProfInf">
         <table class="titleProfile">
-            <tr>
-                <td>
-                    <h2><?php $post->getProfileRole(); ?></h2>
-                </td>
-                <?php if ($owner) { ?>
+            <?php if ($owner) { ?>
+                <tr>
+                    <td></td>
+                    <?php if ($user->isTeacher()) { ?>
+                        <td>
+                            <a class="editLink" href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId()));?>">
+                                <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'profileedit.png'); ?>"/>
+                            </a>
+                        </td>
+                        <td>
+                            <div>
+                                <a class="editLink" href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId()));?>">Профіль<br>викладача</a>
+                            </div>
+                        </td>
+                    <?php } ?>
                     <td>
                         <a class="editLink" href="<?php echo Yii::app()->createUrl('studentreg/edit'); ?>">
                             <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'profileedit.png'); ?>"/>
                         </a>
                     </td>
                     <td>
-                        <a class="editLink" href="<?php echo Yii::app()->createUrl('studentreg/edit'); ?>"><?php echo Yii::t('profile', '0096'); ?></a>
+                        <div>
+                            <a class="editLink" href="<?php echo Yii::app()->createUrl('studentreg/edit'); ?>"><?php echo Yii::t('profile', '0096'); ?></a>
+                        </div>
                     </td>
-                <?php } ?>
+                </tr>
+            <?php } ?>
+            <tr>
+                <td colspan="5">
+                    <h2><?php $post->getProfileRole(); ?></h2>
+                </td>
             </tr>
         </table>
         <img class='avatarimg' src="<?php echo StaticFilesHelper::createPath('image', 'avatars', $post->avatar); ?>"/>

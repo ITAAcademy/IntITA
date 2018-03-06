@@ -46,26 +46,21 @@
                         </div>
                     </td>
                     <td data-title="'Категорія'" filter="{'crmType.id': 'select'}" filter-data="crmTypesList">
-                        <div ng-class="row.idTask.taskType.title">{{row.idTask.taskType.description}}</div>
+                        <div ng-class="row.idTask.taskType.title">{{row.idTask.taskType.title_ua}}</div>
                     </td>
-                    <td data-title="'Користувач'" filter="{'idUser.fullName': 'text'}" sortable="'idUser.fullName'">
-                        {{row.idUser.fullName}}
+                    <td data-title="'Користувач'" filter="{'idUser.fullName': 'text'}">
                     </td>
-                    <td data-title="'Постановник'" filter="{'producerName.fullName': 'text'}" sortable="'producerName.fullName'">
-                        {{row.producerName.fullName}}
+                    <td data-title="'Постановник'" filter="{'idTask.producerName.fullName': 'text'}">
+                        {{row.idTask.producerName.fullName}}
                     </td>
-                    <td data-title="'Виконавець'" filter="{'executantName.fullName': 'text'}" sortable="'executantName.fullName'">
-                        {{row.executantName.fullName}}
+                    <td data-title="'Виконавець'" filter="{'idTask.executantName.fullName': 'text'}" sortable="'idTask.executantName.fullName'">
+                        {{row.idTask.executantName.fullName}}
                     </td>
                     <td data-title="'Дата'" filter="{'idTask.created_date': 'text'}" sortable="'idTask.created_date'">
                         {{row.idTask.created_date}}
                     </td>
                     <td data-title="'Статус'" filter="{'crmStates.id': 'select'}" filter-data="crmStateList">
                         {{row.idTask.taskState.description}}
-<!--                        <div ng-if="row.idTask.id_state != 1 && roleId">-->
-<!--                            <em>{{row.lastChangeName?row.lastChangeName.fullName:''}}</em>-->
-<!--                            <div>Дата: <em>{{row.lastChangeName?row.lastStateHistory[0].change_date:''}}</em></div>-->
-<!--                        </div>-->
                     </td>
                     <td data-title="'Затрачений час'">
                         <p>{{row.spent_time | spentTime}}</p>

@@ -43,7 +43,7 @@ div.subLinks{
     float:left;
     margin-right:1%;
     color: #4b75a4;
-    font-size:28px;
+    font-size:24px;
     line-height: 28px;
     font-weight: normal;
     display: inline-block;
@@ -86,6 +86,7 @@ span.spoilerClick {
     font-size: 18px;
 }
 div.spoilerTriangle {
+    font-size: 13px;
     display: inline-block;
     color: #4b75a4;
     margin-left: 2px;
@@ -1169,7 +1170,7 @@ div.lastAccessPage {
 
 #labelBlock p, #tooltip p {
     /*display: inline-block;*/
-    font-size: 22px;
+    font-size: 14px;
     color: #4b75a4;
     margin-top: 30px;
     padding-left: 40px;
@@ -1687,50 +1688,51 @@ a.cke_dialog_ui_fileButton{
         width: 100%;
         padding-left: 35px;
     }
-}
-.titlesBlock {
-    margin-left:2px;
-    width: 100%;
-}
-.titlesBlock ul li {
-    line-height: 1;
-    margin:5px 0;
-    font-size: 16px;
-}
-.lecturesSpots{
-    margin-top:10px;
-    margin-right: 1%;
-}
-.lectureFooterMini{display: block}
-.helpButtons{width:22%;display: inline-block;vertical-align: top;min-width: 160px}
-.forum{width:45%;display: inline-block;vertical-align: top;min-width: 300px}
-.consultations{
-    width: 100%;
-    vertical-align: top;
-    min-width: 200px;
-    display: inline-block;
-    margin: 1px auto;
-}
-.consultations .consultationText {width: 90px;}
-.lectureFooterMini{margin-bottom: 15px}
-#discussion{border-radius: 0}
-.lectureType, .lectureType+li{display:inline-block}
-.lectureType{margin-bottom:0}
-.titlesBlock ul li.lecturesSpots{margin-top:0;}
-span.spoilerTitle {
-    font-size: 20px;
-}
-#labelBlock p, #tooltip p {
-    font-size: 18px;
-}
-.lectureProgress a {
-    padding: 0;
-    margin-right: 3px;
-}
-.lessonPart {
-    height:inherit;
-    line-height:inherit;
-}
+    }
+    .titlesBlock {
+        margin-left:2px;
+        width: 100%;
+    }
+    .titlesBlock ul li {
+        line-height: 1;
+        margin:5px 0;
+        font-size: 16px;
+    }
+    .lecturesSpots{
+        font-size: 13px;
+        margin-top:10px;
+        margin-right: 1%;
+    }
+    .lectureFooterMini{display: block}
+    .helpButtons{width:22%;display: inline-block;vertical-align: top;min-width: 160px}
+    .forum{width:45%;display: inline-block;vertical-align: top;min-width: 300px}
+    .consultations{
+        width: 100%;
+        vertical-align: top;
+        min-width: 200px;
+        display: inline-block;
+        margin: 1px auto;
+    }
+    .consultations .consultationText {width: 90px;}
+    .lectureFooterMini{margin-bottom: 15px}
+    #discussion{border-radius: 0}
+    .lectureType, .lectureType+li{display:inline-block}
+    .lectureType{margin-bottom:0}
+    .titlesBlock ul li.lecturesSpots{margin-top:0;}
+    span.spoilerTitle {
+        font-size: 20px;
+    }
+    #labelBlock p, #tooltip p {
+        font-size: 14px;
+    }
+    .lectureProgress a {
+        padding: 0;
+        margin-right: 3px;
+    }
+    .lessonPart {
+        height:inherit;
+        line-height:inherit;
+    }
 .lessonText {
     display: inline-block;
     position: relative;
@@ -1740,28 +1742,28 @@ span.spoilerTitle {
     word-wrap: break-word;
     margin-top: 0px;
 }
-.chat{overflow: hidden;margin-bottom: 20px}
-.consultationText, .mibewText {
-    font-size: 14px;
-    margin-left: 5px;
-}
-span.spoilerClick {
-    font-weight:normal;
-}
-.editButton {
-    width: 22px;
-}
-.editLecture {
-    margin-top:0;
-}
-.editLecture{display:none}
-#titlesBlock .editLecture{
-    display: inline-block;
-}
-#labelBlock p, #tooltip p {
-    margin-top: 10px;
-    padding-left:0;
-}
+    .chat{overflow: hidden;margin-bottom: 20px}
+    .consultationText, .mibewText {
+        font-size: 14px;
+        margin-left: 5px;
+    }
+    span.spoilerClick {
+        font-weight:normal;
+    }
+    .editButton {
+        width: 22px;
+    }
+    .editLecture {
+        margin-top:0;
+    }
+    .editLecture{display:none}
+    #titlesBlock .editLecture{
+        display: inline-block;
+    }
+    #labelBlock p, #tooltip p {
+        margin-top: 10px;
+         padding-left:0;
+     }
 
 @media only screen and (max-width: 360px) {
     #share42{
@@ -1887,90 +1889,87 @@ span.spoilerClick {
         margin-top: 0px;
     }
 }
-/*celebre - this block is owned by FullScreen JavaScript API*/
-div.fullScreen_button_container {
-    text-align: right;
-}
+    /*celebre - this block is owned by FullScreen JavaScript API*/
+    div.fullScreen_button_container {
+        text-align: right;
+    }
 
-.fullScreen {
-    margin: 2px 18px;
-    width: 25px;
-    height: 21px;
-    border: none;
-    z-index: 100;
-    background: url("../images/icons/max.png");
-}
+    .fullScreen {
+        margin: 2px 18px;
+        width: 25px;
+        height: 21px;
+        border: none;
+        z-index: 100;
+        background: url("../images/icons/max.png");
+    }
 
-#changeColor {
-    position: absolute;
-    right: -18px;
-    margin-top: -25px;
-}
+    #changeColor {
+        position: absolute;
+        right: -18px;
+        margin-top: -25px;
+    }
 
-.fullScreen:hover {
-    opacity: 0.5;
-}
+    .fullScreen:hover {
+        opacity: 0.5;
+    }
 
-:-webkit-full-screen#text #changeColor {
-    background-image: url("../images/icons/min.png");
-    right: 0;
-    margin-top: 5px;
-}
+    :-webkit-full-screen#text #changeColor {
+        background-image: url("../images/icons/min.png");
+        right: 0;
+        margin-top: 5px;
+    }
 
-:-moz-full-screen#text #changeColor {
-    background-image: url("../images/icons/min.png");
-    position: absolute;
-    right: 0;
-    margin-top: 5px;
-}
+    :-moz-full-screen#text #changeColor {
+        background-image: url("../images/icons/min.png");
+        position: absolute;
+        right: 0;
+        margin-top: 5px;
+    }
 
-:-webkit-full-screen {
-    background: black;
-}
+    :-webkit-full-screen {
+        background: black;
+    }
 
-:-moz-full-screen {
-    background: black;
-}
+    :-moz-full-screen {
+        background: black;
+    }
 
-:-webkit-full-screen#text {
-    width: 100%;
-    height: 100%;
-}
+    :-webkit-full-screen#text {
+        width: 100%;
+        height: 100%;
+    }
 
-:-moz-full-screen#text {
-    width: 100%;
-    height: 100%;
-}
+    :-moz-full-screen#text {
+        width: 100%;
+        height: 100%;
+    }
 
-/*!*celebre - this block is owned by FullScreen JavaScript API*!
-audio::-internal-media-controls-download-button {
-    display:none;
-}
+    /*!*celebre - this block is owned by FullScreen JavaScript API*!
+    audio::-internal-media-controls-download-button {
+        display:none;
+    }
 
-audio::-webkit-media-controls-enclosure {
-    overflow:hidden;
-}
+    audio::-webkit-media-controls-enclosure {
+        overflow:hidden;
+    }
 
-audio::-webkit-media-controls-panel {
-    width: calc(100% + 30px); !* Adjust as needed *!
-}*/
-/*change rating animation*/
-[animate-on-change] {
-    transition: all 1s;
-    -webkit-transition: all 1s;
-}
+    audio::-webkit-media-controls-panel {
+        width: calc(100% + 30px); !* Adjust as needed *!
+    }*/
+    /*change rating animation*/
+    [animate-on-change] {
+        transition: all 1s;
+        -webkit-transition: all 1s;
+    }
 
-[animate-on-change].rating-up {
-    color: green;
-    transition: none;
-    -webkit-transition: none;
-}
+    [animate-on-change].rating-up {
+        color: green;
+        transition: none;
+        -webkit-transition: none;
+    }
 
-[animate-on-change].rating-down {
-    color: red;
-    transition: none;
-    -webkit-transition: none;
-}
-.ng-toast .ng-toast__message .alert {
-    text-align: left;
-}
+    [animate-on-change].rating-down {
+        color: red;
+        transition: none;
+        -webkit-transition: none;
+    }

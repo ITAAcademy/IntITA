@@ -82,7 +82,7 @@ $this->breadcrumbs = array(
     <br>
         <div class="container">
             <div class="row">
-                <div class="panel-body">
+                <div class="panel-body wrap-tabel-module">
                     <div class="panel panel-info">
                         <div class="panel-heading header-list">
                         <div class="col-md-2 col-xs-2">Номер модуля</div>
@@ -110,8 +110,8 @@ $this->breadcrumbs = array(
                     </li>
                 </ul>
                     <br>
-                    <button class="btn btn-primary" ng-click="editCourseRevision(model)">Зберегти зміни</button>
             </div>
+                <button class="btn btn-primary" ng-click="editCourseRevision(model)">Зберегти зміни</button><br><br>
         </div>
     </div>
 </div>

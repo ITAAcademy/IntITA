@@ -79,6 +79,9 @@
                     <li>
                         <a href="#/configuration/specializations">Спеціалізації(для груп та форми реєстрації)</a>
                     </li>
+                    <li><a href="#/configuration/language_levels">Рівні англійської
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="panel-footer">
