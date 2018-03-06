@@ -4,7 +4,6 @@
 .vagrant/*
 protected/runtime/*
 forum/cache/*
-local.php
 assets/*
 /mail/*
 files/course_schemas/*
@@ -24,3 +23,4 @@ files/
 /test/
 /docker_data
 .env
+/index.php
