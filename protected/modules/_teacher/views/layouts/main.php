@@ -20,10 +20,10 @@
 
 
     <!-- lodash -->
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/lodash/lodash.min.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/lodash/dist/lodash.js'); ?>"></script>
 
     <!-- Angular  -->
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/angular.min.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular/angular.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/angular-datatables.min.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/angular-ui-router.min.js'); ?>"></script>
 
@@ -34,7 +34,7 @@
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-sanitize/angular-sanitize.min.js'); ?>"></script>
 
     <!-- AngularWAMP -->
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/autobahn.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/autobahn/autobahn.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-wamp/release/angular-wamp.js'); ?>"></script>
 
     <!-- Select multiple -->
@@ -42,20 +42,20 @@
     <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/select.min.css') ?>">
 
     <!-- ngTable -->
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-table/ng-table.min.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-table-bundle/ng-table.js'); ?>"></script>
     <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-table/ng-table.min.css') ?>">
 
     <!-- ngToast -->
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-toast/ngToast.min.js'); ?>"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-toast/ngToast.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-toast/ngToast-animations.min.css') ?>">
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ngToast/dist/ngToast.js'); ?>"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ngToast/dist/ngToast.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ngToast/dist/ngToast-animations.css') ?>">
 
     <!-- ngTree -->
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/angular.treeview.min.js'); ?>"></script>
     <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'css/angular.treeview.css') ?>">
 
 
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls-2.5.0.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/angular-locale_uk-ua.js'); ?>"></script>
 
     <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'cabinet/authForm.js'); ?>"></script>

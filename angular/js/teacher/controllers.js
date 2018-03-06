@@ -169,7 +169,7 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
         $timeout(updateCounter, 10000);
     }
     else {
-        var conn = new ab.Session('wss://' + window.location.host + '/wss/',
+        var conn = new autobahn.Session('wss://' + window.location.host + '/wss/',
             function () {
                 conn.subscribe('newMessages-' + user, function (topic, data) {
                     console.log('New message received');
@@ -184,7 +184,7 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
 
     }
 
-    var conn3 = new ab.Session('wss://' + window.location.host + '/wss/',
+    var conn3 = new autobahn.Session('wss://' + window.location.host + '/wss/',
         function () {
             conn3.subscribe('changeTaskManager-' + user, function (topic, data) {
                 console.log('Task Manager changed');
@@ -201,7 +201,7 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
         {'skipSubprotocolCheck': true}
     );
 
-    var conn4 = new ab.Session('wss://' + window.location.host + '/wss/',
+    var conn4 = new autobahn.Session('wss://' + window.location.host + '/wss/',
         function () {
             conn4.subscribe('changeTaskRole-' + user, function (topic, data) {
                 console.log('Task role changed');
