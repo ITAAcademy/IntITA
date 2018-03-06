@@ -22,6 +22,12 @@
     "angular-wamp": "^0.3.4",
     "angular-drag-and-drop-lists": "^2.1.0",
     "angular-touch": "1.5.0",
-    "angular-carousel": "^1.1.0"
+    "angular-resource": "1.5.0",
+    "MathJax": "2.6.0",
+    "oi.select": "0.2.21",
+    "angular-animate": "1.5.0",
+    "lodash": "^4.17.5",
+    "ngToast": "ngtoast#^2.0.0",
+    "ng-table-bundle": "~3"
   }
 }
