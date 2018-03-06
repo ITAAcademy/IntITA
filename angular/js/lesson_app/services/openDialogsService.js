@@ -11,7 +11,8 @@ angular
             ngToast.create({
                 content: successMessage,
                 className: 'success',
-                dismissOnTimeout: true
+                dismissOnTimeout: true,
+                timeout: 4000
             });
         };
         this.openLastTrueDialog = function () {
