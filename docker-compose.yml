@@ -49,6 +49,7 @@
        container_name: "IntITA_bower"
        user: ${USER_ID}:${USER_GID}
        image: digitallyseamless/nodejs-bower-grunt:latest
+       working_dir: /data
        volumes:
         - ./angular:/data
        command: bower install
