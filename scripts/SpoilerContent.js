@@ -65,24 +65,7 @@ function  diploma_module_dialog(name, module) {
 // // do something in the background
     $('.modal-footer > .btn').hide();
 }
-// open comment with click
-function openComment(elem) {
-    var bodyElem = elem.querySelector('.spoiler-body');
-        $(bodyElem).slideToggle().toggleClass('opened');
-    elem.classList.toggle('opened');
-    var maximize = elem.querySelector('.maximize').value;
-    var minimize = elem.querySelector('.minimize').value;
 
-    (function selectData() {
-        var title = elem.querySelector('span');
-        if (elem.classList.contains('opened')) {
-            title.innerHTML = maximize + "\u25B2";
-        } else {
-            title.innerHTML = minimize + "\u25BC";
-        }
-    })();
-}
-// open comment with click
 // celebre
 //export diploma to pdf
 function printPDF() {
