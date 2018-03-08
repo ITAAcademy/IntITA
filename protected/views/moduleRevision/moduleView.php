@@ -40,7 +40,7 @@ $this->breadcrumbs = array(
                     <input type="checkbox" ng-model="current.approved">Затверджені
                 </label>
                 <label>
-                    <input type="text" class="form-control" ng-model="searchCurrent">
+                    <input type="text" class="form-control" placeholder="пошук" ng-model="searchCurrent">
                 </label>
             </div>
             <div class="revisionsList">
@@ -77,7 +77,7 @@ $this->breadcrumbs = array(
                     <input type="checkbox" ng-model="foreign.approved">Затверджені
                 </label>
                 <label>
-                    <input type="text" class="form-control" ng-model="searchForeign">
+                    <input type="text" class="form-control" placeholder="пошук" ng-model="searchForeign">
                 </label>
             </div>
             <div class="revisionsList">
