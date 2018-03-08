@@ -7,12 +7,13 @@
 }
 .editTextButton
 {
-    color: #ff9c1b;
+    color: #33cc00;
     margin-top: 10px;
 }
-.editTextButton:hover
+.editTextButton span:hover
 {
-    color: #c74b11;
+    color: #2db544;
+    cursor: pointer;
 }
 .TeacherProfilemainBlock
 {

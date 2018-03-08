@@ -21,37 +21,28 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
 <div class="formStudProf" ng-cloak ng-controller="profileCtrl">
     <div class="studProfInf">
         <table class="titleProfile">
-            <?php if ($owner) { ?>
-                <tr>
-                    <td></td>
-                    <?php if ($user->isTeacher()) { ?>
-                        <td>
-                            <a class="editLink" href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId()));?>">
-                                <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'profileedit.png'); ?>"/>
-                            </a>
-                        </td>
-                        <td>
-                            <div>
-                                <a class="editLink" href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId()));?>">Профіль<br>викладача</a>
-                            </div>
-                        </td>
-                    <?php } ?>
+            <tr>
+                <td>
+                <?php if ($owner AND $user->isTeacher()) { ?>
+                    <span class="teachersProfileLink">
+                        <a href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId()));?>">
+                            Редагувати  профіль<br>викладача <i class="fas fa-pencil-alt"></i>
+                        </a>
+                    </span>
+                <?php }else{ ?>
+                    <h2><?php $post->getProfileRole(); ?></h2>
+                <?php } ?>
+                </td>
+                <?php if ($owner) { ?>
                     <td>
                         <a class="editLink" href="<?php echo Yii::app()->createUrl('studentreg/edit'); ?>">
                             <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'profileedit.png'); ?>"/>
                         </a>
                     </td>
                     <td>
-                        <div>
-                            <a class="editLink" href="<?php echo Yii::app()->createUrl('studentreg/edit'); ?>"><?php echo Yii::t('profile', '0096'); ?></a>
-                        </div>
+                        <a class="editLink" href="<?php echo Yii::app()->createUrl('studentreg/edit'); ?>"><?php echo Yii::t('profile', '0096'); ?></a>
                     </td>
-                </tr>
-            <?php } ?>
-            <tr>
-                <td colspan="5">
-                    <h2><?php $post->getProfileRole(); ?></h2>
-                </td>
+                <?php } ?>
             </tr>
         </table>
         <img class='avatarimg' src="<?php echo StaticFilesHelper::createPath('image', 'avatars', $post->avatar); ?>"/>
