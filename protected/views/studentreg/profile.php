@@ -24,11 +24,11 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
             <tr>
                 <td>
                 <?php if ($owner AND $user->isTeacher()) { ?>
-                    <span class="teachersProfileLink">
-                        <a href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId()));?>">
-                            Редагувати  профіль<br>викладача <i class="fas fa-pencil-alt"></i>
-                        </a>
-                    </span>
+                <span class="teachersProfileLink">
+                    <a href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId()));?>">
+                        <?php $post->getProfileRole(); ?> <i class="fas fa-pencil-alt fa-xs"></i>
+                    </a>
+                </span>
                 <?php }else{ ?>
                     <h2><?php $post->getProfileRole(); ?></h2>
                 <?php } ?>
