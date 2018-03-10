@@ -15,6 +15,3 @@ content/*
 /test/
 /docker_data
 /.env
-/index.php
-Будет удалено assets/
-Будет удалено protected/runtime/
