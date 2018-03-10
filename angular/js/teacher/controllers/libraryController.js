@@ -12,7 +12,7 @@ angular
                 });
             }
         };
-    })//
+    })
     .controller('booksCtrl',
         ['$scope', '$http','NgTableParams','$resource','libraryService', function ($scope, $http,NgTableParams,$resource,libraryService) {
             $scope.changePageHeader('Список книг');
@@ -180,17 +180,8 @@ angular
                 headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
             }).then(function successCallback(response) {
                 $scope.bookInfoForUpdating=response.data;
-                $scope.formData = {
-                    id: $scope.bookInfoForUpdating.id,
-                    title: $scope.bookInfoForUpdating.title,
-                    description: $scope.bookInfoForUpdating.description,
-                    price: $scope.bookInfoForUpdating.price,
-                    language: $scope.bookInfoForUpdating.language,
-                    category: $scope.bookInfoForUpdating.libraryDependsBookCategories,
-                    status: $scope.bookInfoForUpdating.status,
-                    link: $scope.bookInfoForUpdating.link,
-                    logo: $scope.bookInfoForUpdating.logo
-                };
+                console.log(response.data);
+                $scope.formData = response.data;
             }, function errorCallback() {
                 bootbox.alert("Отримати дані про книгу не вдалося");
             });

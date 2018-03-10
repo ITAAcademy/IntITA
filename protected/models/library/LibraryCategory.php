@@ -47,6 +47,8 @@ class LibraryCategory extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'libraryDependsBookCategories' => array(self::HAS_MANY, 'LibraryDependsBookCategory', 'id_category'),
+            'category' => array(self::MANY_MANY, 'Library', 'library_depends_book_category(id_category,id_book)'),
+
 		);
 	}
 

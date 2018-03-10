@@ -9,7 +9,6 @@
  * @property string $description
  * @property string $price
  * @property string $language
- * @property string $category
  * @property string $link
  * @property string $logo
  *
@@ -37,12 +36,12 @@ class Library extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title', 'required'),
-			array('title, language, category', 'length', 'max'=>50),
+			array('title, language', 'length', 'max'=>50),
 			array('description, link, logo', 'length', 'max'=>256),
 			array('price', 'length', 'max'=>8),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, description, price, language, category, status, link, logo', 'safe', 'on'=>'search'),
+			array('id, title, description, price, language, status, link, logo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,7 +53,8 @@ class Library extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'libraryDependsBookCategories' => array(self::HAS_MANY, 'LibraryDependsBookCategory', 'id_book'),
+            'libraryDependsBookCategories' => array(self::HAS_MANY, 'LibraryDependsBookCategory', 'id_book'),
+            'category' => array(self::MANY_MANY, 'LibraryCategory', 'library_depends_book_category(id_book,id_category)'),
 		);
 	}
 
@@ -69,7 +69,6 @@ class Library extends CActiveRecord
 			'description' => 'Description',
 			'price' => 'Price',
 			'language' => 'Language',
-			'category' => 'Category',
 			'status'=>'Status',
 			'link' => 'Link',
 			'logo' => 'Logo',
@@ -99,7 +98,6 @@ class Library extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('price',$this->price,true);
 		$criteria->compare('language',$this->language,true);
-		$criteria->compare('category',$this->category,true);
         $criteria->compare('status',$this->status,true);
 		$criteria->compare('link',$this->link,true);
 		$criteria->compare('logo',$this->logo,true);
@@ -113,28 +111,19 @@ class Library extends CActiveRecord
         $criteria=new CDbCriteria;
         $criteria->with = ['libraryDependsBookCategories','libraryDependsBookCategories.idCategory'];
         $criteria->join = 'left join library_depends_book_category as bc ON bc.id_book = t.id';
-
         if (isset($requestParam['filter']['libraryDependsBookCategories.id'])){
             $criteria->addCondition('bc.id_category='.$requestParam['filter']['libraryDependsBookCategories.id']);
             unset($requestParam['filter']['libraryDependsBookCategories.id']);
         }
 
-
         $adapter = new NgTableAdapter('Library',$requestParam);
         $adapter->mergeCriteriaWith($criteria);
-
         echo json_encode($adapter->getData());
     }
     public static function addBook($data){
 	    $book = new Library();
-        $book->title = $data["title"];
-        $book->description = $data["description"];
-        $book->price = $data["price"];
-        $book->language = $data["language"];
-        $book->status = $data["status"];
-        $book->link = $data["link"];
-        $book->logo = $data["logo"];
-
+	    $book->attributes = $data;
+	    $book->status = $data["status"];
         if($book->save()&&$data["category"]!==""){
             $depends = ["id_book"=>$book["id"],"id_category"=>$data["category"]];
             LibraryDependsBookCategory::addInfo($depends);
@@ -149,13 +138,8 @@ class Library extends CActiveRecord
         if(file_exists(Yii::getPathOfAlias('webroot')."/files/library/".basename($book["link"]))&&$data["link"] !== $book["link"]&&$data["link"]!==""&&$book["link"]){
             unlink(Yii::getPathOfAlias('webroot')."/files/library/".basename($book["link"]));
         };
-        $book->title = $data["title"];
-        $book->description = $data["description"];
-        $book->price = $data["price"];
-        $book->language = $data["language"];
+        $book->attributes=$data;
         $book->status = $data["status"];
-        $book->link = $data["link"];
-        $book->logo = $data["logo"];
         if($book->update()){
             $depends = ["id_book"=>$book["id"],"id_category"=>$data["category"]];
             LibraryDependsBookCategory::updateInfo($depends);

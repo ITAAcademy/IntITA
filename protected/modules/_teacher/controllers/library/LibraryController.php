@@ -34,7 +34,7 @@ class LibraryController extends TeacherCabinetController {
     }
     public function actionGetLibraryData()
     {
-        echo json_encode(ActiveRecordToJSON::toAssocArrayWithRelations(Library::model()->with('libraryDependsBookCategories')->findByPk(Yii::app()->request->getParam('id'))));
+        echo json_encode(ActiveRecordToJSON::toAssocArrayWithRelations(Library::model()->with('category')->findByPk(Yii::app()->request->getParam('id'))));
     }
 
     public function actionUpdateLibraryData()
