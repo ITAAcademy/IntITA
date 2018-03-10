@@ -303,7 +303,7 @@ function offlineGroupCtrl ($scope, $state, $http, $stateParams, superVisorServic
     };
 }
 
-function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, chatIntITAMessenger, lodash, trainerService){
+function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, chatIntITAMessenger, lodash, usersService){
     $scope.onSelectCurator = function ($item) {
         $scope.selectedCurator = $item;
     };
@@ -379,7 +379,7 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
             }
         });
 
-        $scope.types = trainerService
+        $scope.types = usersService
             .getCancelType()
             .$promise
             .then(function (data) {
@@ -762,7 +762,7 @@ function offlineStudentSubgroupCtrl ($scope, $http, superVisorService, $statePar
     };
     
     $scope.cancelStudentFromSubgroup=function (idUser, idSubgroup) {
-        $scope.option_str = '<option selected="true" disabled="disabled">Вибири причину...</option>';
+        $scope.option_str = '<option selected="true" disabled="disabled">Вибери причину...</option>';
 
         superVisorService
             .getAllReasons()
@@ -790,7 +790,7 @@ function offlineStudentSubgroupCtrl ($scope, $http, superVisorService, $statePar
                                             comment = null;
                                         }
 
-                                        var dateObject = $jq("#datepicker").data("datetimepicker").getDate();
+                                        var dateObject = $jq("#datepicker").datepicker( 'getDate' );
                                         var year = dateObject.getFullYear();
                                         var month = dateObject.getMonth()+1;
                                         var day = dateObject.getDate();
@@ -825,21 +825,8 @@ function offlineStudentSubgroupCtrl ($scope, $http, superVisorService, $statePar
 
                     $jq(function () {
                         var firstday = new Date();
-                        $jq('#datepicker').datetimepicker({
-                            format: "yyyy-mm-dd",
-                            weekStart: 1,
-                            todayBtn: 0,
-                            todayHighlight: true,
-                            startView: 2,
-                            minView: 2,
-                            inline: true,
-                            sideBySide: true,
-                            startDate: firstday
-                        }).on('changeDate', function (e) {
-                            $jq(this).datetimepicker('hide');
-                            // var dateObject  = $jq("#date_time_picker").data("datetimepicker").getDate();
-                            // angular.element(document.getElementById('date_time_picker')).scope().showTime(dateObject);
-                            // console.log('date', dateObject);
+                        $jq('#datepicker').datepicker().on('changeDate', function (e) {
+                            $jq(this).datepicker('hide');
                         });
                     });
                 },

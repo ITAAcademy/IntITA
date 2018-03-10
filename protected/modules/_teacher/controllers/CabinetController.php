@@ -449,4 +449,14 @@ class CabinetController extends TeacherCabinetController
     {
         echo  CJSON::encode(OfflineGroups::model()->findAll('id_organization='.Yii::app()->user->model->getCurrentOrganization()->id));
     }
+
+    public function actionGetUserRoles()
+    {
+        $data=[];
+        foreach (RegisteredUser::userById(Yii::app()->user->getId())->getRoles() as $role){
+            array_push($data, $role->__toString());
+        }
+
+        echo  CJSON::encode($data);
+    }
 }

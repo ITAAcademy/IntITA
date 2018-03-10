@@ -25,7 +25,7 @@
             <td data-title="'Моб. телефон 2'" filter="{'mobile_phone_2': 'text'}" sortable="'mobile_phone_2'">
                 <a ng-href="" ng-click="updateStudentInfo(row.id_student ,'mobile_phone_2', row.mobile_phone_2)">{{ row.mobile_phone_2 ? row.mobile_phone_2 : 'Редагувати' }}</a>
             </td>
-            <td data-title="'Еmail'" filter="{'email': 'text'}">
+            <td data-title="'Еmail'" filter="{'email': 'text'}"  sortable="'email'">
                 <a ng-href="#/users/profile/{{row.id_student}}">{{row.email}}</a>
             </td>
             <td data-title="'Домашня адреса'" filter="{'address': 'text'}" sortable="'address'">

@@ -998,13 +998,13 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
     if($scope.trainer){
         $scope.tabs.push({ title: "Проекти", route: "studentsProjects"});
         $scope.tabs.forEach(function(item, i) {
-            if('studentsTable/students.'+item.route==$state.current.name) {
+            if('trainerStudentsTable/students.'+item.route==$state.current.name) {
                 $scope.active=i;
             }
         });
     }else{
         $scope.tabs.forEach(function(item, i) {
-            if('trainerStudentsTable/students.'+item.route==$state.current.name) {
+            if('studentsTable/students.'+item.route==$state.current.name) {
                 $scope.active=i;
             }
         });
@@ -1472,7 +1472,6 @@ function contractStudentsCtrl($scope, trainerService, usersService, NgTableParam
         });
 
     $scope.updateContractInfo = function (id_student, attr, text) {
-        console.log(id_student);
         text = text?text:'';
         bootbox.dialog({
                 title: "Введіть нову назву:",

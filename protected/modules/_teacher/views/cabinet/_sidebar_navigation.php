@@ -132,7 +132,7 @@
             }
             ?>
 
-            <?php if ($model->isTeacher() || Yii::app()->user->model->isDirector()
+            <?php if (Yii::app()->user->model->isStudent() || $model->isTeacher() || Yii::app()->user->model->isDirector()
             || Yii::app()->user->model->isSuperAdmin()
             || Yii::app()->user->model->isAuditor()
             || Yii::app()->user->model->isAdmin()) { ?>
@@ -159,17 +159,3 @@
         </ul>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
