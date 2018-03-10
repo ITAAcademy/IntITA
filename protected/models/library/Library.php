@@ -150,20 +150,28 @@ class Library extends CActiveRecord
             LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$_POST['id']])->deleteAll();
                 $deletedBook = Library::model()->findByPk($_POST['id']);
                 if ($deletedBook["logo"]!==""){
-                    unlink(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]));
+                    if (file_exists(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]))){
+                        unlink(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]));
+                    }
                 };
                 if ($deletedBook["link"]!==""){
-                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]));
+                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]))){
+                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]));
+                    }
                 }
                 Library::model()->deleteByPk($_POST['id']);
         }
         else{
                 $deletedBook = Library::model()->findByPk($_POST['id']);
                 if ($deletedBook["logo"]!==""){
-                    unlink(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]));
+                    if (file_exists(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]))){
+                        unlink(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]));
+                    };
                 };
                 if ($deletedBook["link"]!==""){
-                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]));
+                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]))){
+                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]));
+                    }
                 }
                 Library::model()->deleteByPk($_POST['id']);
             }

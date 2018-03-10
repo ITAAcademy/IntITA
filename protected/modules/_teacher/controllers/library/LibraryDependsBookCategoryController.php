@@ -15,8 +15,4 @@ class LibraryDependsBookCategoryController extends TeacherCabinetController
     {
         $this->render('index');
     }
-    public function actionGetInfo(){
-        $adapter = new NgTableAdapter('Library',$_GET);
-        echo json_encode($adapter->getData());
-    }
 }

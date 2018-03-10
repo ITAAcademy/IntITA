@@ -18,17 +18,15 @@ class LibraryController extends TeacherCabinetController {
     public function actionAddBook(){
         Library::addBook($_POST["data"]["data"]);
     }
-    public function actionGetImg(){
-        $end_file_name = $_FILES["file"]["name"];
-        $tmp_file_name = $_FILES["file"]["tmp_name"];
-        $addressForFile = "images/library/".basename($end_file_name);
-        copy($tmp_file_name,$addressForFile);
-        echo $addressForFile;
-    }
     public function actionGetBookFile(){
         $end_file_name = $_FILES["file"]["name"];
         $tmp_file_name = $_FILES["file"]["tmp_name"];
-        $addressForFile = "files/library/".basename($end_file_name);
+        if(getimagesize($tmp_file_name)){
+            $addressForFile = "images/library/".basename($end_file_name);
+        }
+        else{
+            $addressForFile = "files/library/".basename($end_file_name);
+        }
         copy($tmp_file_name,$addressForFile);
         echo $addressForFile;
     }
@@ -43,8 +41,5 @@ class LibraryController extends TeacherCabinetController {
     }
     public function actionRemoveBook(){
         Library::removeBook();
-    }
-    public function actionGetInfo(){
-        echo json_encode(ActiveRecordToJSON::toAssocArrayWithRelations(LibraryDependsBookCategory::model()->with('idBook','idCategory')->findAll()));
     }
 }

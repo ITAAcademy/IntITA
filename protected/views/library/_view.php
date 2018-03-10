@@ -8,7 +8,6 @@ for ($i=0;$i<count($data->libraryDependsBookCategories);$i++){
 
     $category .=  $data->libraryDependsBookCategories[$i]->idCategory->title_ua.", ";
 }
-
 if (CHtml::encode($data->status) == Library::ACTIVE){
 ?>
     <div class="view">
