@@ -101,6 +101,11 @@ class UsersController extends TeacherCabinetController
         $this->renderPartial('tables/_studentsTable', array('organization'=>$organization, 'trainer'=>$trainer), false, true);
     }
 
+    public function actionUsersStudents($organization=false, $trainer=false)
+    {
+        $this->renderPartial('tables/_usersStudentsTable', array('organization'=>$organization, 'trainer'=>$trainer), false, true);
+    }
+
     public function actionOfflineStudents($organization)
     {
         $this->renderPartial('tables/_offlineStudentsTable', array('organization'=>$organization), false, true);
