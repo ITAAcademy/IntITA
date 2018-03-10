@@ -50,6 +50,7 @@
                     <i class="fa fa-home fa-fw"></i>
                 </a>
             </li>
+
             <li>
                 <a href="#/messages" class="show_elem">
                     <i class="fa fa-envelope-o fa-fw"></i> Повідомлення

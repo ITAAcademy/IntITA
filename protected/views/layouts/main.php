@@ -125,7 +125,9 @@ $header = new Header();
                             <li>
                                 <a href="https://hack.intita.com" target="_blank"><?php echo Yii::t('header', 'Школа хакерів'); ?></a>
                             </li>
-
+                            <li>
+                                <a href="<?php echo Config::getBaseUrl() . '/library'; ?>">Бібліотека</a>
+                            </li>
                         </ul>
                     </td>
                     <td class="emptyTd"></td>
