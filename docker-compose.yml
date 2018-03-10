@@ -53,3 +53,12 @@
        volumes:
         - ./angular:/data
        command: bower install
+
+  composer:
+      container_name: "IntITA_composer"
+      user: ${USER_ID}:${USER_GID}
+      image: composer:latest
+      working_dir: /app
+      volumes:
+        - ./protected:/app
+      command: composer install --ignore-platform-reqs
