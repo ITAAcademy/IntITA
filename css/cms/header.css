@@ -1,0 +1,18 @@
+.header{
+    border-bottom:2px solid #4b75a4;width: 100%;margin:0 auto; overflow: hidden;
+    height: 100px;
+}
+.header img{
+    max-width: 100%;
+}
+.nav>li>a{
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: normal;
+    color: black;
+    padding: 10px 6px;
+}
+.nav>li>a:focus, .nav>li>a:hover {
+    color: #003399;
+    background-color: inherit;
+}
