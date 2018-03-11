@@ -264,7 +264,12 @@ class Newsletters extends CActiveRecord implements ITask
                         foreach ($roles as $role){
                             $users = $task->getTaskUsersByRole($role);
                             foreach ($users as $user){
-                                array_push($mailList, $user->idUser->email);
+                                if ($user instanceof CrmRolesTasks){
+                                    array_push($mailList, $user->idUser->email);
+                                }
+                                if ($user instanceof OfflineStudents){
+                                    array_push($mailList, $user->user->email);
+                                }
                             }
                         }
                     }

@@ -433,6 +433,15 @@ class CrmTasks extends CTaskUnitActiveRecord
             $criteria->addCondition('cancelled_date IS NULL');
         }
         $users = CrmRolesTasks::model()->findAll($criteria);
+        $subgroups = CrmSubgroupRolesTasks::model()->findAll('id_task =:id_task AND role=:role',['id_task' =>$this->id,'role' => $role ]);
+        foreach ($subgroups as $subgroup){
+            $students = OfflineStudents::model()->findAll('id_subgroup=:subgroup AND end_date IS NULL',['subgroup' =>$subgroup->id]);
+            foreach ($students as $student){
+                array_push($users, $student);
+            }
+            unset($student);
+            unset($students);
+        }
         return $users;
 
 
