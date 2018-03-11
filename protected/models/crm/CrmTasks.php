@@ -411,6 +411,7 @@ class CrmTasks extends CTaskUnitActiveRecord
         $schedulerTask->parameters = $notificationParams['weekdays'];
         date_default_timezone_set(Config::getServerTimezone());
         $schedulerTask->start_time =  date('Y-m-d H:i:s',strtotime($notificationParams['time']));
+        $schedulerTask->end_time =  null;
         if ($notifyMessage->validate() && $schedulerTask->validate()){
             $notifyMessage->save(false);
             $schedulerTask->related_model_id = $notifyMessage->id;
