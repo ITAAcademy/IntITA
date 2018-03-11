@@ -259,14 +259,15 @@ class Newsletters extends CActiveRecord implements ITask
                 break;
             case "taskNotification":
                     $roles = $this->recipients;
-                    $task = CrmTasks::model()->findByPk($this->related_model_id);
-                    foreach ($roles as $role){
-                        $users = $task->getTaskUsersByRole($role);
-                        foreach ($users as $user){
-                            array_push($mailList, $user->idUser->email);
+                    $task = CrmTasks::model()->find('id =:id AND id_state !=:state',['id' =>$this->related_model_id, 'state' =>  CrmTaskStatus::COMPLETED]);
+                    if ($task){
+                        foreach ($roles as $role){
+                            $users = $task->getTaskUsersByRole($role);
+                            foreach ($users as $user){
+                                array_push($mailList, $user->idUser->email);
+                            }
                         }
                     }
-
                 break;
 
         }
