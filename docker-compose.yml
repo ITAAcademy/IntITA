@@ -2,6 +2,8 @@
     image: nickzorych/php:IntITA-dev
     user: ${USER_ID}:${USER_GID}
     container_name: "IntITA_app"
+    working_dir: /app
+    hostname: app
     volumes:
       - ./:/app
       - ./docker_conf/php/php.ini:/usr/local/etc/php.ini

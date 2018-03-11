@@ -7,7 +7,7 @@
  */
 return [
     'useWebSocketNotification'=>true,
-    'address'=>'127.0.0.1',
+    'address'=>'172.17.0.5',
     'port'=>'9500',
     'zmqServerAddress'=>'127.0.0.1',
     'zmqServerPort'=>'8990',
