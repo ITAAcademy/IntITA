@@ -4,10 +4,10 @@
 angular
     .module('teacherApp')
     .controller('breakStartTableCtrl', breakStartTableCtrl)
-    .controller('breakStartCtrl', breakStartCtrl);
+    .controller('breakCtrl', breakCtrl);
 
 function breakStartTableCtrl ($scope, breakService, $state, $http){
-    $scope.changePageHeader("Варіанти причин");
+    $scope.changePageHeader("Варіанти причин виключення");
 
     var url=basePath+'/_teacher/_super_admin/config';
 
@@ -38,7 +38,7 @@ function breakStartTableCtrl ($scope, breakService, $state, $http){
     };
 }
 
-function breakStartCtrl ($scope, $state, $http, $stateParams){
+function breakCtrl ($scope, $state, $http, $stateParams){
     $scope.changePageHeader("Причина");
     var url=basePath+'/_teacher/_super_admin/config';
     $scope.loadBreakData=function(){
