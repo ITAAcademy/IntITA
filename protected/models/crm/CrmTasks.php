@@ -436,7 +436,7 @@ class CrmTasks extends CTaskUnitActiveRecord
         $users = CrmRolesTasks::model()->findAll($criteria);
         $subgroups = CrmSubgroupRolesTasks::model()->findAll('id_task =:id_task AND role=:role',['id_task' =>$this->id,'role' => $role ]);
         foreach ($subgroups as $subgroup){
-            $students = OfflineStudents::model()->findAll('id_subgroup=:subgroup AND end_date IS NULL',['subgroup' =>$subgroup->id]);
+            $students = OfflineStudents::model()->findAll('id_subgroup=:subgroup AND end_date IS NULL',['subgroup' =>$subgroup->id_subgroup]);
             foreach ($students as $student){
                 array_push($users, $student);
             }
