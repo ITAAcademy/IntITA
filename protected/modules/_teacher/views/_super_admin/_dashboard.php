@@ -82,6 +82,9 @@
                     <li><a href="#/configuration/language_levels">Рівні англійської
                         </a>
                     </li>
+                    <li>
+                        <a href="#/configuration/breaks">Причина виключення студента</a>
+                    </li>
                 </ul>
             </div>
             <div class="panel-footer">
