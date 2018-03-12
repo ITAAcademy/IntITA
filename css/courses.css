@@ -128,6 +128,16 @@
     top: 12px;
     left: 16px;
 }
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+    .starLevelIndex {
+        position: relative;
+        top: 4px;
+        left: 16px;
+    }
+}
+
 .moduleRating{
     position: relative;
     top: 12px;
@@ -289,7 +299,7 @@ a#coursesLangs {
 }
 .sourse img{
     position: relative;
-    top: 4px;
+    top: auto;
 }
 .bgBlue table {
     width: 100%;
@@ -459,13 +469,13 @@ span.moduleNum{
         font-size: 10px;
     }
 }
-#detailCourseInfoLarge, #detailCourseInfoLarge0{
+#detailCourseInfoLarge1, #detailCourseInfoLarge0{
     padding-left: 3px;
     padding-right: 10px;
     font-size: 14px;
     text-align: left;
 }
-#detailCourseInfoLarge p, #detailCourseInfoLarge0 p{
+#detailCourseInfoLarge1 p, #detailCourseInfoLarge0 p{
     color: white;
 }
 .detailCourseInfoLarge:after{

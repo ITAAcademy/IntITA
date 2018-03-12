@@ -191,12 +191,12 @@ class TrainerController extends TeacherCabinetController
         $ngTable = new NgTableAdapter('UserAgreements', $requestParams);
         $criteria =  new CDbCriteria();
         $criteria->alias = 't';
+        $criteria->with = ['studentTrainer'];
         $criteria->join = 'left join acc_course_service cs on cs.service_id=t.service_id';
         $criteria->join .= ' left join course c on c.course_ID=cs.course_id';
         $criteria->join .= ' left join acc_module_service ms on ms.service_id=t.service_id';
         $criteria->join .= ' left join module m on m.module_ID=ms.module_id';
-        $criteria->join .= ' left join trainer_student ts on ts.student=t.user_id';
-        $criteria->addCondition('ts.trainer='.Yii::app()->user->getId().' and end_time is null 
+        $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and studentTrainer.end_time is null 
         and (m.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
         or c.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.')');
         $ngTable->mergeCriteriaWith($criteria);

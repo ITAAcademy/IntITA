@@ -10,6 +10,7 @@ $(document).ready(function(){
 $(document).on('mouseenter', '.pageTitle', function (e) {
     var tooltipHtml='<p>'+$(this).attr("title")+'</p>';
     if($(this).is('.pageNoAccess')) {
+        var partNotAvailable = document.querySelector("#scriptData [data-part-not-available]").getAttribute("data-part-not-available");
         tooltipHtml='<p class="titleNoAccess">'+$(this).attr("title")+'<span class="noAccess"> ('+partNotAvailable+')</span></p>';
     }
     $('#pointer').hide();

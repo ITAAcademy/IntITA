@@ -32,11 +32,13 @@ class CrmTasks extends CTaskUnitActiveRecord
 {
     use NotifySubscribedUsers;
 
-    const EXECUTANT = 1;
-    const PRODUCER = 2;
+    const EXECUTANT = 2;
+    const PRODUCER = 1;
     const COLLABORATOR = 3;
     const OBSERVER = 4;
 
+    const MAIN_TASK = 1;
+    const SUBTASK = 2;
     /**
      * @return string the associated database table name
      */
@@ -77,12 +79,16 @@ class CrmTasks extends CTaskUnitActiveRecord
             'createdBy' => array(self::BELONGS_TO, 'StudentReg', 'created_by'),
             'taskState' => array(self::BELONGS_TO, 'CrmTaskStatus', 'id_state'),
             'executant' => array(self::HAS_ONE, 'CrmRolesTasks', 'id_task', 'on' => 'executant.cancelled_date IS NULL and executant.role = ' . CrmTasks::EXECUTANT),
+            'executantName' => array(self::BELONGS_TO, 'StudentReg', ['id_user'=>'id'], 'through' => 'executant'),
             'producer' => array(self::HAS_ONE, 'CrmRolesTasks', 'id_task', 'on' => 'producer.cancelled_date IS NULL and producer.role = ' . CrmTasks::PRODUCER),
+            'producerName' => array(self::BELONGS_TO, 'StudentReg', ['id_user'=>'id'], 'through' => 'producer'),
             'collaborators' => array(self::HAS_MANY, 'CrmRolesTasks', 'id_task', 'on' => 'collaborators.cancelled_date IS NULL and collaborators.role = ' . CrmTasks::COLLABORATOR),
             'observers' => array(self::HAS_MANY, 'CrmRolesTasks', 'id_task', 'on' => 'observers.cancelled_date IS NULL and observers.role = ' . CrmTasks::OBSERVER),
             'parentTask' => array(self::BELONGS_TO, 'CrmTasks', 'id_parent'),
             'priorityModel' => array(self::BELONGS_TO, 'CrmTaskPriority', 'priority'),
             'taskType' => array(self::BELONGS_TO, 'CrmTaskType', 'type'),
+            'subgroupCollaborators' => array(self::HAS_MANY, 'CrmSubgroupRolesTasks', 'id_task', 'on' => 'subgroupCollaborators.cancelled_date IS NULL and subgroupCollaborators.role = ' . CrmTasks::COLLABORATOR),
+            'subgroupObservers' => array(self::HAS_MANY, 'CrmSubgroupRolesTasks', 'id_task', 'on' => 'subgroupObservers.cancelled_date IS NULL and subgroupObservers.role = ' . CrmTasks::OBSERVER),
         );
     }
 
@@ -237,6 +243,37 @@ class CrmTasks extends CTaskUnitActiveRecord
         }
     }
 
+    public function setSubgroupRoles($roles)
+    {
+        foreach ($roles as $key => $role) {
+            if (is_null($role)) $role = [];
+            switch ($key) {
+                case 'collaborator';
+                    $roleId = self::COLLABORATOR;
+                    break;
+                case 'observer';
+                    $roleId = self::OBSERVER;
+                    break;
+                default:
+                    $roleId = self::COLLABORATOR;
+                    break;
+            };
+            $oldSubGroups = [];
+            $newSubGroups = [];
+            foreach (CrmSubgroupRolesTasks::model()->findAllByAttributes(array('id_task' => $this->id, 'role' => $roleId, 'cancelled_date' => null)) as $item) {
+                array_push($oldSubGroups, $item->id_subgroup);
+            }
+
+            foreach ($role as $item) {
+                array_push($newSubGroups, $item['id']);
+            }
+            $addSubGroups = array_diff($newSubGroups, $oldSubGroups);
+            $cancelSubGroups = array_diff($oldSubGroups, $newSubGroups);
+            $this->setSubGroupRolesTask($addSubGroups, $roleId);
+            $this->cancelSubGroupRolesTask($cancelSubGroups, $roleId);
+        }
+    }
+
     public function setRolesTask($usersId, $role)
     {
         foreach ($usersId as $user) {
@@ -258,6 +295,30 @@ class CrmTasks extends CTaskUnitActiveRecord
             $model->cancelled_date = new CDbExpression('NOW()');
             $model->save();
             $this->notifyUser('changeTaskRole-'.$user,[]);
+        }
+    }
+
+    public function setSubGroupRolesTask($subgroupsId, $role)
+    {
+        foreach ($subgroupsId as $subgroup) {
+            $model = new CrmSubgroupRolesTasks();
+            $model->id_task = $this->id;
+            $model->id_subgroup = $subgroup;
+            $model->role = $role;
+            $model->assigned_by = Yii::app()->user->getId();
+            $model->save();
+//            $this->notifyUser('changeTaskRole-'.$subgroup,[]);
+        }
+    }
+
+    public function cancelSubGroupRolesTask($subgroupsId, $role)
+    {
+        foreach ($subgroupsId as $subgroup) {
+            $model = CrmSubgroupRolesTasks::model()->findByAttributes(array('id_task' => $this->id, 'id_subgroup' => $subgroup, 'role' => $role, 'cancelled_date' => null));
+            $model->cancelled_by = Yii::app()->user->getId();
+            $model->cancelled_date = new CDbExpression('NOW()');
+            $model->save();
+//            $this->notifyUser('changeTaskRole-'.$subgroup,[]);
         }
     }
 
@@ -327,6 +388,13 @@ class CrmTasks extends CTaskUnitActiveRecord
             if(!$schedulerTask){
                 $schedulerTask = new SchedulerTasks();
             }
+            else{
+                if (!$notificationParams['notify']){
+                    $schedulerTask->status = SchedulerTasks::STATUSOK;
+                    $schedulerTask->save(false);
+                    return false;
+                }
+            }
         }
         $notifyMessage->setScenario('crmTaskNotification');
         $notifyMessageTemplate = MailTemplates::model()->findByPk((int)$notificationParams['template']['id']);
@@ -343,6 +411,7 @@ class CrmTasks extends CTaskUnitActiveRecord
         $schedulerTask->parameters = $notificationParams['weekdays'];
         date_default_timezone_set(Config::getServerTimezone());
         $schedulerTask->start_time =  date('Y-m-d H:i:s',strtotime($notificationParams['time']));
+        $schedulerTask->end_time =  null;
         if ($notifyMessage->validate() && $schedulerTask->validate()){
             $notifyMessage->save(false);
             $schedulerTask->related_model_id = $notifyMessage->id;
@@ -365,6 +434,15 @@ class CrmTasks extends CTaskUnitActiveRecord
             $criteria->addCondition('cancelled_date IS NULL');
         }
         $users = CrmRolesTasks::model()->findAll($criteria);
+        $subgroups = CrmSubgroupRolesTasks::model()->findAll('id_task =:id_task AND role=:role',['id_task' =>$this->id,'role' => $role ]);
+        foreach ($subgroups as $subgroup){
+            $students = OfflineStudents::model()->findAll('id_subgroup=:subgroup AND end_date IS NULL',['subgroup' =>$subgroup->id]);
+            foreach ($students as $student){
+                array_push($users, $student);
+            }
+            unset($student);
+            unset($students);
+        }
         return $users;
 
 

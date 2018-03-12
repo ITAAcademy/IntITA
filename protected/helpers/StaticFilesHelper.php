@@ -53,18 +53,26 @@ class StaticFilesHelper {
     public static function fullPathTo($type, $name){
         switch($type){
             case 'js':
-                return StaticFilesHelper::fullPathToJs($name);
+                return StaticFilesHelper::fullPathToJs($name).self::setFilesVersion();
                 break;
             case 'css':
-                return StaticFilesHelper::fullPathToCss($name);
+                return StaticFilesHelper::fullPathToCss($name).self::setFilesVersion();
                 break;
             case 'angular':
+                return StaticFilesHelper::fullPathToAngular($name).self::setFilesVersion();
+                break;
+            case 'angular_non_version':
                 return StaticFilesHelper::fullPathToAngular($name);
                 break;
             default:
-                return StaticFilesHelper::fullPathToFiles($name);
+                return StaticFilesHelper::fullPathToFiles($name).self::setFilesVersion();
                 break;
         }
+    }
+
+    public static function setFilesVersion(){
+        $params_config = require(dirname(__FILE__) . '/../config/params.php');
+        return "?version=". $params_config['params']['versionsOfFile'];
     }
 
     public static function pathToCourseSchema($name){

@@ -9,9 +9,9 @@
     text-align: center;
 }
 .kanbanButtons .fa{
-    margin: 4px;
+    margin: 15px 15px 4px 15px;
     font-size: 24px;
-    padding: 0;
+    padding: 0
 }
 .crmBodyBlock{
     padding: 5px;
@@ -19,6 +19,14 @@
 }
 /*CSS for KANBAN*/
 
+.thinRedLine {
+    border: none;
+    background-color: red;
+    color: red;
+    height: 1px;
+    margin-top: -11px;
+    margin-bottom: 0px;
+}
 #kanban-container{
     text-align: center;
     padding-top: 10px;
@@ -341,4 +349,8 @@ modal .modal {
 }
 .actualDocuments{
     padding: 5px;
+}
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
 }

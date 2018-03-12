@@ -4,8 +4,8 @@
 // dependence on ngCkeditor
 angular
     .module('crmApp')
-    .directive('crmTask', ['$resource', 'typeAhead', 'crmTaskServices', 'NgTableParams', '$compile', '$uibModal', 'ngToast','$state','$timeout','$rootScope', 'FileUploader','$ngBootbox',
-        function ($resource, typeAhead, crmTaskServices, NgTableParams, $compile, $uibModal, ngToast, $state, $timeout, $rootScope, FileUploader, $ngBootbox) {
+    .directive('crmTask', ['$resource', 'typeAhead', 'crmTaskServices', 'NgTableParams', '$compile', '$uibModal', 'ngToast','$state','$timeout','$rootScope', 'FileUploader',
+        function ($resource, typeAhead, crmTaskServices, NgTableParams, $compile, $uibModal, ngToast, $state, $timeout, $rootScope, FileUploader) {
             function link(scope, element, attrs) {
                 scope.pathToTemplates=attrs.templatesPath;
                 scope.pathToFiles=attrs.filesPath;
@@ -34,7 +34,7 @@ angular
                         {id: "7", title: 'Неділя'},
                     ],
                     notificationUsersList: crmTaskServices.getCrmRoles(),
-                    notificationTemplates: crmTaskServices.getNotificationTemplates(),
+                    notificationTemplates: scope.teacherMode && crmTaskServices.getNotificationTemplates(),
                     data:{
                         priority: "2",
                         type: "1"
@@ -59,11 +59,12 @@ angular
                                     self.data.deadline = data.task.deadline ? new Date(data.task.deadline) : null;
                                     self.data.expected_time = Number(data.task.expected_time);
                                     self.data.roles = data.roles;
+                                    self.data.rolesSubgroup = data.rolesSubgroup;
                                     self.data.producer = data.roles.producer.name;
                                     self.data.executant = data.roles.executant.name;
                                     self.loadTasksHistory(id);
                                     self.canEditCrmTasks = scope.rolesCanEditCrmTasks || self.data.created_by==self.currentUser || self.data.roles['producer'].id==self.currentUser;
-                                    self.editable = !(self.data.id_state==4 || (self.data.id && !self.canEditCrmTasks))
+                                    self.editable = !((self.data.id_state==4 && !scope.clone) || (self.data.id && !self.canEditCrmTasks));
                                 })
                                 .catch(function (error) {
                                     alert(JSON.parse(error.data.reason));
@@ -423,7 +424,7 @@ angular
                                             dismissOnTimeout: true,
                                             dismissButton: true,
                                             className: 'success',
-                                            content: 'Завдання успішно додано'
+                                            content: 'Завдання успішно збережено'
                                         });
                                         scope.reloadTaskList({tasksType: scope.roleId});
                                     } else {
@@ -598,7 +599,7 @@ angular
                         query: query,
                     }).$promise.then(function (response) {
                         $jq.each(response, function(index, value) {
-                            if($jq.inArray( value.id, [self.data.parent, self.data.id])){
+                            if($jq.inArray( value.id, [self.data.parent, self.data.id])>-1){
                                 delete response[index];
                             }
                         });
@@ -681,6 +682,14 @@ angular
                     console.info('onWhenAddingFileFailed', item, filter, options);
                 };
 
+                var subGroupsArray = $resource(basePath+'/_teacher/newsletter/getSubGroups');
+                scope.getSubGroups = function(query, querySelectAs) {
+
+                    return subGroupsArray.query({query:query}).$promise.then(function(response) {
+
+                        return response;
+                    });
+                };
                 // $rootScope.$on('$includeContentLoaded', function() {
                 //     $timeout(function(){
                 //         setEventToEditableField();
@@ -722,3 +731,20 @@ angular
                 templateUrl: basePath + '/angular/js/crm/templates/task.html'
             };
         }])
+    .filter('subgroupsTaskSearchFilter', function($sce) {
+        return function(label, query, item, options, element) {
+
+
+            var html= "&lt;" + item.groupName+"&gt;"+item.name + "<span class=\"close select-search-list-item_selection-remove\">×</span>";
+
+            return $sce.trustAsHtml(html);
+        };
+    })
+    .filter('subgroupsTaskFilter', function($sce) {
+        return function(label, query, item, options, element) {
+
+            var html= "&lt;" + item.groupName+"&gt;"+item.name;
+
+            return $sce.trustAsHtml(html);
+        };
+    })

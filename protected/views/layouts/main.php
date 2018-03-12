@@ -71,6 +71,8 @@ $header = new Header();
         basePath = '<?php echo Config::getBaseUrl(); ?>';
         studentProjectPath = '<?php echo Config::getStudentsProjectsUrl();?>';
     </script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 </head>
 
 <body itemscope itemtype="https://schema.org/Product">
@@ -114,7 +116,7 @@ $header = new Header();
                                 </li>
                             <?php } ?>
                             <li>
-                                <a href="http://www.robotamolodi.org/" target="_blank"><?php echo Yii::t('header', '0902'); ?></a>
+                                <a href="http://robotamolodi.org/" target="_blank"><?php echo Yii::t('header', '0902'); ?></a>
                             </li>
                             <li>
                                 <a href="http://profitday.info/upcomingevents" target="_blank"><?php echo Yii::t('header', '0912'); ?></a>
@@ -296,7 +298,7 @@ $header = new Header();
                         </li>
                     <?php } ?>
                     <li>
-                        <a href="http://www.robotamolodi.org/" target="_blank"><?php echo Yii::t('header', '0902'); ?></a>
+                        <a href="http://robotamolodi.org/" target="_blank"><?php echo Yii::t('header', '0902'); ?></a>
                     </li>
                     <li>
                         <a href="http://profitday.info/upcomingevents" target="_blank"><?php echo Yii::t('header', '0912'); ?></a>

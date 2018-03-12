@@ -8,9 +8,10 @@ angular
 function testCtrl($rootScope,$http, $scope, accessLectureService,pagesUpdateService,openDialogsService) {
 
     $scope.sendTestAnswer = function (block_order, typeButton, test, testType, editMode) {
+        var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
         var button=angular.element(document.querySelector(".testSubmit"));
         button.attr('disabled', true);
-        user = idUser;
+        user = document.querySelector("#scriptData [data-user-id]").getAttribute("data-user-id");
         var checkAnswers = $("#answers" + block_order + "  input:" + typeButton + ":checked");
         if (checkAnswers.length == 0) {
             openDialogsService.openFalseDialog();

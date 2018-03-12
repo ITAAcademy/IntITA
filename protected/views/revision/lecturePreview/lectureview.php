@@ -32,7 +32,7 @@ $this->breadcrumbs = array(
         </div>
     </div>
 </div>
-<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'); ?>"></script>
+<script src="<?php echo StaticFilesHelper::fullPathTo('angular_non_version', 'bower_components/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'); ?>"></script>
 <script>
     MathJax.Hub.Config({
         tex2jax: {

@@ -160,7 +160,7 @@ angular
                     url: '/students',
                     views: {
                         'usersTabs': {
-                            templateUrl: basePath+"/_teacher/users/students?organization=0",
+                            templateUrl: basePath+"/_teacher/users/usersStudents?organization=0",
                         }
                     }
                 })
@@ -168,7 +168,7 @@ angular
                     url: '/students',
                     views: {
                         'usersTabs': {
-                            templateUrl: basePath+"/_teacher/users/students?organization=1",
+                            templateUrl: basePath+"/_teacher/users/usersStudents?organization=1",
                         }
                     }
                 })

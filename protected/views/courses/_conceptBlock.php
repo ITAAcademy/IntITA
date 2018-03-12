@@ -15,9 +15,9 @@
             <td>
                 <div id='coursesHeader'>
                     <p class="coursesInfoBlock"><?php echo Yii::t('courses', '0148'); ?>
-                        <a href="#detailCourseInfoLarge<?echo $index?>" data-toggle="collapse" style="color: #000;" id="showMyTextLarge" class="detailCourseInfoLarge collapsed"></a>
+                        <a href="#detailCourseInfoLarge<?php echo $index?>" data-toggle="collapse" style="color: #000;" id="showMyTextLarge" class="detailCourseInfoLarge collapsed"></a>
                     </p>
-                    <div id="detailCourseInfoLarge<?echo $index ?>" class="collapse">
+                    <div id="detailCourseInfoLarge<?php echo $index ?>" class="collapse">
                         <div class="courseBox2">
                             <?php echo Yii::t('courses', '0229');?>
                         </div>
