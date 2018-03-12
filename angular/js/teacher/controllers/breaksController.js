@@ -3,10 +3,10 @@
  */
 angular
     .module('teacherApp')
-    .controller('breakStartTableCtrl', breakStartTableCtrl)
+    .controller('breakTableCtrl', breakTableCtrl)
     .controller('breakCtrl', breakCtrl);
 
-function breakStartTableCtrl ($scope, breakService, $state, $http){
+function breakTableCtrl ($scope, breakService, $state, $http){
     $scope.changePageHeader("Варіанти причин виключення");
 
     var url=basePath+'/_teacher/_super_admin/config';
