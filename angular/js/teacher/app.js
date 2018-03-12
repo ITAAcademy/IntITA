@@ -1,5 +1,6 @@
 'use strict';
 angular.module('chatIntITAMessenger', []);
+angular.module('cmsApp', []);
 
 angular
     .module('teacherApp', [
@@ -46,7 +47,8 @@ angular
         'vxWamp',
         'angularTreeview',
         'contentProgressApp',
-        'dndLists'
+        'dndLists',
+        'cmsApp',
     ])
     .filter('shortDate', [
             '$filter', function($filter) {

@@ -74,6 +74,7 @@
             <div class="panel-body">
                 <ul>
                     <li><a ng-href="#/admin/intita_cms">Конструктор сайту</a></li>
+                    <li><a ng-href="#/admin/cms_list">Меню ліст</a></li>
                 </ul>
             </div>
             <div class="panel-footer">

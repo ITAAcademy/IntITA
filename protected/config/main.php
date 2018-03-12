@@ -59,6 +59,7 @@ return array(
         'application.components.Exceptions.*',
         'application.models.quiz.TaskMarks.php',
         'ext.yii-pdf.*', // html to pdf
+        'application.models.cms.*',
     ),
 
     'modules' => array(
