@@ -1,0 +1,57 @@
+html{font-family:"MyriadPro";}
+
+.leftimg {
+    float: left; /* Выравнивание по левому краю */
+    margin: 7px 15px 7px 0;
+    /*width: 100%;*/
+}
+.rightimg  {
+    float: right; /* Выравнивание по правому краю  */
+    margin: 7px 7px 7px 15px; /* Отступы вокруг картинки */
+    /*width: 100%;*/
+}
+.text-left {
+    margin-right: 20px;
+}
+
+.text-right {
+    margin-left: 20px;
+}
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    content: "\e113";
+    font-size: 11px;
+    margin-left: 5px ;
+
+}
+.accordion-toggle.collapsed:after {
+    content: "\e114";
+}
+
+.info_bot {
+    border-bottom: 2px solid #337ab7;
+    display: inline-block;
+    margin-top: 0;
+}
+
+@media only screen and (max-width: 450px) {
+
+    .leftimg, .rightimg{
+        width: 320px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+
+    .leftimg, .rightimg{
+        width: 280px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+
+    .leftimg, .rightimg{
+        width: 260px;
+    }
+}
