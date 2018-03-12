@@ -3,7 +3,7 @@
 </a>
 <br>
 <br>
-<div class="panel panel-default" ng-controller="breakStartTableCtrl">
+<div class="panel panel-default" ng-controller="breakTableCtrl">
     <div class="panel-body" >
         <div class="dataTable_wrapper">
             <table class="table table-striped table-bordered table-hover" style="table-layout: fixed">

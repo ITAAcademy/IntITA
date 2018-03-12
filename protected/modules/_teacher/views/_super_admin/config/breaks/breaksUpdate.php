@@ -1,4 +1,4 @@
-<div class="panel-body" ng-controller="breakStartCtrl">
+<div class="panel-body" ng-controller="breakCtrl">
     <div class="row">
         <div class="formMargin">
             <div class="col-lg-8">
