@@ -1,10 +1,10 @@
 <?php
 return array(
     'class' => 'CDbConnection',
-    'connectionString' => 'mysql:host=localhost:3307;dbname=intita',
+    'connectionString' => 'mysql:host=localhost;dbname=intita',
     'emulatePrepare' => true,
-    'username' => 'root',
-    'password' => 'toor',
+    'username' => 'intita',
+    'password' => '1234567',
     'charset' => 'utf8',
     'enableProfiling' => true,
 );

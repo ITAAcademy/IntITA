@@ -13,7 +13,7 @@ angular
                 }).then(function successCallback(response) {
                     return response.data;
                 }, function errorCallback() {
-                    console.log("Виникла помилка при завантажені варіантів причин. Зв'яжіться з адміністратором сайту.");
+                    console.log("Виникла помилка при завантажені варіантів кар'єр. Зв'яжіться з адміністратором сайту.");
                 });
                 return promise;
             };

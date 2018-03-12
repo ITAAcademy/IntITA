@@ -206,14 +206,14 @@ class ConfigController extends TeacherCabinetController {
     }
     public function actionGetBreaksList()
     {
-        echo Breaks::breaksList();
+        echo OfflineStudentCancelType::breaksList();
     }
 
     public function actionCreateBreak()
     {
         $description=Yii::app()->request->getPost('description');
 
-        $break=new Breaks();
+        $break=new OfflineStudentCancelType();
         $break->description=$description;
 
         if($break->save()){
@@ -225,7 +225,7 @@ class ConfigController extends TeacherCabinetController {
 
     public function actionGetBreakData()
     {
-        echo CJSON::encode(Breaks::model()->findByPk(Yii::app()->request->getParam('id')));
+        echo CJSON::encode(OfflineStudentCancelType::model()->findByPk(Yii::app()->request->getParam('id')));
     }
 
     public function actionUpdateBreak()
@@ -233,7 +233,7 @@ class ConfigController extends TeacherCabinetController {
         $id=Yii::app()->request->getPost('id');
         $description=Yii::app()->request->getPost('description');
 
-        $break=Breaks::model()->findByPk($id);
+        $break=OfflineStudentCancelType::model()->findByPk($id);
         $break->description=$description;
 
         if($break->update()){

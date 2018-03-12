@@ -24,7 +24,7 @@ class StudentRegController extends Controller
         );
     }
     public function actionGetBreaksList(){
-        echo Breaks::breaksList();
+        echo OfflineStudentCancelType::breaksList();
     }
     public function actionCountryAutoComplete($term, $lang)
     {
