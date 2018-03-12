@@ -75,6 +75,24 @@ angular
                 cache: false,
                 templateUrl: url+"/careerCreate"
             })
+            .state('configuration/breaks', {
+                url: "/configuration/breaks",
+                cache: false,
+                templateUrl: url+"/breaks"
+            })
+            .state('configuration/breaks/update/:id', {
+                url: "/configuration/breaks/update/:id",
+                cache: false,
+                templateUrl: function ($stateParams) {
+                    return url+"/breakUpdate/id/"+$stateParams.id;
+                }
+            })
+            .state('configuration/createBreak', {
+                url: "/configuration/createBreak",
+                cache: false,
+                templateUrl: url+"/breakCreate"
+            })
+
             .state('configuration/specializations', {
                 url: "/configuration/specializations",
                 cache: false,

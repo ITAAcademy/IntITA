@@ -127,6 +127,20 @@ class ConfigController extends TeacherCabinetController {
     {
         $this->renderPartial('/_super_admin/config/careers/careerUpdate', array(), false, true);
     }
+    public function actionBreaks()
+    {
+        $this->renderPartial('/_super_admin/config/breaks/breaks', array(), false, true);
+    }
+
+    public function actionBreakCreate()
+    {
+        $this->renderPartial('/_super_admin/config/breaks/breaksCreate', array(), false, true);
+    }
+
+    public function actionBreakUpdate()
+    {
+        $this->renderPartial('/_super_admin/config/breaks/breaksUpdate', array(), false, true);
+    }
 
     public function actionSpecializations()
     {
@@ -187,6 +201,45 @@ class ConfigController extends TeacherCabinetController {
             echo 'Кар\'єру оновлено';
         }else{
             echo 'Оновити кар\'єру не вдалося. Введені не вірні дані';
+        }
+
+    }
+    public function actionGetBreaksList()
+    {
+        echo Breaks::breaksList();
+    }
+
+    public function actionCreateBreak()
+    {
+        $description=Yii::app()->request->getPost('description');
+
+        $break=new Breaks();
+        $break->description=$description;
+
+        if($break->save()){
+            echo "Причину створено";
+        }else{
+            echo "Створити причину не вдалося. Введені не вірні дані";
+        }
+    }
+
+    public function actionGetBreakData()
+    {
+        echo CJSON::encode(Breaks::model()->findByPk(Yii::app()->request->getParam('id')));
+    }
+
+    public function actionUpdateBreak()
+    {
+        $id=Yii::app()->request->getPost('id');
+        $description=Yii::app()->request->getPost('description');
+
+        $break=Breaks::model()->findByPk($id);
+        $break->description=$description;
+
+        if($break->update()){
+            echo 'Причину оновлено';
+        }else{
+            echo 'Оновити причину не вдалося. Введені не вірні дані';
         }
 
     }

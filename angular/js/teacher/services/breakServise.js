@@ -1,13 +1,13 @@
 'use strict';
 
 angular
-    .module('mainApp')
-    .service('careerService', [
+    .module('teacherApp')
+    .service('breakService', [
         '$http',
         function($http) {
-            this.getCareersList = function () {
+            this.getBreaksList = function () {
                 var promise = $http({
-                    url: basePath + "/studentreg/getcareerslist",
+                    url: basePath + "/studentreg/getBreaksList",
                     method: "POST",
                     headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
                 }).then(function successCallback(response) {
