@@ -21,22 +21,27 @@ $finishedLecture = $lecture->isFinished($user);
 ?>
 <script type="text/javascript">
     basePath = '<?php echo Config::getBaseUrl(); ?>';
+
+    idModule = <?php echo $lecture->idModule;?>;
+    idLecture = <?php echo $lecture->id;?>;
+    lang = '<?php echo CommonHelper::getLanguage();?>';
+
+    editMode = <?php echo ($editMode) ? 1 : 0;?>;
+    isAdmin = '<?php echo Yii::app()->user->model->isAdmin() ? 1 : 0; ?>';
+    if (parseInt(editMode || isAdmin)) {
+        lastAccessPage = 1;
+    }else{
+        lastAccessPage = <?php echo $lastAccessPage ?>;
+    }
 </script>
 
 <div id="scriptData">
     <input type="hidden" data-success-message='<?php echo Yii::t('lecture', '0675'), ' ', Yii::t('lecture', '0679'); ?>'>
     <input type="hidden" data-part-not-available='<?php echo Yii::t('lecture', '0638'); ?>'>
-    <input type="hidden" data-lang='<?php echo CommonHelper::getLanguage();?>'>
     <input type="hidden" data-user-id='<?php echo $user;?>'>
     <input type="hidden" data-interpreter-server='<?php echo Config::getInterpreterServer();?>'>
     <input type="hidden" data-finished-lecture='<?php echo ($finishedLecture) ? 1 : 0;?>'>
-    <input type="hidden" data-last-access-page='<?php echo $lastAccessPage ?>'>
-
-    <input type="hidden" data-is-admin='<?php echo Yii::app()->user->model->isAdmin() ? 1 : 0; ?>'>
-    <input type="hidden" data-edit-mode='<?php echo ($editMode) ? 1 : 0;?>'>
     <input type="hidden" data-course-id='<?php echo $idCourse;?>'>
-    <input type="hidden" data-module-id='<?php echo $lecture->idModule;?>'>
-    <input type="hidden" data-lecture-id='<?php echo $lecture->id;?>'>
 </div>
 
 <div id="lessonHumMenu" data-toggle="tooltip" title="Меню INTITA">

@@ -6,7 +6,6 @@ angular
     .service('pagesUpdateService', [
         '$rootScope','$http',
         function($rootScope, $http) {
-            var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
             this.pagesDataUpdate = function (){
                 $http({
                     url: basePath + '/lesson/GetPageData',

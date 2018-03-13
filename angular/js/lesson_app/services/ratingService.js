@@ -2,8 +2,6 @@ angular
     .module('lessonApp')
     .factory('ratingService', ['$resource', 'transformRequest',
         function($resource, transformRequest){
-            var idModule = document.querySelector("#scriptData [data-module-id]").getAttribute("data-module-id");
-            var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
             return $resource(
                 '',
                 {},
