@@ -6,7 +6,6 @@ angular
     .controller('lessonPageCtrl',lessonPageCtrl);
 
 function lessonPageCtrl($rootScope,$scope, ipCookie,openDialogsService, $http, $state) {
-    var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
     $scope.currentLocation = window.location.pathname;
 
     $scope.$watch('pageChanged', function (newValue, oldValue) {
