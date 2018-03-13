@@ -1,3 +1,8 @@
 *{
     font-family: "MyriadPro";
 }
+.preview{
+    width: 101px;
+    margin: 0 auto;
+    display: block;
+}
