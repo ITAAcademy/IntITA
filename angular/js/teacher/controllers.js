@@ -169,7 +169,7 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
         $timeout(updateCounter, 10000);
     }
     else {
-        var conn = new ab.Session('ws://' + window.location.host + '/wss/',
+        var conn = new ab.Session('wss://' + window.location.host + '/wss/',
             function () {
                 conn.subscribe('newMessages-' + user, function (topic, data) {
                     console.log('New message received');
