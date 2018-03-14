@@ -43,7 +43,6 @@ angular
         'auditorRouter',
         'ngImgCrop',
         'crmApp',
-        'vxWamp',
         'angularTreeview',
         'contentProgressApp',
         'dndLists'

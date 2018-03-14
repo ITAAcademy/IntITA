@@ -22,7 +22,7 @@
     </div>
     <?php $this->renderPartial('_teacherList', array('dataProvider'=>$post, 'teacherletter'=>$teacherletter));  ?>
 </div>
-<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/bootbox.min.js'); ?>"></script>
+<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/bootbox/bootbox.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'hideBlock.js'); ?>"></script>
 <?php $this->renderPartial('/site/_shareMetaTag', array(
     'url'=>Yii::app()->createAbsoluteUrl(Yii::app()->request->url),
