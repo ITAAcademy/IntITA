@@ -2,10 +2,7 @@
 
 class AccountantController extends TeacherCabinetController {
     public function hasRole() {
-        return Yii::app()->user->model->isAdmin()
-            || Yii::app()->user->model->isSuperAdmin()
-            || Yii::app()->user->model->isContentManager()
-            || Yii::app()->user->model->isSuperVisor();
+        return Yii::app()->user->model->isAccountant();
     }
 
     public function actionIndex($id = 0) {
