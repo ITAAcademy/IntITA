@@ -65,3 +65,21 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                Ролі
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><a ng-href="#/admin/intita_cms">Конструктор сайту</a></li>
+                    <li><a ng-href="#/admin/cms_list">Меню ліст</a></li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <em>Створення піддомену, та конструктор сайту</em>
+            </div>
+        </div>
+    </div>
+</div>

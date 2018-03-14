@@ -1,0 +1,59 @@
+<style>
+    hr{
+        margin-top: 20px;
+    }
+    .preview{
+        width: 101px;
+        margin: 0 auto;
+        display: block;
+    }
+</style>
+<div class="form-group form-link" ng-controller="cmsMenuListCtrl">
+    <label>Список меню</label>
+    <div ng-repeat="list in lists track by $index" class="row">
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Меню" ng-model="list.title">
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Посилання" ng-model="list.link">
+        </div>
+        <div class="col-md-2">
+            <img class="preview" src="/{{list.image}}">
+            <input id="logoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control logoUpdate" placeholder="Логотип" name="logo">
+        </div>
+        <div class="col-md-5">
+            <textarea class="form-control" placeholder="Опис" ng-model="list.description" style="resize: none"></textarea>
+        </div>
+        <div class="col-md-1">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateMenuLink(list, $index,list.image)"></i>
+            </a>
+            <a href="javascript:void(0)">
+                <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeMenuLink(list.id,list.image)"></i>
+            </a>
+        </div>
+        <div class="col-md-12">
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Меню" ng-model="newLink.title">
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Посилання" ng-model="newLink.link">
+        </div>
+        <div class="col-md-2">
+            <input id="logo" enctype="multipart/form-data" type="file" class="form-control" placeholder="Логотип" name="logo">
+        </div>
+        <div class="col-md-5">
+            <textarea class="form-control" placeholder="Опис" ng-model="newLink.description" style="resize: none"></textarea>
+        </div>
+        <div class="col-md-1">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateMenuLink(newLink)"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<link>
