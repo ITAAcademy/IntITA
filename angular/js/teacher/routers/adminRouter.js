@@ -77,7 +77,7 @@ angular
         .state('admin/intita_cms', {
             url: "/admin/intita_cms",
             cache: false,
-            templateUrl: basePath+"/_teacher/_admin/cms/index",
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/header.html",//покашо для хедера
         })
         .state('admin/cms_list', {
             url: "/admin/cms_list",

@@ -7,7 +7,14 @@ angular
             $scope.loadCmsMenuList=function(){
                 cmsService.menuList().$promise
                     .then(function successCallback(response) {
-                        $scope.lists=response;
+                        if(response.length==0){
+                            $http.get(basePath + '/files/cms/defaultMenu.json').success(function (response) {
+                                $scope.lists=response;
+                            });
+                        }
+                        else{
+                            $scope.lists=response;
+                        }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
                     });
