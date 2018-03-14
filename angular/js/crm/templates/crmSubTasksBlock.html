@@ -9,7 +9,7 @@
             <input type="text" size="50" ng-model="crmTask.selectedSubTask"
                    ng-model-options="{ debounce: 1000 }" placeholder="обери завдання"
                    uib-typeahead="item.name for item in getSubTasks($viewValue) | limitTo : 10"
-                   typeahead-no-results="noResults" typeahead-template-url="customTemplate.html"
+                   typeahead-no-results="noResults" typeahead-template-url="subgroupTemplate.html"
                    typeahead-on-select="onSelectTask($item)" ng-change="reloadTask()" class="form-control"
                    ng-disabled="!crmTask.editable"/>
             <span class="input-group-btn">
@@ -26,3 +26,13 @@
         </ul>
     </div>
 </div>
+<script type="text/ng-template" id="subgroupTemplate.html">
+    <a>
+        <div class="typeahead_wrapper  tt-selectable">
+            <div class="typeahead_labels">
+                <div ng-bind="match.model.name"></div>
+                <div ng-bind="match.model.email" class="typeahead_secondary"></div>
+            </div>
+        </div>
+    </a>
+</script>

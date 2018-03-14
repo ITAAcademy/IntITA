@@ -127,6 +127,20 @@ class ConfigController extends TeacherCabinetController {
     {
         $this->renderPartial('/_super_admin/config/careers/careerUpdate', array(), false, true);
     }
+    public function actionBreaks()
+    {
+        $this->renderPartial('/_super_admin/config/breaks/breaks', array(), false, true);
+    }
+
+    public function actionBreakCreate()
+    {
+        $this->renderPartial('/_super_admin/config/breaks/breaksCreate', array(), false, true);
+    }
+
+    public function actionBreakUpdate()
+    {
+        $this->renderPartial('/_super_admin/config/breaks/breaksUpdate', array(), false, true);
+    }
 
     public function actionSpecializations()
     {
@@ -153,12 +167,12 @@ class ConfigController extends TeacherCabinetController {
         $title_ua=Yii::app()->request->getPost('title_ua');
         $title_ru=Yii::app()->request->getPost('title_ru');
         $title_en=Yii::app()->request->getPost('title_en');
-        
+
         $career=new Careers();
         $career->title_ua=$title_ua;
         $career->title_ru=$title_ru;
         $career->title_en=$title_en;
-        
+
         if($career->save()){
             echo "Кар'єру створено";
         }else{
@@ -187,6 +201,45 @@ class ConfigController extends TeacherCabinetController {
             echo 'Кар\'єру оновлено';
         }else{
             echo 'Оновити кар\'єру не вдалося. Введені не вірні дані';
+        }
+
+    }
+    public function actionGetBreaksList()
+    {
+        echo OfflineStudentCancelType::breaksList();
+    }
+
+    public function actionCreateBreak()
+    {
+        $description=Yii::app()->request->getPost('description');
+
+        $break=new OfflineStudentCancelType();
+        $break->description=$description;
+
+        if($break->save()){
+            echo "Причину створено";
+        }else{
+            echo "Створити причину не вдалося. Введені не вірні дані";
+        }
+    }
+
+    public function actionGetBreakData()
+    {
+        echo CJSON::encode(OfflineStudentCancelType::model()->findByPk(Yii::app()->request->getParam('id')));
+    }
+
+    public function actionUpdateBreak()
+    {
+        $id=Yii::app()->request->getPost('id');
+        $description=Yii::app()->request->getPost('description');
+
+        $break=OfflineStudentCancelType::model()->findByPk($id);
+        $break->description=$description;
+
+        if($break->update()){
+            echo 'Причину оновлено';
+        }else{
+            echo 'Оновити причину не вдалося. Введені не вірні дані';
         }
 
     }
@@ -282,4 +335,60 @@ class ConfigController extends TeacherCabinetController {
             $model->save(false);
         }
     }
+    public function actionLanguageLevel()
+    {
+        $levels = LanguageLevels::model()->findAll();
+        $values = [];
+        foreach ($levels as $item) {
+            $values[] = $item->getAttributes();
+        }
+        $this->renderPartial('//ajax/json', ['body' => json_encode($values)]);
+    }
+    public function actionlanguageLevels()
+    {
+        $this->renderPartial('/_super_admin/config/languageLevels/languageLevels', array(), false, true);
+    }
+    public function actionLanguageLevelsCreate()
+    {
+        $this->renderPartial('/_super_admin/config/languageLevels/languageLevelsForm', array('scenario'=>'create'), false, true);
+    }
+    public function actionLanguageLevelsUpdate()
+    {
+        $this->renderPartial('/_super_admin/config/languageLevels/languageLevelsForm', array('scenario'=>'update'), false, true);
+    }
+    public function actionCreateLanguageLevels()
+    {
+        $data = Yii::app()->request->getPost('form_data');
+        $languageLevel=new LanguageLevels();
+        $languageLevel->attributes = $data;
+        $count = LanguageLevels::model()->count();
+        $languageLevel->order=++$count;
+
+        if($languageLevel->save()){
+            echo "Рівень створено";
+        }else{
+            throw new CHttpException(500, 'Створити рівень не вдалося. Введені не вірні дані');
+        }
+    }
+    public function actionGetLanguageLevelsData()
+    {
+        echo CJSON::encode(LanguageLevels::model()->findByPk(Yii::app()->request->getParam('id')));
+    }
+    public function actionUpdateLanguageLevels()
+    {
+        $id=Yii::app()->request->getPost('id');
+        $data=Yii::app()->request->getPost('data');
+
+        $languageLevel=LanguageLevels::model()->findByPk($id);
+        $languageLevel->attributes = $data;
+
+        if($languageLevel->update()){
+            echo 'Рівень оновлено';
+        }else{
+            echo 'Оновити рівень не вдалося. Введені не вірні дані';
+        }
+
+    }
+
+
 }

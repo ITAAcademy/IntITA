@@ -75,7 +75,7 @@
 <!--                        class="fa fa-user fa-fw"></i>--><?php //echo Yii::t('header', '0017'); ?><!--</a></li>-->
             <li><a href="<?php echo Config::getBaseUrl() . '/aboutus'; ?>"><i
                         class="fa fa-user fa-fw"></i><?php echo Yii::t('header', '0018'); ?></a></li>
-            <li><a href="http://www.robotamolodi.org/" target="_blank"><i
+            <li><a href="http://robotamolodi.org/" target="_blank"><i
                         class="fa fa-user fa-fw"></i><?php echo Yii::t('header', '0902'); ?></a></li>
             <li><a href="http://profitday.info/upcomingevents" target="_blank"><i
                         class="fa fa-user fa-fw"></i><?php echo Yii::t('header', '0912'); ?></a></li>

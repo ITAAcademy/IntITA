@@ -39,6 +39,7 @@ return array(
         'application.models.slider.*',
         'application.models.revision.*',
         'application.models.crm.*',
+        'application.models.library.*',
         'application.models.crm.tasksState.*',
         'application.models.revision.state.*',
         'application.models.revision.state.lecture.*',

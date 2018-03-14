@@ -113,8 +113,8 @@
                         <strong>Відгук:</strong>
                     </label>
 
-                    <textarea id="comment" type="text" class="form-control" name="recall"
-                              size="90" required ng-model="graduate.recall"></textarea>
+                    <textarea id="comment" type="text" rows="8"  class="form-control" name="recall"
+                              size="90"  style="resize:none" required ng-model="graduate.recall"></textarea>
                     <div class="error" ng-show="errors.recall">{{errors.recall[0]}}</div>
                 </div>
 
