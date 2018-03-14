@@ -7,10 +7,9 @@
     </a>
 </li>
 <?php if(
-    Yii::app()->user->model->isAdmin()
-    || Yii::app()->user->model->isSuperAdmin()
-    || Yii::app()->user->model->isContentManager()
-    || Yii::app()->user->model->isSuperVisor()
+
+Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin())
+
 ) {?>
     <li>
         <a href="#/library" class="show_elem">

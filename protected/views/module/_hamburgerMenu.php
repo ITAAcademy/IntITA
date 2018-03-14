@@ -37,9 +37,9 @@
             <li><a href="<?php echo Config::getBaseUrl().'/aboutus'; ?>"><?php echo Yii::t('header', '0018'); ?></a></li>
             <li><a href="http://robotamolodi.org/" target="_blank"><?php echo Yii::t('header', '0902'); ?></a></li>
             <li><a href="https://hack.intita.com" target="_blank"><?php echo Yii::t('header', 'Школа хакерів'); ?></a></li>
-            <li>
-                <a href="<?php echo Config::getBaseUrl() . '/library'; ?>">Бібліотека</a>
-            </li>
+<!--            <li>-->
+<!--                <a href="--><?php //echo Config::getBaseUrl() . '/library'; ?><!--">Бібліотека</a>-->
+<!--            </li>-->
 
         </ul>
         <div class="humundline"></div>
