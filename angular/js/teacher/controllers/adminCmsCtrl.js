@@ -22,7 +22,6 @@ angular
             $scope.loadCmsMenuList();
 
             $scope.updateMenuLink=function(link,index,previousImage){
-                var image = $jq('#logo').prop('files')[0];
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
                 if(index!==undefined){
@@ -32,6 +31,7 @@ angular
                     uploadImage.append("previousImage",previousImage);
                 }
                 else{
+                    var image = $jq('#logo').prop('files')[0];
                     uploadImage.append("logo",image);
                 }
                 $http.post(basePath+'/_teacher/_admin/cms/updateMenuLink', uploadImage, {
