@@ -27,36 +27,33 @@ class CmsController extends TeacherCabinetController{
        echo CJSON::encode(CmsMenuList::model()->findAll());
     }
 
-    public function actionSetLogo(){
-        $addressForFile="";
-        $previousImage = $_POST["previousImage"];
-        if (isset($_FILES) && !empty($_FILES)){
-            $folderAddress = 'images/cms/'. Yii::app()->user->model->getCurrentOrganizationId()."/lists/";
-
-            if (!file_exists($folderAddress)){
-                mkdir($folderAddress,'777',true);
-            }
-            if (file_exists($previousImage)){
-                unlink($previousImage);
-            }
-            $end_file_name = $_FILES["logo"]["name"];
-            $tmp_file_name = $_FILES["logo"]["tmp_name"];
-            if(getimagesize($tmp_file_name)){
-                $addressForFile = $folderAddress . date("jYgi") .basename($end_file_name);
-            }
-            copy($tmp_file_name,$addressForFile);
-            echo $addressForFile;
-        }
-    }
-    public function actionUpdateMenuLink()
-    {
+    public function actionUpdateMenuLink(){
         $result = ['message' => 'OK'];
         $statusCode = 201;
         try {
+            $addressForFile="";
+            $previousImage = $_POST["previousImage"];
+            if (isset($_FILES) && !empty($_FILES)){
+                $folderAddress = 'images/cms/'. Yii::app()->user->model->getCurrentOrganizationId()."/lists/";
+                if (!file_exists($folderAddress)){
+                    mkdir($folderAddress,'777',true);
+                }
+                if (file_exists($previousImage)){
+                    unlink($previousImage);
+                }
+                $end_file_name = $_FILES["logo"]["name"];
+                $tmp_file_name = $_FILES["logo"]["tmp_name"];
+                if(getimagesize($tmp_file_name)){
+                    $addressForFile = $folderAddress . date("jYgi") .basename($end_file_name);
+                }
+                copy($tmp_file_name,$addressForFile);
+                echo $addressForFile;
+            }
             $params = array_filter((array)json_decode($_POST['data']));
             $menuLink = isset($params['id'])?CmsMenuList::model()->findByPk($params['id']): new CmsMenuList();
             $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $menuLink->attributes = $params;
+            $menuLink->image = $addressForFile;
             if(!$menuLink->save()){
                 throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
             }
