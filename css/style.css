@@ -414,3 +414,11 @@ ul[rn-carousel] {
     width: 100%;
     display:inline-block;
 }
+@media screen and (max-width: 800px){
+    #enter_button{
+        display: none;
+    }
+    .languageRow{
+        display: none;
+    }
+}
