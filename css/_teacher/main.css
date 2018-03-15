@@ -663,3 +663,14 @@ div.loader > div {
 .scroll-table table{
     table-layout: inherit;
 }
+@media screen and (max-width: 1200px) {
+    table{
+        table-layout: auto;
+    }
+    .panel-body{
+        overflow: scroll;
+    }
+    #pageContainer{
+        overflow: hidden;
+    }
+}
