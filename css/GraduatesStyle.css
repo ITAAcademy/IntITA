@@ -403,3 +403,6 @@ div.modal-footer {
 .accordion-toggle.collapsed:after {
     content: "\e114";
 }
+.labelFilter:hover{
+    cursor: pointer;
+}
