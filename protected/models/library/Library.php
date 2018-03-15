@@ -37,11 +37,11 @@ class Library extends CActiveRecord
 		return array(
 			array('title', 'required'),
 			array('title, language', 'length', 'max'=>50),
-			array('description, link, logo', 'length', 'max'=>256),
+			array('description, link, logo,author', 'length', 'max'=>256),
 			array('price', 'length', 'max'=>8),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, description, price, language, status, link, logo', 'safe', 'on'=>'search'),
+			array('id, title, description, price, language, status, link, logo,author', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,6 +72,7 @@ class Library extends CActiveRecord
 			'status'=>'Status',
 			'link' => 'Link',
 			'logo' => 'Logo',
+            'author' => 'Author'
 		);
 	}
 
@@ -101,6 +102,7 @@ class Library extends CActiveRecord
         $criteria->compare('status',$this->status,true);
 		$criteria->compare('link',$this->link,true);
 		$criteria->compare('logo',$this->logo,true);
+        $criteria->compare('author',$this->author,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
