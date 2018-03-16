@@ -13,7 +13,7 @@
             <td>
                 <div >
                     <a href="#" class="unselectedFilter" onclick="selectFilter(this)">
-                        <label>
+                        <label class="labelFilter">
                             <input ng-cloak="" type="radio" ng-model="selector" value="az" ng-hide="1" ng-click="selectFilter()">
                             <?php echo Yii::t('graduates', '0609'); ?>
                         </label>
@@ -23,7 +23,7 @@
             <td>
                 <div>
                     <a href="#" class="unselectedFilter selectedFilter" onclick="selectFilter(this)">
-                        <label>
+                        <label class="labelFilter">
                             <input ng-cloak="" type="radio" ng-model="selector" value="date" ng-hide="1" ng-click="selectFilter()">
                             <?php echo Yii::t('graduates', '0610'); ?>
                         </label>
