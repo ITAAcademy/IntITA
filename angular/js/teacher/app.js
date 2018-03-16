@@ -49,6 +49,7 @@ angular
         'contentProgressApp',
         'dndLists',
         'cmsApp',
+        'libraryRouter',
     ])
     .filter('shortDate', [
             '$filter', function($filter) {

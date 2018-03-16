@@ -1,3 +1,11 @@
+.showMoreGraduate{
+    display: flex;
+    justify-content: center; /*Центрирование по горизонтали*/
+    margin-left: 25%;
+    font-size: 14pt;
+    font-family:sans-serif ;
+}
+
 .graduateBlock{
     max-width: 1200px;
     margin: 0 auto;
@@ -99,10 +107,9 @@ span.spoilerTriangle {
     flex-wrap: wrap;
 }
 .spoiler-body {
-    display:none;
     border: 1px #666666 solid;
-    border-radius: 15px;
-    padding: 0px 10px 10px 25px;
+    border-radius: 10px;
+    padding: 5px 10px 10px 20px;
     font-size: 14px;
     color: #666666;
     margin-bottom: 5px;
@@ -384,3 +391,15 @@ div.modal-footer {
 
 /*style for pagination*/
 /*celebre*/
+
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    content: "\e113";
+    font-size: 11px;
+    margin-left: 5px ;
+
+}
+.accordion-toggle.collapsed:after {
+    content: "\e114";
+}

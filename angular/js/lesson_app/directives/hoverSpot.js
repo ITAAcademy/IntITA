@@ -22,6 +22,7 @@ function hoverSpot() {
                     var title = $(this).attr("title");
                     if ($(this).is('.pageNoAccess')) {
                         var container = $('<p class="titleNoAccess"></p>');
+                        var partNotAvailable = document.querySelector("#scriptData [data-part-not-available]").getAttribute("data-part-not-available");
                         container.text(title);
                         $('#tooltip').html(container.append('<span class="noAccess"> (' + partNotAvailable + ')</span>'));
                     }else{

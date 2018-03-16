@@ -23,7 +23,9 @@ class StudentRegController extends Controller
             'accessControl',
         );
     }
-
+    public function actionGetBreaksList(){
+        echo OfflineStudentCancelType::breaksList();
+    }
     public function actionCountryAutoComplete($term, $lang)
     {
         $criteria = new CDbCriteria();

@@ -67,16 +67,11 @@ function coursemanageCtrl ($http, $scope, $stateParams, $state ,$templateCache){
         bootbox.confirm("Змінити статус курсу?", function (result) {
             if (result) {
                 $http.post(url).success(function (data) {
-                    bootbox.alert("Операцію успішно виконано.", function () {
                         $templateCache.remove(basePath+"/_teacher/courseManage/update/id/"+courseId);
                         $state.go('course/edit/:id',{'id':courseId},{reload: true});
-                    })
                 }).error(function (data) {
                     showDialog("Операцію не вдалося виконати.");
                 });
-            }
-            else {
-                showDialog("Операцію відмінено.");
             }
         });
     };

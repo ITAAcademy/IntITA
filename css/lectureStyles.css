@@ -1973,3 +1973,30 @@ a.cke_dialog_ui_fileButton{
         transition: none;
         -webkit-transition: none;
     }
+    .ng-toast .ng-toast__message .alert {
+        text-align: left;
+    }
+.chatButton{
+    position: fixed;
+    top: 121px;
+    left: 14px;
+}
+.consultationLogos{
+    margin: 0;
+}
+@media screen and (max-width:1320px) {
+    .chatButton {
+        top: 0;
+        left: inherit;
+        right: 0px;
+        z-index: 101;
+    }
+    #enable-chat i{
+        height: 45px !important;
+    }
+    .consultationLogos{
+        margin: 6px 4px 7px auto;
+        height: 34px;
+
+    }
+}
