@@ -16,6 +16,7 @@
  */
 class CmsNews extends CActiveRecord
 {
+    use validationErrors;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -32,7 +33,8 @@ class CmsNews extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, text, date, img, id_organization', 'required'),
+			//array('title, text, date, img, id_organization', 'required'),
+            array('title, text, date', 'required'),
 			array('id_organization', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 			array('img', 'length', 'max'=>128),

@@ -33,4 +33,38 @@ angular
                     });
             };
         }
+        ])
+
+        .controller('cmsNewsCtrl', ['$scope','cmsService',
+            function ($scope, cmsService) {
+                $scope.changePageHeader('Menu news');
+
+                $scope.loadCmsNews=function(){
+                    cmsService.newsList().$promise
+                        .then(function successCallback(response) {
+                            $scope.lists=response;
+                        }, function errorCallback() {
+                            bootbox.alert("Отримати дані списку новин не вдалося");
+                        });
+                };
+                $scope.loadCmsNews();
+
+                $scope.updateNews=function(link){
+                    cmsService.updateNews({data:angular.toJson(link)}).$promise
+                        .then(function successCallback() {
+                            $scope.loadCmsNews();
+                            $scope.newNews={id:null, description:null,link:null};
+                        }, function errorCallback(response) {
+                            bootbox.alert(response.data.reason);
+                        });
+                };
+                $scope.removeNews=function(id){
+                    cmsService.removeNews({id:id}).$promise
+                        .then(function successCallback() {
+                            $scope.loadCmsNews();
+                        }, function errorCallback(response) {
+                            bootbox.alert(response.data.reason);
+                        });
+                };
+            }
         ]);

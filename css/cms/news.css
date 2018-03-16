@@ -1,13 +1,13 @@
 html{font-family:"MyriadPro";}
 
 .leftimg {
-    float: left; /* Выравнивание по левому краю */
+    float: left;
     margin: 7px 15px 7px 0;
     /*width: 100%;*/
 }
 .rightimg  {
-    float: right; /* Выравнивание по правому краю  */
-    margin: 7px 7px 7px 15px; /* Отступы вокруг картинки */
+    float: right;
+    margin: 7px 7px 7px 15px;
     /*width: 100%;*/
 }
 .text-left {
@@ -18,7 +18,6 @@ html{font-family:"MyriadPro";}
     margin-left: 20px;
 }
 .accordion-toggle:after {
-    /* symbol for "opening" panels */
     font-family: 'Glyphicons Halflings';
     content: "\e113";
     font-size: 11px;

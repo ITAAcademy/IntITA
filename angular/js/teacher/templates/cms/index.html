@@ -1,0 +1,48 @@
+<style>
+    hr{
+        margin-top: 20px;
+    }
+</style>
+<div class="form-group form-link" ng-controller="cmsNewsCtrl">
+    <label>Список новин</label>
+    <div ng-repeat="list in lists track by $index" class="row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Заголовок" ng-model="list.title">
+        </div>
+        <td title="'Фото'">
+            <img class="newsPhoto" src="{{list.img}}">
+        </td>
+        <div class="col-md-5">
+            <textarea class="form-control" placeholder="Текст новини" ng-model="list.text" style="resize: none"></textarea>
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Дата" ng-model="list.date">
+        </div>
+        <div class="col-md-1">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(list)"></i>
+            </a>
+            <a href="javascript:void(0)">
+                <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(list.id)"></i>
+            </a>
+        </div>
+        <div class="col-md-12">
+            <hr>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="Заголовок" ng-model="newNews.title">
+        </div>
+        <div class="col-md-6">
+            <textarea class="form-control" placeholder="Текст новини" ng-model="newNews.text" style="resize: none"></textarea>
+        </div>
+        <div class="col-md-1">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(newNews)"></i>
+            </a>
+        </div>
+    </div>
+</div>
