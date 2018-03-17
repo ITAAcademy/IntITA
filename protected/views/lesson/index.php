@@ -51,20 +51,31 @@ $finishedLecture = $lecture->isFinished($user);
    href="<?php echo Yii::app()->createUrl('/consultationscalendar/index', array('lectureId' => $lecture->id, 'idCourse' => $idCourse)); ?>">
     <div id="consultationAssistance" data-toggle="tooltip" data-placement="bottom" title="Запланувати консультацію">
         <img class="consultationLogos"
-             src="<?php echo StaticFilesHelper::createPath('image', 'lecture', 'consultationLogo.png'); ?>">
+             src="<?php echo StaticFilesHelper::createPath('image', 'lecture', 'consult.png'); ?>">
         <div class="consultationText">Запланувати консультацію</div>
     </div>
 </a>
+<div class="chatButton" id="chatButton" style="position: fixed">
+    <span class="enable-chat" id="enable-chat" style="display: inline-block;">
+        <i onclick="showChat()" class="logo material-icons">
+            <img style="vertical-align:unset" src="https://www.materialui.co/materialIcons/communication/chat_white_24x24.png">
+        </i>
+    </span>
+</div>
 <div class="consultations">
     <a class='consultationButtons'
        href="<?php echo Yii::app()->createUrl('/consultationscalendar/index', array('lectureId' => $lecture->id, 'idCourse' => $idCourse)); ?>">
     </a>
 </div>
 
+
 <div ng-cloak class="lessonBlock" id="lessonBlock">
     <div ng-controller="lessonPageCtrl">
         <div class="lessonText">
-            <div>
+            <div id="sidebarLesson">
+                <?php $this->renderPartial('_sidebarMain', array('lecture' => $lecture, 'editMode' => $editMode, 'idCourse' => $idCourse, 'finishedLecture' => $finishedLecture, 'passedPages' => $passedPages)); ?>
+            </div>
+            <div style="margin-bottom: 4px">
                 <div class="lessonTheme">
                     <?php echo $lecture->title(); ?>
                     <?php $this->renderPartial('_editLecture', array('lecture' => $lecture, 'editMode' => $editMode)); ?>
@@ -151,3 +162,12 @@ $finishedLecture = $lecture->isFinished($user);
     </div>
 </div>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'SidebarLesson.js'); ?>"></script>
+<script>
+    function showChat(){
+        $("[ita-messenger]").css("display","block");
+        $("#chatButton").css("display","none");
+        $("#close_btn").click(function () {
+            $("#chatButton").css("display","block");
+        })
+    }
+</script>

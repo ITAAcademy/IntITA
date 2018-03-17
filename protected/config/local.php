@@ -11,7 +11,7 @@ define('MAIL_DEBUG',true);
 return array(
     'db' => array(
         'class' => 'CDbConnection',
-        'connectionString' => 'mysql:host=db;dbname=intita',
+        'connectionString' => 'mysql:host=localhost;dbname=intita',
         'emulatePrepare' => true,
         'username' => 'intita',
         'password' => '1234567',
