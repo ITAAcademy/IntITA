@@ -13,6 +13,7 @@ angular
                 var pressedSymbol;
 
                 var self=scope.crmTask={
+                    comments:[],
                     editable:true,
                     options:{},
                     selectedSubTask:'',
@@ -286,22 +287,43 @@ angular
                         });
                     },
                     loadTasksComments:function (id) {
-                        scope.commentsTableParams = new NgTableParams({
-                            sorting: {
-                                create_date: 'desc'
-                            },
-                            id: id
-                        }, {
-                            getData: function (params) {
-                                return crmTaskServices
-                                    .getTaskComments(params.url())
-                                    .$promise
-                                    .then(function (data) {
-                                        params.total(data.count);
-                                        return data.rows;
+                        crmTaskServices
+                            .getTaskComments({id:id})
+                            .$promise
+                            .then(function (data) {
+                                var usedParentIds = [];
+                                var childrens = [];
+                                _.each(data.rows, function (item, index) {
+                                    if(item.id_parent){
+                                        childrens.push(item);
+                                    }
+                                });
+                                _.each(childrens, function (item, index) {
+                                    if(!usedParentIds.includes(item.id)){
+                                        var child = _.find(data.rows, function(voteItem) {
+                                            return voteItem == item;
+                                        });
+                                        usedParentIds.push(item.id_parent);
+                                        var oldChildIndex = _.findIndex(data.rows, function(voteItem) {
+                                            return voteItem == item;
+                                        });
+                                        data.rows.splice(oldChildIndex, 1);
+                                        var parentIndex = _.findIndex(data.rows, function(voteItem) {
+                                            return voteItem.id == item.id_parent;
+                                        });
+                                        data.rows.splice(parentIndex+1, 0,  child);
+                                    }
+                                });
+                                if(!(self.data.rolesSubgroup.observer.length+self.data.rolesSubgroup.collaborator.length)){
+                                    self.comments = data.rows;
+                                }else{
+                                    self.comments = _.filter(data.rows, function(item) {
+                                        return item.id_user==self.currentUser || self.currentUser==self.data.roles.executant.id || self.currentUser==self.data.roles.producer.id ||
+                                            (!item.id_parent && (item.id_user==self.data.roles.producer.id || item.id_user==self.data.roles.executant.id ))
+                                            || (item.id_parent && isUserParentComment(data.rows, self.currentUser, item.id_parent));
                                     });
-                            }
-                        })
+                                }
+                            });
                     },
                     loadSpentTimeTask:function (id) {
                         scope.spentTimeTableParams = new NgTableParams({id: id}, {
@@ -331,10 +353,12 @@ angular
                                 scope.comment = {
                                     id_task: null,
                                     message: null,
+                                    id_parent: null,
                                 };
                                 scope.newComment = false;
                                 self.loadTasksComments(self.data.id);
                                 scope.isDisabledComment = false;
+                                scope.openCommentDialog.close();
                             })
                             .catch(function (error) {
                                 scope.isDisabledComment = false;
@@ -342,16 +366,22 @@ angular
                             });
                     },
                     removeCommentDialog: function (commentId) {
-                        scope.commentId = commentId;
-                        scope.openCommentDialog = $uibModal.open({
-                            animation: true,
-                            ariaLabelledBy: 'modal-title',
-                            ariaDescribedBy: 'modal-body',
-                            templateUrl: basePath + '/angular/js/crm/templates/deleteComment.html',
-                            scope: scope,
-                            size: 'md',
-                            appendTo: false,
-                        });
+                        if(_.find(self.comments, function(item) {
+                            return item.id_parent == commentId;
+                        })){
+                            bootbox.alert('Неможливо видалити коментар з дочірніми коментарями');
+                        }else{
+                            scope.commentId = commentId;
+                            scope.openCommentDialog = $uibModal.open({
+                                animation: true,
+                                ariaLabelledBy: 'modal-title',
+                                ariaDescribedBy: 'modal-body',
+                                templateUrl: basePath + '/angular/js/crm/templates/deleteComment.html',
+                                scope: scope,
+                                size: 'md',
+                                appendTo: false,
+                            });
+                        }
                     },
                     removeComment: function (commentId) {
                         crmTaskServices.removeCrmTaskComment({commentId: commentId}).$promise
@@ -371,6 +401,18 @@ angular
                             ariaLabelledBy: 'modal-title',
                             ariaDescribedBy: 'modal-body',
                             templateUrl: basePath + '/angular/js/crm/templates/commentDialog.html',
+                            scope: scope,
+                            size: 'lg',
+                            appendTo: false,
+                        });
+                    },
+                    replyComment:function (event, commentId) {
+                        scope.parentId = commentId;
+                        scope.openCommentDialog = $uibModal.open({
+                            animation: true,
+                            ariaLabelledBy: 'modal-title',
+                            ariaDescribedBy: 'modal-body',
+                            templateUrl: basePath + '/angular/js/crm/templates/replyCommentDialog.html',
                             scope: scope,
                             size: 'lg',
                             appendTo: false,
@@ -548,9 +590,11 @@ angular
                 self.loadCheckList(scope.taskId);
 
                 scope.$watch('crmTask.data.id', function (newValue, oldValue) {
-                    self.loadTasksHistory(newValue);
-                    self.loadTasksComments(newValue);
-                    self.loadSpentTimeTask(newValue);
+                    if(newValue!=oldValue){
+                        self.loadTasksHistory(newValue);
+                        self.loadTasksComments(newValue);
+                        self.loadSpentTimeTask(newValue);
+                    }
                 });
 
                 //***init block***
@@ -690,6 +734,15 @@ angular
                         return response;
                     });
                 };
+
+                function isUserParentComment(comments, currentUser, parentCommentId) {
+                    var parentComment = _.find(comments, function(item) {
+                        return item.id == parentCommentId;
+                    });
+                    return currentUser==parentComment.id_user;
+
+                };
+
                 // $rootScope.$on('$includeContentLoaded', function() {
                 //     $timeout(function(){
                 //         setEventToEditableField();
