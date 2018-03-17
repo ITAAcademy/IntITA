@@ -4,11 +4,16 @@
     color:#4B75A4;
     font-size:16px;
     margin-top: 10px;
-    margin-bottom: 10px;
 }
-.TeacherProfiletitles img
+.editTextButton
 {
-    margin-left: 2px;
+    color: #33cc00;
+    margin-top: 10px;
+}
+.editTextButton span:hover
+{
+    color: #2db544;
+    cursor: pointer;
 }
 .TeacherProfilemainBlock
 {

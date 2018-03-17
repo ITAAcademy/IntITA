@@ -1,7 +1,6 @@
 angular
     .module('lessonApp')
     .controller('starsBlockCtrl', function ($scope, $http, ratingService) {
-
         ratingService.getOldRating({'id_lecture': idLecture})
             .$promise
             .then(function successCallback(data) {

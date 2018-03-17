@@ -6,3 +6,17 @@
         <i class="fa fa-pencil fa-fw"></i>
     </a>
 </li>
+<?php if(
+
+Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin())
+
+) {?>
+    <li>
+        <a href="#/library" class="show_elem">
+            <i class="fa fa-book fa-fw"></i> Бібліотека
+        </a>
+        <a href="#/library" uib-tooltip="Бібліотека" tooltip-placement="right" class="hid" style="display: none">
+            <i class="fa fa-book fa-fw"></i>
+        </a>
+    </li>
+<?php }?>

@@ -85,7 +85,7 @@
                                    ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])/" style="border-radius: 4px;border: 1px solid #ccc;" size="16" value=""/>
                             <br>
                             <div ng-if="!studentModel.graduateDate">
-                                *При встановленні дати випуску, відмідьте сервіси та встановіть рейтинг, по яким випустився студент
+                                *При встановленні дати випуску, відмітьте сервіси та встановіть рейтинг, по яким випустився студент
                                 <br>
                                 <label ng-if="services.courses.length">Курси:</label>
                                 <div ng-if="services.courses.length" ng-repeat="course in services.courses track by $index">

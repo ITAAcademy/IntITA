@@ -7,6 +7,7 @@ angular
         '$injector','$rootScope', '$state', '$stateParams',
         function($injector, $rootScope, $state, $statePara) {
             "use strict";
+            var finishedLecture = document.querySelector("#scriptData [data-finished-lecture]").getAttribute("data-finished-lecture");
 
             this.getStartParam = function($rootScope, $state, $stateParams) {
                 $rootScope.editMode = editMode;

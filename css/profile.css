@@ -63,6 +63,18 @@ table.titleProfile{
     font-size: smaller;
     line-height: 120%;
     width: 90%;
+    border-collapse: separate;
+    border-spacing: 5px 0px;
+}
+
+.teachersProfileLink{
+    color: #4b75a4;
+    font-weight: normal;
+    font-size: 24px;
+}
+.teachersProfileLink:hover{
+    cursor: pointer;
+    color: #666666;
 }
 
 table.titleProfile td{
