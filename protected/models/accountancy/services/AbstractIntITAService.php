@@ -78,9 +78,14 @@ abstract class AbstractIntITAService extends CActiveRecord
      * @return array
      */
     public function getPaymentSchemas(EducationForm $educationForm, $userId=null) {
-        if(Yii::app()->user->model->isAccountant() && $userId){
-            $user = StudentReg::model()->findByPk($userId);
-        }else{
+        if ($userId!==null){
+            if(Yii::app()->user->model->isAccountant() && $userId){
+                $user = StudentReg::model()->findByPk($userId);
+            }else{
+                $user = StudentReg::model()->findByPk(Yii::app()->user->getId());
+            }
+        }
+        else{
             $user = StudentReg::model()->findByPk(Yii::app()->user->getId());
         }
         $paymentSchemas = PaymentScheme::model()->getPaymentScheme($user, $this);
