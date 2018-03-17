@@ -84,6 +84,11 @@ angular
             cache: false,
             templateUrl: basePath+"/angular/js/teacher/templates/cms/lists.html",
         })
+        .state('admin/cms_main_settings', {
+            url: "/admin/cms_main_settings",
+            cache: false,
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/main_settings.html",
+        })
 });
 
 
