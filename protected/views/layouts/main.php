@@ -71,6 +71,8 @@ $header = new Header();
         basePath = '<?php echo Config::getBaseUrl(); ?>';
         studentProjectPath = '<?php echo Config::getStudentsProjectsUrl();?>';
     </script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 </head>
 
 <body itemscope itemtype="https://schema.org/Product">
@@ -125,7 +127,9 @@ $header = new Header();
                             <li>
                                 <a href="https://hack.intita.com" target="_blank"><?php echo Yii::t('header', 'Школа хакерів'); ?></a>
                             </li>
-
+<!--                            <li>-->
+<!--                                <a href="--><?php //echo Config::getBaseUrl() . '/library'; ?><!--">Бібліотека</a>-->
+<!--                            </li>-->
                         </ul>
                     </td>
                     <td class="emptyTd"></td>

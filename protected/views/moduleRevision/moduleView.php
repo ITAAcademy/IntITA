@@ -39,21 +39,24 @@ $this->breadcrumbs = array(
                 <label>
                     <input type="checkbox" ng-model="current.approved">Затверджені
                 </label>
+                <label>
+                    <input type="text" class="form-control" placeholder="пошук" ng-model="searchCurrent">
+                </label>
             </div>
             <div class="revisionsList">
-                <div ng-if="current.proposed_to_release" ng-repeat="revision in approvedLecture.current.proposed_to_release track by $index">
+                <div ng-if="current.proposed_to_release" ng-repeat="revision in approvedLecture.current.proposed_to_release | filter:searchCurrent track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
                     <span class='ico' ng-click="addRevisionToModuleFromCurrentList(revision.id_revision, $index, revisionProposedToRelease)">+</span>
                 </div>
-                <div ng-if="current.released" ng-repeat="revision in approvedLecture.current.released track by $index">
+                <div ng-if="current.released" ng-repeat="revision in approvedLecture.current.released | filter:searchCurrent track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
                     <span class='ico' ng-click="addRevisionToModuleFromCurrentList(revision.id_revision, $index, revisionReleased)">+</span>
                 </div>
-                <div ng-if="current.approved" ng-repeat="revision in approvedLecture.current.approved track by $index">
+                <div ng-if="current.approved" ng-repeat="revision in approvedLecture.current.approved | filter:searchCurrent track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
@@ -73,21 +76,24 @@ $this->breadcrumbs = array(
                 <label>
                     <input type="checkbox" ng-model="foreign.approved">Затверджені
                 </label>
+                <label>
+                    <input type="text" class="form-control" placeholder="пошук" ng-model="searchForeign">
+                </label>
             </div>
             <div class="revisionsList">
-                <div ng-if="foreign.proposed_to_release" ng-repeat="revision in approvedLecture.foreign.proposed_to_release track by $index">
+                <div ng-if="foreign.proposed_to_release" ng-repeat="revision in approvedLecture.foreign.proposed_to_release | filter:searchForeign track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
                     <span class='ico' ng-click="addRevisionToModuleFromForeignList(revision.id_revision, $index, revisionProposedToRelease)">+</span>
                 </div>
-                <div ng-if="foreign.released" ng-repeat="revision in approvedLecture.foreign.released track by $index">
+                <div ng-if="foreign.released" ng-repeat="revision in approvedLecture.foreign.released | filter:searchForeign track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
                     <span class='ico' ng-click="addRevisionToModuleFromForeignList(revision.id_revision, $index, revisionReleased)">+</span>
                 </div>
-                <div ng-if="foreign.approved" ng-repeat="revision in approvedLecture.foreign.approved track by $index">
+                <div ng-if="foreign.approved" ng-repeat="revision in approvedLecture.foreign.approved | filter:searchForeign track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>

@@ -101,4 +101,17 @@ class OfflineStudentCancelType extends CActiveRecord
         }
 	    return $result;
     }
+
+    public static function breaksList(){
+//        $param = Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua";
+        $criteria = new CDbCriteria();
+        $breaks = OfflineStudentCancelType::model()->findAll($criteria);
+        $data = array();
+
+        foreach ($breaks as $key=>$break) {
+            $data[$key]['id']=$break['id'];
+            $data[$key]['description']=$break['description'];
+        }
+        return json_encode($data);
+    }
 }

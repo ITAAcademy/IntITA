@@ -6,6 +6,7 @@ angular
     .module('siteConfigRouter',['ui.router'])
     .config(function ($stateProvider) {
         var url = basePath+"/_teacher/_super_admin/config";
+        var templateUrl = basePath+"/angular/js/teacher/templates";
         $stateProvider
             .state('configuration/refreshcache', {
                 url: "/configuration/refreshcache",
@@ -75,6 +76,24 @@ angular
                 cache: false,
                 templateUrl: url+"/careerCreate"
             })
+            .state('configuration/breaks', {
+                url: "/configuration/breaks",
+                cache: false,
+                templateUrl: url+"/breaks"
+            })
+            .state('configuration/breaks/update/:id', {
+                url: "/configuration/breaks/update/:id",
+                cache: false,
+                templateUrl: function ($stateParams) {
+                    return url+"/breakUpdate/id/"+$stateParams.id;
+                }
+            })
+            .state('configuration/createBreak', {
+                url: "/configuration/createBreak",
+                cache: false,
+                templateUrl: url+"/breakCreate"
+            })
+
             .state('configuration/specializations', {
                 url: "/configuration/specializations",
                 cache: false,
@@ -108,5 +127,22 @@ angular
                 url: "/configuration/create_task_type",
                 cache: false,
                 templateUrl: url+"/taskTypeCreate"
+            })
+            .state('configuration/language_levels', {
+                url: "/configuration/language_levels",
+                cache: false,
+                templateUrl: url + "/languageLevels"
+            })
+            .state('configuration/create_language_levels', {
+                url: "/configuration/create_language_levels",
+                cache: false,
+                templateUrl: url +"/languageLevelsCreate"
+            })
+            .state('configuration/language_levels/update/:id', {
+                url: "/configuration/language_levels/update/:id",
+                cache: false,
+                templateUrl: function ($stateParams) {
+                    return url+"/languageLevelsUpdate/id/"+$stateParams.id;
+                }
             })
 });

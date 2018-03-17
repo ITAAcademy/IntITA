@@ -46,7 +46,8 @@ angular
         'vxWamp',
         'angularTreeview',
         'contentProgressApp',
-        'dndLists'
+        'dndLists',
+        'libraryRouter',
     ])
     .filter('shortDate', [
             '$filter', function($filter) {

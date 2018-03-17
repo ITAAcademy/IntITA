@@ -55,6 +55,9 @@ div.humavatar{width:70px;height:70px;margin-right:10px;overflow:hidden;}
         font-size: 14px;
         line-height: 0.95;
     }
+    #hambNav{
+        display: block;
+    }
 }
 
 @media only screen and (max-height: 500px) {

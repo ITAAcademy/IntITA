@@ -5,7 +5,20 @@ if ($editMode){
     <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'fileValidation.js');?>"></script>
     <script type="text/javascript">
         idTeacher = <?php echo $model->teacher_id;?>;
-        block = 't1';
+
+        function editTeacherText(selected_block_id){
+            document.getElementById(selected_block_id).dispatchEvent( new Event("click") );
+            var textId = "#"+selected_block_id,originText = $(textId).text();
+            var statusSave=0;
+                $('[rel=save]').click(function(){
+                    statusSave = 1;
+                });
+                $('[rel=close]').click(function(){
+                    if(!statusSave){
+                        $(textId).text(originText);
+                    }
+                })
+        }
     </script>
 <?php }?>
 
@@ -42,37 +55,36 @@ if ($editMode){
             </div>
             <div class="TeacherProfiletitles">
                 <?php echo Yii::t('teacher', '0065') ?>
-                <?php if ($editMode && $model->profile_text_first != ''){
-                    echo "<br><em>(Натисніть нижче для редагування профілю)</em>";
-                }?>
             </div>
-            <div <?php if ($editMode){ ?> class="editableText" class="editableText" id="t1" onclick="function(){order = 't1'; block='t1';}" <?php } ?>>
+
+            <?php if($editMode){?>
+                <div class="editTextButton">
+                    <span onclick="editTeacherText('t1');">
+                        <em>Натисніть для редагування профілю</em>
+                        <i class="fas fa-pencil-alt"></i>
+                    </span>
+                </div>
+            <?php } ?>
+
+            <div <?php if ($editMode){ ?> class="editableText" id="t1" <?php } ?>>
                 <p>
-                <?php if($model->profile_text_first != '') {
-                    echo $model->profile_text_first;
-                } else {
-                    if ($editMode){
-                        echo "Натисніть для редагування профілю.";
-                    }
-                }?>
+                   <?php if($model->profile_text_first != '') { echo $model->profile_text_first; } ?>
                 </p>
             </div>
             <?php $this->renderPartial('_courses', array('model' => $model));?>
 
-            <?php if ($editMode && $model->profile_text_first != ''){ ?>
-                <span class="TeacherProfiletitles">
-                    <br><em>(Натисніть нижче для редагування профілю)</em>
-                </span>
-            <?php }?>
-            <div  <?php if ($editMode){ ?> class="editableText" id="t2" onclick="function(){order = 't2'; block='t2';}" <?php } ?>>
+            <?php if($editMode){?>
+                <div class="editTextButton">
+                    <span onclick="editTeacherText('t2');">
+                        <em>Натисніть для редагування профілю</em>
+                        <i class="fas fa-pencil-alt"></i>
+                    </span>
+                </div>
+            <?php } ?>
+
+            <div  <?php if ($editMode){ ?> class="editableText" id="t2" <?php } ?>>
                 <p>
-                    <?php if($model->profile_text_last != '') {
-                        echo $model->profile_text_last;
-                    } else {
-                        if ($editMode){
-                            echo "Натисніть для редагування профілю.";
-                        }
-                    }?>
+                    <?php if($model->profile_text_last != '') { echo $model->profile_text_last; } ?>
                 </p>
             </div>
             <br>

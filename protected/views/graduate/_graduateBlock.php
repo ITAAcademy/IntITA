@@ -22,17 +22,10 @@
             </div>
             <div class="text1 graduateName"><?php echo $data->graduateName() ?></div>
             <?php if(!empty($data->recall)){?>
-            <div class="spoiler-title" onclick="openComment(this)">
-                <span><?php echo $b = Yii::t('graduates', '0424'), '&#9660'; ?></span>
-                <div class="spoiler-body">
-                    <form name=form_recall>
-                        <input type=hidden name="maximize" class="maximize" value="<?php echo htmlspecialchars($a = Yii::t('graduates', '0423')); ?>">
-                        <input type=hidden name="minimize" class="minimize" value="<?php echo htmlspecialchars($b); ?>">
-                    </form>
-                    <img onclick="hideRecall(this)" src="<?php echo StaticFilesHelper::createPath('image', 'graduates', "recall.png"); ?>">
-                    <?php echo $data->recall; ?>
+                <a href="#showCom<?php echo $index ?>" data-toggle="collapse" class="accordion-toggle collapsed"><?php echo $b = Yii::t('graduates', '0424'); ?></a>
+                <div id="showCom<?php echo $index ?>" class="collapse spoiler-body">
+                        <?php echo $data->recall; ?>
                 </div>
-            </div>
             <?php }?>
 
             <div class="text">

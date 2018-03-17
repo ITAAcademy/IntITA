@@ -1,3 +1,13 @@
+.showMore {
+    display: flex;
+    justify-content: center; /*Центрирование по горизонтали*/
+    margin-bottom: 30px;
+    margin-top: -42px;
+    font-size: 14pt;
+    font-family:sans-serif ;
+}
+
+
 /*header navigation*/
 .subNavBlockTeachers {
     position: relative;
@@ -382,4 +392,7 @@ div.aboutMore{
     #detailTeacherInfoLarge1, #detailTeacherInfoLarge0{
         margin-right: 20px;
     }
+}
+.labelFilter:hover{
+    cursor: pointer;
 }
