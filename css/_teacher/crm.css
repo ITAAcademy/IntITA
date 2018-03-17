@@ -354,3 +354,41 @@ modal .modal {
     padding: 0 !important;
     margin: 0 !important;
 }
+ul.comments{
+    overflow: hidden;
+    word-break: break-word;
+}
+ul.comments li:nth-of-type(odd){
+    background-color: #f9f9f9;
+}
+ul.comments li{
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+.comments .commentMessage{
+    position: relative;
+    min-height: 70px;
+}
+.comments .reply{
+    margin: 4px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    font-style: italic;
+    color: #4b75a4;
+}
+.comments .reply:hover{
+    color: #365578;
+}
+.comments .reply-comment{
+    font-style: italic;
+    margin-left: 20px;
+}
+.comments .action-button a{
+    float: right;
+}
+.no-padding {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}

@@ -1,42 +1,32 @@
-<table ng-table="commentsTableParams" class="table table-bordered table-striped table-condensed">
-    <colgroup>
-        <col width="19%"/>
-        <col width="58%"/>
-        <col width="8%"/>
-        <col width="10%"/>
-        <col width="5%"/>
-    </colgroup>
-    <tr ng-repeat="row in $data track by $index"
-        ng-if="!(crmTask.data.rolesSubgroup.observer.length+crmTask.data.rolesSubgroup.collaborator.length)
-        || row.id_user==crmTask.currentUser || row.id_user==crmTask.data.roles.producer.id || row.id_user==crmTask.data.roles.executant.id
-        || crmTask.currentUser==crmTask.data.roles.executant.id || crmTask.currentUser==crmTask.data.roles.producer.id">
-        <td data-title="'Автор'">
+<ul class="comments list-unstyled">
+    <li ng-repeat="row in crmTask.comments track by $index" ng-class="{'reply-comment':row.id_parent}">
+        <div class="col-md-2 no-padding" data-title="'Автор'">
             <img style="width: 48px;height: 48px" ng-src="/images/avatars/{{row.idUser.avatar}}">
             <a ng-href="#/users/profile/{{row.id_user}}" target="_blank">{{row.idUser.fullName}}</a>
-        </td>
-        <td data-title="'Повідомлення'" class="commentMessage">
+        </div>
+        <div class="col-md-7 commentMessage" data-title="'Повідомлення'">
             <input type="hidden" ng-init="rowLimit[$index]=200" ng-model="rowLimit[$index]">
             <p ng-bind-html="row.message | limitTo : rowLimit[$index] "></p>
             <p style="text-align:center;margin-bottom:0">
                 <a href="" ng-if="row.message.length>200 && rowLimit[$index]!='undefined'"  ng-click="rowLimit[$index]='undefined'" style="margin:0;padding:0" ><i class="fa fa-angle-double-down fa-2x" aria-hidden="true"></i></a>
             </p>
-        </td>
-        <td data-title="'Дата створення'">
-            {{row.create_date}}
-        </td>
-        <td data-title="'Дата редагування'">
-            {{row.change_date}}
-        </td>
-        <td data-title="">
+            <p ng-if="!row.id_parent" class="reply" ng-click="crmTask.replyComment($event, row.id)">
+                Відповісти
+            </p>
+        </div>
+        <div class="col-md-2" data-title="'Дата створення'">
+            {{row.create_date || row.change_date}}
+        </div>
+        <div class="col-md-1 action-button">
             <a href="" ng-if="row.id_user==currentUser" ng-click="crmTask.removeCommentDialog(row.id)" title="Видалити">
                 <i class="fa fa-trash fa-fw"></i>
             </a>
             <a href="" ng-if="row.id_user==currentUser" ng-click="crmTask.editComment($event, row.id, row.message)" title="Редагувати">
                 <i class="fa fa-pencil-square-o fa-fw"></i>
             </a>
-        </td>
-    </tr>
-</table>
+        </div>
+    </li>
+</ul>
 <br>
 <br>
 <a href="" ng-show="!newComment" ng-click="crmTask.toggleComment();" >Додати коментар</a>
