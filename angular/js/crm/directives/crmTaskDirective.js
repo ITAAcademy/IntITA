@@ -8,6 +8,7 @@ angular
         function ($resource, typeAhead, crmTaskServices, NgTableParams, $compile, $uibModal, ngToast, $state, $timeout, $rootScope, FileUploader) {
             function link(scope, element, attrs) {
                 scope.pathToTemplates=attrs.templatesPath;
+                scope.chatPath=attrs.chatPath;
                 scope.pathToFiles=attrs.filesPath;
                 scope.modalMode=attrs.modal== 'true';
                 var pressedSymbol;
@@ -291,38 +292,18 @@ angular
                             .getTaskComments({id:id})
                             .$promise
                             .then(function (data) {
-                                var usedParentIds = [];
-                                var childrens = [];
-                                _.each(data.rows, function (item, index) {
-                                    if(item.id_parent){
-                                        childrens.push(item);
-                                    }
-                                });
-                                _.each(childrens, function (item, index) {
-                                    if(!usedParentIds.includes(item.id)){
-                                        var child = _.find(data.rows, function(voteItem) {
-                                            return voteItem == item;
-                                        });
-                                        usedParentIds.push(item.id_parent);
-                                        var oldChildIndex = _.findIndex(data.rows, function(voteItem) {
-                                            return voteItem == item;
-                                        });
-                                        data.rows.splice(oldChildIndex, 1);
-                                        var parentIndex = _.findIndex(data.rows, function(voteItem) {
-                                            return voteItem.id == item.id_parent;
-                                        });
-                                        data.rows.splice(parentIndex+1, 0,  child);
-                                    }
-                                });
                                 if(!(self.data.rolesSubgroup.observer.length+self.data.rolesSubgroup.collaborator.length)){
-                                    self.comments = data.rows;
+                                    var comments = data.rows;
                                 }else{
-                                    self.comments = _.filter(data.rows, function(item) {
-                                        return item.id_user==self.currentUser || self.currentUser==self.data.roles.executant.id || self.currentUser==self.data.roles.producer.id ||
-                                            (!item.id_parent && (item.id_user==self.data.roles.producer.id || item.id_user==self.data.roles.executant.id ))
+                                    var comments = _.filter(data.rows, function(item) {
+                                        return item.id_user==self.currentUser || self.currentUser==self.data.roles.executant.id || self.currentUser==self.data.roles.producer.id
+                                            || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == self.currentUser; }) ||
+                                            (!item.id_parent && (item.id_user==self.data.roles.producer.id || item.id_user==self.data.roles.executant.id || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == item.id_user; }) ))
                                             || (item.id_parent && isUserParentComment(data.rows, self.currentUser, item.id_parent));
                                     });
-                                }
+                                };
+
+                                self.comments = transformToTree(comments);
                             });
                     },
                     loadSpentTimeTask:function (id) {
@@ -358,7 +339,10 @@ angular
                                 scope.newComment = false;
                                 self.loadTasksComments(self.data.id);
                                 scope.isDisabledComment = false;
-                                scope.openCommentDialog.close();
+                                CKEDITOR.instances.comment_cke.setData('');
+                                if(scope.openCommentDialog){
+                                    scope.openCommentDialog.close();
+                                }
                             })
                             .catch(function (error) {
                                 scope.isDisabledComment = false;
@@ -366,22 +350,16 @@ angular
                             });
                     },
                     removeCommentDialog: function (commentId) {
-                        if(_.find(self.comments, function(item) {
-                            return item.id_parent == commentId;
-                        })){
-                            bootbox.alert('Неможливо видалити коментар з дочірніми коментарями');
-                        }else{
-                            scope.commentId = commentId;
-                            scope.openCommentDialog = $uibModal.open({
-                                animation: true,
-                                ariaLabelledBy: 'modal-title',
-                                ariaDescribedBy: 'modal-body',
-                                templateUrl: basePath + '/angular/js/crm/templates/deleteComment.html',
-                                scope: scope,
-                                size: 'md',
-                                appendTo: false,
-                            });
-                        }
+                        scope.commentId = commentId;
+                        scope.openCommentDialog = $uibModal.open({
+                            animation: true,
+                            ariaLabelledBy: 'modal-title',
+                            ariaDescribedBy: 'modal-body',
+                            templateUrl: basePath + '/angular/js/crm/templates/deleteComment.html',
+                            scope: scope,
+                            size: 'md',
+                            appendTo: false,
+                        });
                     },
                     removeComment: function (commentId) {
                         crmTaskServices.removeCrmTaskComment({commentId: commentId}).$promise
@@ -742,6 +720,19 @@ angular
                     return currentUser==parentComment.id_user;
 
                 };
+
+                function transformToTree(arr){
+                    var nodes = {};
+                    return arr.filter(function(obj){
+                        var id = obj["id"],
+                            parentId = obj["id_parent"];
+
+                        nodes[id] = _.defaults(obj, nodes[id], { nodes: [] });
+                        parentId && (nodes[parentId] = (nodes[parentId] || { children: [] }))["nodes"].push(obj);
+
+                        return !parentId;
+                    });
+                }
 
                 // $rootScope.$on('$includeContentLoaded', function() {
                 //     $timeout(function(){
