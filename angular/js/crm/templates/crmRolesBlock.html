@@ -28,12 +28,12 @@
                 <div ng-if="role.name=='collaborator'">
                     <h6>Підгрупи</h6>
                     <oi-select
-                        oi-options="subgroup.groupName for subgroup in getSubGroups($query) track by subgroup.id"
-                    ng-model="crmTask.data.rolesSubgroup[role.name]"
-                    multiple
-                    placeholder="Назва підгрупи"
-                    ng-disabled="!crmTask.editable || !crmTask.teacherMode"
-                    oi-select-options="{
+                            oi-options="subgroup.groupName for subgroup in getSubGroups($query) track by subgroup.id"
+                            ng-model="crmTask.data.rolesSubgroup[role.name]"
+                            multiple
+                            placeholder="Назва підгрупи"
+                            ng-disabled="!crmTask.editable || !crmTask.teacherMode"
+                            oi-select-options="{
                     debounce: 200,
                     closeList: false,
                     dropdownFilter: 'subgroupsTaskFilter',

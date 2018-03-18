@@ -19,6 +19,6 @@ return array(
         'secretKey' => md5('test'),
         'dovecotPasswordScheme'=>'sha',
         'webSocketServer'=>$webSocketServerParams,
-        'versionsOfFile' =>  1
+        'versionsOfFile' =>  2
     ),
 );
