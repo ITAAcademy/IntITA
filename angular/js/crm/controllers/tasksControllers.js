@@ -15,6 +15,7 @@ angular
             $scope.currentUser = user;
             $scope.rolesCanEditCrmTasks = rolesCanEditCrmTasks;
             $scope.pathToCrmTemplates = basePath + '/angular/js/crm/templates';
+            $scope.chatPath = chatPath;
             $scope.pathToCrmFiles = basePath + '/files/crm/tasks';
 
             var conn = new ab.Session('wss://' + window.location.host + '/wss/',
@@ -88,6 +89,7 @@ angular
             $scope.currentUser = user;
             $scope.rolesCanEditCrmTasks = rolesCanEditCrmTasks;
             $scope.pathToCrmTemplates = basePath + '/angular/js/crm/templates';
+            $scope.chatPath = chatPath;
             $scope.pathToCrmFiles = basePath + '/files/crm/tasks';
             $scope.filter = {};
 

@@ -365,15 +365,24 @@ ul.comments li{
     overflow: hidden;
     border: 1px solid #ddd;
 }
+.no-padding {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+/*comments*/
+.comment_info{
+    background-color: #f5fbe5;
+}
+.comment_info img{
+    width: 24px;
+    height: 24px;
+}
 .comments .commentMessage{
-    position: relative;
-    min-height: 70px;
+    border-bottom: 1px solid #eeeeff;
+    margin-bottom: 2px;
 }
 .comments .reply{
-    margin: 4px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    text-align: right;
     cursor: pointer;
     font-style: italic;
     color: #4b75a4;
@@ -383,12 +392,11 @@ ul.comments li{
 }
 .comments .reply-comment{
     font-style: italic;
-    margin-left: 20px;
+    background-color: #f9f9f9;
 }
 .comments .action-button a{
     float: right;
 }
-.no-padding {
-    padding-right: 0 !important;
-    padding-left: 0 !important;
+.comments ol{
+    list-style-type: none;
 }

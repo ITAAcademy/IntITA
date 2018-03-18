@@ -25,20 +25,22 @@
                            ng-model="crmTask.data.roles[role.name]" multiple
                            ng-disabled="!crmTask.editable">
                 </oi-select>
-                <h6>Підгрупи</h6>
-                <oi-select
-                    oi-options="subgroup.groupName for subgroup in getSubGroups($query) track by subgroup.id"
-                    ng-model="crmTask.data.rolesSubgroup[role.name]"
-                    multiple
-                    placeholder="Назва підгрупи"
-                    ng-disabled="!crmTask.editable || !crmTask.teacherMode"
-                    oi-select-options="{
-                      debounce: 200,
-                      closeList: false,
-                      dropdownFilter: 'subgroupsTaskFilter',
-                      searchFilter: 'subgroupsTaskSearchFilter',
-                     }"
-                ></oi-select>
+                <div ng-if="role.name=='collaborator'">
+                    <h6>Підгрупи</h6>
+                    <oi-select
+                            oi-options="subgroup.groupName for subgroup in getSubGroups($query) track by subgroup.id"
+                            ng-model="crmTask.data.rolesSubgroup[role.name]"
+                            multiple
+                            placeholder="Назва підгрупи"
+                            ng-disabled="!crmTask.editable || !crmTask.teacherMode"
+                            oi-select-options="{
+                    debounce: 200,
+                    closeList: false,
+                    dropdownFilter: 'subgroupsTaskFilter',
+                    searchFilter: 'subgroupsTaskSearchFilter',
+                    }"
+                    ></oi-select>
+                </div>
             </div>
 
             <input ng-if="role.name=='producer'" type="text" size="50" ng-model="crmTask.data.producer"
