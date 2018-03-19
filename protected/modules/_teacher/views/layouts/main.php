@@ -31,9 +31,6 @@
     <link href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-img-crop/compile/minified/ng-img-crop.css'); ?>" rel="stylesheet"/>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-sanitize/angular-sanitize.min.js'); ?>"></script>
 
-    <link href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/color-picker/dist/color-picker.css'); ?>" rel="stylesheet"/>
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/color-picker/dist/color-picker.js'); ?>"></script>
-
     <!-- AngularWAMP -->
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/autobahn.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-wamp/release/angular-wamp.js'); ?>"></script>
