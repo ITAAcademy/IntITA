@@ -303,7 +303,7 @@ angular
                                     });
                                 };
 
-                                self.comments = transformToTree(comments);
+                                self.comments = transformToTree(comments).reverse();
                             });
                     },
                     loadSpentTimeTask:function (id) {
