@@ -1,0 +1,57 @@
+<style>
+    hr{
+        margin-top: 20px;
+    }
+    .preview{
+        width: 101px;
+        margin: 0 auto;
+        display: block;
+    }
+</style>
+
+<div class="form-group form-link" ng-controller="cmsNewsCtrl">
+    <label>Список новин</label>
+    <div ng-repeat="list in lists track by $index" class="row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Заголовок" ng-model="list.title">
+        </div>
+        <div class="col-md-2">
+            <img class="preview" src="/{{list.img}}">
+            <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
+        </div>
+        <div class="col-md-4">
+            <textarea class="form-control" placeholder="Текст новини" ng-model="list.text" style="resize: none"></textarea>
+        </div>
+        <div class="col-md-1">
+            <input type="text" class="form-control" placeholder="Дата" ng-model="list.date">
+        </div>
+        <div class="col-md-1">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(list,$index,list.img)"></i>
+            </a>
+            <a href="javascript:void(0)">
+                <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(list.id,list.img)"></i>
+            </a>
+        </div>
+        <div class="col-md-12">
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Заголовок" ng-model="newNews.title">
+        </div>
+        <div class="col-md-2">
+            <input id="photo" enctype="multipart/form-data" type="file" class="form-control" placeholder="Фото новини" name="photo">
+        </div>
+        <div class="col-md-5">
+            <textarea class="form-control" placeholder="Текст новини" ng-model="newNews.text" style="resize: none"></textarea>
+        </div>
+        <div class="col-md-1">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(newNews)"></i>
+            </a>
+        </div>
+    </div>
+</div>

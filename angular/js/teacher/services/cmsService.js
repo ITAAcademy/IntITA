@@ -28,5 +28,23 @@ angular
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)
                     },
+
+                    newsList: {
+                        url: url + '/getNews',
+                        method: 'GET',
+                        isArray: true
+                    },
+                    updateNews: {
+                        url: url + '/updateNews',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
+                    },
+                    removeNews: {
+                        url: url + '/removeNews',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
+                    },
                 });
         }])
