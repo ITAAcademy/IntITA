@@ -229,7 +229,6 @@
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers/libraryController.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/services/libraryService.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers/adminCmsCtrl.js'); ?>"></script>
-<!--<script src="--><?php //echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers/cmsMainSettingsCtrl.js'); ?><!--"></script>-->
 
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/crm/controllers/tasksControllers.js'); ?>"></script>
 
