@@ -34,7 +34,7 @@ class CmsNews extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			//array('title, text, date, img, id_organization', 'required'),
-            array('title, text, date', 'required'),
+            array('title, text, date, img','required'),
 			array('id_organization', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 			array('img', 'length', 'max'=>128),
