@@ -46,5 +46,10 @@ angular
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)
                     },
+                    settingList:{
+                        url: url + '/getSettings',
+                        method: 'GET',
+                        isArray: true
+                    },
                 });
         }])

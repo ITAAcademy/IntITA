@@ -69,13 +69,14 @@
     <div class="col-lg-4">
         <div class="panel panel-yellow">
             <div class="panel-heading">
-                Ролі
+                Конструктор сайту
             </div>
             <div class="panel-body">
                 <ul>
                     <li><a ng-href="#/admin/intita_cms">Конструктор сайту</a></li>
                     <li><a ng-href="#/admin/cms_list">Меню ліст</a></li>
                     <li><a ng-href="#/admin/cms_news">Меню новини</a></li>
+                    <li><a ng-href="#/admin/cms_main_settings">Головні налаштування</a></li>
                 </ul>
             </div>
             <div class="panel-footer">
