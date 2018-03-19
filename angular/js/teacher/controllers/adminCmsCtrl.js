@@ -53,5 +53,32 @@ angular
                         bootbox.alert(response.data.reason);
                     });
             };
+            $scope.getSettings = function () {
+                cmsService.settingList().$promise
+                    .then(function successCallback(response) {
+                        if(response.length==0){
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
+                                $scope.settings=response;
+                            });
+                        }
+                        else{
+                            $scope.settings=response;
+                        }
+                    }, function errorCallback() {
+                        bootbox.alert("Отримати дані не вдалося");
+                    });
+            }
+            $scope.getSettings();
+
+
+
+            $scope.changeClass = function (e) {
+                    $scope.linkColorSt = {color:  $scope.settings.footer_link_color};
+            }
+            $scope.changeClass1 = function (e) {
+                 //   $scope.linkColorSt = {color:  $scope.settings.footer_hover_color};
+            }
+
         }
         ]);
+

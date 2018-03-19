@@ -47,31 +47,24 @@
             <div class="center_footer col-lg-9 col-md-9 col-sm-9 col-xs-9">
                 <div class=" row">
                     <div class="left_part col-md-6 col-sm-5 col-xs-12">
-<!--                        <div class="row">-->
 
-
-<!--                            <div class="footer_logo col-md-5 hidden-sm hidden-xs ">-->
                             <div class="footer_logo1">
                                 <a href="/">
                                     <img id="footerLogo" src="http://intita/images/mainpage/Logo_small.png">
                                 </a>
                             </div>
 
-<!--                            <div class="footer_logo hidden-lg hidden-md col-sm-5 col-xs-6">-->
                             <div class="footer_logo2">
                                 <a href="/">
                                     <img id="footerLogo800" src="http://intita/images/mainpage/Logo_small800.png">
                                 </a>
                             </div>
 
-<!--                        <div class="footer_contact col-md-7 col-sm-7 col-xs-6 ">-->
                             <div class="footer_contact">
                                 <div><span>тел. моб: +38 067 431 74 24</span></div>
                                 <div><span>тел. моб: +38 073 209 97 43</span></div>
                                 <div><span>ел. пошта: info@intita.com</span></div>
-                                </>
                             </div>
-<!--                        </div>-->
                     </div>
 
                     <div class="footer_menu col-md-6 col-sm-7 hidden-xs">
@@ -94,6 +87,4 @@
                         <a  href="javascript:void(0)"><img id="img-go" src="http://intita/images/mainpage/go_up.png"></a>
                     </div>
             </div>
-
-
 </div>

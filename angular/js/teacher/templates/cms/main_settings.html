@@ -48,7 +48,7 @@
 
 </style>
 
-<div class="main_settings" ng-controller="cmsMainSettingsCtrl">
+<div class="main_settings" ng-controller="cmsMenuListCtrl">
     <label><h2>Головні налаштування</h2></label>
     <div class="settings_container">
         <div class="row title"><h3 class="col-md-12">Загальні налаштування </h3>
@@ -59,26 +59,26 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="title_color">
+                        <input  class="in_square" type="color" ng-model="settings.title_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle"  ng-model="title_color" color-picker color-picker-model="title_color" type="text">
+                        <input class="in_rectangle"  ng-model="settings.title_color" color-picker color-picker-model="settings.title_color" type="text">
                     </div>
                     <div class="col-md-6 intent" style=" font-size: 34px; margin-top: -1px;">
-                        <p class="in_intent"  ng-style="{color:title_color}" >Title color</p></div>
+                        <p class="in_intent"  ng-style="{color:settings.title_color}" >Title color</p></div>
                 </div>
             </div>
 
             <div class="col-md-6 col-sm-12">
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="subtitle_color">
+                        <input  class="in_square" type="color" ng-model="settings.subtitle_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="subtitle_color" color-picker color-picker-model="subtitle_color" type="text">
+                        <input class="in_rectangle" ng-model="settings.subtitle_color" color-picker color-picker-model="settings.subtitle_color" type="text">
                     </div>
                     <div class="col-md-6 intent" style=" font-size: 24px;" >
-                        <p class="in_intent" ng-style="{color:subtitle_color}">Subtitle color</p>
+                        <p class="in_intent" ng-style="{color:settings.subtitle_color}">Subtitle color</p>
                     </div>
                 </div>
             </div>
@@ -88,14 +88,14 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="general_link_color">
+                        <input  class="in_square" type="color" ng-model="settings.general_link_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="general_link_color" color-picker color-picker-model="general_link_color" type="text" >
+                        <input class="in_rectangle" ng-model="settings.general_link_color" color-picker color-picker-model="settings.general_link_color" type="text" >
                     </div>
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{color:general_link_color}" >General link color</p>
+                        <p class="in_intent" ng-style="{color:settings.general_link_color}" >General link color</p>
                     </div>
                 </div>
             </div>
@@ -103,15 +103,15 @@
             <div class="col-md-6 col-sm-12">
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="general_hover_color">
+                        <input  class="in_square" type="color" ng-model="settings.general_hover_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="general_hover_color" color-picker color-picker-model="general_hover_color" type="text" >
+                        <input class="in_rectangle" ng-model="settings.general_hover_color" color-picker color-picker-model="settings.general_hover_color" type="text" >
                     </div>
 
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{color:general_hover_color}">General hover color</p>
+                        <p class="in_intent" ng-style="{color:settings.general_hover_color}">General hover color</p>
                     </div>
                 </div>
             </div>
@@ -120,14 +120,14 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="text_color">
+                        <input  class="in_square" type="color" ng-model="settings.text_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="text_color" color-picker color-picker-model="text_color" type="text" >
+                        <input class="in_rectangle" ng-model="settings.text_color" color-picker color-picker-model="settings.text_color" type="text" >
                     </div>
 
                     <div class="col-md-6 intent" style="font-size: 16px;">
-                        <p class="in_intent" ng-style="{color:text_color}" >Text color</p>
+                        <p class="in_intent" ng-style="{color:settings.text_color}" >Text color</p>
                     </div>
                 </div>
             </div>
@@ -145,14 +145,14 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="about_us_background_color">
+                        <input  class="in_square" type="color" ng-model="settings.about_us_background_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="about_us_background_color" color-picker color-picker-model="about_us_background_color" type="text">
+                        <input class="in_rectangle" ng-model="settings.about_us_background_color" color-picker color-picker-model="settings.about_us_background_color" type="text">
                     </div>
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{'background-color':about_us_background_color}" >About us background color</p>
+                        <p class="in_intent" ng-style="{'background-color':settings.about_us_background_color}" >About us background color</p>
                     </div>
                 </div>
             </div>
@@ -160,15 +160,15 @@
             <div class="col-md-6 col-sm-12">
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="news_background_color">
+                        <input  class="in_square" type="color" ng-model="settings.news_background_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="news_background_color" color-picker color-picker-model="news_background_color" type="text" >
+                        <input class="in_rectangle" ng-model="settings.news_background_color" color-picker color-picker-model="settings.news_background_color" type="text" >
                     </div>
 
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{'background-color':news_background_color}">News background color</p>
+                        <p class="in_intent" ng-style="{'background-color':settings.news_background_color}">News background color</p>
                     </div>
                 </div>
             </div>
@@ -178,15 +178,15 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="news_image_border_color">
+                        <input  class="in_square" type="color" ng-model="settings.news_image_border_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="news_image_border_color" color-picker color-picker-model="news_image_border_color" type="text">
+                        <input class="in_rectangle" ng-model="settings.news_image_border_color" color-picker color-picker-model="settings.news_image_border_color" type="text">
                     </div>
 
                     <div class="col-md-6 intent" style=" "
                     >
-                        <p class="in_intent" ng-style="{'border-color':news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}" >News image border color</p>
+                        <p class="in_intent" ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}" >News image border color</p>
                     </div>
                 </div>
             </div>
@@ -194,15 +194,15 @@
             <div class="col-md-6 col-sm-12">
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="news_text_box_shadow_color">
+                        <input  class="in_square" type="color" ng-model="settings.news_text_box_shadow_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle"  ng-model="news_text_box_shadow_color" color-picker color-picker-model="news_text_box_shadow_color" type="text" >
+                        <input class="in_rectangle"  ng-model="settings.news_text_box_shadow_color" color-picker color-picker-model="settings.news_text_box_shadow_color" type="text" >
                     </div>
 
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" style="box-shadow: 0 0 5px {{news_text_box_shadow_color}}">News text border shadow color</p>
+                        <p class="in_intent" style="box-shadow: 0 0 5px {{settings.news_text_box_shadow_color}}">News text border shadow color</p>
                     </div>
                 </div>
             </div>
@@ -213,14 +213,14 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="header_background_color">
+                        <input  class="in_square" type="color" ng-model="settings.header_background_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle"  ng-model="header_background_color" color-picker color-picker-model="header_background_color" type="text" >
+                        <input class="in_rectangle"  ng-model="settings.header_background_color" color-picker color-picker-model="settings.header_background_color" type="text" >
                     </div>
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{'background-color':header_background_color}" >header_background_color</p>
+                        <p class="in_intent" ng-style="{'background-color':settings.header_background_color}" >header_background_color</p>
                     </div>
                 </div>
             </div>
@@ -228,15 +228,15 @@
             <div class="col-md-6 col-sm-12">
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="header_link_color  ">
+                        <input  class="in_square" type="color" ng-model="settings.header_link_color  ">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="header_link_color  " color-picker color-picker-model="header_link_color" type="text" >
+                        <input class="in_rectangle" ng-model="settings.header_link_color  " color-picker color-picker-model="settings.header_link_color" type="text" >
                     </div>
 
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{color:header_link_color}">header_link_color  </p>
+                        <p class="in_intent" ng-style="{color:settings.header_link_color}">header_link_color  </p>
                     </div>
                 </div>
             </div>
@@ -245,14 +245,14 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="header_hover_color  ">
+                        <input  class="in_square" type="color" ng-model="settings.header_hover_color  ">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="header_hover_color" color-picker color-picker-model="header_hover_color" type="text">
+                        <input class="in_rectangle" ng-model="settings.header_hover_color" color-picker color-picker-model="settings.header_hover_color" type="text">
                     </div>
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{color:header_hover_color}" >header_hover_color</p>
+                        <p class="in_intent" ng-style="{color:settings.header_hover_color}" >header_hover_color</p>
                     </div>
                 </div>
             </div>
@@ -260,14 +260,14 @@
             <div class="col-md-6 col-sm-12">
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="header_border_color">
+                        <input  class="in_square" type="color" ng-model="settings.header_border_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="header_border_color" color-picker color-picker-model="header_border_color" type="text">
+                        <input class="in_rectangle" ng-model="settings.header_border_color" color-picker color-picker-model="settings.header_border_color" type="text">
                     </div>
 
 
-                    <div class="col-md-6 intent" ng-style="{'border-color':header_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
+                    <div class="col-md-6 intent" ng-style="{'border-color':settings.header_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
                         <p class="in_intent" >header_border_color</p>
                     </div>
                 </div>
@@ -279,14 +279,14 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="footer_background_color">
+                        <input  class="in_square" type="color" ng-model="settings.footer_background_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle"  ng-model="footer_background_color" color-picker color-picker-model="footer_background_color" type="text" >
+                        <input class="in_rectangle"  ng-model="settings.footer_background_color" color-picker color-picker-model="settings.ooter_background_color" type="text" >
                     </div>
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{'background-color':footer_background_color}" >Footer background color</p>
+                        <p class="in_intent" ng-style="{'background-color':settings.footer_background_color}" >Footer background color</p>
                     </div>
                 </div>
             </div>
@@ -294,15 +294,14 @@
             <div class="col-md-6 col-sm-12">
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="footer_link_color">
+                        <input  class="in_square" type="color" ng-model="settings.footer_link_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="footer_link_color  " color-picker color-picker-model="footer_link_color" type="text" >
+                        <input class="in_rectangle" ng-model="settings.footer_link_color  " color-picker color-picker-model="settings.footer_link_color" type="text" >
                     </div>
 
-
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{color:footer_link_color}">Footer link color  </p>
+                        <p class="in_intent" ng-style="{color:settings.footer_link_color}">Footer link color  </p>
                     </div>
                 </div>
             </div>
@@ -311,14 +310,14 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="footer_hover_color    ">
+                        <input  class="in_square" type="color" ng-model="settings.footer_hover_color    ">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="footer_hover_color  " color-picker color-picker-model="footer_hover_color  " type="text">
+                        <input class="in_rectangle" ng-model="settings.footer_hover_color  " color-picker color-picker-model="settings.footer_hover_color  " type="text">
                     </div>
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{color:footer_hover_color  }" >Footer hover color  </p>
+                        <p class="in_intent" ng-style="{color:settings.footer_hover_color  }" >Footer hover color  </p>
                     </div>
                 </div>
             </div>
@@ -326,14 +325,14 @@
             <div class="col-md-6 col-sm-12">
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="footer_border_color">
+                        <input  class="in_square" type="color" ng-model="settings.footer_border_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="header_border_color" color-picker color-picker-model="footer_border_color" type="text">
+                        <input class="in_rectangle" ng-model="settings.header_border_color" color-picker color-picker-model="settings.footer_border_color" type="text">
                     </div>
 
 
-                    <div class="col-md-6 intent" ng-style="{'border-color':footer_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
+                    <div class="col-md-6 intent" ng-style="{'border-color':settings.footer_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
                         <p class="in_intent" >Footer border color</p>
                     </div>
                 </div>
@@ -343,14 +342,14 @@
             <div class="col-md-6 col-sm-12"  >
                 <div class="row group" >
                     <div  class="col-md-2 square" >
-                        <input  class="in_square" type="color" ng-model="icon_shadow_color">
+                        <input  class="in_square" type="color" ng-model="settings.icon_shadow_color">
                     </div>
                     <div class="col-md-4 rectangle" >
-                        <input class="in_rectangle" ng-model="icon_shadow_color" color-picker color-picker-model="icon_shadow_color" type="text">
+                        <input class="in_rectangle" ng-model="settings.icon_shadow_color" color-picker color-picker-model="settings.icon_shadow_color" type="text">
                     </div>
 
                     <div class="col-md-6 intent">
-                        <p class="in_intent" ng-style="{color:icon_shadow_color}" >Icon_shadow_color</p>
+                        <p class="in_intent" ng-style="{color:settings.icon_shadow_color}" >Icon_shadow_color</p>
                     </div>
                 </div>
             </div>
