@@ -7,6 +7,314 @@
         margin: 0 auto;
         display: block;
     }
+
+    /*abour us*/
+    .mainAboutBlock{
+        margin: auto;
+        text-align: center;
+    }
+    .header_about{
+        font-size: 34px;
+        color: #666666;
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+    .header_about p{
+        color: #4682B4;
+        font-size: 19px;
+    }
+    .line1_about{
+        margin-top: -25px;
+    }
+    .items_about {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+    .block_about{
+        margin-top: 35px;
+        text-align: left;
+        padding-right: 5px;
+        padding-left: 5px;
+        display: inline-block;
+    }
+
+    .title_about{
+        color: #4682B4;
+        font-size: 22px;
+    }
+    .title_about p{
+        margin-top: 5px;
+        color: #696969;
+        font-size: 16px;
+        line-height: 18px;
+    }
+
+    .info_bot {
+        border-bottom: 2px solid #337ab7;
+    }
+
+
+    /*footer*/
+    #footer_main{
+        display: block;
+        border-bottom: 1px solid #44bdf6;
+        margin: 0 auto;
+        margin-bottom: 5px;
+        border-right: 1px solid #44bdf6;
+        border-left: 1px solid #44bdf6;
+    }
+    .left_footer {
+        display: table-cell;
+        vertical-align: top;
+        border-right: 1px solid #44bdf6;
+        padding-bottom: 8px;
+    }
+    .icon_table{
+        margin: 0 auto;
+    }
+    .center_footer{
+        display: inline-block;
+    }
+    .center_footer .row{
+        padding-left: 10px;
+    }
+    .left_part{
+        display: inline-flex;
+        padding-right: 0px;
+    }
+    .footer_logo1{
+        padding-right: 10px;
+    }
+    .footer_logo2 {
+        display: none;
+    }
+    .footer_contact {
+        line-height: 14px;
+        font-size: 14px;
+        font-family: "MyriadPro";
+        width: 215px;
+    }
+    .footer_contact{
+        color: #114988;
+    }
+    .footer_menu {
+        font-size: 15px;
+        display: inline;
+        padding-left: 0px;
+    }
+    .footer_menu a{
+        margin-left: 10px;
+    }
+    .col_items{
+        font-size: 15px;
+    }
+    .right_footer {
+        padding-top: 5px;
+        padding-bottom: 21px;
+        border-left: 1px solid #44bdf6;
+    }
+    #img-go{
+        display: flex;
+        margin: 0 auto;
+    }
+    @media screen and (max-width: 1006px) {
+        .left_part{
+            display: block;
+        }
+        .right_footer {
+            padding-bottom: 52px;
+        }
+        .left_footer {
+            padding-bottom: 39px;
+        }
+        .footer_contact {
+            padding-left: 0px;
+        }
+        .footer_menu{
+            padding-right: 0px;
+        }
+    }
+    @media screen and (max-width: 767px) {
+        .left_part{
+            display: inline-flex;
+            padding-left: 10px;
+        }
+        #footer_main{
+            border: none;
+            background-color: #5a74a1;
+        }
+        .right_footer {
+            padding-bottom: 10px;
+            border: none;
+            padding-top: 10px;
+            padding-left: 0px;
+        }
+        .left_footer {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: none;
+        }
+        .footer_contact {
+            line-height: 14px;
+            width: 220px;
+            color: #fff;
+            font-size: 18px;
+            line-height: 18px;
+            margin-top: 10px;
+            padding-left: 10px;
+        }
+        .footer_logo1{
+            display: none;
+        }
+        .footer_logo2{
+            display: block;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+    }
+    @media screen and (max-width: 621px) {
+        .center_footer{
+            display: block;
+            padding-left: 8px;
+        }
+        .left_part{
+            padding-left: 0px;
+            display: block;
+        }
+        .footer_contact {
+            font-size: 16px;
+        }
+        #footer_main {
+            display: flex;
+        }
+        .right_footer {
+            padding-left: 0px;
+        }
+        .left_footer{
+            padding-left: 2px;
+        }
+    }
+    @media screen and (max-width: 520px) {
+        .right_footer {
+            padding-left: 0px;
+            margin-right: 16px;
+        }
+        .footer_contact {
+            width: 196px;
+        }
+        .left_part{
+            display: block;
+            padding-left: 20px;
+        }
+        .footer_logo2{
+            padding-left: 25px;
+        }
+    }
+    @media screen and (max-width: 344px) {
+        .footer_contact {
+            font-size: 14px;
+        }
+        #footerLogo800 {
+            margin: 0 auto;
+            margin-top: 0;
+            width: 140px;
+        }
+        #footer_main {
+            position: relative;
+        }
+        .right_footer {
+            position: absolute;
+            padding-left: 255px;
+            padding-top: 25px;
+        }
+    }
+    @media screen and (max-width: 326px) {
+        .right_footer {
+            position: absolute;
+            padding-left: 235px;
+        }
+        #img-go {
+            width: 30px;
+        }
+    }
+
+    /*header*/
+    .header{
+        border-bottom:2px solid #4b75a4;width: 100%;margin:0 auto; overflow: hidden;
+        height: 100px;
+    }
+    .header img{
+        max-width: 100%;
+    }
+    .nav>li>a{
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: normal;
+        color: black;
+        padding: 10px 6px;
+    }
+    .nav>li>a:focus, .nav>li>a:hover {
+        color: #003399;
+        background-color: inherit;
+    }
+
+    /*news*/
+    html{font-family:"MyriadPro";}
+
+    .leftimg {
+        float: left;
+        margin: 7px 15px 7px 0;
+        /*width: 100%;*/
+    }
+    .rightimg  {
+        float: right;
+        margin: 7px 7px 7px 15px;
+        /*width: 100%;*/
+    }
+    .text-left {
+        margin-right: 20px;
+    }
+
+    .text-right {
+        margin-left: 20px;
+    }
+    .accordion-toggle:after {
+        font-family: 'Glyphicons Halflings';
+        content: "\e113";
+        font-size: 11px;
+        margin-left: 5px ;
+
+    }
+    .accordion-toggle.collapsed:after {
+        content: "\e114";
+    }
+
+    .info_bot {
+        border-bottom: 2px solid #337ab7;
+        display: inline-block;
+        margin-top: 0;
+    }
+
+    @media only screen and (max-width: 450px) {
+
+        .leftimg, .rightimg{
+            width: 320px;
+        }
+    }
+
+    @media only screen and (max-width: 400px) {
+
+        .leftimg, .rightimg{
+            width: 280px;
+        }
+    }
+
+    @media only screen and (max-width: 320px) {
+
+        .leftimg, .rightimg{
+            width: 260px;
+        }
+    }
 </style>
 
 
@@ -104,54 +412,77 @@
         </div>
 
 <!--News-->
-        <div class="form-group form-link" ng-controller="cmsNewsCtrl">
-            <label>Список новин</label>
-            <div ng-repeat="list in lists track by $index" class="row">
-                <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Заголовок" ng-model="list.title">
-                </div>
-                <div class="col-md-2">
-                    <img class="preview" src="/{{list.img}}">
-                    <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
-                </div>
-                <div class="col-md-4">
-                    <textarea class="form-control" placeholder="Текст новини" ng-model="list.text" style="resize: none"></textarea>
-                </div>
-                <div class="col-md-1">
-                    <input type="text" class="form-control" placeholder="Дата" ng-model="list.date">
-                </div>
-                <div class="col-md-1">
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(list,$index,list.img)"></i>
-                    </a>
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(list.id,list.img)"></i>
-                    </a>
-                </div>
-                <div class="col-md-12">
-                    <hr>
-                </div>
+        <h1>News</h1>
+        <div class="container">
+
+            <div class="container text-center">
+                <h1 class="text-muted">Как проходит обучение?</h1>
+                <h3 class="text-primary info_bot">Пять шагов к исполнению твоих желаний</h3>
             </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <input type="text" class="form-control" placeholder="Заголовок" ng-model="newNews.title">
-        </div>
-        <div class="col-md-2">
-            <input id="photo" enctype="multipart/form-data" type="file" class="form-control" placeholder="Фото новини" name="photo">
-        </div>
-        <div class="col-md-5">
-            <textarea class="form-control" placeholder="Текст новини" ng-model="newNews.text" style="resize: none"></textarea>
-        </div>
-        <div class="col-md-1">
-            <a href="javascript:void(0)">
-                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(newNews)"></i>
-            </a>
-        </div>
-    </div>
+            <div class="container">
+                <h3 class="text-left">Регистрация на сайте</h3>
+                <p class="text-left">Дата публікації</p>
+                <div class="row">
+                    <div>
+                        <img src="https://intita.com/images/mainpage/step1.jpg" class="leftimg">
+                    </div>
+                    <div class="text-left">
+                        Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                        <a href="#news1" data-toggle="collapse" class="accordion-toggle collapsed">Детальніше</a>
+                        <div id="news1" class="collapse spoiler-body">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти б  Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия.
+                        </div>
+                    </div>
+                </div>
 
 
-<!--Footer-->
+
+
+
+            </div>
+
+
+            <div class="container">
+                <h3 class="text-right">Выбор курса или модуля</h3>
+                <p class="text-right">Дата публікації</p>
+                <div class="row">
+                    <div>
+                        <img src="https://intita.com/images/mainpage/step2.jpg" class="rightimg">
+                    </div>
+                    <div class="text-right">
+                        Чтобы стать специалистом определенного направления и уровня (получить профессиональную специализацию) выбери для прохождения соответствующий курс. Если Тебя интересует исключительно углубление знаний в определенном направлении информационных технологий, то выбери интересующий Тебя модуль для прохождения.
+                        <a href="#news2" data-toggle="collapse" class="accordion-toggle collapsed">Детальніше</a>
+                        <div id="news2" class="collapse spoiler-body">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти б  Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия. Это позволит Тебе оценить качество и удобство нашего продукта, который станет для Тебя надежным партнером и советчиком в профессиональной самореализации.
+                            Зарегистрируйся на сайте, чтобы получить доступ к курсам и пройти бесплатные модули и занятия.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Footer-->
         <div id="footer_main"  ng-style="{'background-color':settings.footer_background_color}"  class="row" >
 
             <div class="left_footer col-lg-2 col-md-2 col-sm-2 col-xs-2">

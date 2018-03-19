@@ -87,7 +87,7 @@ angular
         .state('admin/cms_news', {
             url: "/admin/cms_news",
             cache: false,
-            templateUrl: basePath+"/angular/js/teacher/templates/cms/index.html",
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/news.html",
         })
         .state('admin/cms_main_settings', {
             url: "/admin/cms_main_settings",
