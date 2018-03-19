@@ -1,3 +1,15 @@
+<style>
+    hr{
+        margin-top: 20px;
+    }
+    .preview{
+        width: 101px;
+        margin: 0 auto;
+        display: block;
+    }
+</style>
+
+
     <div ng-controller="cmsMenuListCtrl">
         <div class="header">
             <nav class="navbar">
@@ -16,8 +28,7 @@
             </nav>
         </div>
 
-        <h1>About us</h1>
-
+<!--About us-->
         <div class="  mainAboutBlock ">
 
             <div class="row">
@@ -92,10 +103,55 @@
             </div>
         </div>
 
+<!--News-->
+        <div class="form-group form-link" ng-controller="cmsNewsCtrl">
+            <label>Список новин</label>
+            <div ng-repeat="list in lists track by $index" class="row">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Заголовок" ng-model="list.title">
+                </div>
+                <div class="col-md-2">
+                    <img class="preview" src="/{{list.img}}">
+                    <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
+                </div>
+                <div class="col-md-4">
+                    <textarea class="form-control" placeholder="Текст новини" ng-model="list.text" style="resize: none"></textarea>
+                </div>
+                <div class="col-md-1">
+                    <input type="text" class="form-control" placeholder="Дата" ng-model="list.date">
+                </div>
+                <div class="col-md-1">
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(list,$index,list.img)"></i>
+                    </a>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(list.id,list.img)"></i>
+                    </a>
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+            </div>
 
-        <h1>Footer</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Заголовок" ng-model="newNews.title">
+        </div>
+        <div class="col-md-2">
+            <input id="photo" enctype="multipart/form-data" type="file" class="form-control" placeholder="Фото новини" name="photo">
+        </div>
+        <div class="col-md-5">
+            <textarea class="form-control" placeholder="Текст новини" ng-model="newNews.text" style="resize: none"></textarea>
+        </div>
+        <div class="col-md-1">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(newNews)"></i>
+            </a>
+        </div>
+    </div>
 
 
+<!--Footer-->
         <div id="footer_main"  ng-style="{'background-color':settings.footer_background_color}"  class="row" >
 
             <div class="left_footer col-lg-2 col-md-2 col-sm-2 col-xs-2">
@@ -179,7 +235,7 @@
         </div>
     </div>
 
-
+</div>
 
 
 

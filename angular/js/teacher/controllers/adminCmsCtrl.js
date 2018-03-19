@@ -8,10 +8,11 @@ angular
                 cmsService.menuList().$promise
                     .then(function successCallback(response) {
                         if(response.length==0){
-                            $http.get(basePath + '/files/cms/defaultMenu.json').success(function (response) {
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
                                 $scope.lists=response;
                             });
                         }
+
                         else{
                             $scope.lists=response;
                         }
@@ -80,5 +81,63 @@ angular
             }
 
         }
-        ]);
+        ])
 
+    .controller('cmsNewsCtrl', ['$scope','cmsService', '$http',
+        function ($scope, cmsService, $http) {
+            $scope.changePageHeader('Menu news');
+
+            $scope.loadCmsNews=function(){
+                cmsService.newsList().$promise
+                    .then(function successCallback(response) {
+                        if(response.length==0){
+                            $http.get(basePath + '/files/cms/defaultMenu.json').success(function (response) {
+                                $scope.lists=response;
+                            });
+                        }
+                        else{
+                            $scope.lists=response;
+                        }
+                    }, function errorCallback() {
+                        bootbox.alert("Отримати дані списку меню не вдалося");
+                    });
+            };
+            $scope.loadCmsNews();
+
+            $scope.updateNews=function(link,index,previousImage){
+                var uploadImage = new FormData();
+                uploadImage.append("data", angular.toJson(link));
+                if(index!==undefined){
+                    console.log(previousImage);
+                    var imageUpdateBlock = '#photoUpdate'+index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadImage.append("photo",imageUpdate);
+                    uploadImage.append("previousImage",previousImage);
+                }
+                else{
+                    var image = $jq('#photo').prop('files')[0];
+                    console.log(image);
+                    uploadImage.append("photo",image);
+                }
+                $http.post(basePath+'/_teacher/_admin/cms/updateNews', uploadImage, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined },
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.loadCmsNews();
+                    $scope.newNews={id:null, description:null,link:null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+            };
+
+                $scope.removeNews=function(id){
+                    cmsService.removeNews({id:id}).$promise
+                        .then(function successCallback() {
+                            $scope.loadCmsNews();
+                        }, function errorCallback(response) {
+                            bootbox.alert(response.data.reason);
+                        });
+                };
+            }
+        ]);
