@@ -50,6 +50,6 @@ angular
                         url: url + '/getSettings',
                         method: 'GET',
                         isArray: true
-                    }
+                    },
                 });
         }])
