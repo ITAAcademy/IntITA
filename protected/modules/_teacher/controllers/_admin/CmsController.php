@@ -165,4 +165,8 @@ class CmsController extends TeacherCabinetController
         }
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
+
+    public function actionGetSettings(){
+        echo CJSON::encode(CmsGeneralSettings::model()->findAll());
+    }
 }

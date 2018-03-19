@@ -1,0 +1,43 @@
+.mainAboutBlock{
+    margin: auto;
+    text-align: center;
+}
+.header_about{
+    font-size: 34px;
+    color: #666666;
+    padding-right: 40px;
+    padding-left: 40px;
+}
+.header_about p{
+    color: #4682B4;
+    font-size: 19px;
+}
+.line1_about{
+    margin-top: -25px;
+}
+.items_about {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.block_about{
+    margin-top: 35px;
+    text-align: left;
+    padding-right: 5px;
+    padding-left: 5px;
+    display: inline-block;
+}
+
+.title_about{
+    color: #4682B4;
+    font-size: 22px;
+}
+.title_about p{
+    margin-top: 5px;
+    color: #696969;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+.info_bot {
+    border-bottom: 2px solid #337ab7;
+}

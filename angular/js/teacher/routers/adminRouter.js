@@ -77,7 +77,7 @@ angular
         .state('admin/intita_cms', {
             url: "/admin/intita_cms",
             cache: false,
-            templateUrl: basePath+"/angular/js/teacher/templates/cms/header.html",//покашо для хедера
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/index.html",//покашо для хедера
         })
         .state('admin/cms_list', {
             url: "/admin/cms_list",
@@ -88,6 +88,11 @@ angular
             url: "/admin/cms_news",
             cache: false,
             templateUrl: basePath+"/angular/js/teacher/templates/cms/index.html",
+        })
+        .state('admin/cms_main_settings', {
+            url: "/admin/cms_main_settings",
+            cache: false,
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/main_settings.html",
         })
 });
 
