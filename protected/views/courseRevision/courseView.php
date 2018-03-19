@@ -33,15 +33,20 @@ $this->breadcrumbs = array(
                     <label>
                         <input type="checkbox" ng-model="current.develop_module">В розробці
                     </label>
+                    <div>
+                        <label>
+                            <input type="text" class="form-control" placeholder="пошук" ng-model="searchCurentCourse">
+                        </label>
+                    </div>
                 </div>
                 <div class="revisionsList">
-                    <div ng-if="current.ready_module" ng-repeat="module in readyModules.current.ready_module track by $index">
+                    <div ng-if="current.ready_module" ng-repeat="module in readyModules.current.ready_module | filter:searchCurentCourse track by $index">
                         <a ng-href="{{module.link}}" target="_blank">
                             ID модуля:{{module.id}} {{module.title}}
                         </a>
                         <span class='ico' ng-click="addRevisionToCourseFromCurrentList(module.id, $index, readyModule,model)">+</span>
                     </div>
-                    <div ng-if="current.develop_module" ng-repeat="module in readyModules.current.develop_module track by $index">
+                    <div ng-if="current.develop_module" ng-repeat="module in readyModules.current.develop_module | filter:searchCurentCourse track by $index">
                         <a ng-href="{{module.link}}" target="_blank">
                             Модуль ID{{module.id}} {{module.title}}
                         </a>
@@ -58,15 +63,20 @@ $this->breadcrumbs = array(
                     <label>
                         <input type="checkbox" ng-model="foreign.develop_module">В розробці
                     </label>
+                    <div>
+                        <label>
+                            <input type="text" class="form-control" placeholder="пошук" ng-model="searchForeignCourse">
+                        </label>
+                    </div>
                 </div>
                 <div class="revisionsList">
-                    <div ng-if="foreign.ready_module" ng-repeat="module in readyModules.foreign.ready_module track by $index">
+                    <div ng-if="foreign.ready_module" ng-repeat="module in readyModules.foreign.ready_module | filter:searchForeignCourse track by $index">
                         <a ng-href="{{module.link}}" target="_blank">
                             Модуль ID{{module.id}} {{module.title}}
                         </a>
                         <span class='ico' ng-click="addRevisionToCourseFromForeignList(module.id, $index, readyModule, model)">+</span>
                     </div>
-                    <div ng-if="foreign.develop_module" ng-repeat="module in readyModules.foreign.develop_module track by $index">
+                    <div ng-if="foreign.develop_module" ng-repeat="module in readyModules.foreign.develop_module | filter:searchForeignCourse track by $index">
                         <a ng-href="{{module.link}}" target="_blank">
                             Модуль ID{{module.id}} {{module.title}}
                         </a>

@@ -599,7 +599,7 @@ angular
                         query: query,
                     }).$promise.then(function (response) {
                         $jq.each(response, function(index, value) {
-                            if($jq.inArray( value.id, [self.data.parent, self.data.id])){
+                            if($jq.inArray( value.id, [self.data.parent, self.data.id])>-1){
                                 delete response[index];
                             }
                         });

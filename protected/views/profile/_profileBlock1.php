@@ -48,9 +48,11 @@ if ($editMode){
             </div>
 
             <?php if($editMode){?>
-                <div class="editTextButton" onclick="editTeacherText('t1');">
-                    <em>Натисніть для редагування профілю</em>
-                    <i class="fas fa-pencil-alt"></i>
+                <div class="editTextButton">
+                    <span onclick="editTeacherText('t1');">
+                        <em>Натисніть для редагування профілю</em>
+                        <i class="fas fa-pencil-alt"></i>
+                    </span>
                 </div>
             <?php } ?>
 
@@ -62,9 +64,11 @@ if ($editMode){
             <?php $this->renderPartial('_courses', array('model' => $model));?>
 
             <?php if($editMode){?>
-                <div class="editTextButton" onclick="editTeacherText('t2');">
-                    <em>Натисніть для редагування профілю</em>
-                    <i class="fas fa-pencil-alt"></i>
+                <div class="editTextButton">
+                    <span onclick="editTeacherText('t2');">
+                        <em>Натисніть для редагування профілю</em>
+                        <i class="fas fa-pencil-alt"></i>
+                    </span>
                 </div>
             <?php } ?>
 
