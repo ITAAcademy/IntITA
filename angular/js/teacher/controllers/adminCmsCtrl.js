@@ -8,7 +8,7 @@ angular
                 cmsService.menuList().$promise
                     .then(function successCallback(response) {
                         if(response.length==0){
-                            $http.get(basePath + '/files/cms/defaultMenu.json').success(function (response) {
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
                                 $scope.lists=response;
                             });
                         }
