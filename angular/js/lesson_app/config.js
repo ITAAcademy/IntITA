@@ -6,7 +6,6 @@ angular
     .run([
         '$rootScope', '$state', '$stateParams','$http','paramService','accessLectureService','pagesUpdateService','ipCookie',
         function ($rootScope, $state, $stateParams, $http, paramService,accessLectureService,pagesUpdateService,ipCookie) {
-            var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
             paramService.getStartParam($rootScope, $state, $stateParams);
             accessLectureService.getAccessLectures();
             pagesUpdateService.updateRating();
@@ -14,7 +13,7 @@ angular
             $rootScope.$on('$stateChangeStart',
                 function (event, toState, toParams) {
                     //перевіряємо при завантажені стейта чи є модель pageData, якщо нема - дістаєм з сервера\
-                    if(toParams.page==undefined) toParams.page=$rootScope.lastAccessPage;//при завантажені по дефолту робимо останю доступну частину
+                    if(toParams.page==undefined) toParams.page=lastAccessPage;//при завантажені по дефолту робимо останю доступну частину
                     if($rootScope.pageData==undefined){
                         return $http({
                             url: basePath + '/lesson/GetPageData',
@@ -81,9 +80,6 @@ angular
 angular
     .module('lessonApp')
     .config(['$locationProvider','$stateProvider','$urlRouterProvider', function($locationProvider,$stateProvider,$urlRouterProvider){
-        var lang = document.querySelector("#scriptData [data-lang]").getAttribute("data-lang");
-        var idModule = document.querySelector("#scriptData [data-module-id]").getAttribute("data-module-id");
-        var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
         $urlRouterProvider.otherwise("/page1");
         $stateProvider
             .state('page', {
@@ -114,17 +110,17 @@ angular
                 views: {
                     "viewVideo": {
                         templateUrl: function (){
-                            return basePath + '/content/module_'+idModule+'/lecture_'+idLecture+'/page_'+ $rootScope.lastAccessPage+'_video_'+lang+'.html'
+                            return basePath + '/content/module_'+idModule+'/lecture_'+idLecture+'/page_'+ lastAccessPage+'_video_'+lang+'.html'
                         }
                     },
                     "viewText": {
                         templateUrl: function (){
-                            return basePath + '/content/module_'+idModule+'/lecture_'+idLecture+'/page_'+ $rootScope.lastAccessPage+'_text_'+lang+'.html'
+                            return basePath + '/content/module_'+idModule+'/lecture_'+idLecture+'/page_'+ lastAccessPage+'_text_'+lang+'.html'
                         }
                     },
                     "viewQuiz": {
                         templateUrl: function (){
-                            return basePath + '/content/module_'+idModule+'/lecture_'+idLecture+'/page_'+ $rootScope.lastAccessPage+'_quiz_'+lang+'.html'
+                            return basePath + '/content/module_'+idModule+'/lecture_'+idLecture+'/page_'+ lastAccessPage+'_quiz_'+lang+'.html'
                         }
                     }
                 },

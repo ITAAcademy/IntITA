@@ -48,13 +48,6 @@
             <?php $placeHolderPassword = Yii::t('regform', '0015'); ?>
             <span class="passEye">
                     <?php echo $form->passwordField($model, 'password', array('id' => 'signInPassM', 'class' => 'signInPassM', 'placeholder' => $placeHolderPassword, 'size' => 60, 'maxlength' => 20, 'onKeyUp' => "hideSignServerValidationMes(this)", 'ng-model' => "formPass", "ng-required" => "true")); ?>
-                <script>
-                $(function() {
-                    $('#signInPassM').on('click', function(e) {
-                        $(this).attr('id', 'StudentReg_password');
-                    });
-                });
-            </script>
                 </span>
             <?php echo $form->error($model, 'password'); ?>
             <div class="clientValidationError"
@@ -118,3 +111,10 @@
     </div>
     <?php $this->endWidget(); ?>
 </div>
+<script>
+    $(function() {
+        $('#signInPassM').on('click', function(e) {
+            $(this).attr('id', 'StudentReg_password');
+        });
+    });
+</script>

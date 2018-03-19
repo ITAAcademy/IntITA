@@ -15,6 +15,7 @@
 ?>
 <script>
     user = '<?=Yii::app()->user->getId()?>';
+    chatPath = '<?= Config::getChatPath()?>';
     scenario = '<?=$scenario?>';
     adminEmail = '<?=Config::getAdminEmail();?>';
     <!-- kludge -->

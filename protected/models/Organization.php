@@ -18,6 +18,7 @@
  *
  */
 class Organization extends CActiveRecord {
+    const MAIN_ORGANIZATION = 1;
     /**
      * @return string the associated database table name
      */

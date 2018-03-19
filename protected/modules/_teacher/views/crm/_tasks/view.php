@@ -12,6 +12,7 @@
             task-id=currentTaskId
             modal=false
             current-user=currentUser
+            chat-path={{chatPath}}
             roles-can-edit-crm-tasks=rolesCanEditCrmTasks
             teacher-mode=teacherMode
             role-id=roleId

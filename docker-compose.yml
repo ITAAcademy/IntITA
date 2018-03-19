@@ -36,7 +36,7 @@
     container_name: "IntITA_db"
     volumes:
       - ./docker_data/mysql:/var/lib/mysql
-      - ./docker_conf/mysql/config.cnf:/etc/mysql/conf.d/config.cnf
+      - ./docker_conf/mysql:/etc/mysql
     ports:
       - ${MYSQL_LOCAL_PORT}:3306
     environment:

@@ -8,7 +8,6 @@ angular
         function($rootScope, $http) {
             this.getAccessLectures = function() {
                 var idCourse = document.querySelector("#scriptData [data-course-id]").getAttribute("data-course-id");
-                var idLecture = document.querySelector("#scriptData [data-lecture-id]").getAttribute("data-lecture-id");
                 $http({
                     url: basePath+'/lesson/getAccessLectures',
                     method: "POST",

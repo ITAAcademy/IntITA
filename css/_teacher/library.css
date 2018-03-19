@@ -1,0 +1,50 @@
+/*AdminPanel*/
+.addBookWrap{
+    max-width: 100%;
+}
+.bookPreview{
+    max-width: 20px;
+}
+
+
+.one {
+    float: left;
+    width: 49%;
+}
+.two{
+    float: right;
+    width: 49%;
+}
+.view {
+
+    display: table;
+    width: 100%;
+    position: relative;
+    font-family: MyriadPro;
+    margin-left: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    word-break: break-word;
+}
+.logoBook{
+    width: 108px;
+    height: 108px;
+    margin-right: 20px;
+    border-radius: 50%;
+    position: relative;
+    right: -12px;
+    margin-bottom: 17px;
+    margin-top: 27px;
+}
+.logoBookWrap{
+    float: left;
+}
+.titleBook{
+    color: #4682B4;
+    font-size: 20px;
+    text-decoration: none;
+}
+.libraryStar{
+    text-align: center;
+    margin-bottom: 18px;
+}

@@ -22,8 +22,8 @@
             </div>
             <div class="text1 graduateName"><?php echo $data->graduateName() ?></div>
             <?php if(!empty($data->recall)){?>
-                <a href="#showCom<? echo $index ?>" data-toggle="collapse" class="accordion-toggle collapsed"><?php echo $b = Yii::t('graduates', '0424'); ?></a>
-                <div id="showCom<? echo $index ?>" class="collapse spoiler-body">
+                <a href="#showCom<?php echo $index ?>" data-toggle="collapse" class="accordion-toggle collapsed"><?php echo $b = Yii::t('graduates', '0424'); ?></a>
+                <div id="showCom<?php echo $index ?>" class="collapse spoiler-body">
                         <?php echo $data->recall; ?>
                 </div>
             <?php }?>
