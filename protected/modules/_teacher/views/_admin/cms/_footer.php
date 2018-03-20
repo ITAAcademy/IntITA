@@ -59,10 +59,10 @@
             </div>
 
             <div class="footer_menu col-md-6 col-sm-7 hidden-xs">
-                <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass1($event)" href="http://intita/courses"><span>Курси</span></a>
-                <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass1($event)" href="http://intita/teachers">Викладачі</a>
-                <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass1($event)" href="http://intita/graduate">Випускники</a>
-                <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass1($event)" href="http://intita/aboutus">Про нас</a>
+                <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass($event)" href="http://intita/courses"><span>Курси</span></a>
+                <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass($event)" href="http://intita/teachers">Викладачі</a>
+                <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass($event)" href="http://intita/graduate">Випускники</a>
+                <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass($event)" href="http://intita/aboutus">Про нас</a>
                 <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass1($event)" href="/cabinet/">Дошка</a>
                 <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass1($event)" href="/profile/712/">Профіль</a>
                 <a ng-style="linkColorSt" ng-mouseenter="changeClass($event)" ng-mouseleave="changeClass1($event)" href="http://www.robotamolodi.org/" target="_blank">Вакансії</a>

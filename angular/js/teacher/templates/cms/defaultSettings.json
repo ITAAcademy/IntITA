@@ -1,26 +1,25 @@
 {
 	"title_color": "#666666",
 	"subtitle_color":"#4682B4",
-	"general_link_color": "#114988",
-	"general_hover_color":"#666666",
+	"general_link_color": "#E91E63",
+	"general_hover_color":"#03a9f4",
 	"text_color":"#696969",
 
-	"about_us_background_color":"#ffffff",
+	"about_us_background_color":"#FFEB3B",
 	"news_background_color": "#f3f3f3",
 	"news_image_border_color":"#4b75a4",
 	"news_text_box_shadow_color": "#ACACAC",
 
 
-	"header_background_color":"#ffffff",
-	"header_link_color": "#114988",
-	"header_hover_color":"#666666",
+	"header_background_color":"#FFEB3B",
+	"header_link_color": "#E91E63",
+	"header_hover_color":"#03a9f4",
 	"header_border_color": "#4b75a4",
 
 
-	"footer_background_color":"#ffffff",
-	"footer_link_color": "#114988",
-	"footer_hover_color":"#666666",
+	"footer_background_color":"#FFEB3B",
+	"footer_link_color": "#E91E63",
+	"footer_hover_color":"#43ef04",
 	"footer_border_color": "#4b75a4",
 	"icon_shadow_color": "#4b75a4"
 }
-
