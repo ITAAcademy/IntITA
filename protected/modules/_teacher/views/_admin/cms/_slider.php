@@ -1,1 +1,1 @@
-<h1>Slider</h1>
+<h1 style="text-align: center">Slider</h1>

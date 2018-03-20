@@ -1,13 +1,11 @@
-<h1>About us</h1>
-
 <div class="  mainAboutBlock ">
 
     <div class="row">
-        <div class="header_about col-md-offset-3  col-md-6 col-md-offset-3 col-sm-offset-3  col-sm-6 col-sm-offset-3   ">Про нас<p class="info_bot">
+        <div class="header_about col-md-offset-3  col-md-6 col-md-offset-3 col-sm-offset-3  col-sm-6 col-sm-offset-3   ">
+            Про нас<p class="info_bot">
                 Важлива інформація про навчання разом з нами</p>
         </div>
     </div>
-
 
 
     <div class="items_about row">
@@ -15,9 +13,9 @@
             <div class="col-md-2 col-xs-3"></div>
             <div class="col-md-8 col-xs-6">
 
-                    <div  class="row">
+                <div class="row">
 
-                    <div class="block_about col-md-4 col-sm-6 col-xs-12" >
+                    <div class="block_about col-md-4 col-sm-6 col-xs-12">
                         <div class="icon_about">
                             <img src="https://intita.com/images/aboutus/image1.png">
                         </div>
@@ -49,9 +47,6 @@
                     </div>
 
 
-
-
-
                     <div class="block_about col-md-4 col-md-offset-0   col-sm-6 col-sm-offset-3  col-xs-12 col-xs-offset-0    ">
                         <div class="icon_about">
                             <img src="https://intita.com/images/aboutus/image3.png">
@@ -66,7 +61,7 @@
                         </div>
                         <a href="/aboutus/3/">детальніше ...</a>
                     </div>
-                    </div>
+                </div>
 
             </div>
             <div class="col-md-2 col-xs-3"></div>
