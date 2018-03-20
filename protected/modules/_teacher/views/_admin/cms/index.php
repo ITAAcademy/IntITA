@@ -11,7 +11,7 @@
 
 <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
 
-<div ng-controller="cmsCtrl">
+<div ng-controller="cmsCtrl" ng-controller="cmsGeneralSettingsCtrl">
     <?php
     $this->renderPartial('_header', array());
     $this->renderPartial('_slider', array());

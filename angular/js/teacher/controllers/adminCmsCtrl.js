@@ -163,7 +163,7 @@ angular
                 $scope.linkColorSt = {color: $scope.settings.footer_link_color};
             }
             $scope.changeClass1 = function (e) {
-                //   $scope.linkColorSt = {color:  $scope.settings.footer_hover_color};
+                $scope.linkColorSt = {color:  $scope.settings.footer_hover_color};
             }
 
         }
