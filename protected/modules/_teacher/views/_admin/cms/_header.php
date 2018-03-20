@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-9">
             <ul class="nav navbar-nav">
-                <li ng-repeat="list in lists track by $index"><a href="/{{list.link}}">{{list.title}}</a></li>
+                <li ng-repeat="list in listsItemMenu track by $index"><a href="/{{list.link}}">{{list.title}}</a></li>
             </ul>
         </div>
         <div class="col-md-2"></div>

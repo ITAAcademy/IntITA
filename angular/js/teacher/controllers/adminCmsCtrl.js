@@ -9,10 +9,10 @@ angular
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
-                                $scope.lists = response;
+                                $scope.listsItemMenu = response;
                             });
                         } else {
-                            $scope.lists = response;
+                            $scope.listsItemMenu = response;
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
