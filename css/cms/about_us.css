@@ -2,16 +2,21 @@
     margin: auto;
     text-align: center;
 }
+/*.header_about{*/
+    /*font-size: 34px;*/
+    /*color: #666666;*/
+    /*padding-right: 40px;*/
+    /*padding-left: 40px;*/
+/*}*/
+/*.header_about p{*/
+    /*color: #4682B4;*/
+    /*font-size: 19px;*/
+/*}*/
+
 .header_about{
-    font-size: 34px;
-    color: #666666;
-    padding-right: 40px;
-    padding-left: 40px;
+    color: #777;
 }
-.header_about p{
-    color: #4682B4;
-    font-size: 19px;
-}
+
 .line1_about{
     margin-top: -25px;
 }
@@ -40,4 +45,6 @@
 
 .info_bot {
     border-bottom: 2px solid #337ab7;
+    color: #4682B4;
+    font-size: 19px;
 }

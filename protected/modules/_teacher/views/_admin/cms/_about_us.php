@@ -1,12 +1,16 @@
 <div class="  mainAboutBlock ">
 
-    <div class="row">
-        <div class="header_about col-md-offset-3  col-md-6 col-md-offset-3 col-sm-offset-3  col-sm-6 col-sm-offset-3   ">
-            Про нас<p class="info_bot">
-                Важлива інформація про навчання разом з нами</p>
-        </div>
-    </div>
+<!--    <div class="row">-->
+<!--        <div class="header_about col-md-offset-3 col-md-6 col-md-offset-3 col-sm-offset-3 col-sm-6 col-sm-offset-3"> Про нас </div>-->
+<!---->
+<!--        <div class="info_bot col-md-offset-3 col-md-6 col-md-offset-3 col-sm-offset-3 col-sm-6 col-sm-offset-3 ">Важлива інформація про навчання разом з нами</div>-->
+<!--    </div>-->
 
+
+    <div class="hed text-center">
+        <h1 class="header_about">Про нас</h1>
+        <h3 class="info_bot">Важлива інформація про навчання разом з нами</h3>
+    </div>
 
     <div class="items_about row">
         <div>
