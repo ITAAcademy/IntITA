@@ -33,6 +33,7 @@ class PaymentScheme extends CActiveRecord {
     const BASE_THREE_PAYS = 3;
     const BASE_FOUR_PAYS = 4;
     const BASE_SIX_PAYS = 6;
+    const BASE_NINE_PAYS = 9;
     const MONTHLY = 12;
     const CREDIT_TWO_YEARS = 24;
     const CREDIT_THREE_YEARS = 36;
@@ -206,6 +207,8 @@ class PaymentScheme extends CActiveRecord {
                 return PaymentScheme::BASE_FOUR_PAYS;
             case 6:
                 return PaymentScheme::BASE_SIX_PAYS;
+            case 9:
+                return PaymentScheme::BASE_NINE_PAYS;
             case 12:
                 return PaymentScheme::MONTHLY;
             case 24:
