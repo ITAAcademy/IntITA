@@ -23,7 +23,7 @@ function mainSuperAdminCtrl($scope, $rootScope, $http) {
     $scope.getNewResponses();
 }
 
-function bannersCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox) {
+function bannersCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast) {
     $scope.bannersTableUrl = basePath + '/_teacher/_super_admin/banners/list';
     $scope.bannersTableData = new NgTableParams({}, {
         getData: function(params) {
@@ -51,7 +51,7 @@ function bannersCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParam
     }
 
     $scope.dialogOptions = {
-        size: 'large'
+        size: 'large',
     };
 
     $scope.onDropComplete = function (position,bannerId, evt) {
@@ -75,6 +75,10 @@ function bannersCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParam
             headers:{'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function (response) {
             if (response.data === true){
+                ngToast.create({
+                    className: 'success',
+                    content: 'Адресу змінено!'
+                });
                 $scope.bannersTableData.reload();
             }
             else{
@@ -91,6 +95,10 @@ function bannersCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParam
             headers:{'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function (response) {
             if (response.data === true){
+                ngToast.create({
+                    className: 'success',
+                    content: 'Банер видалено!'
+                });
                 $scope.bannersTableData.reload();
             }
         })
@@ -111,7 +119,6 @@ function bannersCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParam
 
     //Костыль для обновления NgTable
     $scope.$on('reloadNgTable', function (event, data) {
-        console.log(data);
         $scope.bannersTableData.reload();
     });
 
@@ -128,7 +135,6 @@ function bannersBootboxCtrl($scope, $rootScope, FileUploader, $ngBootbox) {
         //Костыль для обновления NgTable
         $rootScope.$broadcast('reloadNgTable', true);
         $ngBootbox.hideAll();
-
     };
 
 }
