@@ -139,12 +139,22 @@ class Banners extends CActiveRecord
     }
 
     public function changePosition($position){
-	    $bannersToChange = self::model()->findAll('slide_position >=:position AND id !=:id',['position'=>(int)$position,'id'=>$this->id]);
-	    foreach ($bannersToChange as $banner){
-                $banner->slide_position = ++$banner->slide_position;
-	            $banner->save();
+	    if ($this->slide_position > $position){
+	        $recalcBanners = Banners::findAll('slide_position < :position',['position'=>$this->slide_position]);
+	        foreach ($recalcBanners as $newPos){
+	            $newPos->slide_position = ++$newPos->slide_position;
+	            $newPos->save();
+            }
+
         }
-        $this->slide_position = $position;
+        else{
+            $recalcBanners = Banners::findAll('slide_position > :position',['position'=>$this->slide_position]);
+            foreach ($recalcBanners as $newPos){
+                $newPos->slide_position = --$newPos->slide_position;
+                $newPos->save();
+            }
+        }
+	    $this->slide_position = $position;
 	    return $this->save();
     }
 }
