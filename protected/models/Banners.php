@@ -139,8 +139,8 @@ class Banners extends CActiveRecord
     }
 
     public function changePosition($position){
-	    if ($this->slide_position > $position){
-	        $recalcBanners = Banners::findAll('slide_position < :position',['position'=>$this->slide_position]);
+	    if ($position < $this->slide_position){
+	        $recalcBanners = Banners::model()->findAll('slide_position >= :newPosition AND slide_position < :oldPosition',['newPosition'=>$position,'oldPosition'=>$this->slide_position]);
 	        foreach ($recalcBanners as $newPos){
 	            $newPos->slide_position = ++$newPos->slide_position;
 	            $newPos->save();
@@ -148,7 +148,7 @@ class Banners extends CActiveRecord
 
         }
         else{
-            $recalcBanners = Banners::findAll('slide_position > :position',['position'=>$this->slide_position]);
+            $recalcBanners = Banners::model()->findAll('slide_position > :oldPosition AND slide_position <= :newPosition',['newPosition'=>$position, 'oldPosition'=>$this->slide_position]);
             foreach ($recalcBanners as $newPos){
                 $newPos->slide_position = --$newPos->slide_position;
                 $newPos->save();
