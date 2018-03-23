@@ -32,8 +32,8 @@ class CrmTasks extends CTaskUnitActiveRecord
 {
     use NotifySubscribedUsers;
 
-    const EXECUTANT = 2;
-    const PRODUCER = 1;
+    const EXECUTANT = 1;
+    const PRODUCER = 2;
     const COLLABORATOR = 3;
     const OBSERVER = 4;
 
