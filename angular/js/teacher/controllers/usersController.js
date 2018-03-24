@@ -86,7 +86,7 @@ function usersTableCtrl ($scope, usersService, NgTableParams){
 function studentsTableCtrl ($scope, usersService, NgTableParams, $attrs){
     $jq("#startDate").datepicker(lang);
     $jq("#endDate").datepicker(lang);
-
+    $scope.changePageHeader('Закріплені студенти');
     // // $scope.changePageHeader('Закріплені студенти');
     // // $scope.trainersStudentsTableParams = new NgTableParams({
     // //     sorting: {
