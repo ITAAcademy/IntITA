@@ -15,6 +15,7 @@
 ?>
 <script>
     user = '<?=Yii::app()->user->getId()?>';
+    chatPath = '<?= Config::getChatPath()?>';
     scenario = '<?=$scenario?>';
     adminEmail = '<?=Config::getAdminEmail();?>';
     <!-- kludge -->
@@ -83,7 +84,7 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/metisMenu/dist/metisMenu.min.js');?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/raphael/raphael-min.js');?>"></script>
-<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/bootbox.min.js'); ?>"></script>
+<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/bootbox/bootbox.js'); ?>"></script>
 <!-- Custom Theme JavaScript -->
 <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'dist/js/sb-admin-2.js');?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('js', '_teacher.js');?>"></script>

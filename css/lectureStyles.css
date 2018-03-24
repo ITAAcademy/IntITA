@@ -43,7 +43,7 @@ div.subLinks{
     float:left;
     margin-right:1%;
     color: #4b75a4;
-    font-size:24px;
+    font-size:20px;
     line-height: 28px;
     font-weight: normal;
     display: inline-block;
@@ -311,9 +311,9 @@ div.lessonButFinal
     /*display: none;*/
     display: inline-block;
     /*position: fixed;*/
-    margin: 5px 0 20px 10px;
+    /*margin: 5px 0 20px 10px;*/
     z-index: 1;
-    width: 32%
+    /*width: 32%*/
     /*top: 0;*/
 }
 #sidebarLesson div.titlesBlock
@@ -346,8 +346,7 @@ div.lessonButFinal
     display: inline-block;
 }
 #sidebarLesson .titlesBlock{
-    margin-bottom: 10px;
-    margin-left: 0;
+    margin: 0;
 }
 div.download {
     /*display: block;*/
@@ -715,7 +714,7 @@ img {
     position: relative;
     margin-left: 102px;
     margin-top: 0px;
-    padding-left: 15px;
+    padding-left: 0;
     width: 500px;
 }
 
@@ -727,6 +726,7 @@ img {
     margin-left: 0px;
     width: 100%;
     word-wrap: break-word;
+    margin-bottom: 0;
 }
 
 .titlesBlock ul li {
@@ -1697,10 +1697,11 @@ a.cke_dialog_ui_fileButton{
         line-height: 1;
         margin:5px 0;
         font-size: 16px;
+        display: inline-block;
     }
     .lecturesSpots{
         font-size: 13px;
-        margin-top:10px;
+        margin-top:8px;
         margin-right: 1%;
     }
     .lectureFooterMini{display: block}
@@ -1976,3 +1977,28 @@ a.cke_dialog_ui_fileButton{
     .ng-toast .ng-toast__message .alert {
         text-align: left;
     }
+.chatButton{
+    position: fixed;
+    top: 121px;
+    left: 12px;
+    border-left: 2px solid #fff;
+}
+.consultationLogos{
+    margin: 0;
+}
+@media screen and (max-width:1320px) {
+    .chatButton {
+        top: 0;
+        left: inherit;
+        right: 0px;
+        z-index: 101;
+    }
+    #enable-chat i{
+        height: 45px !important;
+    }
+    .consultationLogos{
+        margin: 6px 4px 7px auto;
+        height: 34px;
+
+    }
+}

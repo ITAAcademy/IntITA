@@ -932,6 +932,7 @@ angular
             {value: 3, name: '3 проплати'},
             {value: 4, name: '4 проплати'},
             {value: 6, name: '6 проплат'},
+            {value: 9, name: '9 проплат'},
             {value: 12, name: 'помісячно'},
             {value: 24, name: '24 проплати'},
             {value: 36, name: '36 проплат'},

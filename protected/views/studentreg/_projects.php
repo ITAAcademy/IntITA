@@ -22,6 +22,17 @@
                     Дочекайся затвердження проекта тренером
                 </li>
             </ul>
+            <ul>
+                <li>
+                    Завантажуйте лише веб проекти. У корені проекту має знаходитися файл index.html.
+                </li>
+                <li>
+                    Проект повинен вміщувати лише файли з розширенням html, css, js та медіа контент.
+                </li>
+                <li>
+                    Кожен новий проект повинен містити назву відмінну від попередніх.
+                </li>
+            </ul>
         </div>
         <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'project1.jpg');?>">
         <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'project2.jpg');?>">

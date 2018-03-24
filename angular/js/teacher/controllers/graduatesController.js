@@ -6,7 +6,7 @@ angular
     .controller('graduateCtrl',graduateCtrl)
     .controller('editGraduateCtrl',editGraduateCtrl);
 
-function graduateCtrl ($scope, $filter, $http, NgTableDataService,  NgTableParams, translitService, typeAhead, $httpParamSerializerJQLike, $state, $stateParams, $ngBootbox, $timeout){
+function graduateCtrl ($scope, $rootScope, $filter, $http, NgTableDataService,  NgTableParams, translitService, typeAhead, $httpParamSerializerJQLike, $state, $stateParams, $ngBootbox, $timeout){
 
     $scope.$on('$stateChangeStart', function(event, next, current) {
         if (typeof(current) !== 'undefined'){

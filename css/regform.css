@@ -106,3 +106,9 @@ a#authLinks:hover, label.registration:hover{color:#666666;}
     a#authLinks,label.registration {float: none;}
 }
 
+@media screen and (max-width: 377px) {
+    #uLogin img, #uReg img{
+        width: 60px;
+        height: 60px;
+    }
+}

@@ -21,6 +21,9 @@
                     <li><a href="#/aboutusSlider">
                             Слайдер на сторінці <i>Про нас</i></a>
                     </li>
+                    <li><a href="#/banners">
+                            Банери на головній сторінці</a>
+                    </li>
                     <li><a href="#/address">
                             Адреса (країни, міста)</a>
                     </li>
@@ -81,6 +84,9 @@
                     </li>
                     <li><a href="#/configuration/language_levels">Рівні англійської
                         </a>
+                    </li>
+                    <li>
+                        <a href="#/configuration/breaks">Причина виключення студента</a>
                     </li>
                 </ul>
             </div>
