@@ -9,7 +9,7 @@
 protected/views/site/error.php
 content/*
 /mail
-
+/images
 /protected/vendor/*
 /angular/bower_components/*
 /test/
