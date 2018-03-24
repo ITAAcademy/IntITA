@@ -21,6 +21,9 @@
                     <li><a href="#/aboutusSlider">
                             Слайдер на сторінці <i>Про нас</i></a>
                     </li>
+                    <li><a href="#/banners">
+                            Банери на головній сторінці</a>
+                    </li>
                     <li><a href="#/address">
                             Адреса (країни, міста)</a>
                     </li>

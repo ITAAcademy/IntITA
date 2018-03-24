@@ -1,26 +1,17 @@
 # ignore files
 
-.idea/*
-.vagrant/*
-protected/runtime/*
-forum/cache/*
-local.php
-assets/*
-/mail/*
-files/course_schemas/*
+.idea/
+/.vagrant
+/protected/runtime/*
+/forum/cache/*
+/assets/*
+/files
 protected/views/site/error.php
-/protected/config/local.php
-/protected/config/local.php
-/protected/config/database.php
-/protected/config/databaseForum.php
 content/*
-/mail/
-images/
-images/*
-files/
+/mail
+/images
 /protected/vendor/*
-/angular/bower_components
 /angular/bower_components/*
 /test/
 /docker_data
-.env
+/.env
