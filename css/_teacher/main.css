@@ -674,3 +674,6 @@ div.loader > div {
         overflow: hidden;
     }
 }
+.supervisorStudent{
+    height: inherit !important;
+}
