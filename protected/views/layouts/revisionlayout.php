@@ -66,9 +66,9 @@ $header = new Header();
         <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-ui-router/release/angular-ui-router.min.js'); ?>"></script>
         <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-cookie/angular-cookie.min.js'); ?>"></script>
         <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/lecture_revision_app/services/sendRevisionMessage.js'); ?>"></script>
-        
-        <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ckeditor/ckeditor.js'); ?>"></script>
-        <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-ckeditor/ng-ckeditor.min.js'); ?>"></script>
+
+        <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
+        <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/ng-ckeditor.js'); ?>"></script>
         <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ngBootbox/dist/ngBootbox.min.js'); ?>"></script>
 
         <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/module_revision_app/services/getModuleData.js'); ?>"></script>
