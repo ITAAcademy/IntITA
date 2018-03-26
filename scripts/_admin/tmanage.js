@@ -189,7 +189,7 @@ function courseCreate(url) {
 
     return false;
 }
-function courseActions(url) {
+function courseActions(url, courseId) {
     var formData = new FormData($("#course-form")[0]);
     $.ajax({
         url: url,
@@ -198,7 +198,7 @@ function courseActions(url) {
         datatype:'json',
         success: function (message) {
             bootbox.alert(message, function () {
-                location.hash = "/organization/courses";
+                location.hash = "/course/id/"+courseId;
                 location.reload();
             });
         },
