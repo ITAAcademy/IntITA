@@ -33,7 +33,7 @@
         <script src="<?php echo Config::getFullChatPath()."/js/ITA.js" ?>"></script>
     <?php } ?>
     <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls-2.5.0.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'); ?>"></script>
     <link href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bootstrapRewrite.css') ?>"/>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-resource/angular-resource.min.js'); ?>"></script>
@@ -82,9 +82,9 @@
     <!-- passEye, jQuery -->
 
     <!-- ngToast -->
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-toast/ngToast.min.js'); ?>"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-toast/ngToast.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-toast/ngToast-animations.min.css') ?>">
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ngToast/dist/ngToast.min.js'); ?>"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ngToast/dist/ngToast.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ngToast/dist/ngToast-animations.min.css') ?>">
     <toast></toast>
 
     <title><?php echo CHtml::encode(Yii::app()->name); ?></title>

@@ -51,7 +51,7 @@
 
     <!-- ngTree -->
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-treeview/angular.treeview.min.js'); ?>"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-treeview/angular.treeview.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-treeview/css/angular.treeview.css') ?>">
 
 
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'); ?>"></script>
@@ -271,9 +271,9 @@
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/services/helpers/lodash.js'); ?>"></script>
 
     <!-- ngCkeditor -->
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ckeditor/ckeditor.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/crm/mentionForCkeditor.js'); ?>"></script>
-    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-ckeditor/ng-ckeditor.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/ng-ckeditor.js'); ?>"></script>
     <script src="https://ligamagic.com.br/teste/ckeditor4x/samples/extras/underscore-min.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
