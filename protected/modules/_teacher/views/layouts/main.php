@@ -51,7 +51,7 @@
 
     <!-- ngTree -->
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-treeview/angular.treeview.min.js'); ?>"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-treeview/angular.treeview.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-treeview/css/angular.treeview.css') ?>">
 
 
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'); ?>"></script>
