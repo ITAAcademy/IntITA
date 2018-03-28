@@ -89,7 +89,8 @@
     <div ng-if="!waitingForApproval && (writtenAgreementRequestStatus=='empty' || writtenAgreementRequestStatus==0) && actualAgreement.checked_by_user!=1">
         Якщо ви ввели актуальні дані, переглянули договір,
         та погоджуєтесь з ним, то відправте запит на генерування паперового договору:
-        <button type="button" class="btn btn-success btn-xs" ng-click="sendCheckedWrittenAgreementRequest(writtenAgreement.agreement.id)" >Відправити запит</button>
+        <button type="button" class="btn btn-success" ng-click="sendCheckedWrittenAgreementRequest(writtenAgreement.agreement.id)" >Відправити запит</button>
+        <button type="button" class="btn btn-success fixed-button" ng-click="sendCheckedWrittenAgreementRequest(writtenAgreement.agreement.id)" >Відправити запит</button>
     </div>
 </div>
 <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', '/_teacher/writtenAgreement.css'); ?>"/>

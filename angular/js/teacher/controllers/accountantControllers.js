@@ -1632,7 +1632,7 @@ angular
 
     .controller('writtenAgreementsTableCtrl', ['$scope', '$stateParams', 'NgTableParams', 'agreementsService', '$http', '$rootScope',
         function ($scope, $stateParams, NgTableParams, agreementsService, $http, $rootScope) {
-            $scope.changePageHeader('Паперові договора');
+            $scope.changePageHeader('Паперові договори');
 
             $scope.status = [
                 {id: '1', title: 'затвердженні і згенеровані'},
@@ -1658,7 +1658,7 @@ angular
 
     .controller('writtenAgreementsAppliedTableCtrl', ['$scope', '$stateParams', 'NgTableParams', 'agreementsService', '$http', '$rootScope',
         function ($scope, $stateParams, NgTableParams, agreementsService, $http, $rootScope) {
-            $scope.changePageHeader('Застосовані паперові договора до сервісів');
+            $scope.changePageHeader('Застосовані паперові договори до сервісів');
 
             $scope.writtenAgreementsAppliedTableParams = new NgTableParams({}, {
                 getData: function (params) {

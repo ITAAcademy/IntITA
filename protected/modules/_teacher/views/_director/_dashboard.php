@@ -80,11 +80,11 @@
     <div class="col-lg-4">
         <div class="panel panel-yellow">
             <div class="panel-heading">
-                Адмінка чата
+                Адмінка чату
             </div>
             <div class="panel-body">
                 <ul>
-                    <li><a href="<?php echo Config::getFullChatPath() ?>/admin" target="_blank">Адмінка чата</a></li>
+                    <li><a href="<?php echo Config::getFullChatPath() ?>/admin" target="_blank">Адмінка чату</a></li>
                 </ul>
             </div>
             <div class="panel-footer">

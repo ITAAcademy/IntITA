@@ -30,7 +30,7 @@
                 </ul>
             </div>
             <div class="panel-footer">
-                <em>Інтерфейс сайта</em>
+                <em>Інтерфейс сайту</em>
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@
     <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Налаштування сайта
+                Налаштування сайту
             </div>
             <div class="panel-body">
                 <ul>
@@ -91,7 +91,7 @@
                 </ul>
             </div>
             <div class="panel-footer">
-                <em>Адміністрування сайта</em>
+                <em>Адміністрування сайту</em>
             </div>
         </div>
     </div>
@@ -155,11 +155,11 @@
     <div class="col-lg-4">
         <div class="panel panel-green">
             <div class="panel-heading">
-                Адмінка чата
+                Адмінка чату
             </div>
             <div class="panel-body">
                 <ul>
-                    <li><a href="<?php echo Config::getFullChatPath() ?>/admin" target="_blank">Адмінка чата</a></li>
+                    <li><a href="<?php echo Config::getFullChatPath() ?>/admin" target="_blank">Адмінка чату</a></li>
                 </ul>
             </div>
             <div class="panel-footer">
