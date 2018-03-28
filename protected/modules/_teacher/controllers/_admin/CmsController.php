@@ -16,7 +16,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionIndex()
     {
-        $this->renderPartial('index', array(), false, true);
+       $this->renderPartial('index', array(), false, true);
     }
 
     public function actionMenuLists()
