@@ -1,7 +1,8 @@
 <div class="form-group form-link" ng-controller="cmsNewsCtrl">
+    <p>Повернутися до <a class="text-right" href="http://intita/cabinet/1/#/admin/intita_cms">Конструктора сайту</a></p>
     <label>Список новин</label>
     <div ng-repeat="list in lists track by $index" class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <input type="text" class="form-control" placeholder="Заголовок" ng-model="list.title">
         </div>
         <div class="col-md-2">
@@ -11,7 +12,7 @@
         <div class="col-md-4">
             <textarea class="form-control" placeholder="Текст новини" ng-model="list.text" style="resize: none"></textarea>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <input type="text" class="form-control" placeholder="Дата" ng-model="list.date">
         </div>
         <div class="col-md-1">
@@ -28,15 +29,16 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <input type="text" class="form-control" placeholder="Заголовок" ng-model="newNews.title">
         </div>
         <div class="col-md-2">
             <input id="photo" enctype="multipart/form-data" type="file" class="form-control" placeholder="Фото новини" name="photo">
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
             <textarea class="form-control" placeholder="Текст новини" ng-model="newNews.text" style="resize: none"></textarea>
         </div>
+        <div class="col-md-2"></div>
         <div class="col-md-1">
             <a href="javascript:void(0)">
                 <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(newNews)"></i>
@@ -44,3 +46,9 @@
         </div>
     </div>
 </div>
+
+<style>
+    .preview{
+        width: 110px;
+    }
+</style>
