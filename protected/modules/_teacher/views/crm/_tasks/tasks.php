@@ -53,7 +53,7 @@
                     <td data-title="'Постановник'" filter="{'idTask.producerName.fullName': 'text'}">
                         {{row.idTask.producerName.fullName}}
                     </td>
-                    <td data-title="'Виконавець'" filter="{'idTask.executantName.fullName': 'text'}" sortable="'idTask.executantName.fullName'">
+                    <td data-title="'Відповідальний'" filter="{'idTask.executantName.fullName': 'text'}" sortable="'idTask.executantName.fullName'">
                         {{row.idTask.executantName.fullName}}
                     </td>
                     <td data-title="'Дата'" filter="{'idTask.created_date': 'text'}" sortable="'idTask.created_date'">
