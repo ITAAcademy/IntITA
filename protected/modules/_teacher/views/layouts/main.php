@@ -38,7 +38,7 @@
 
     <!-- Select multiple -->
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/oi.select/dist/select-tpls.min.js'); ?>"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/oi.select/dist//select.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/oi.select/dist/select.min.css') ?>">
 
     <!-- ngTable -->
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ng-table-bundle/ng-table.js'); ?>"></script>

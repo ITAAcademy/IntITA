@@ -317,6 +317,7 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
                     .writtenAgreementRequest({'id': agreementId})
                     .$promise
                     .then(function successCallback(response) {
+                        console.log(response.reason);
                         bootbox.alert(response.reason);
                         $scope.getWrittenAgreementRequestStatus(agreementId);
                     }, function errorCallback(response) {

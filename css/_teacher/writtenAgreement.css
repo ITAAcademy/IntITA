@@ -57,3 +57,9 @@ span.cke_button__rightspan_label{
 .margin-top-250-px{
     margin-top: 250px;
 }
+.fixed-button{
+    position: fixed;
+    top:0;
+    left:0;
+    margin: 20px;
+}
