@@ -23,7 +23,7 @@ angular
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
                     .then(function successCallback(response) {
-                        if (response.length == 0) {
+                        if (!response.id) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
                                 $scope.settings = response;
                             });
@@ -67,7 +67,6 @@ angular
                                 $scope.lists = response;
                             });
                         }
-
                         else {
                             $scope.lists = response;
                         }
@@ -112,7 +111,7 @@ angular
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
                     .then(function successCallback(response) {
-                        if (response.length == 0) {
+                        if (!response.id) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
                                 $scope.settings = response;
                             });
@@ -125,26 +124,21 @@ angular
                     });
             }
             $scope.getSettings();
-
-
-            $scope.changeClass = function (e) {
-                $scope.linkColorSt = {color: $scope.settings.footer_link_color};
-            }
-            $scope.changeClass1 = function (e) {
-                //   $scope.linkColorSt = {color:  $scope.settings.footer_hover_color};
-            }
-
         }
     ])
+
+
+//////////////////////////////////////////////////////////////////////////////
 
     .controller('cmsGeneralSettingsCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
             $scope.changePageHeader('Основні налаштування');
 
+
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
                     .then(function successCallback(response) {
-                        if (response.length == 0) {
+                        if (!response.id) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
                                 $scope.settings = response;
                             });
@@ -158,13 +152,36 @@ angular
             }
             $scope.getSettings();
 
+            $scope.updateSettings = function (link, index, previousImage) {
+                var uploadSettings = new FormData();
+                uploadSettings.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#logoUpdate' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadSettings.append("photo", imageUpdate);
+                    uploadSettings.append("previousImage", previousImage);
+                }
+                else {
 
-            $scope.changeClass = function (e) {
-                $scope.linkColorSt = {color: $scope.settings.footer_link_color};
-            }
-            $scope.changeClass1 = function (e) {
-                $scope.linkColorSt = {color:  $scope.settings.footer_hover_color};
-            }
+                    var image = $jq('#logoUpdate').prop('files')[0];
+                    uploadSettings.append("photo", image);
+                }
+                $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.getSettings();
+                    $scope.newSettings = {id: null, description: null, link: null};   //???
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+            };
+
+         /* $scope.removeImage = function () {
+
+            };
+         */
 
         }
     ])
@@ -194,7 +211,6 @@ angular
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
                 if (index !== undefined) {
-                    console.log(previousImage);
                     var imageUpdateBlock = '#photoUpdate' + index;
                     var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
                     uploadImage.append("photo", imageUpdate);
@@ -202,7 +218,6 @@ angular
                 }
                 else {
                     var image = $jq('#photo').prop('files')[0];
-                    console.log(image);
                     uploadImage.append("photo", image);
                 }
                 $http.post(basePath + '/_teacher/_admin/cms/updateNews', uploadImage, {
@@ -221,7 +236,7 @@ angular
                 cmsService.removeNews({id: id}).$promise
                     .then(function successCallback() {
                         $scope.loadCmsNews();
-                    }, function errorCallback(response) {
+                    }, function errorCallback(response){
                         bootbox.alert(response.data.reason);
                     });
             };

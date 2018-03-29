@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-style="{'background-color':settings.news_text_border_color}">
 
     <div class="container text-center">
         <h1 class="text-muted">Как проходит обучение?</h1>

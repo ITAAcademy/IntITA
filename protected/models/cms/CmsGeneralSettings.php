@@ -56,7 +56,7 @@ class CmsGeneralSettings extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_organization, twitter, youtube, google, facebook, linkedin, instagram', 'required'),
+			array('id_organization', 'required'),
 			array('id_organization', 'numerical', 'integerOnly'=>true),
 			array('logo, email, twitter, youtube, google, facebook, linkedin, instagram', 'length', 'max'=>255),
 			array('mobile_phone, mobile_phone_2', 'length', 'max'=>15),

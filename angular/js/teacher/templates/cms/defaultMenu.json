@@ -1,17 +1,18 @@
 [
 	{
-		"title" : "Page1",
-		"link" : "/page1",
-		"description" : "Information about page1"
+		"title" : "Викладачі",
+		"link" : "http://intita/teachers",
+		"description" : "Information about teachers"
 	},
 	{
-		"title" : "Page2",
-		"link" : "/page2",
-		"description" : "Information about page2"
+		"title" : "Про нас ",
+		"link" : "http://intita/aboutus",
+		"description" : "Information about us"
 	},
 	{
-		"title": "Page3",
+		"title": "FAQ",
 		"link": "/page3",
-		"description": "Information about page3"
+		"description": "Frequently Asked Questions"
 	}
 ]
+
