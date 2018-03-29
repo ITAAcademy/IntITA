@@ -43,18 +43,33 @@ angular
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
                                 $scope.lists = response;
+                                for (var i=0; i<$scope.lists.length; i++){
+                                    $scope.lists[i].strLimit=500;
+                                }
                             });
                         }
                         else {
                             $scope.lists = response;
+                            for (var i=0; i<$scope.lists.length; i++){
+                                $scope.lists[i].strLimit=500;
+                            }
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
                     });
             };
+
+            $scope.showMore = function(i) {
+                $scope.lists[i].strLimit = $scope.lists[i].text.length;
+            };
+            $scope.showLess = function(i) {
+                $scope.lists[i].strLimit = 500;
+            };
+
             $scope.loadCmsNews();
         }
     ])
+
     .controller('cmsMenuListCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
             $scope.changePageHeader('Menu list');
