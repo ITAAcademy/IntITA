@@ -49,7 +49,16 @@ angular
                     settingList:{
                         url: url + '/getSettings',
                         method: 'GET',
-                        isArray: true
+                        //isArray: true
                     },
+                    updateSettings: {
+                        url: url + '/updateSettings',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
+                    },
+
+
+
                 });
         }])

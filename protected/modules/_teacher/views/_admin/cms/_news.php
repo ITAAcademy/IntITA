@@ -1,5 +1,5 @@
-<div class="news_container">
-    <div class="text-center">
+<div class="news_container" ng-style="{'background-color':settings.news_text_border_color}">
+    <div class="container text-center">
         <h1 class="text-muted">Как проходит обучение?</h1>
         <h3 class="text-primary info_bot">Пять шагов к исполнению твоих желаний</h3>
     </div>
