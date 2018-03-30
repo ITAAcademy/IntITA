@@ -143,13 +143,9 @@ angular
     ])
 
 
-//////////////////////////////////////////////////////////////////////////////
-
     .controller('cmsGeneralSettingsCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
             $scope.changePageHeader('Основні налаштування');
-
-
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
                     .then(function successCallback(response) {
@@ -187,17 +183,11 @@ angular
                     transformRequest: angular.identity
                 }).success(function () {
                     $scope.getSettings();
-                    $scope.newSettings = {id: null, description: null, link: null};   //???
+                    $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
             };
-
-         /* $scope.removeImage = function () {
-
-            };
-         */
-
         }
     ])
 

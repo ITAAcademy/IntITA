@@ -176,56 +176,34 @@ class CmsController extends TeacherCabinetController
     public function actionUpdateSettings(){
         $result = ['message' => 'OK'];
         $statusCode = 201;
-       // $current_date = date("Y-m-d H:i:s");
-
         try {
             $addressForFile = "";
             $previousImage = $_POST["previousImage"];
             if (isset($_FILES) && !empty($_FILES)) {    //$_FILES Переменные файлов, загруженных по HTTP // прилітає картінка
                 $folderAddress = 'images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/generalSettings/";  // прописуєм шлях
-
                 if (!file_exists($folderAddress)) {
                     mkdir($folderAddress, '777', true); //створення каталога
                 }
-
-
                 if (file_exists($previousImage)) {
                     unlink($previousImage);  //удаляє файл
-
                 }
                 $end_file_name = $_FILES["photo"]["name"]; //Оригинальное имя файла на компьютере клиента.
                 $tmp_file_name = $_FILES["photo"]["tmp_name"]; // Временное имя, с которым принятый файл был сохранен на сервере.
-
-
-
-
                 if (getimagesize($tmp_file_name)) {  //Получение размера изображения
                     $addressForFile = $folderAddress . date("jYgi") . basename($end_file_name); //basename -- Возвращает имя файла из указанного пути
                 }
-
                 copy($tmp_file_name, $addressForFile);  //copy($file, $newfile) Копирует файл
-
                 echo $addressForFile;
-
             }
             $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
             //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
-
             $menuLink = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
             $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-
-
-            //$menuLink->date= $current_date;
             $menuLink->attributes = $params;
-
             $menuLink->logo = $addressForFile;
-           // var_dump($menuLink->save()); die;
-
-
             if (!$menuLink->save()) {
 
                 throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
-               // var_dump($menuLink->getValidationErrors()); die;
             }
         } catch (Exception $error) {
             $statusCode = 500;
