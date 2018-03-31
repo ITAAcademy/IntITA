@@ -93,18 +93,20 @@
 				}
 				flagForSlide = 1;
 				$("#slider-range-max").css("pointer-events","all");
+            	$( "#slider-range-max" ).slider( "enable" );
 
 	},	//this callback is invoked when the transition effect ends
 
-		onLoaded			: function() {},	//this callback is invoked when the image on a slide has completely loaded
+		onLoaded			: function() {$( "#slider-range-max" ).slider("enable");},	//this callback is invoked when the image on a slide has completely loaded
 		
-		onStartLoading		: function() {  },	//this callback is invoked when the image on a slide start loading
+		onStartLoading		: function() { $( "#slider-range-max" ).slider("disable");},	//this callback is invoked when the image on a slide start loading
 		
 		onStartTransition	: function() {
 			$("#cameraContent0").removeClass("showFirstSlide");
 			hideMenuWithOutActionCount++;
 			flagForSlide = 0;
 			$("#slider-range-max").css("pointer-events","none");
+            $( "#slider-range-max" ).slider("disable");
 		}	//this callback is invoked when the transition effect starts
 
     };
