@@ -1,15 +1,4 @@
-<div class="row comments">
-    <div class="col-sm-12">
-        <div>
-            <ol class="list-unstyled">
-                <li ng-repeat="row in crmTask.comments track by $index" ng-include="'nodes_renderer.html'"></li>
-            </ol>
-        </div>
-    </div>
-</div>
-<br>
-<br>
-<a href="" ng-show="!newComment" ng-click="crmTask.toggleComment();" >Додати коментар</a>
+<a href="" ng-show="!newComment" ng-click="crmTask.toggleComment();" class="addCommentTasks">Додати коментар</a>
 <div ng-show="newComment">
     <div style="font-size: 12px">
         <b>@</b> - три символи після знаку підтягує список користувачів
@@ -23,6 +12,19 @@
         <button type="button" class="btn btn-default" ng-click="crmTask.toggleComment();" >Відміна</button>
     </p>
 </div>
+<div class="row comments">
+    <div class="col-sm-12">
+        <div>
+            <ol class="list-unstyled">
+                <li ng-repeat="row in crmTask.comments track by $index" ng-include="'nodes_renderer.html'"></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+
+
 
 <script type="text/ng-template" id="nodes_renderer.html">
     <div class="comment_info">
