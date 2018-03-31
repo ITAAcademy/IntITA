@@ -1,3 +1,8 @@
+<?php
+    ob_start();
+?>
+
+
 <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'fontface.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/main.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/header.css'); ?>"/>
@@ -19,7 +24,16 @@
     $this->renderPartial('_news', array());
     $this->renderPartial('_footer', array());
     ?>
+    <form action="" method="POST">
+        <button name="save" type="submit" class="btn btn-primary">Зберегти</button>
+    </form>
 </div>
+<?php
+    if (isset($_POST['save']))
+    {
+        file_put_contents('yourpage.html', ob_get_contents());
+    }
 
+?>
 
 
