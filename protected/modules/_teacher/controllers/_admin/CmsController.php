@@ -175,6 +175,13 @@ class CmsController extends TeacherCabinetController
 
     public function actionGeneratePage()
     {
+            $deleteButtonCode = <<<JS
+                <script>
+                    document.getElementsByClassName("mainAboutBlock")[0].removeChild(document.getElementById("save"));
+                    document.getElementsByClassName("row")[0].removeChild(document.getElementById("pageTitle"));
+                </script>     
+JS;
+
             $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
             if (!file_exists($address)){
                 mkdir($address, '777', true);
@@ -182,6 +189,7 @@ class CmsController extends TeacherCabinetController
             $path = $address .  '/index.php';
             file_put_contents($path,"<link href=\"http://intita/css/bower_components/bootstrap/dist/css/bootstrap.min.css?version=1\" rel=\"stylesheet\">");
             file_put_contents($path, $_POST["data"],FILE_APPEND);
+            file_put_contents($path, $deleteButtonCode,FILE_APPEND);
 
     }
 

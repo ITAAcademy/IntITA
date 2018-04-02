@@ -5,9 +5,6 @@
 <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/about_us.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/news.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/footer.css'); ?>"/>
-<link href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/color-picker/dist/color-picker.css'); ?>" rel="stylesheet"/>
-<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/color-picker/dist/color-picker.js'); ?>"></script>
-<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-sanitize/angular-sanitize.js'); ?>"></script>
 
 <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
 
@@ -22,19 +19,4 @@
         <input id="save" name="save" type="submit" class="btn btn-primary">
 </div>
 
-
-
-
-<script>
-    var content= $jq("#page-wrapper");
-    console.log(content);
-    $jq("#save").click(function(){
-        $jq.ajax({
-            method: "POST",
-            url: basePath + '/_teacher/_admin/cms/generatePage',
-            dataType : 'html',
-            data: {data: content[0].innerHTML}
-        })
-    });
-</script>
 
