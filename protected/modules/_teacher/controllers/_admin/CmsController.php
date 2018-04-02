@@ -173,6 +173,19 @@ class CmsController extends TeacherCabinetController
         echo $model;
     }
 
+    public function actionGeneratePage()
+    {
+            $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
+            if (!file_exists($address)){
+                mkdir($address, '777', true);
+            }
+            $path = $address .  '/index.php';
+            file_put_contents($path,"<link href=\"http://intita/css/bower_components/bootstrap/dist/css/bootstrap.min.css?version=1\" rel=\"stylesheet\">");
+            file_put_contents($path, $_POST["data"],FILE_APPEND);
+
+    }
+
+
     public function actionUpdateSettings(){
         $result = ['message' => 'OK'];
         $statusCode = 201;

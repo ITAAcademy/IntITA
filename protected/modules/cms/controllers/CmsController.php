@@ -6,6 +6,12 @@ class CmsController extends Controller
 
 	public function actionIndex()
 	{
-		$this->render('index');
+	    $cmsLayout = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/index.php";
+	    if (file_exists($cmsLayout)){
+            $this->renderFile("$cmsLayout");
+        }
+        else{
+            $this->render('index');
+        }
 	}
 }

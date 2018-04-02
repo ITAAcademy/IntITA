@@ -1,8 +1,3 @@
-<?php
-    ob_start();
-?>
-
-
 <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'fontface.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/main.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/header.css'); ?>"/>
@@ -24,16 +19,22 @@
     $this->renderPartial('_news', array());
     $this->renderPartial('_footer', array());
     ?>
-    <form action="" method="POST">
-        <button name="save" type="submit" class="btn btn-primary">Зберегти</button>
-    </form>
+        <input id="save" name="save" type="submit" class="btn btn-primary">
 </div>
-<?php
-    if (isset($_POST['save']))
-    {
-        file_put_contents('yourpage.html', ob_get_contents());
-    }
 
-?>
 
+
+
+<script>
+    var content= $jq("#page-wrapper");
+    console.log(content);
+    $jq("#save").click(function(){
+        $jq.ajax({
+            method: "POST",
+            url: basePath + '/_teacher/_admin/cms/generatePage',
+            dataType : 'html',
+            data: {data: content[0].innerHTML}
+        })
+    });
+</script>
 
