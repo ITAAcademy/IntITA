@@ -228,7 +228,20 @@ function offlineEducationCtrl($scope, $http) {
     });
 }
 
-function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService, agreementsService) {
+function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService, agreementsService, $uibModal, documentsServices, FileUploader, $http) {
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1
+    };
+
+
     $scope.changePageHeader('Договір/рахунки');
 
     $scope.invoiceUrl=basePath+'/invoice/';
@@ -311,20 +324,133 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
     };
 
     $scope.sendCheckedWrittenAgreementRequest = function (agreementId) {
-        bootbox.confirm('Після відправлення запиту, скасувати його зможе лише бухгалтер. Відправити?',function(result){
-            if (result) {
-                studentService
-                    .writtenAgreementRequest({'id': agreementId})
-                    .$promise
-                    .then(function successCallback(response) {
-                        console.log(response.reason);
-                        bootbox.alert(response.reason);
-                        $scope.getWrittenAgreementRequestStatus(agreementId);
-                    }, function errorCallback(response) {
-                        bootbox.alert(response.reason);
-                    })
-            }
+        $scope.openInformationDialog = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: basePath + '/angular/js/teacher/templates/accountancy/information.html',
+            scope: $scope,
+            size: 'md',
+            appendTo: false,
         });
+    };
+
+    $scope.sendWrtnAgrRequest = function (agreementId) {
+        $scope.openInformationDialog.close();
+        studentService
+            .writtenAgreementRequest({'id': agreementId})
+            .$promise
+            .then(function successCallback(response) {
+                if(response.message=='error'){
+                    switch ( response.reason ) {
+                        case 1:
+                            if(!$scope.openPassportDialog || !$scope.openPassportDialog.opened.status){
+                                $scope.passport = JSON.parse(response.passport);
+                                $scope.inn = JSON.parse(response.inn);
+                                $scope.passport.issued_date = $scope.passport.issued_date ? new Date($scope.passport.issued_date) : null;
+                                $scope.openPassportDialog = $uibModal.open({
+                                    animation: true,
+                                    ariaLabelledBy: 'modal-title',
+                                    ariaDescribedBy: 'modal-body',
+                                    templateUrl: basePath + '/angular/js/teacher/templates/accountancy/passportForm.html',
+                                    scope: $scope,
+                                    size: 'md',
+                                    appendTo: false,
+                                });
+                            }
+                            break;
+                        case 2:
+                            if(!$scope.openInnDialog || !$scope.openInnDialog.opened.status) {
+                                $scope.inn = JSON.parse(response.inn);
+                                $scope.openInnDialog = $uibModal.open({
+                                    animation: true,
+                                    ariaLabelledBy: 'modal-title',
+                                    ariaDescribedBy: 'modal-body',
+                                    templateUrl: basePath + '/angular/js/teacher/templates/accountancy/innForm.html',
+                                    scope: $scope,
+                                    size: 'md',
+                                    appendTo: false,
+                                });
+                            }
+                            break;
+                        case 3:
+                            $scope.passport = JSON.parse(response.passport);
+                            $scope.inn = JSON.parse(response.inn);
+                            $scope.passport.issued_date = $scope.passport.issued_date ? new Date($scope.passport.issued_date) : null;
+                            $scope.openPassportDialog = $uibModal.open({
+                                animation: true,
+                                ariaLabelledBy: 'modal-title',
+                                ariaDescribedBy: 'modal-body',
+                                templateUrl: basePath + '/angular/js/teacher/templates/accountancy/passportForm.html',
+                                scope: $scope,
+                                size: 'md',
+                                appendTo: false,
+                            });
+                            $scope.openInnDialog = $uibModal.open({
+                                animation: true,
+                                ariaLabelledBy: 'modal-title',
+                                ariaDescribedBy: 'modal-body',
+                                templateUrl: basePath + '/angular/js/teacher/templates/accountancy/innForm.html',
+                                scope: $scope,
+                                size: 'md',
+                                appendTo: false,
+                            });
+                            break;
+                    }
+                }else{
+                    bootbox.alert(response.reason);
+                }
+                $scope.getWrittenAgreementRequestStatus(agreementId);
+            }, function errorCallback(response) {
+                bootbox.alert(response.reason);
+            })
+    }
+
+
+    // datepickers options
+    $scope.dateOptionsDeadline = new DateOptions();
+    $scope.dateOptionsStart = new DateOptions();
+    $scope.dateOptionsEnd = new DateOptions();
+    function DateOptions() {
+        this.popupOpened = false;
+        this.maxDate = new Date();
+        this.startingDay = 1;
+    }
+
+    DateOptions.prototype.open = function () {
+        this.popupOpened = true;
+    };
+
+    $scope.saveDocumentsData = function (document) {
+        if($jq("#issued_date").val()!=''){
+            document.issued_date=$jq("#issued_date").val();
+        }else{
+            document.issued_date=null;
+        }
+        documentsServices
+            .saveData(document)
+            .$promise
+            .then(function (data) {
+                if (data.message === 'OK') {
+                    if(documentUploader.queue.length){
+                        documentUploader.uploadAll();
+                    }else if(innUploader.queue.length){
+                        innUploader.uploadAll();
+                    }else{
+                        $scope.writtenAgreementPreview($stateParams.agreementId);
+                        if(document.type==1) $scope.openPassportDialog.close();
+                        if(document.type==2) $scope.openInnDialog.close();
+                        $scope.sendWrtnAgrRequest($stateParams.agreementId);
+                    }
+                } else {
+                    bootbox.alert('Виникла помилка:'+'<br>'+data.reason);
+                    $scope.openPassportDialog.close();
+                    $scope.openInnDialog.close();
+                }
+            })
+            .catch(function (error) {
+                bootbox.alert(error.data.reason);
+            });
     };
 
     $scope.getWrittenAgreementRequestStatus = function (agreementId) {
@@ -430,6 +556,113 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
             message: "<img width='100%' src='" + basePath + '/_teacher/_accountant/accountant/getDocument?id=' + documentID + "'>",
             size: 'large'
         })
+    }
+
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1
+    };
+
+    //documents
+    var documentUploader = $scope.documentUploader = new FileUploader({
+        url: basePath+'/studentreg/uploadDocuments?type=1',
+        removeAfterUpload: true
+    });
+    documentUploader.onCompleteAll = function() {
+        $scope.writtenAgreementPreview($stateParams.agreementId);
+        $scope.openPassportDialog.close();
+        $scope.loadDocuments();
+    };
+    documentUploader.onErrorItem = function(item, response, status, headers) {
+        if(status==500)
+            bootbox.alert("Виникла помилка при завантажені документа.");
+    };
+
+    var innUploader = $scope.innUploader = new FileUploader({
+        url: basePath+'/studentreg/uploadDocuments?type=2',
+        removeAfterUpload: true
+    });
+    innUploader.onCompleteAll = function() {
+        $scope.writtenAgreementPreview($stateParams.agreementId);
+        $scope.openInnDialog.close();
+        $scope.loadDocuments();
+    };
+    innUploader.onErrorItem = function(item, response, status, headers) {
+        if(status==500)
+            bootbox.alert("Виникла помилка при завантажені документа.");
+    };
+
+    documentUploader.filters.push({
+        name: 'imageFilter',
+        fn: function(item /*{File|FileLikeObject}*/, options) {
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        }
+    });
+    innUploader.filters.push({
+        name: 'imageFilter',
+        fn: function(item /*{File|FileLikeObject}*/, options) {
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        }
+    });
+
+    documentUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+        console.info('onWhenAddingFileFailed', item, filter, options);
+    };
+    innUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+        console.info('onWhenAddingFileFailed', item, filter, options);
+    };
+
+    $scope.loadDocuments=function () {
+        documentsServices
+            .getAllUserDocuments()
+            .$promise
+            .then(function (data) {
+                data.forEach(function(row) {
+                    if(row.type==1 && $scope.passport){
+                        $scope.passport.documentsFiles = row.documentsFiles;
+                    }
+                    if(row.type==2 && $scope.inn){
+                        $scope.inn.documentsFiles = row.documentsFiles;
+                    }
+                });
+            });
+    };
+
+    $scope.removeDocumentsFileDialog=function (id) {
+        $scope.fileId = id;
+        $scope.removeDialog = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: basePath + '/angular/js/teacher/templates/accountancy/deleteFileDialog.html',
+            scope: $scope,
+            size: 'md',
+            appendTo: false,
+        });
+    }
+
+    $scope.removeDocumentsFile=function (id) {
+        $http({
+            url: basePath + "/studentreg/removeuserdocumentsfile",
+            method: "POST",
+            data: $jq.param({id: id}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
+        }).then(function successCallback() {
+            $scope.writtenAgreementPreview($stateParams.agreementId);
+            $scope.loadDocuments();
+            $scope.removeDialog.close();
+        }, function errorCallback() {
+            bootbox.alert("Виникла помилка при видалені документу.");
+        });
     }
 }
 

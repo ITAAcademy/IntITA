@@ -430,13 +430,35 @@ class StudentController extends TeacherCabinetController
 
         $agreement = UserAgreements::model()->findByPk(Yii::app()->request->getPost('id'));
         $documents = $agreement->user->getActualUserDocuments();
-        $documentsType=[DocumentsTypes::PASSPORT,DocumentsTypes::INN];
-        $requiredDocCount=0;
+        $passport = 1;
+        $inn = 2;
+        $documentModel = new UserDocuments();
+        $documentModel->type = 1;
+        $passportModel = CJSON::encode($documentModel);
+        $documentModel = new UserDocuments();
+        $documentModel->type = 2;
+        $innModel = CJSON::encode($documentModel);
         foreach ($documents as $document){
-            if(in_array($document->type,$documentsType))
-                $requiredDocCount+=1;
+            if($document->type == DocumentsTypes::PASSPORT){
+                $document->setScenario('passport');
+                if($document->validate()){
+                    $passport = 0;
+                }else{
+                    $passportModel = json_encode(ActiveRecordToJSON::toAssocArray($document));
+                }
+            }
+            if($document->type == DocumentsTypes::INN){
+                $document->setScenario('inn');
+                if($document->validate()){
+                    $inn = 0;
+                }else{
+                    $innModel = json_encode(ActiveRecordToJSON::toAssocArray($document));
+                }
+            }
+
         }
-        if($requiredDocCount==count($documentsType) ){
+        $reason = $passport+$inn;
+        if($reason==0){
             $transaction = Yii::app()->db->beginTransaction();
             try {
                 if(!MessagesWrittenAgreementRequest::isRequestOpen(array('agreement'=>$agreement->id,'user'=>$agreement->user_id))){
@@ -453,7 +475,7 @@ class StudentController extends TeacherCabinetController
                 $result = ['message' => 'error', 'reason' => 'Запит на затвердження паперового договору не вдалося надіслати.'];
             }
         }else{
-            $result = ['message' => 'error', 'reason' => 'Перед відправкою запиту заповни паспортні дані та ідентифікаційний код в формі редагування профілю'];
+            $result = ['message' => 'error', 'reason' => $reason, 'passport' => $passportModel, 'inn' => $innModel];
         }
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }

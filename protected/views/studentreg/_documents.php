@@ -8,7 +8,7 @@
     </select>
 </div>
 
-<div ng-show="document.type">
+<div ng-show="document.type" ng-form name="documents">
     <div class="row" ng-show="document.type==1">
         <label><?php echo Yii::t('regexp', '0162') ?></label>
         <input type="text" maxlength="32" placeholder="<?php echo Yii::t('regexp', '0162') ?>" ng-model="document.last_name">
@@ -23,7 +23,11 @@
     </div>
     <div class="row">
         <label><?php echo Yii::t('regexp', '0927') ?></label>
-        <input type="text" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-model="document.number">
+        <input ng-if="document.type==1" type="text" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-model="document.number">
+        <input ng-if="document.type==2" type="text" name="inn" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-pattern="/\d{10}/g" ng-model="document.number">
+        <div ng-cloak class="clientValidationError" ng-show="documents.inn.$error.pattern">
+            Введіть 10-значний ідентифікаційний номер
+        </div>
     </div>
     <div class="row" ng-show="document.type==1">
         <label><?php echo Yii::t('regexp', '0928') ?></label>
@@ -38,7 +42,7 @@
         <input type="text" placeholder="Приписка" ng-model="document.registration_address">
     </div>
     <div class="rowbuttons">
-        <button type="button" class="btn btn-success" ng-click="saveDocumentsData()">
+        <button type="button" class="btn btn-success" ng-click="saveDocumentsData()" ng-disabled="documents.$invalid">
             Зберегти
         </button>
     </div>
@@ -98,7 +102,6 @@
         <div class="uploadDocuments">
             <span ng-repeat="item in document.documentsFiles track by $index">
                 <a href="/profile/getdocument?documentId={{item.id}}">Переглянути</a>
-<!--                <a ng-href="--><?php //echo StaticFilesHelper::fullPathToFiles('documents') ?><!--/{{document.id_user}}/{{document.type}}/{{item.file_name}}" target="_blank">doc{{$index}}</a>-->
                 <a ng-if="document.checked==0" href="" ng-click="removeDocumentsFile(item.id)">[x]</a>
             </span>
             <div ng-if="document.type==1 && document.checked==0">

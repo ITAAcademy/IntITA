@@ -62,7 +62,7 @@ $header = new Header();
     <link rel='stylesheet' href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-loading-bar/build/loading-bar.min.css'); ?>" type='text/css' media='all' />
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-loading-bar/build/loading-bar.min.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/ngBootbox/dist/ngBootbox.min.js'); ?>"></script>
-
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/services/documentsServices.js'); ?>"></script>
     <?php if (!Yii::app()->user->isGuest) { ?>
         <script src="<?php echo Config::getFullChatPath()."/js/ITA.js" ?>"></script>
     <?php } ?>
