@@ -508,10 +508,10 @@ angular
                             });
                     },
                     isModelValid: function () {
-                        if (angular.isDefined(self.notification)) {
+                        if (angular.isDefined(self.data.notification)) {
                             self.data.notification.error = [];
                             if (self.data.notification.notify) {
-                                if (!self.data.notification.users || !self.notification.users.length) {
+                                if (!self.data.notification.users || !self.data.notification.users.length) {
                                     self.data.notification.error.user = 'Оберіть групу користувачів для оповіщення';
                                     return false;
                                 }
@@ -519,10 +519,20 @@ angular
                                     self.data.notification.error.template = 'Оберіть шаблон оповіщення';
                                     return false;
                                 }
-                                if (!self.data.notification.weekdays || !self.data.notification.weekdays.length) {
-                                    self.data.notification.error.weekdays = 'Оберіть дні для оповіщення';
-                                    return false;
+                                if (!self.data.notification.oneTimeNotification)
+                                {
+                                    if (!self.data.notification.weekdays || !self.data.notification.weekdays.length) {
+                                        self.data.notification.error.weekdays = 'Оберіть дні для оповіщення';
+                                        return false;
+                                    }
                                 }
+                                else{
+                                    if (self.data.notification.weekdays && self.data.notification.weekdays.length > 1) {
+                                        self.data.notification.error.weekdays = 'Оберіть один день для оповіщення або зніміть всі позначки з днів оповіщення для оповіщення в цей же день';
+                                        return false;
+                                    }
+                                }
+
                                 if (!self.data.notification.time) {
                                     self.data.notification.error.time = 'Оберіть час для оповіщення';
                                     return false;
