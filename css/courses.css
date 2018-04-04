@@ -478,15 +478,24 @@ span.moduleNum{
 #detailCourseInfoLarge1 p, #detailCourseInfoLarge0 p{
     color: white;
 }
+.expandText{
+    font-size: 13px;
+    color:white;
+    margin: 0 5px 0 84%
+}
 .detailCourseInfoLarge:after{
+    float: left;
+    margin: 1% 5px 0 82%;
     font-family: 'Glyphicons Halflings';
-    content:"\e260";
+    /*content:"\e260";*/
     color: white;
     font-size: 10px;
 }
 .detailCourseInfoLarge.collapsed:after{
+    float: left;
+    margin: 1% 5px 0 82%;
     font-family: 'Glyphicons Halflings';
-    content:"\e259";
+    /*content:"\e259";*/
     color: white;
     font-size: 10px;
 }
