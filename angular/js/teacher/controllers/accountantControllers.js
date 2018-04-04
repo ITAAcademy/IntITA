@@ -1628,6 +1628,36 @@ angular
                         });
                 }
             });
+
+            $scope.rejectAgreementRequest = function (id_message) {
+                bootbox.dialog({
+                        title: "Ти впевнений, що хочеш відхилити запит?",
+                        message: '<div class="panel-body"><div class="row"><form role="form" name="rejectMessage"><div class="form-group col-md-12">' +
+                        '<textarea class="form-control" style="resize: none" rows="6" id="rejectMessageText" ' +
+                        'placeholder="тут можна залишити коментар, причина відхилення запиту на затвердження договору, яка надійде користувачу на його email"></textarea>' +
+                        '</div></form></div></div>',
+                        buttons: {
+                            success: {
+                                label: "Підтвердити", className: "btn btn-primary",
+                                callback: function () {
+                                    var comment = $jq('#rejectMessageText').val();
+                                    agreementsService.rejectAgreementRequest({
+                                        id_message: id_message,
+                                        reject_comment: comment
+                                    }).$promise.then(function () {
+                                        $scope.agreementsRequestsTableParams.reload();
+                                    });
+                                }
+                            },
+                            cancel: {
+                                label: "Скасувати", className: "btn btn-default",
+                                callback: function () {
+                                }
+                            }
+                        }
+                    }
+                );
+            };
         }])
 
     .controller('writtenAgreementsTableCtrl', ['$scope', '$stateParams', 'NgTableParams', 'agreementsService', '$http', '$rootScope',
