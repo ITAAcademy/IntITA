@@ -186,4 +186,30 @@ class StudentsProjects extends CActiveRecord
         }
         return true;
     }
+
+  public function delete(){
+   $projectDir = Config::getTempProjectsPath()."/{$this->id_student}/{$this->title}/{$this->branch}";
+   $realProjectDir =  Config::getRealProjectsPath().'/'.$this->id_student.'/'.$this->title;
+   if(is_dir($projectDir)){
+    $this->deleteDirectory($projectDir);
+   }
+   if(is_dir($realProjectDir)){
+    $this->deleteDirectory($realProjectDir);
+   }
+   return parent::delete();
+  }
+
+  private function deleteDirectory($dir){
+   $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+   $files = new RecursiveIteratorIterator($it,
+       RecursiveIteratorIterator::CHILD_FIRST);
+   foreach($files as $file) {
+    if ($file->isDir()){
+     rmdir($file->getRealPath());
+    } else {
+     unlink($file->getRealPath());
+    }
+   }
+   rmdir($dir);
+  }
 }
