@@ -380,6 +380,7 @@ span.moduleNum{
     float: right;
 }
 .coursesCategory{
+    margin-bottom: 5px;
     float: right;
 }
 .coursesType .coursesCategory > div{
