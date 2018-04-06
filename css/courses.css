@@ -109,9 +109,7 @@
 }
 .courseLevelIndex
 {
-    position:relative;
-    display:inline-block;
-    float:right;
+   margin-top: 10px;
     height: 10px;
     top: 7px;
     margin-bottom: 5px;
