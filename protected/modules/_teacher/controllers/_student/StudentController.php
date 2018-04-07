@@ -554,8 +554,14 @@ class StudentController extends TeacherCabinetController
 
     public function actionCheckAgreementPdf($agreementId)
     {
-        $data['data']=ActiveRecordToJSON::toAssocArrayWithRelations(UserWrittenAgreement::model()->with('user')->findByAttributes(
-            array('id_agreement'=>$agreementId,'actual'=>UserWrittenAgreement::ACTUAL)));
+        $criteria =  new CDbCriteria();
+        $criteria->addCondition('t.id_agreement=:agreementId and (t.actual=:actual or t.actual=:printed)');
+        $criteria->params = array(
+            ':agreementId'=>$agreementId,
+            ':actual'=>UserWrittenAgreement::ACTUAL,
+            ':printed'=>UserWrittenAgreement::PRINTED,
+        );
+        $data['data']=ActiveRecordToJSON::toAssocArrayWithRelations(UserWrittenAgreement::model()->with('user','lastEditedUserDocument')->find($criteria));
         echo json_encode($data);
     }
 

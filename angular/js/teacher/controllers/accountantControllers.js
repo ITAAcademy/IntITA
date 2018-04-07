@@ -1665,9 +1665,10 @@ angular
             $scope.changePageHeader('Паперові договори');
 
             $scope.status = [
-                {id: '1', title: 'затвердженні і згенеровані'},
+                {id: '1', title: 'затвердженні і згенеровані(не роздруковані)'},
                 {id: '2', title: 'очікують затвердження користувача'},
                 {id: '3', title: 'затверджені користувачем, але не згенеровані'},
+                {id: '4', title: 'роздруковані'},
             ];
 
             $scope.writtenAgreementsTableParams = new NgTableParams({filter: {'status': '3'},
@@ -1974,6 +1975,14 @@ angular
                     message: "<img width='100%' src='" + basePath + '/_teacher/_accountant/accountant/getDocument?id=' + documentID + "'>",
                     size: 'large'
                 })
+            }
+
+            $scope.printed = function (id, idAgreement) {
+                agreementsService.writtenAreementPrinted({
+                    id: id,
+                }).$promise.then(function () {
+                    $scope.writtenAgreementPreview(idAgreement);
+                });
             }
         }])
     .controller('writtenAgreementTemplate', ['$scope', '$http', '$stateParams', '$state', 'agreementsService',
