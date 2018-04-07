@@ -20,6 +20,9 @@
                 <button class="btn btn-outline btn-success btn-sm" ng-click="approveProject(row.id)" " ng-show="row.need_check">
                 Затвердити
                 </button>
+             <button class="btn btn-outline btn-danger btn-sm" ng-click="deleteProject(row.id)" " ng-show="row.need_check">
+             Видалити
+             </button>
             </td>
         </tr>
     </table>
