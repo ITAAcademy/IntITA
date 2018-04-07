@@ -1628,6 +1628,36 @@ angular
                         });
                 }
             });
+
+            $scope.rejectAgreementRequest = function (id_message) {
+                bootbox.dialog({
+                        title: "Ти впевнений, що хочеш відхилити запит?",
+                        message: '<div class="panel-body"><div class="row"><form role="form" name="rejectMessage"><div class="form-group col-md-12">' +
+                        '<textarea class="form-control" style="resize: none" rows="6" id="rejectMessageText" ' +
+                        'placeholder="тут можна залишити коментар, причина відхилення запиту на затвердження договору, яка надійде користувачу на його email"></textarea>' +
+                        '</div></form></div></div>',
+                        buttons: {
+                            success: {
+                                label: "Підтвердити", className: "btn btn-primary",
+                                callback: function () {
+                                    var comment = $jq('#rejectMessageText').val();
+                                    agreementsService.rejectAgreementRequest({
+                                        id_message: id_message,
+                                        reject_comment: comment
+                                    }).$promise.then(function () {
+                                        $scope.agreementsRequestsTableParams.reload();
+                                    });
+                                }
+                            },
+                            cancel: {
+                                label: "Скасувати", className: "btn btn-default",
+                                callback: function () {
+                                }
+                            }
+                        }
+                    }
+                );
+            };
         }])
 
     .controller('writtenAgreementsTableCtrl', ['$scope', '$stateParams', 'NgTableParams', 'agreementsService', '$http', '$rootScope',
@@ -1635,9 +1665,10 @@ angular
             $scope.changePageHeader('Паперові договори');
 
             $scope.status = [
-                {id: '1', title: 'затвердженні і згенеровані'},
+                {id: '1', title: 'затвердженні і згенеровані(не роздруковані)'},
                 {id: '2', title: 'очікують затвердження користувача'},
                 {id: '3', title: 'затверджені користувачем, але не згенеровані'},
+                {id: '4', title: 'роздруковані'},
             ];
 
             $scope.writtenAgreementsTableParams = new NgTableParams({filter: {'status': '3'},
@@ -1944,6 +1975,14 @@ angular
                     message: "<img width='100%' src='" + basePath + '/_teacher/_accountant/accountant/getDocument?id=' + documentID + "'>",
                     size: 'large'
                 })
+            }
+
+            $scope.printed = function (id, idAgreement) {
+                agreementsService.writtenAreementPrinted({
+                    id: id,
+                }).$promise.then(function () {
+                    $scope.writtenAgreementPreview(idAgreement);
+                });
             }
         }])
     .controller('writtenAgreementTemplate', ['$scope', '$http', '$stateParams', '$state', 'agreementsService',
