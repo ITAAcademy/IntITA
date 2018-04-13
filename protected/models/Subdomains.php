@@ -139,7 +139,7 @@
 
     $file = '<?php
     include "../activeDomains.php";
-    if (!in_array($_SERVER["SERVER_NAME"],$activeDomains)){
+    if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
       exit("Domain not active!");
     };
     echo "It Works!";
