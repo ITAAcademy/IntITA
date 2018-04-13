@@ -15,3 +15,4 @@ content/*
 /test/
 /docker_data
 /.env
+/domains/
