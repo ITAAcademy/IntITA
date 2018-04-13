@@ -873,7 +873,7 @@ angular
             }
         }])
 
-    .controller('paymentsSchemaTemplateCtrl', ['$scope', 'lodash', '$http', '$state', '$stateParams', function ($scope, _, $http, $state, $stateParams) {
+    .controller('paymentsSchemaTemplateCtrl', ['$scope', 'lodash', '$http', '$state', '$stateParams','companiesService', function ($scope, _, $http, $state, $stateParams, companiesService) {
         $scope.changePageHeader('Створення та редагування шаблонів схем');
         $scope.loadSchemesTemplate = function (templateId) {
             $http({
@@ -900,14 +900,44 @@ angular
                     description_ru: response.data.description_ru,
                     description_en: response.data.description_en,
                     schemes: $scope.schemes,
+                    company: response.data.checkingAccount?response.data.checkingAccount.corporate_entity:'',
+                    id_checking_account: response.data.checkingAccount?response.data.checkingAccount.id:'',
                 };
+                $scope.companyList();
             }, function errorCallback() {
                 bootbox.alert("Отримати дані шаблона схем не вдалося");
             });
         };
 
+        $scope.companyList = function () {
+            companiesService.list()
+                .$promise
+                .then(function (response) {
+                    $scope.companies = response.rows;
+                    if($scope.template.id_checking_account){
+                        $scope.loadCheckingAccounts($scope.template.id_checking_account);
+                    }
+                })
+                .catch(function () {
+                    bootbox.alert('Помилка завантаження данних');
+                });
+        };
+
+        $scope.loadCheckingAccounts = function (companyId) {
+            companiesService.companyCheckingAccountsList({companyId:companyId})
+                .$promise
+                .then(function (response) {
+                    $scope.checkingAccounts = response;
+                })
+                .catch(function () {
+                    bootbox.alert('Помилка завантаження данних');
+                });
+        }
+
         if ($stateParams.id) {
             $scope.loadSchemesTemplate($stateParams.id);
+        }else{
+            $scope.companyList();
         }
 
         $scope.schemes = [

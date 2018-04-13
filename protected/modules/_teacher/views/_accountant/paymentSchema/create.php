@@ -26,6 +26,28 @@
                     <textarea name="description_en" class="form-control" ng-model="template.description_en" style="resize:none"></textarea>
                 </div>
             </div>
+
+            <div class="row col-md-12">
+                <div class="col-md-4">
+                    <span class="control-label"><b>Розрахунковий рахунок</b>
+                        (*приорітет р/р закріплений до шаблона - вищий, ніж той який закріплений до сервіса)</span>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <div class="form-group col-xs-10">
+                            <select class="form-control" ng-model="template.company" ng-options="company.id as company.title for company in companies" ng-change="loadCheckingAccounts(template.company)">
+                                <option value="" disabled>Оберіть компанію</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-10">
+                            <select class="form-control" ng-model="template.id_checking_account" ng-options="account.id as (account.bank_name + ', р/р:' + account.checking_account) for account in checkingAccounts">
+                                <option value="">рахунок не вибрано</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div>
                 <table class="table">
                     <thead>
