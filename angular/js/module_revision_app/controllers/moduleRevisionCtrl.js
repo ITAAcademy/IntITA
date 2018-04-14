@@ -77,19 +77,55 @@ function moduleRevisionCtrl($rootScope,$scope, $http, getModuleData, moduleRevis
     }
 
 
-    $scope.addRevisionToModuleFromCurrentList = function (lectureRevisionId, index, status) {
+    $scope.addRevisionToModuleFromCurrentList = function (lectureRevisionId, index, status, searchCurrent) {
         var revision=$scope.approvedLecture.current[status][index];
+        var revisionArr=$scope.approvedLecture.current[status];
+        var arr=[], i=0;
+        if(searchCurrent) {
+            revisionArr = revisionArr.concat(arr);
+            revisionArr.sort(function sorts (a, b) {
+                return a.id - b.id;
+            });
+            for (var key in revisionArr){
+                if (revisionArr[key].title.toLowerCase().indexOf(searchCurrent.toLowerCase()) === -1) {
+                    arr[i] = revisionArr[key];  i++;
+                    delete(revisionArr[key]);
+                }
+            }
+            revisionArr = revisionArr.filter(function (n) {
+                return n !== 'empty'
+            });
+            revision = revisionArr[index];
+        }
         revision.list='current';
         revision.status=status;
-        $scope.approvedLecture.current[status].splice(index, 1);
+        $scope.approvedLecture.current[status].splice($scope.approvedLecture.current[status].indexOf(revision), 1);
         revision.module_order = $scope.model.length+1;
         $scope.model.push(revision);
     };
-    $scope.addRevisionToModuleFromForeignList= function (lectureRevisionId, index, status) {
+    $scope.addRevisionToModuleFromForeignList= function (lectureRevisionId, index, status, searchForeign) {
         var revision=$scope.approvedLecture.foreign[status][index];
+        var revisionArr=$scope.approvedLecture.foreign[status];
+        var arr=[], i=0;
+        if(searchForeign) {
+            revisionArr = revisionArr.concat(arr);
+            revisionArr.sort(function sorts (a, b) {
+                return a.id - b.id;
+            });
+            for (var key in revisionArr){
+                if (revisionArr[key].title.toLowerCase().indexOf(searchForeign.toLowerCase()) === -1) {
+                    arr[i] = revisionArr[key];  i++;
+                    delete(revisionArr[key]);
+                }
+            }
+            revisionArr = revisionArr.filter(function (n) {
+                return n !== 'empty'
+            });
+            revision = revisionArr[index];
+        }
         revision.list='foreign';
         revision.status=status;
-        $scope.approvedLecture.foreign[status].splice(index, 1);
+        $scope.approvedLecture.foreign[status].splice($scope.approvedLecture.foreign[status].indexOf(revision), 1);
         revision.module_order = $scope.model.length+1;
         $scope.model.push(revision);
     };

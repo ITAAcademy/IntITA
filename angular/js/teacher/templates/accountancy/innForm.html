@@ -1,0 +1,33 @@
+<form style="padding: 10px;" name="form">
+    <div class="form-group">
+        <label>Серійний номер ідентифікаційного коду</label>
+        <input class="form-control" type="text" name="number" ng-required="true" ng-pattern="/\d{10}/g" placeholder="Номер документа"
+               ng-model="inn.number">
+        <div ng-cloak class="clientValidationError" ng-show="form.number.$invalid">
+            Введіть 10-значний ідентифікаційний номер
+        </div>
+    </div>
+    <span ng-repeat="item in inn.documentsFiles track by $index">
+        <a href="/profile/getdocument?documentId={{item.id}}" target="_blank">Переглянути</a>
+        <a href="" ng-click="removeDocumentsFileDialog(item.id)">[x]</a>
+    </span>
+    <div>
+        <input type="file" nv-file-select="" uploader="innUploader" multiple="">
+        <ul>
+            <li ng-repeat="item in innUploader.queue">
+                <span ng-bind="item.file.name"></span>
+                <button ng-click="item.remove()" class="btn btn-danger btn-xs">Скасувати</button>
+            </li>
+        </ul>
+        <div ng-if="innUploader.getNotUploadedItems().length">
+            <div class="progress" style="margin-bottom:0">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': innUploader.progress + '%' }"
+                     style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-success" ng-click="saveDocumentsData(inn)" ng-disabled="form.$invalid || (!innUploader.queue.length && !inn.documentsFiles.length)">
+        Зберегти
+    </button>
+    <button class="btn btn-danger" ng-click="openInnDialog.close()">Скасувати</button>
+</form>

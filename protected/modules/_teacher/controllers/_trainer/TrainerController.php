@@ -232,7 +232,7 @@ class TrainerController extends TeacherCabinetController
 
     public function actionApproveStudentProject(){
         $projectId =  Yii::app()->request->getPost('id');
-        $project = StudentsProjects::model()->findByPk($projectId);
+        $project = StudentsProjects::model()->findByPk((int)$projectId);
         if ($project){
             if (!$project->approveProject()){
                 echo json_encode(['data'=>1,'message'=>'Помилка затвердження проекту! Можливо директорія з проектом порожня. Спробуйте спочатку оновити проект до останньої версії!' ]);
@@ -253,7 +253,7 @@ class TrainerController extends TeacherCabinetController
     }
 
     public function actionGetProjectFiles($projectId){
-        $project = StudentsProjects::model()->findByPk($projectId);
+        $project = StudentsProjects::model()->findByPk((int)$projectId);
         if ($project->showFiles()){
             echo json_encode($project->showFiles());
         }
@@ -267,6 +267,14 @@ class TrainerController extends TeacherCabinetController
         echo file_get_contents(Config::getTempProjectsPath().DIRECTORY_SEPARATOR.$path.DIRECTORY_SEPARATOR.$fileName);
         Yii::app()->end();
 
+    }
+
+    public function actionDeleteStudentProject(){
+     $projectId =  Yii::app()->request->getPost('id');
+     $project = StudentsProjects::model()->findByPk((int)$projectId);
+     if($project && $project->delete()){
+      return $this->renderJSON(['data'=>1,'message'=>'Проект видалено']);
+     }
     }
 
 }

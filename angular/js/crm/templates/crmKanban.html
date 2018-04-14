@@ -10,7 +10,7 @@
     </div>
     <div class="col-xs-4 col-md-2 col-lg-2 nopadding">
         <select class="form-control col-md-3" ng-model="filter.priority" ng-change="applyTasksFilter()">
-            <option value="" selected>Усі приорітети</option>
+            <option value="" selected>Усі пріоритети</option>
             <option ng-repeat="priority in crmPrioritiesList track by $index" value="{{priority.id}}">{{priority.title}}</option>
         </select>
     </div>
@@ -28,7 +28,7 @@
     </div>
     <div class="col-xs-4 col-md-2 col-lg-1 nopadding">
         <select class="form-control col-md-3" ng-model="filter.groupsNames" ng-change="applyTasksFilter()">
-            <option value="" selected>Усі</option>
+            <option value="" selected>Усі групи</option>
             <option ng-repeat="type in groupsNames track by $index" value="{{type.id}}">{{type.title}}</option>
         </select>
     </div>

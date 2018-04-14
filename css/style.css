@@ -113,7 +113,9 @@ div.minavatar{width:70px;height:70px;float:right;margin-right:10px;overflow:hidd
 #teacher-view img{width:150px;}
 #mydialog, #forgotpass, #changePasswordDialog,#changeemail,#mydialog2,#mydialog3, #dialogNextLecture{display:none;}
 .forumLink{cursor:pointer;}
-
+.ui-datepicker-month{
+    color:#404040;
+}
 div#rocket_div{
     border-width: 0px;
     outline-width: 0px;
@@ -413,4 +415,12 @@ ul[rn-carousel] {
     background: #f3f3f3;
     width: 100%;
     display:inline-block;
+}
+@media screen and (max-width: 800px){
+    #enter_button{
+        display: none;
+    }
+    .languageRow{
+        display: none;
+    }
 }

@@ -1,6 +1,4 @@
 <? $css_version = 1; ?>
-<link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-select/select.min.css'); ?>"/>
-<link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/bootstrap.min.css'); ?>">
 <link type="text/css" rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'studProfile.css'); ?>"/>
 <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'uploadInfo.js'); ?>"></script>
 
@@ -34,7 +32,6 @@ $param = Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua"
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/services/countryCityServices.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/services/specializationsServices.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/services/careerService.js'); ?>"></script>
-<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/services/documentsServices.js'); ?>"></script>
 <script>
     basePath = '<?php echo Config::getBaseUrl(); ?>';
     chatPath = '<?php echo Config::getFullChatPath(); ?>';

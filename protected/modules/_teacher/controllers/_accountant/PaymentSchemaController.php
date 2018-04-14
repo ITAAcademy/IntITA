@@ -134,6 +134,7 @@ class PaymentSchemaController extends TeacherCabinetController
         $templateModel->description_ru=isset($template->description_ru)?$template->description_ru:null;
         $templateModel->description_en=isset($template->description_en)?$template->description_en:null;
         $templateModel->id_organization=$template->id_organization;
+        $templateModel->id_checking_account=isset($template->id_checking_account)?$template->id_checking_account:null;
         $transaction = Yii::app()->db->beginTransaction();
 
         try {
@@ -172,6 +173,7 @@ class PaymentSchemaController extends TeacherCabinetController
         $templateModel->description_ua=isset($template->description_ua)?$template->description_ua:null;
         $templateModel->description_ru=isset($template->description_ru)?$template->description_ru:null;
         $templateModel->description_en=isset($template->description_en)?$template->description_en:null;
+        $templateModel->id_checking_account=isset($template->id_checking_account)?$template->id_checking_account:null;
         $templateModel->update();
         $transaction = Yii::app()->db->beginTransaction();
 
@@ -486,7 +488,6 @@ class PaymentSchemaController extends TeacherCabinetController
 
             $offer = null;
             if(empty($services)) $services=array(null);
-
             foreach ($services as $service) {
                 $soFactory = new SpecialOfferFactory($user, $service);
                 $offer = $soFactory->createSpecialOffer($params);

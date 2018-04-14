@@ -8,11 +8,13 @@ angular
         function ($resource, typeAhead, crmTaskServices, NgTableParams, $compile, $uibModal, ngToast, $state, $timeout, $rootScope, FileUploader) {
             function link(scope, element, attrs) {
                 scope.pathToTemplates=attrs.templatesPath;
+                scope.chatPath=attrs.chatPath;
                 scope.pathToFiles=attrs.filesPath;
                 scope.modalMode=attrs.modal== 'true';
                 var pressedSymbol;
 
                 var self=scope.crmTask={
+                    comments:[],
                     editable:true,
                     options:{},
                     selectedSubTask:'',
@@ -286,22 +288,23 @@ angular
                         });
                     },
                     loadTasksComments:function (id) {
-                        scope.commentsTableParams = new NgTableParams({
-                            sorting: {
-                                create_date: 'desc'
-                            },
-                            id: id
-                        }, {
-                            getData: function (params) {
-                                return crmTaskServices
-                                    .getTaskComments(params.url())
-                                    .$promise
-                                    .then(function (data) {
-                                        params.total(data.count);
-                                        return data.rows;
+                        crmTaskServices
+                            .getTaskComments({id:id})
+                            .$promise
+                            .then(function (data) {
+                                if(!(self.data.rolesSubgroup.observer.length+self.data.rolesSubgroup.collaborator.length)){
+                                    var comments = data.rows;
+                                }else{
+                                    var comments = _.filter(data.rows, function(item) {
+                                        return item.id_user==self.currentUser || self.currentUser==self.data.roles.executant.id || self.currentUser==self.data.roles.producer.id
+                                            || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == self.currentUser; }) ||
+                                            (!item.id_parent && (item.id_user==self.data.roles.producer.id || item.id_user==self.data.roles.executant.id || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == item.id_user; }) ))
+                                            || (item.id_parent && isUserParentComment(data.rows, self.currentUser, item.id_parent));
                                     });
-                            }
-                        })
+                                };
+
+                                self.comments = transformToTree(comments).reverse();
+                            });
                     },
                     loadSpentTimeTask:function (id) {
                         scope.spentTimeTableParams = new NgTableParams({id: id}, {
@@ -331,10 +334,15 @@ angular
                                 scope.comment = {
                                     id_task: null,
                                     message: null,
+                                    id_parent: null,
                                 };
                                 scope.newComment = false;
                                 self.loadTasksComments(self.data.id);
                                 scope.isDisabledComment = false;
+                                CKEDITOR.instances.comment_cke.setData('');
+                                if(scope.openCommentDialog){
+                                    scope.openCommentDialog.close();
+                                }
                             })
                             .catch(function (error) {
                                 scope.isDisabledComment = false;
@@ -371,6 +379,18 @@ angular
                             ariaLabelledBy: 'modal-title',
                             ariaDescribedBy: 'modal-body',
                             templateUrl: basePath + '/angular/js/crm/templates/commentDialog.html',
+                            scope: scope,
+                            size: 'lg',
+                            appendTo: false,
+                        });
+                    },
+                    replyComment:function (event, commentId) {
+                        scope.parentId = commentId;
+                        scope.openCommentDialog = $uibModal.open({
+                            animation: true,
+                            ariaLabelledBy: 'modal-title',
+                            ariaDescribedBy: 'modal-body',
+                            templateUrl: basePath + '/angular/js/crm/templates/replyCommentDialog.html',
                             scope: scope,
                             size: 'lg',
                             appendTo: false,
@@ -488,10 +508,10 @@ angular
                             });
                     },
                     isModelValid: function () {
-                        if (angular.isDefined(self.notification)) {
+                        if (angular.isDefined(self.data.notification)) {
                             self.data.notification.error = [];
                             if (self.data.notification.notify) {
-                                if (!self.data.notification.users || !self.notification.users.length) {
+                                if (!self.data.notification.users || !self.data.notification.users.length) {
                                     self.data.notification.error.user = 'Оберіть групу користувачів для оповіщення';
                                     return false;
                                 }
@@ -499,10 +519,20 @@ angular
                                     self.data.notification.error.template = 'Оберіть шаблон оповіщення';
                                     return false;
                                 }
-                                if (!self.data.notification.weekdays || !self.data.notification.weekdays.length) {
-                                    self.data.notification.error.weekdays = 'Оберіть дні для оповіщення';
-                                    return false;
+                                if (!self.data.notification.oneTimeNotification)
+                                {
+                                    if (!self.data.notification.weekdays || !self.data.notification.weekdays.length) {
+                                        self.data.notification.error.weekdays = 'Оберіть дні для оповіщення';
+                                        return false;
+                                    }
                                 }
+                                else{
+                                    if (self.data.notification.weekdays && self.data.notification.weekdays.length > 1) {
+                                        self.data.notification.error.weekdays = 'Оберіть один день для оповіщення або зніміть всі позначки з днів оповіщення для оповіщення в цей же день';
+                                        return false;
+                                    }
+                                }
+
                                 if (!self.data.notification.time) {
                                     self.data.notification.error.time = 'Оберіть час для оповіщення';
                                     return false;
@@ -556,9 +586,11 @@ angular
                 self.loadCheckList(scope.taskId);
 
                 scope.$watch('crmTask.data.id', function (newValue, oldValue) {
-                    self.loadTasksHistory(newValue);
-                    self.loadTasksComments(newValue);
-                    self.loadSpentTimeTask(newValue);
+                    if(newValue!=oldValue){
+                        self.loadTasksHistory(newValue);
+                        self.loadTasksComments(newValue);
+                        self.loadSpentTimeTask(newValue);
+                    }
                 });
 
                 //***init block***
@@ -698,6 +730,28 @@ angular
                         return response;
                     });
                 };
+
+                function isUserParentComment(comments, currentUser, parentCommentId) {
+                    var parentComment = _.find(comments, function(item) {
+                        return item.id == parentCommentId;
+                    });
+                    return currentUser==parentComment.id_user;
+
+                };
+
+                function transformToTree(arr){
+                    var nodes = {};
+                    return arr.filter(function(obj){
+                        var id = obj["id"],
+                            parentId = obj["id_parent"];
+
+                        nodes[id] = _.defaults(obj, nodes[id], { nodes: [] });
+                        parentId && (nodes[parentId] = (nodes[parentId] || { children: [] }))["nodes"].push(obj);
+
+                        return !parentId;
+                    });
+                }
+
                 // $rootScope.$on('$includeContentLoaded', function() {
                 //     $timeout(function(){
                 //         setEventToEditableField();

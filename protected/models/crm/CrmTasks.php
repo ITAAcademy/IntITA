@@ -32,8 +32,8 @@ class CrmTasks extends CTaskUnitActiveRecord
 {
     use NotifySubscribedUsers;
 
-    const EXECUTANT = 2;
-    const PRODUCER = 1;
+    const EXECUTANT = 1;
+    const PRODUCER = 2;
     const COLLABORATOR = 3;
     const OBSERVER = 4;
 
@@ -407,10 +407,25 @@ class CrmTasks extends CTaskUnitActiveRecord
         $notifyMessage->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
         $notifyMessage->related_model_id = $task;
         $schedulerTask->type = TaskFactory::NEWSLETTER;
-        $schedulerTask->repeat_type = SchedulerTasks::WEEKDAYS;
-        $schedulerTask->parameters = $notificationParams['weekdays'];
         date_default_timezone_set(Config::getServerTimezone());
-        $schedulerTask->start_time =  date('Y-m-d H:i:s',strtotime($notificationParams['time']));
+        if ($notificationParams['oneTimeNotification']){
+            $schedulerTask->repeat_type = SchedulerTasks::ONCETASK;
+            $schedulerTask->parameters = null;
+            $dayOffset = 0;
+            $currentDayOfWeek = date('N');
+            if (!empty($notificationParams['weekdays']) ){
+                $dayOffset = $notificationParams['weekdays'][0] - $currentDayOfWeek;
+                if ($dayOffset < 0){
+                    $dayOffset = $dayOffset + 7;
+                }
+            }
+            $schedulerTask->start_time =  date('Y-m-d H:i:s',strtotime("+{$dayOffset} days {$notificationParams['time']}"));
+        }
+        else{
+            $schedulerTask->repeat_type = SchedulerTasks::WEEKDAYS;
+            $schedulerTask->parameters = $notificationParams['weekdays'];
+            $schedulerTask->start_time =  date('Y-m-d H:i:s',strtotime($notificationParams['time']));
+        }
         $schedulerTask->end_time =  null;
         if ($notifyMessage->validate() && $schedulerTask->validate()){
             $notifyMessage->save(false);
@@ -434,7 +449,7 @@ class CrmTasks extends CTaskUnitActiveRecord
             $criteria->addCondition('cancelled_date IS NULL');
         }
         $users = CrmRolesTasks::model()->findAll($criteria);
-        $subgroups = CrmSubgroupRolesTasks::model()->findAll('id_task =:id_task AND role=:role',['id_task' =>$this->id,'role' => $role ]);
+        $subgroups = CrmSubgroupRolesTasks::model()->findAll('id_task =:id_task AND role=:role AND cancelled_date IS NULL',['id_task' =>$this->id,'role' => $role ]);
         foreach ($subgroups as $subgroup){
             $students = OfflineStudents::model()->findAll('id_subgroup=:subgroup AND end_date IS NULL',['subgroup' =>$subgroup->id_subgroup]);
             foreach ($students as $student){

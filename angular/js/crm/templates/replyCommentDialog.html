@@ -1,0 +1,14 @@
+<div class="modal-body">
+    <div style="font-size: 12px">
+        <b>@</b> - три символи після знаку підтягує список користувачів
+        <br>
+        <b>#</b> - три символи після знаку підтягує список доступних завдань
+    </div>
+    <textarea ng-hide="true" ng-cloak id="reply_comment_cke_dialog" crm-ckeditor="ckeditorOptions" class="mention" ng-model="comment.message" required></textarea><br>
+    <input type="hidden" ng-model="comment.id_parent" ng-init="comment.id_parent=parentId">
+    <br>
+    <p style="clear: both">
+        <button type="button" class="btn btn-success" ng-click="crmTask.addComment(comment)" >Відповісти</button>
+        <button type="button" class="btn btn-default" ng-click="openCommentDialog.close();">Відміна</button>
+    </p>
+</div>

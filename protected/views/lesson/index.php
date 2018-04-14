@@ -56,7 +56,11 @@ $finishedLecture = $lecture->isFinished($user);
     </div>
 </a>
 <div class="chatButton" id="chatButton" style="position: fixed">
-    <span class="enable-chat" id="enable-chat" style="display: inline;"><i onclick="showChat()" class="logo material-icons">chat</i></span>
+    <span class="enable-chat" id="enable-chat" style="display: inline-block;">
+        <i onclick="showChat()" class="logo material-icons">
+            <img style="vertical-align:unset" src="https://www.materialui.co/materialIcons/communication/chat_white_24x24.png">
+        </i>
+    </span>
 </div>
 <div class="consultations">
     <a class='consultationButtons'
@@ -68,7 +72,10 @@ $finishedLecture = $lecture->isFinished($user);
 <div ng-cloak class="lessonBlock" id="lessonBlock">
     <div ng-controller="lessonPageCtrl">
         <div class="lessonText">
-            <div>
+            <div id="sidebarLesson">
+                <?php $this->renderPartial('_sidebarMain', array('lecture' => $lecture, 'editMode' => $editMode, 'idCourse' => $idCourse, 'finishedLecture' => $finishedLecture, 'passedPages' => $passedPages)); ?>
+            </div>
+            <div style="margin-bottom: 4px">
                 <div class="lessonTheme">
                     <?php echo $lecture->title(); ?>
                     <?php $this->renderPartial('_editLecture', array('lecture' => $lecture, 'editMode' => $editMode)); ?>

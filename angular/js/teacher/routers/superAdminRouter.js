@@ -92,4 +92,14 @@ angular
             cache: false,
             templateUrl: url+"/address/addCountry",
         })
+        .state('banners', {
+            url: "/banners",
+            cache: false,
+            templateUrl: url+"/banners/index",
+        })
+        .state('subdomains', {
+         url: "/subdomains",
+         cache: false,
+         templateUrl: url+"/subdomains/index",
+        })
 });
