@@ -35,7 +35,7 @@ class CmsController extends TeacherCabinetController
         $statusCode = 201;
         try {
             $addressForFile = "";
-            $previousImage = $_POST["previousImage"];
+            $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
             if (isset($_FILES) && !empty($_FILES)) {
                 $folderAddress = 'images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/lists/";
                 if (!file_exists($folderAddress)) {
@@ -108,7 +108,7 @@ class CmsController extends TeacherCabinetController
         $current_date = date("Y-m-d H:i:s");
         try {
             $addressForFile = "";
-            $previousImage = $_POST["previousImage"];
+            $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
             if (isset($_FILES) && !empty($_FILES)) {
                 $folderAddress = 'images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/news/";
                 if (!file_exists($folderAddress)) {
@@ -187,6 +187,7 @@ JS;
                 mkdir($address, '777', true);
             }
             $path = $address .  '/index.php';
+            var_dump($_POST["data"]);die;
             file_put_contents($path,"<link href=\"http://intita/css/bower_components/bootstrap/dist/css/bootstrap.min.css?version=1\" rel=\"stylesheet\">");
             file_put_contents($path, $_POST["data"],FILE_APPEND);
             file_put_contents($path, $deleteButtonCode,FILE_APPEND);
@@ -199,7 +200,7 @@ JS;
         $statusCode = 201;
         try {
             $addressForFile = "";
-            $previousImage = $_POST["previousImage"];
+            $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
             if (isset($_FILES) && !empty($_FILES)) {    //$_FILES Переменные файлов, загруженных по HTTP // прилітає картінка
                 $folderAddress = 'images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/generalSettings/";  // прописуєм шлях
                 if (!file_exists($folderAddress)) {
