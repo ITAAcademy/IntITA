@@ -28,6 +28,7 @@
      // will receive user inputs.
      return array(
          array('domain_name', 'required'),
+         array('domain_name', 'match', 'pattern' => "/^[a-zA-Z0-9_]{1,15}+$/u", 'message' => 'Допустимі символи: латинські літери, цифри та знак "_"'),
          array('domain_name', 'unique'),
          array('organization, active', 'numerical', 'integerOnly' => true),
          array('domain_name', 'length', 'max' => 255),
@@ -135,17 +136,14 @@
     }
 
    protected function generateTemplateFile(){
-    $ttt = "";
-
-    $file = '<?php
-    include "../activeDomains.php";
-    if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
-      exit("Domain not active!");
-    };
-    echo "It Works!";
-    ?>';
-    file_put_contents(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php', $file);
-
+//    $file = '<?php
+//    include "../activeDomains.php";
+//    if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
+//      exit("Domain not active!");
+//    };
+//    echo "It Works!";
+/*    ?>';*/
+//    file_put_contents(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php', $file);
    }
 
   }

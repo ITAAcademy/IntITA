@@ -181,17 +181,26 @@ class CmsController extends TeacherCabinetController
                     document.getElementsByClassName("row")[0].removeChild(document.getElementById("pageTitle"));
                 </script>     
 JS;
+            $subdomain =  Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()));
+            $path = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php';
+            file_put_contents($path,'<?php
+            include "../activeDomains.php";
+            if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
+              exit("Domain not active!");
+            };?>');
+            file_put_contents($path, $_POST["data"],FILE_APPEND);
+            file_put_contents($path, $deleteButtonCode,FILE_APPEND);
 
             $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
+            if (file_exists($address)){
+                array_map('unlink', glob("$address/*.*"));
+            }
             if (!file_exists($address)){
                 mkdir($address, '777', true);
             }
             $path = $address .  '/index.php';
-            var_dump($_POST["data"]);die;
-            file_put_contents($path,"<link href=\"http://intita/css/bower_components/bootstrap/dist/css/bootstrap.min.css?version=1\" rel=\"stylesheet\">");
-            file_put_contents($path, $_POST["data"],FILE_APPEND);
+            file_put_contents($path, $_POST["data"], FILE_APPEND);
             file_put_contents($path, $deleteButtonCode,FILE_APPEND);
-
     }
 
 
@@ -235,5 +244,30 @@ JS;
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
+    public function actionSubdomain()
+    {
+        return $this->renderPartial('subdomain');
+    }
+
+    public function actionOrganizationSubdomain()
+    {
+        $adapter = new NgTableAdapter(Subdomains::class, $_GET);
+        $criteria =  new CDbCriteria();
+        $criteria->alias = 't';
+        $criteria->addCondition('t.organization='.Yii::app()->user->model->getCurrentOrganizationId());
+        $adapter->mergeCriteriaWith($criteria);
+        return $this->renderJSON($adapter->getData());
+    }
+
+    public function actionAddSubdomain()
+    {
+        $model = new Subdomains();
+        $model->domain_name = Yii::app()->request->getPost('subdomain');
+        $model->active = 1;
+        $model->organization = Yii::app()->user->model->getCurrentOrganizationId();
+        $model->save();
+
+        return $this->renderJSON(['data'=>true]);
+    }
 
 }

@@ -246,4 +246,39 @@ angular
                     });
             };
         }
-    ]);
+    ])
+
+    .controller('subdomainCtrl', ['$scope', '$rootScope', '$http', 'NgTableDataService', 'NgTableParams', '$ngBootbox', 'ngToast',
+        function ($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast) {
+        $scope.subdomainsTableUrl = basePath + '/_teacher/_admin/cms/organizationSubdomain';
+        $scope.subdomainsTableData = new NgTableParams({}, {
+            getData: function(params) {
+                NgTableDataService.setUrl($scope.subdomainsTableUrl);
+                return NgTableDataService.getData(params.url())
+                    .then(function (data) {
+                        params.total(data.count);
+                        return data.rows;
+                    });
+            }
+        });
+
+        $scope.addSubdomain = function (subdomain) {
+            $http({
+                method:'POST',
+                url: basePath + '/_teacher/_admin/cms/addSubdomain',
+                data:$jq.param({subdomain:subdomain}),
+                headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (response) {
+                if (response.data === true){
+                    ngToast.create({
+                        className: 'success',
+                        content: 'Субдомен додано!'
+                    });
+                    $scope.subdomainsTableData.reload();
+                }
+                else{
+                    $ngBootbox.alert(response.message)
+                }
+            })
+        }
+    }])
