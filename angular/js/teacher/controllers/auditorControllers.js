@@ -12,7 +12,7 @@ function updateOfferTemplate ($scope, $http, $stateParams, $state) {
     $scope.editOffer = function(lang){
         $http({
             method: "POST",
-            url:  basePath+'/_teacher/_auditor/template/updateOffer',
+            url:  basePath+'/_teacher/_accountant/template/updateOffer',
             data: $jq.param({
                 "lang":lang,
                 "text": $jq("#offerText").val()

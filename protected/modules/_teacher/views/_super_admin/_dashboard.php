@@ -21,13 +21,16 @@
                     <li><a href="#/aboutusSlider">
                             Слайдер на сторінці <i>Про нас</i></a>
                     </li>
+                    <li><a href="#/banners">
+                            Банери на головній сторінці</a>
+                    </li>
                     <li><a href="#/address">
                             Адреса (країни, міста)</a>
                     </li>
                 </ul>
             </div>
             <div class="panel-footer">
-                <em>Інтерфейс сайта</em>
+                <em>Інтерфейс сайту</em>
             </div>
         </div>
     </div>
@@ -47,6 +50,9 @@
                             <span ng-cloak class="label label-success" ng-if="countOfNewResponses > 0">{{countOfNewResponses}}</span>
                         </a>
                     </li>
+                 <li>
+                  <a href="#/subdomains">Субдомени</a>
+                 </li>
                 </ul>
             </div>
             <div class="panel-footer">
@@ -58,7 +64,7 @@
     <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Налаштування сайта
+                Налаштування сайту
             </div>
             <div class="panel-body">
                 <ul>
@@ -88,7 +94,7 @@
                 </ul>
             </div>
             <div class="panel-footer">
-                <em>Адміністрування сайта</em>
+                <em>Адміністрування сайту</em>
             </div>
         </div>
     </div>
@@ -152,11 +158,11 @@
     <div class="col-lg-4">
         <div class="panel panel-green">
             <div class="panel-heading">
-                Адмінка чата
+                Адмінка чату
             </div>
             <div class="panel-body">
                 <ul>
-                    <li><a href="<?php echo Config::getFullChatPath() ?>/admin" target="_blank">Адмінка чата</a></li>
+                    <li><a href="<?php echo Config::getFullChatPath() ?>/admin" target="_blank">Адмінка чату</a></li>
                 </ul>
             </div>
             <div class="panel-footer">

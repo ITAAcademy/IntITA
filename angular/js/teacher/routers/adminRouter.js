@@ -94,6 +94,11 @@ angular
             cache: false,
             templateUrl: basePath+"/angular/js/teacher/templates/cms/main_settings.html",
         })
+        .state('admin/subdomain', {
+            url: "/admin/subdomain",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_admin/cms/subdomain",
+        })
 
 });
 

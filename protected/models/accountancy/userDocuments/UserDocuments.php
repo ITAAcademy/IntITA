@@ -50,8 +50,9 @@ class UserDocuments extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_user, type', 'required'),
-			array('id_user, type, actual, checked', 'numerical', 'integerOnly'=>true),
+			array('id_user, type, number, issued, issued_date, registration_address, first_name, last_name, middle_name', 'required', 'message' => 'Поле обов\'язкове для заповнення', 'on' => 'passport'),
+            array('id_user, type, number', 'required', 'message' => 'Поле обов\'язкове для заповнення', 'on' => 'inn'),
+            array('id_user, type, actual, checked', 'numerical', 'integerOnly'=>true),
 			array('number, issued, registration_address, description', 'length', 'max'=>255),
 			array('id, id_user, type, number, issued, issued_date, registration_address, updatedAt, 
 			actual, checked, checked_date, description, first_name, last_name, middle_name', 'safe'),

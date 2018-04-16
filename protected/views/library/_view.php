@@ -30,6 +30,9 @@ if (CHtml::encode($data->status) == Library::ACTIVE){
         Ціна:
         <b><?php echo CHtml::encode($data->price); ?>$</b>
         <br />
+        Автор:
+        <?php echo CHtml::encode($data->author); ?>
+        <br />
         Мова:
         <?php echo CHtml::encode($data->language); ?>
         <br />

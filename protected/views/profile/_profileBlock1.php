@@ -8,6 +8,16 @@ if ($editMode){
 
         function editTeacherText(selected_block_id){
             document.getElementById(selected_block_id).dispatchEvent( new Event("click") );
+            var textId = "#"+selected_block_id,originText = $(textId).text();
+            var statusSave=0;
+                $('[rel=save]').click(function(){
+                    statusSave = 1;
+                });
+                $('[rel=close]').click(function(){
+                    if(!statusSave){
+                        $(textId).text(originText);
+                    }
+                })
         }
     </script>
 <?php }?>

@@ -58,7 +58,7 @@
                             </a>
                         </td>
                         <td data-title="">
-                            <a title="переглянути" ng-href="#/accountant/writtenAgreement/id/{{row.id}}">
+                            <a>
                                 <i class="fa fa-remove" aria-hidden="true" title="скасувати" ng-click="cancelAppliedAgreement(row.service_id)"></i>
                             </a>
                         </td>

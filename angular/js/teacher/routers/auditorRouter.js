@@ -19,13 +19,13 @@ angular
             controller: function($scope){
                 $scope.changePageHeader('Публічна оферта');
             },
-            templateUrl: auditorUrl+"/template/index",
+            templateUrl: accountantUrl+"template/index",
         })
         .state('auditor/updateOfferTemplate/:lang', {
             url: "/auditor/updateOfferTemplate/:lang",
             cache         : false,
             templateUrl: function ($stateParams) {
-                return auditorUrl+"/template/editOffer/?lang="+$stateParams.lang;
+                return accountantUrl+"template/editOffer/?lang="+$stateParams.lang;
             }
         })
 

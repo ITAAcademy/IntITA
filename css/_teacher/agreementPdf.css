@@ -7,12 +7,17 @@ table{
     border-collapse: collapse;
     table-layout:fixed;
 }
-
+table:last-child td{
+    width:48%;
+}
 td{
     border: 1px solid #000!important;
     padding: 2px!important;
     font-size: 12px !important;
     display: block;
+}
+table[border="0"] td{
+    border: none!important;
 }
 td:last-child{
     width: 50%;

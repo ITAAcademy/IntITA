@@ -86,7 +86,27 @@ function usersTableCtrl ($scope, usersService, NgTableParams){
 function studentsTableCtrl ($scope, usersService, NgTableParams, $attrs){
     $jq("#startDate").datepicker(lang);
     $jq("#endDate").datepicker(lang);
-
+    $scope.changePageHeader('Закріплені студенти');
+    $jq(function() {
+        $jq( "#from" ).datepicker({
+            dateFormat: 'dd-mm-yy',
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            onClose: function( selectedDate ) {
+                $jq( "#to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $jq( "#to" ).datepicker({
+            dateFormat:'yy-mm-dd',
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            onClose: function( selectedDate ) {
+                $jq( "#from" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+    });
     // // $scope.changePageHeader('Закріплені студенти');
     // // $scope.trainersStudentsTableParams = new NgTableParams({
     // //     sorting: {

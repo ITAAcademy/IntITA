@@ -393,3 +393,6 @@ div.aboutMore{
         margin-right: 20px;
     }
 }
+.labelFilter:hover{
+    cursor: pointer;
+}

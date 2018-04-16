@@ -1,0 +1,98 @@
+<form style="padding: 10px;" name="form">
+    <div class="form-group">
+        <label>Прізвище</label>
+        <input class="form-control" type="text" maxlength="32" placeholder="Прізвище" name="last_name"
+               ng-required="true" ng-model="passport.last_name">
+        <div ng-cloak class="clientValidationError" ng-show="form.last_name.$invalid">
+            Поле не може бути пустим
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Ім'я</label>
+        <input class="form-control" type="text" name="first_name" ng-required="true" maxlength="32" placeholder="Ім'я"
+               ng-model="passport.first_name">
+        <div ng-cloak class="clientValidationError" ng-show="form.first_name.$invalid">
+            Поле не може бути пустим
+        </div>
+    </div>
+    <div class="form-group">
+        <label>По-батькові</label>
+        <input class="form-control" type="text" name="middle_name" ng-required="true" maxlength="32"
+               placeholder="По-батькові" ng-model="passport.middle_name">
+        <div ng-cloak class="clientValidationError" ng-show="form.middle_name.$invalid">
+            Поле не може бути пустим
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Серійний номер паспорта</label>
+        <input class="form-control" type="text" name="number" ng-required="true" placeholder="Номер документа"
+               ng-model="passport.number">
+        <div ng-cloak class="clientValidationError" ng-show="form.number.$invalid">
+            Поле не може бути пустим
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Ким виданий паспорт</label>
+        <input class="form-control" type="text" placeholder="Ким виданий паспорт" name="issued" ng-required="true"
+               ng-model="passport.issued">
+        <div ng-cloak class="clientValidationError" ng-show="form.issued.$invalid">
+            Поле не може бути пустим
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Дата видачі паспорта</label>
+        <div class="input-group">
+                <span class="input-group-btn">
+                    <span class="btn btn-default" ng-click="dateOptionsStart.open()">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </span>
+                </span>
+            <input type="text"
+                   class="form-control"
+                   uib-datepicker-popup
+                   ng-model="passport.issued_date"
+                   id="issued_date"
+                   is-open="dateOptionsStart.popupOpened"
+                   datepicker-options="dateOptionsStart"
+                   clear-text='Очистити'
+                   close-text='Закрити'
+                   current-text='Сьогодні'
+            >
+        </div>
+        <div ng-cloak class="clientValidationError" ng-show="form.issued_date.$invalid">
+            Поле не може бути пустим
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Приписка</label>
+        <input class="form-control" type="text" name="registration_address" ng-required="true" placeholder="Приписка"
+               ng-model="passport.registration_address">
+        <div ng-cloak class="clientValidationError" ng-show="form.registration_address.$invalid">
+            Поле не може бути пустим
+        </div>
+    </div>
+
+    <span ng-repeat="item in passport.documentsFiles track by $index">
+        <a href="/profile/getdocument?documentId={{item.id}}" target="_blank">Переглянути</a>
+        <a href="" ng-click="removeDocumentsFileDialog(item.id)">[x]</a>
+    </span>
+    <div>
+        <input type="file" nv-file-select="" uploader="documentUploader" multiple="">
+        <ul>
+            <li ng-repeat="item in documentUploader.queue">
+                <span ng-bind="item.file.name"></span>
+                <button ng-click="item.remove()" class="btn btn-danger btn-xs">Скасувати</button>
+            </li>
+        </ul>
+        <div ng-if="documentUploader.getNotUploadedItems().length">
+            <div class="progress" style="margin-bottom:0">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': documentUploader.progress + '%' }"
+                     style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-success" ng-click="saveDocumentsData(passport)" ng-disabled="form.$invalid || (!documentUploader.queue.length && !passport.documentsFiles.length)">
+        Зберегти
+    </button>
+    <button class="btn btn-danger" ng-click="openPassportDialog.close()">Скасувати</button>
+</form>

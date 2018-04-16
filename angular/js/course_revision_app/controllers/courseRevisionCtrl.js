@@ -75,20 +75,56 @@ function courseRevisionCtrl($rootScope,$scope, $http, getCourseData, courseRevis
         return false;
     }
     var canceledRevisions = [];
-    $scope.addRevisionToCourseFromCurrentList = function (moduleId, index, status,model) {
+    $scope.addRevisionToCourseFromCurrentList = function (moduleId, index, status, model, searchCurrentCourse) {
         var module=$scope.readyModules.current[status][index];
+        var moduleArr=$scope.readyModules.current[status];
+        var arr=[], i=0;
+        if(searchCurrentCourse) {
+            moduleArr = moduleArr.concat(arr);
+            moduleArr.sort(function sorts (a, b) {
+                return a.id - b.id;
+            });
+            for (var key in moduleArr){
+                if (moduleArr[key].title.toLowerCase().indexOf(searchCurrentCourse.toLowerCase()) === -1) {
+                    arr[i] = moduleArr[key];  i++;
+                    delete(moduleArr[key]);
+                }
+            }
+            moduleArr = moduleArr.filter(function (n) {
+                return n !== 'empty'
+            });
+            module = moduleArr[index];
+        }
         module.list='current';
         module.status=status;
-        $scope.readyModules.current[status].splice(index, 1);
+        $scope.readyModules.current[status].splice($scope.readyModules.current[status].indexOf(module), 1);
         module.module_order = model.length+1;
         $scope.model.push(module);
         canceledRevisions.push(module);
     };
-    $scope.addRevisionToCourseFromForeignList= function (moduleId, index, status,model) {
+    $scope.addRevisionToCourseFromForeignList= function (moduleId, index, status, model, searchForeignCourse) {
         var module=$scope.readyModules.foreign[status][index];
+        var moduleArr=$scope.readyModules.foreign[status];
+        var arr=[], i=0;
+        if(searchForeignCourse) {
+            moduleArr = moduleArr.concat(arr);
+            moduleArr.sort(function sorts (a, b) {
+                return a.id - b.id;
+            });
+            for (var key in moduleArr){
+                if (moduleArr[key].title.toLowerCase().indexOf(searchForeignCourse.toLowerCase()) === -1) {
+                    arr[i] = moduleArr[key];  i++;
+                    delete(moduleArr[key]);
+                }
+            }
+            moduleArr = moduleArr.filter(function (n) {
+                return n !== 'empty'
+            });
+            module = moduleArr[index];
+        }
         module.list='foreign';
         module.status=status;
-        $scope.readyModules.foreign[status].splice(index, 1);
+        $scope.readyModules.foreign[status].splice($scope.readyModules.foreign[status].indexOf(module), 1);
         module.module_order = model.length+1;
         $scope.model.push(module);
         canceledRevisions.push(module);

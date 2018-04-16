@@ -195,6 +195,7 @@ class AgreementsController extends TeacherCabinetController {
         $criteria =  new CDbCriteria();
         $criteria->join = 'left join acc_user_agreements ua on ua.id=t.id_agreement';
         $criteria->join .= ' left join acc_corporate_entity ce on ce.id=ua.id_corporate_entity';
+        $actual = UserWrittenAgreement::ACTUAL;
         if(isset($requestParams['filter']['status'])) {
             switch ($requestParams['filter']['status']) {
                 case 1:
@@ -206,13 +207,18 @@ class AgreementsController extends TeacherCabinetController {
                 case 3:
                     $criteria->condition = 't.checked_by_user=' . UserWrittenAgreement::CHECKED.' and t.checked=' . UserWrittenAgreement::NOT_CHECKED;
                     break;
+                case 4:
+                    $actual = UserWrittenAgreement::PRINTED;
+                    break;
                 default:
                     break;
             }
             unset($requestParams['filter']['status']);
+        } else {
+            $actual = UserWrittenAgreement::ACTUAL.' or '.UserWrittenAgreement::PRINTED;
         }
 
-        $criteria->addCondition('ce.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' and t.actual='.UserWrittenAgreement::ACTUAL);
+        $criteria->addCondition('ce.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' and (t.actual='.$actual.')');
         $ngTable = new NgTableAdapter('UserWrittenAgreement', $requestParams);
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
@@ -244,7 +250,7 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionGetWrittenAgreementData($id)
     {
-        $agreement = UserAgreements::model()->with('user','invoice','corporateEntity','checkingAccount'
+        $agreement = UserAgreements::model()->with('actualWrittenAgreement','user','invoice','corporateEntity','checkingAccount'
             ,'service.moduleServices.moduleModel.lectures',
             'corporateEntity.latestCheckingAccount',
             'corporateEntity.actualRepresentatives',
@@ -284,8 +290,14 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionCheckAgreementPdf($agreementId)
     {
-        $data['data']=ActiveRecordToJSON::toAssocArrayWithRelations(UserWrittenAgreement::model()->with('user','lastEditedUserDocument')->findByAttributes(
-            array('id_agreement'=>$agreementId,'actual'=>UserWrittenAgreement::ACTUAL)));
+        $criteria =  new CDbCriteria();
+        $criteria->addCondition('t.id_agreement=:agreementId and (t.actual=:actual or t.actual=:printed)');
+        $criteria->params = array(
+            ':agreementId'=>$agreementId,
+            ':actual'=>UserWrittenAgreement::ACTUAL,
+            ':printed'=>UserWrittenAgreement::PRINTED,
+        );
+        $data['data']=ActiveRecordToJSON::toAssocArrayWithRelations(UserWrittenAgreement::model()->with('user','lastEditedUserDocument')->find($criteria));
         echo json_encode($data);
     }
 
@@ -530,5 +542,29 @@ class AgreementsController extends TeacherCabinetController {
         } else {
             throw new CHttpException(404,'Документ не знайдено');
         }
+    }
+
+    public function actionSetWrittenAreementPrinted()
+    {
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+
+        $transaction = null;
+        if (Yii::app()->db->getCurrentTransaction() == null) {
+            $transaction = Yii::app()->db->beginTransaction();
+        }
+        try {
+            $params = array_filter($_POST);
+            $agreement=UserWrittenAgreement::model()->findByPk($params['id']);
+            $agreement->actual = UserWrittenAgreement::PRINTED;
+            $agreement->save();
+
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 }

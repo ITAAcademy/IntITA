@@ -9,6 +9,8 @@
 <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
 
 <div ng-controller="cmsCtrl" >
+    <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>">
+    <div id="cms_content">
     <?php
 
 
@@ -20,7 +22,9 @@
     $this->renderPartial('_footer', array());
 
     ?>
-        <input id="save" name="save" type="submit" class="btn btn-primary">
+    </div>
+    <input id="save" name="save" value="Згенерувати сторінку" type="submit" class="btn btn-primary">
 </div>
+
 
 

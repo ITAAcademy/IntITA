@@ -39,6 +39,9 @@
                             <a title="переглянути" ng-href="#/accountant/writtenAgreementView/request/{{row.id_message}}">
                                 <i class="fa fa-eye fa-fw"></i>
                             </a>
+                            <a ng-if="row.status!=1 && !(!row.status && row.user_checked)" title="скасувати" ng-click="rejectAgreementRequest(row.id_message)">
+                                <i class="fa fa-trash fa-fw"></i>
+                            </a>
                         </td>
                     </tr>
                 </table>

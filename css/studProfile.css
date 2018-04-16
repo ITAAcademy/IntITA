@@ -636,13 +636,13 @@ table#emptyFieldList td{
 .formStudProf label {max-width:inherit;margin-bottom:inherit;font-weight:inherit;}
 .formStudProf .row {margin-right: inherit;margin-left: inherit}
 .row .ui-select-container{display: inline-block;width:62%;}
+.row .ui-select-container input{display: inline-block;width: auto!important;}
 .row .ui-select-container input:hover, .row .ui-select-container input:focus{box-shadow:none}
 .row .ui-select-container span{font-size:16px;line-height: 28px}
 .row .ui-select-container .close{padding:inherit;}
 .row .ui-select-multiple.ui-select-bootstrap .ui-select-match .close{line-height:24px;font-size:16px}
 .row .ui-select-multiple.ui-select-bootstrap {
     position: relative;
-    /*min-height: 50px;*/
     vertical-align: top;
 }
 
