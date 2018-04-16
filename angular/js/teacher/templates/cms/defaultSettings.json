@@ -10,13 +10,13 @@
 	"general_hover_color":"#666666",
 	"text_color":"#696969",
 
-	"about_us_background_color":"#ffffff",
+	"about_us_background_color":"#fafafa",
 	"news_background_color": "#f3f3f3",
 	"news_image_border_color":"#4b75a4",
 	"news_text_border_color": "#ACACAC",
 	"news_date_color": "#4682B4",
 
-	"header_background_color":"#ffffff",
+	"header_background_color":"#fafafa",
 	"header_link_color": "#114988",
 	"header_hover_color":"#666666",
 	"header_border_color":"#4b75a4",
@@ -32,11 +32,11 @@
 	"logo": "http://intita.com/images/mainpage/Logo_small.png",
 	"footer_logo2": "http://intita.com/images/mainpage/Logo_small800.png",
 
-	"footer_background_color":"#ffffff",
+	"footer_background_color":"#fafafa",
 	"footer_link_color": "#114988",
 	"footer_hover_color":"#666666",
 	"footer_border_color": "#44bdf6",
-	"icon_shadow_color": "#ffffff",
+	"icon_shadow_color": "#fafafa",
 
 	"mobile_phone": "тел. моб: +38 067 431 74 24",
 	"mobile_phone_2": "тел. моб: +38 073 209 97 43",
