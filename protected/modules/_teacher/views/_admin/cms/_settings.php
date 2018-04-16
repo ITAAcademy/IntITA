@@ -1,80 +1,95 @@
+
 <style>
 
-    hr {
-        border: none; /* Убираем границу */
-        background-color: #f0eeee; /* Цвет линии */
+hr {
+    border: none; /* Убираем границу */
+    background-color: #f0eeee; /* Цвет линии */
         color: #f0eeee; /* Цвет линии для IE6-7 */
         height: 2px; /* Толщина линии */
     }
     .group{
-        padding-top: 5px;
+    padding-top: 5px;
         padding-bottom: 5px;
         margin-left: 10px;
         margin-right: 10px;
         height: 50px;
     }
+
     .square{
-        padding-right: 0px;
+    padding-right: 0px;
         padding-left: 0px;
 
     }
     .in_square{
-        width:35px;
+    width:35px;
         height:35px;
     }
     .rectangle{
-        margin-top:2px;
+    margin-top:2px;
         padding-right:2px;
         padding-left:2px;
         padding-top: 2px;
         padding-bottom: 2px;
     }
     .in_rectangle{
-        padding-right:5px;
+    padding-right:5px;
         padding-left:5px;
         width: 90px;
     }
+    .in_rectangle_soc{
+    padding-right:5px;
+        padding-left:5px;
+        width: 300px;
+    }
     .intent{
-        margin-top:6px;
+    margin-top:6px;
         padding-right: 0px;
         padding-left: 0px;
     }
     .in_intent{
-        margin-left: 10px;
+    margin-left: 10px;
         margin-right: 10px;
     }
     .save_butt{
-        margin-top: 25px;
+    margin-top: 25px;
         float: right;
         margin-right: 25px;
         font-size: 18px;
     }
     .logo{
-        padding-left: 0px;
+    padding-left: 0px;
         padding-right: 0px;
     }
-    .logo_update{
-        max-width: 131px;
+    .logo_show {
+    position: relative;
+}
+    .group_logo_show{
+    position: absolute;
+    padding-left: 5px;
+    }
+    .image_update{
+    max-width: 131px;
         padding-left: 5px;
     }
     .preview{
-        max-width: 100px;
+    max-width: 300px;
+        max-height: 100px;
     }
     .button_box{
-        margin-top: -83px;
+    margin-top: -83px;
     }
-    /*/////////////////////////////////////////////////////////////////////////////////*/
 
     #carousel {
         position: relative;
         width:90%;
         height: 350px;
         margin:0 auto;
-        /*background-color: #b3b3b3;*/
     }
-
+    .slide {
+    margin-right: 2px;
+    }
     #slides {
-        padding: 15px;
+        padding: 16px;
         border-style: double;
         border-width: 5px;
         border-radius: 5px;
@@ -107,7 +122,7 @@
     }
     /* Styling for prev and next buttons */
     .btn-bar{
-        max-width: 346px;
+    max-width: 346px;
         margin: 0 auto;
         display: block;
         position: relative;
@@ -140,51 +155,19 @@
         color:#FFF;
         text-shadow:.5px 0px #b14943;
     }
-
-    /*.quote-phrase, .quote-author {*/
-    /*font-family:sans-serif;*/
-    /*font-weight:300;*/
-    /*display: table-cell;*/
-    /*vertical-align: middle;*/
-    /*padding: 5px 20px;*/
-    /*font-family:'Lato', Calibri, Arial, sans-serif;*/
-    /*}*/
-
-    /*.quote-phrase {*/
-    /*height: 200px;*/
-    /*font-size:24px;*/
-    /*color:#1f6438;*/
-    /*font-style:italic;*/
-    /*text-shadow:.5px 0px #b14943;*/
-    /*}*/
-
-    /*.quote-marks {*/
-    /*font-size:30px;*/
-    /*padding:0 3px 3px;*/
-    /*position:inherit;*/
-    /*}*/
-
-    /*.quote-author {*/
-    /*font-style:normal;*/
-    /*font-size:20px;*/
-    /*color:#b14943;*/
-    /*font-weight:400;*/
-    /*height: 30px;*/
-    /*}*/
-
-    .first_box, .second_box {
-        display: table;
-        width: 100%;
-    }
+    .first_box, .second_box, .third_box{
+    display: table;
+    width: 100%;
+}
 
 </style>
 
 
-<div id="carousel" ng-controller="cmsGeneralSettingsCtrl">
+<div id="carousel">
 
     <div class="row button_box" >
         <div class="col-md-12 col-xs-12">
-            <button class="save_butt btn btn-success" ng-click="updateSettings(settings, settings.img)"><strong>Save all</strong></button>
+            <button class="save_butt btn btn-success" ng-click="updateSettings(settings, settings.image)"><strong>Save all</strong></button>
         </div>
     </div>
 
@@ -354,6 +337,37 @@
                         </div>
                     </div>
                 </div>
+                <div class="third_box">
+                    <div class="row ">
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+                                <div  class="col-md-2 col-xs-2 square" >
+                                    <input  class="in_square" type="color" ng-model="settings.news_image_border_color">
+                                </div>
+                                <div class="col-md-4 col-xs-4 rectangle" >
+                                    <input class="in_rectangle" ng-model="settings.news_image_border_color" color-picker color-picker-model="settings.news_image_border_color" type="text">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" style=" " >
+                                    <p class="in_intent" ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}" >News image border color</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <div class="row group" >
+                                <div  class="col-md-2 col-xs-2 square" >
+                                    <input  class="in_square" type="color" ng-model="settings.news_text_border_color">
+                                </div>
+                                <div class="col-md-4 col-xs-4 rectangle" >
+                                    <input class="in_rectangle"  ng-model="settings.news_text_border_color" color-picker color-picker-model="settings.news_text_border_color" type="text" >
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent">
+                                    <p class="in_intent" style="box-shadow: 0 0 5px {{settings.news_text_border_color}}">News text border shadow color</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </li>
             <li class="slide">
                 <div class="first_box">
@@ -388,7 +402,7 @@
                 </div>
                 <div class="second_box">
                     <!--<p class="quote-author">John Doe // Local Business Owner</p>-->
-                    <div class="row ">
+<div class="row ">
                         <div class="col-md-6 col-sm-12">
                             <div class="row group" >
                                 <div  class="col-md-2 col-xs-2 square" >
@@ -416,118 +430,34 @@
                             </div>
                         </div>
                     </div>
-                    <div class="third_box">
-                        <div class="row ">
-                            <div class="col-md-6 col-sm-12"  >
-                                <div class="row group" >
-                                    <div  class="col-md-2 col-xs-2 square" >
-                                        <input  class="in_square" type="color" ng-model="settings.icon_shadow_color">
-                                    </div>
-                                    <div class="col-md-4 col-xs-4 rectangle" >
-                                        <input class="in_rectangle" ng-model="settings.icon_shadow_color" color-picker color-picker-model="settings.icon_shadow_color" type="text">
-                                    </div>
-
-                                    <div class="col-md-6 col-xs-6 intent">
-                                        <p class="in_intent" ng-style="{color:settings.icon_shadow_color}" >Icon shadow color</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-12"  >
-                                <div class="row group" >
-                                    <div  class="col-md-2 col-xs-2 square" >
-                                        <input  class="in_square" type="color" ng-model="settings.general_hover_color">
-                                    </div>
-                                    <div class="col-md-4 col-xs-4 rectangle" >
-                                        <input class="in_rectangle" ng-model="settings.general_hover_color" color-picker color-picker-model="settings.general_hover_color" type="text" >
-                                    </div>
-                                    <div class="col-md-6 col-xs-6 intent">
-                                        <p class="in_intent" ng-style="{color:settings.general_hover_color}">General hover color</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
-            </li>
-            <li class="slide">
-
-                <div class="second_box">
+                <div class="third_box">
                     <div class="row ">
                         <div class="col-md-6 col-sm-12"  >
                             <div class="row group" >
                                 <div  class="col-md-2 col-xs-2 square" >
-                                    <input  class="in_square" type="color" ng-model="settings.news_image_border_color">
+                                    <input  class="in_square" type="color" ng-model="settings.icon_shadow_color">
                                 </div>
                                 <div class="col-md-4 col-xs-4 rectangle" >
-                                    <input class="in_rectangle" ng-model="settings.news_image_border_color" color-picker color-picker-model="settings.news_image_border_color" type="text">
+                                    <input class="in_rectangle" ng-model="settings.icon_shadow_color" color-picker color-picker-model="settings.icon_shadow_color" type="text">
                                 </div>
-                                <div class="col-md-6 col-xs-6 intent" style=" " >
-                                    <p class="in_intent" ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}" >News image border color</p>
+
+                                <div class="col-md-6 col-xs-6 intent">
+                                    <p class="in_intent" ng-style="{color:settings.icon_shadow_color}" >Icon shadow color</p>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-6 col-sm-12"  >
                             <div class="row group" >
                                 <div  class="col-md-2 col-xs-2 square" >
-                                    <input  class="in_square" type="color" ng-model="settings.news_text_box_shadow_color">
+                                    <input  class="in_square" type="color" ng-model="settings.general_hover_color">
                                 </div>
                                 <div class="col-md-4 col-xs-4 rectangle" >
-                                    <input class="in_rectangle"  ng-model="settings.news_text_box_shadow_color" color-picker color-picker-model="settings.news_text_box_shadow_color" type="text" >
+                                    <input class="in_rectangle" ng-model="settings.general_hover_color" color-picker color-picker-model="settings.general_hover_color" type="text" >
                                 </div>
                                 <div class="col-md-6 col-xs-6 intent">
-                                    <p class="in_intent" style="box-shadow: 0 0 5px {{settings.news_text_box_shadow_color}}">News text border shadow color</p>
+                                    <p class="in_intent" ng-style="{color:settings.general_hover_color}">General hover color</p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-
-            </li>
-
-
-            <li class="slide">
-
-                <div class="second_box">
-                    <div class="row ">
-                        <div class="col-md-6 col-sm-12"  >
-                            <div class="row group" >
-                                <!--<div  class="col-md-2 col-xs-2 square" >-->
-                                <!--<input  class="in_square" type="color" ng-model="settings.icon_shadow_color">-->
-                                <!--</div>-->
-                                <!--<div class="col-md-4 col-xs-4 rectangle" >-->
-                                <!--<input class="in_rectangle" ng-model="settings.icon_shadow_color" color-picker color-picker-model="settings.icon_shadow_color" type="text">-->
-                                <!--</div>-->
-
-                                <!--<div class="col-md-6 col-xs-6 intent">-->
-                                <!--<p class="in_intent" ng-style="{color:settings.icon_shadow_color}" >Icon shadow color</p>-->
-                                <!--</div>-->
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12"  >
-                            <div class="row group" >
-                                <!--<div  class="col-md-2 col-xs-2 square" >-->
-                                <!--<img class="preview" src="/{{settings.img}}">-->
-                                <!--</div>-->
-                                <!--<div class="col-md-4 col-xs-4 logo" >-->
-                                <!--<input id="logoUpdate" enctype="multipart/form-data" type="file" class="form-control logo_update" placeholder="Лого компанії" name="photo">-->
-                                <!--</div>-->
-
-                                <!--<div class="col-md-5 col-xs-5 intent">-->
-                                <!--<p class="in_intent" >Footer logo</p>-->
-                                <!--</div>-->
-                                <!--<div class="col-md-1 col-xs-1 intent">-->
-                                <!--<a href="javascript:void(0)">-->
-                                <!--<i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(list.id,list.img)"></i>-->
-                                <!--</a>-->
-                                <!--</div>-->
                             </div>
                         </div>
                     </div>
@@ -535,33 +465,230 @@
             </li>
             <li class="slide">
                 <div class="first_box">
-                    <div class="row ">
+                    <div class="row " >
                         <div class="col-md-6 col-sm-12"  >
                             <div class="row group" >
                                 <div  class="col-md-2 col-xs-2 square" >
-                                    <img class="preview" src="/{{settings.img}}">
+                                    <input  class="in_square" type="color" ng-model="settings.news_date_color">
                                 </div>
-                                <div class="col-md-4 col-xs-4 logo" >
-                                    <input id="logoUpdate" enctype="multipart/form-data" type="file" class="form-control logo_update" placeholder="Лого компанії" name="photo">
+                                <div class="col-md-4 col-xs-4 rectangle" >
+                                    <input class="in_rectangle"  ng-model="settings.news_date_color" color-picker color-picker-model="settings.news_date_color" type="text">
                                 </div>
-
-                                <div class="col-md-5 col-xs-5 intent">
-                                    <p class="in_intent" >Footer logo</p>
-                                </div>
-                                <div class="col-md-1 col-xs-1 intent">
-                                    <a href="javascript:void(0)">
-                                        <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(list.id,list.img)"></i>
-                                    </a>
-                                </div>
+                                <div class="col-md-6 col-xs-6 intent" style=" font-size: 16px ">
+                                    <p class="in_intent"  ng-style="{color:settings.news_date_color}" >News date color</p></div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-12"  >
+
+                        <div class="col-md-6 col-sm-12">
 
                         </div>
                     </div>
                 </div>
                 <div class="second_box">
+                    <div class="row ">
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.title">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Title</p></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.subtitle">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Subtitle</p></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="third_box">
+                    <div class="row ">
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.title_2">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Title 2</p></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.subtitle_2">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Subtitle 2</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="slide">
+                <div class="first_box">
+                    <div class="row" >
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.twitter_link">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Twitter link</p></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.youtube_link">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Youtube link</p></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="second_box">
+                    <!--<p class="quote-author">John Doe // Local Business Owner</p>-->
+<div class="row ">
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.google_link">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Google link</p></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.facebook_link">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Facebook link</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="third_box">
+                    <div class="row ">
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.linkedin_link">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Linkedin link</p></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+
+                                <div class="col-md-6 col-xs-6 rectangle" >
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.instagram_link">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent" >
+                                    <p class="in_intent" >Instagram link</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="slide">
+
+                <div class="first_box">
+                    <div class="row ">
+                        <div class="col-md-6 col-sm-12"  >
+                            <div class="row group" >
+                                <div class="col-md-5 col-xs-5 logo" >
+                                    <input id="logoUpdate" enctype="multipart/form-data" type="file" class="form-control image_update" placeholder="Лого компанії" name="photo">
+                                </div>
+
+                                <div class="col-md-5 col-xs-5 intent">
+                                    <p class="in_intent" >Footer logo </p>
+                                </div>
+                                <div class="col-md-2 col-xs-2 intent">
+                                    <a href="javascript:void(0)">
+                                        <i class="fa fa-trash" title="Видалити" aria-hidden="true"  ng-click="removeLogo(settings.logo)"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="row group">
+
+                                <div class="col-md-6 col-xs-6 rectangle">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.mobile_phone">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent">
+                                    <p class="in_intent" >Telephone1</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="second_box">
+                    <div class="row ">
+                        <div class="col-md-6 col-sm-12 logo_show"  >
+                            <div class="row group_logo_show " >
+                                <div class="col-md-11 col-xs-11 " >
+                                    <a  href="/">
+                                        <img class="preview" src="/{{settings.logo}}">
+                                    </a>
+                                </div>
+                                <div class="col-md-1 col-xs-1 " >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="row group">
+
+                                <div class="col-md-6 col-xs-6 rectangle">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.mobile_phone_2">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent">
+                                    <p class="in_intent" >Telephone2</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="third_box">
+                    <div class="row ">
+                        <div class="col-md-6 col-sm-12"  >
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="row group">
+
+                                <div class="col-md-6 col-xs-6 rectangle">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.email">
+                                </div>
+                                <div class="col-md-6 col-xs-6 intent">
+                                    <p class="in_intent" >E-mail</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </li>
         </ul>
     </div>
@@ -575,87 +702,49 @@
 
 
 <script>
-    $jq(document).ready(function () {
-        var slides = $jq('.slide');
-        var container = $jq('#slides ul');
-        var elm = container.find(':first-child').prop("tagName");
-        var item_width = container.width();
-        var previous = 'prev'; //id of previous button
-        var next = 'next'; //id of next button
-        slides.width(item_width); //set the slides to the correct pixel width
-        container.parent().width(item_width);
-        container.width(slides.length * item_width); //set the slides container to the correct total width
-        container.find(elm + ':first').before(container.find(elm + ':last'));
-        resetSlides();
-
-
-        //if user clicked on prev button
-
-        $jq('#buttons a').click(function (e) {
-            //slide the item
-
-            if (container.is(':animated')) {
-                return false;
-            }
-            if (e.target.id == previous) {
-                container.stop().animate({
-                    'left': 0
-                }, 1500, function () {
-                    container.find(elm + ':first').before(container.find(elm + ':last'));
-                    resetSlides();
-                });
-            }
-
-            if (e.target.id == next) {
-                container.stop().animate({
-                    'left': item_width * -2
-                }, 1500, function () {
-                    container.find(elm + ':last').after(container.find(elm + ':first'));
-                    resetSlides();
-                });
-            }
-
-            //cancel the link behavior
+$jq(document).ready(function () {
+    var slides = $jq('.slide');
+    var container = $jq('#slides ul');
+    var elm = container.find(':first-child').prop("tagName");
+    var item_width = container.width();
+    var previous = 'prev'; //id of previous button
+    var next = 'next'; //id of next button
+    slides.width(item_width); //set the slides to the correct pixel width
+    container.parent().width(item_width);
+    container.width(slides.length * item_width); //set the slides container to the correct total width
+    container.find(elm + ':first').before(container.find(elm + ':last'));
+    resetSlides();
+    //if user clicked on prev button
+    $jq('#buttons a').click(function (e) {
+        //slide the item
+        if (container.is(':animated')) {
             return false;
+        }
+        if (e.target.id == previous) {
+            container.stop().animate({
+                    'left': 0
+                }, 10, function () {
+                container.find(elm + ':first').before(container.find(elm + ':last'));
+                resetSlides();
+            });
+            }
+        if (e.target.id == next) {
+            container.stop().animate({
+                    'left': item_width * -2
+                }, 10, function () {
+                container.find(elm + ':last').after(container.find(elm + ':first'));
+                resetSlides();
+            });
+            }
+        //cancel the link behavior
+        return false;
 
-        });
-
-        function resetSlides() {
-            //and adjust the container so current is in the frame
-            container.css({
+    });
+    function resetSlides() {
+        //and adjust the container so current is in the frame
+        container.css({
                 'left': -1 * item_width
             });
         }
-
-    });
-
-
-
-    // $jq(document).ready(function() { // Ждём загрузки страницы
-    //
-    //     var slides = $jq(".slider .slides").children(".slide"); // Получаем массив всех слайдов
-    //      var width = $jq(".slider .slides").width(); // Получаем ширину видимой области
-    //   //  var width = width: auto;
-    //
-    //     var i = slides.length; // Получаем количество слайдов
-    //     var offset = i *width*0.16 ; // Задаем начальное смещение и ширину всех слайдов
-    //     i--; // уменьшаем кол-во слайдов на один ( для проверки в будущем )
-    //
-    //     $jq(".slider .slides").css('width',offset); // Задаем блоку со слайдами ширину всех слайдов
-    //     offset = 0; // Обнуляем смещение, так как показывается начала 1 слайд
-    //
-    //     $jq(".slider .next").click(function(){    // Событие клика на кнопку "следующий слайд"
-    //         if (offset < width * i) {    // Проверяем, дошли ли мы до конца
-    //             offset += width; // Увеличиваем смещение до следующего слайда
-    //             $jq(".slider .slides").css("transform","translate3d(-"+offset+"px, 0px, 0px)"); // Смещаем блок со слайдами к следующему
-    //         }
-    //     });
-    //
-    //     $jq(".slider .prev").click(function(){    // Событие клика на кнопку "предыдущий слайд"
-    //         if (offset > 0) { // Проверяем, дошли ли мы до конца
-    //             offset -= width; // Уменьшаем смещение до предыдущего слайда
-    //             $jq(".slider .slides").css("transform","translate3d(-"+offset+"px, 0px, 0px)"); // Смещаем блок со слайдами к предыдущему
-    //         }
-    //     });
-    // });
+});
 </script>

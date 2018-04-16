@@ -57,8 +57,11 @@ angular
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)
                     },
-
-
-
+                    removeLogo: {
+                        url: url + '/removeLogo',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
+                    },
                 });
         }])

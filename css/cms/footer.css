@@ -14,7 +14,7 @@
 
 }
 .left_footer {
-    padding-top: 10px;
+    padding-top: 11px;
     display: table-cell;
     vertical-align: top;
     /*border-right: 1px solid ;*/
@@ -37,9 +37,14 @@
     display: inline-flex;
     padding-right: 0px;
 }
-.footer_logo1{
+.logo{
     padding-right: 10px;
 }
+#footerLogo{
+    max-width: 140px;
+    max-height: 40px;
+}
+
 .footer_logo2 {
     display: none;
 }
@@ -120,7 +125,7 @@
     margin-top: 10px;
     padding-left: 10px;
     }
-    .footer_logo1{
+    .logo{
     display: none;
     }
     .footer_logo2{

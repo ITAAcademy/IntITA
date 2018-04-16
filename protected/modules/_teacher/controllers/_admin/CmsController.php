@@ -211,7 +211,7 @@ JS;
             $addressForFile = "";
             $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
             if (isset($_FILES) && !empty($_FILES)) {    //$_FILES Переменные файлов, загруженных по HTTP // прилітає картінка
-                $folderAddress = 'images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/generalSettings/";  // прописуєм шлях
+                $folderAddress = '/images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/generalSettings/";  // прописуєм шлях
                 if (!file_exists($folderAddress)) {
                     mkdir($folderAddress, '777', true); //створення каталога
                 }
@@ -228,13 +228,13 @@ JS;
             }
             $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
             //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
-            $menuLink = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
-            $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-            $menuLink->attributes = $params;
-            $menuLink->logo = $addressForFile;
-            if (!$menuLink->save()) {
+            $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
+            $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $settings->attributes = $params;
+            $settings->logo = $addressForFile;
+            if (!$settings->save()) {
 
-                throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
+                throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
             }
         } catch (Exception $error) {
             $statusCode = 500;
