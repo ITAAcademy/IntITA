@@ -30,12 +30,13 @@ class m180313_151022_create_cms_footer_table extends CDbMigration
             'footer_border_color' => 'VARCHAR(32) NULL DEFAULT NULL',
             'header_border_color' => 'VARCHAR(32) NULL DEFAULT NULL',
             'news_image_border_color' => 'VARCHAR(32) NULL DEFAULT NULL',
+
+
             'news_text_border_color' => 'VARCHAR(32) NULL DEFAULT NULL',
             'title_color' => 'VARCHAR(32) NULL DEFAULT NULL',
             'subtitle_color' => 'VARCHAR(32) NULL DEFAULT NULL',
             'text_color' => 'VARCHAR(32) NULL DEFAULT NULL',
             'icon_shadow_color' => 'VARCHAR(32) NULL DEFAULT NULL',
-
         ));
 
         $this->addForeignKey('FK_cms_footer_organization','cms_general_settings','id_organization','organization','id', 'RESTRICT', 'RESTRICT');

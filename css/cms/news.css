@@ -12,3 +12,12 @@ html{font-family:"MyriadPro";}
     max-height: 100%;
     margin: 0 auto;
 }
+.container {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.news_wrapper{
+    margin-bottom: 5px;
+    padding-bottom: 8px;
+}

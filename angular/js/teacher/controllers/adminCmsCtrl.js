@@ -26,6 +26,8 @@ angular
                         if (!response.id) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
                                 $scope.settings = response;
+                                console.log('response');
+                                console.log(response);
                             });
                         }
                         else {
@@ -37,6 +39,49 @@ angular
             }
             $scope.getSettings();
 
+            $scope.updateSettings = function (link, previousImage, index) {
+                var uploadSettings = new FormData();
+                uploadSettings.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#logoUpdate' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadSettings.append("photo", imageUpdate);
+                    uploadSettings.append("previousImage", previousImage);
+                }
+                else {
+
+                    var image = $jq('#logoUpdate').prop('files')[0];
+                    uploadSettings.append("photo", image);
+                }
+                $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.getSettings();
+                    $scope.newSettings = {id: null, description: null, link: null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+            };
+            ///////////////////////////////
+            $scope.removeLogo = function (image) {
+                cmsService.removeLogo({image: image}).$promise
+                    .then(function successCallback() {
+                        $scope.getSettings();
+                    }, function errorCallback(response) {
+                        bootbox.alert(response.data.reason);
+                    });
+            };
+
+
+
+
+
+
+
+
+
             $scope.loadCmsNews = function () {
                 cmsService.newsList().$promise
                     .then(function successCallback(response) {
@@ -46,6 +91,9 @@ angular
                                 for (var i=0; i<$scope.lists.length; i++){
                                     $scope.lists[i].strLimit=500;
                                 }
+                                console.log('response:');
+                                console.log( response );
+
                             });
                         }
                         else {
@@ -57,6 +105,7 @@ angular
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
                     });
+
             };
 
             $scope.showMore = function(i) {
@@ -143,53 +192,62 @@ angular
     ])
 
 
-    .controller('cmsGeneralSettingsCtrl', ['$scope', 'cmsService', '$http',
-        function ($scope, cmsService, $http) {
-            $scope.changePageHeader('Основні налаштування');
-            $scope.getSettings = function () {
-                cmsService.settingList().$promise
-                    .then(function successCallback(response) {
-                        if (!response.id) {
-                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
-                                $scope.settings = response;
-                            });
-                        }
-                        else {
-                            $scope.settings = response;
-                        }
-                    }, function errorCallback() {
-                        bootbox.alert("Отримати дані не вдалося");
-                    });
-            }
-            $scope.getSettings();
-
-            $scope.updateSettings = function (link, index, previousImage) {
-                var uploadSettings = new FormData();
-                uploadSettings.append("data", angular.toJson(link));
-                if (index !== undefined) {
-                    var imageUpdateBlock = '#logoUpdate' + index;
-                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
-                    uploadSettings.append("photo", imageUpdate);
-                    uploadSettings.append("previousImage", previousImage);
-                }
-                else {
-
-                    var image = $jq('#logoUpdate').prop('files')[0];
-                    uploadSettings.append("photo", image);
-                }
-                $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
-                    withCredentials: true,
-                    headers: {'Content-Type': undefined},
-                    transformRequest: angular.identity
-                }).success(function () {
-                    $scope.getSettings();
-                    $scope.newSettings = {id: null, description: null, link: null};
-                }, function errorCallback(response) {
-                    bootbox.alert(response.data.reason);
-                });
-            };
-        }
-    ])
+    // .controller('cmsGeneralSettingsCtrl', ['$scope', 'cmsService', '$http',
+    //     function ($scope, cmsService, $http) {
+    //         $scope.changePageHeader('Основні налаштування');
+    //         $scope.getSettings = function () {
+    //             cmsService.settingList().$promise
+    //                 .then(function successCallback(response) {
+    //                     if (!response.id) {
+    //                         $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
+    //                             $scope.settings = response;
+    //                         });
+    //                     }
+    //                     else {
+    //                         $scope.settings = response;
+    //                     }
+    //                 }, function errorCallback() {
+    //                     bootbox.alert("Отримати дані не вдалося");
+    //                 });
+    //         }
+    //         $scope.getSettings();
+    //
+    //         $scope.updateSettings = function (link, previousImage, index) {
+    //             var uploadSettings = new FormData();
+    //             uploadSettings.append("data", angular.toJson(link));
+    //             if (index !== undefined) {
+    //                 var imageUpdateBlock = '#logoUpdate' + index;
+    //                 var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+    //                 uploadSettings.append("photo", imageUpdate);
+    //                 uploadSettings.append("previousImage", previousImage);
+    //             }
+    //             else {
+    //
+    //                 var image = $jq('#logoUpdate').prop('files')[0];
+    //                 uploadSettings.append("photo", image);
+    //             }
+    //             $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
+    //                 withCredentials: true,
+    //                 headers: {'Content-Type': undefined},
+    //                 transformRequest: angular.identity
+    //             }).success(function () {
+    //                 $scope.getSettings();
+    //                 $scope.newSettings = {id: null, description: null, link: null};
+    //             }, function errorCallback(response) {
+    //                 bootbox.alert(response.data.reason);
+    //             });
+    //         };
+    //         ///////////////////////////////
+    //         $scope.removeLogo = function (image) {
+    //             cmsService.removeLogo({image: image}).$promise
+    //                 .then(function successCallback() {
+    //                     $scope.getSettings();
+    //                 }, function errorCallback(response) {
+    //                     bootbox.alert(response.data.reason);
+    //                 });
+    //         };
+    //     }
+    // ])
 
     .controller('cmsNewsCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
@@ -197,7 +255,7 @@ angular
 
             $scope.loadCmsNews = function () {
                 cmsService.newsList().$promise
-                    .then(function successCallback(response) {
+                    .then(function successCallback(response){
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
                                 $scope.lists = response;

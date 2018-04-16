@@ -44,9 +44,9 @@
     <div class="center_footer col-lg-9 col-md-9 col-sm-9 col-xs-9">
         <div class=" row">
             <div class="left_part col-md-6 col-sm-5 col-xs-12">
-                <div class="footer_logo1">
-                    <a href="/">
-                        <img id="footerLogo" src="{{settings.footer_logo1}}">
+                <div class="logo">
+                    <a href="">
+                        <img id="footerLogo" src="{{settings.logo}}">
                     </a>
                 </div>
                 <div class="footer_logo2">
@@ -55,7 +55,9 @@
                     </a>
                 </div>
                 <div class="footer_contact" ng-style="{color:settings.footer_link_color}"  >
-                    <div ng-repeat="row in settings.contacts track by $index"><span>{{row.cont}}</span></div>
+                    <div><span ng-bind="settings.mobile_phone"></span></div>
+                    <div><span ng-bind="settings.mobile_phone_2"></span></div>
+                    <div><span ng-bind="settings.email"></span></div>
                 </div>
             </div>
 

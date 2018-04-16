@@ -1,25 +1,25 @@
 {
-
 	"title": "Про нас",
 	"subtitle": "Важлива інформація про навчання разом з нами",
-	"title_color": "#35776d",
-	"subtitle_color":"#7ad14f",
-	"general_link_color": "#099fc4",
-	"general_hover_color":"#03a9f4",
-	"text_color":"#595589",
+	"title_2": "Як розпочати навчання?",
+	"subtitle_2": "П’ять кроків до здійснення твоїх мрій",
 
-	"about_us_background_color":"#f4f0c8",
+	"title_color": "#666666",
+	"subtitle_color":"#4682B4",
+	"general_link_color": "#114988",
+	"general_hover_color":"#666666",
+	"text_color":"#696969",
+
+	"about_us_background_color":"#ffffff",
 	"news_background_color": "#f3f3f3",
 	"news_image_border_color":"#4b75a4",
 	"news_text_border_color": "#ACACAC",
+	"news_date_color": "#4682B4",
 
-	"header_background_color":"#FFEB3B",
-	"header_link_color": "#E91E63",
-	"header_hover_color":"#03a9f4",
-	"header_border_color": "#4b75a4",
-
-
-
+	"header_background_color":"#ffffff",
+	"header_link_color": "#114988",
+	"header_hover_color":"#666666",
+	"header_border_color":"#4b75a4",
 
 	"twitter_link": "https://twitter.com/INTITA_EDU",
 	"youtube_link": "https://www.youtube.com/channel/UC2EMqcr4pEBuTGEJBaFgOzw",
@@ -27,36 +27,18 @@
 	"facebook_link": "https://www.facebook.com/pages/INTITA/320360351410183",
 	"linkedin_link": "https://www.linkedin.com/company/intita?trk=biz-companies-cym",
 	"instagram_link": "https://www.instagram.com/intitaedu/",
-	"footer_logo1": "http://intita/images/mainpage/Logo_small.png",
-	"footer_logo2": "http://intita/images/mainpage/Logo_small800.png",
-	"footer_background_color":"#a9cc99",
-	"footer_link_color": "#2c8422",
-	"footer_hover_color":"#43ef04",
-	"footer_border_color": "#27e212",
-	"icon_shadow_color": "#b8ee83",
-	"icon2_shadow_color": "#b8ee83",
-
-	"contacts":[
-		{"cont": "тел. моб: +38 067 431 74 24"},
-		{"cont": "тел. моб: +38 073 209 97 43"},
-		{"cont": "ел. пошта: info@intita.com"}],
-
-	"items":[
-		{	"name": "Про що мрієш ти?",
-			"text": "Можливо, це свобода жити своїм життям? Самостійно керувати власним часом з можливістю заробляти, улюбленою справою і отримувати задоволення від сучасної професії?",
-			"href": "/aboutus/1/",
-			"img": "https://intita.com/images/aboutus/image1.png"},
-
-		{	"name": "Навчання майбутнього",
-			"text": "На відміну від традиційних закладів, ми навчаємо не задля оцінок. Ми працюємо індивідуально з кожним студентом, щоб досягти 100% засвоєння необхідних знань.",
-			"href": "/aboutus/2/",
-			"img": "https://intita.com/images/aboutus/image2.png"},
-
-		{	"name": "Важливі питання",
-			"text": "Ми пропонуємо кожному нашому випускнику гарантоване отримання пропозиції працевлаштування протягом 4-6-ти місяців після успішного завершення навчання.",
-			"href": "/aboutus/3/",
-			"img": "https://intita.com/images/aboutus/image3.png"}]
 
 
+	"logo": "http://intita.com/images/mainpage/Logo_small.png",
+	"footer_logo2": "http://intita.com/images/mainpage/Logo_small800.png",
 
+	"footer_background_color":"#ffffff",
+	"footer_link_color": "#114988",
+	"footer_hover_color":"#666666",
+	"footer_border_color": "#44bdf6",
+	"icon_shadow_color": "#ffffff",
+
+	"mobile_phone": "тел. моб: +38 067 431 74 24",
+	"mobile_phone_2": "тел. моб: +38 073 209 97 43",
+	"email": "ел. пошта: info@intita.com"
 }

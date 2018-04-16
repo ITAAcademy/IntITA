@@ -40,6 +40,8 @@
  */
 class CmsGeneralSettings extends CActiveRecord
 {
+
+    use validationErrors;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -59,7 +61,7 @@ class CmsGeneralSettings extends CActiveRecord
 			array('id_organization', 'required'),
 			array('id_organization', 'numerical', 'integerOnly'=>true),
 			array('logo, email, twitter, youtube, google, facebook, linkedin, instagram', 'length', 'max'=>255),
-			array('mobile_phone, mobile_phone_2', 'length', 'max'=>15),
+			array('mobile_phone, mobile_phone_2', 'length', 'max'=>50),
 			array('footer_background_color, header_background_color, news_background_color, about_us_background_color, footer_link_color, header_link_color, general_link_color, footer_hover_color, header_hover_color, general_hover_color, footer_border_color, header_border_color, news_image_border_color, news_text_border_color, title_color, subtitle_color, text_color, icon_shadow_color', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

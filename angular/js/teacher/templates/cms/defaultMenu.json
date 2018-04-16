@@ -1,18 +1,22 @@
 [
 	{
-		"title" : "Викладачі",
+		"title" : "Про що мрієш ти?",
 		"link" : "http://intita/teachers",
-		"description" : "Information about teachers"
+		"description" : "Можливо, це свобода жити своїм життям? Самостійно керувати власним часом з можливістю заробляти, улюбленою справою і отримувати задоволення від сучасної професії?",
+		"image": "https://intita.com/images/aboutus/image1.png"
+
 	},
 	{
-		"title" : "Про нас ",
+		"title" : "Навчання майбутнього",
 		"link" : "http://intita/aboutus",
-		"description" : "Information about us"
+		"description" : "На відміну від традиційних закладів, ми навчаємо не задля оцінок. Ми працюємо індивідуально з кожним студентом, щоб досягти 100% засвоєння необхідних знань.",
+		"image": "https://intita.com/images/aboutus/image2.png"
 	},
 	{
-		"title": "FAQ",
+		"title": "Важливі питання",
 		"link": "/page3",
-		"description": "Frequently Asked Questions"
+		"description": "Ми пропонуємо кожному нашому випускнику гарантоване отримання пропозиції працевлаштування протягом 4-6-ти місяців після успішного завершення навчання.",
+		"image": "https://intita.com/images/aboutus/image3.png"
 	}
 ]
 

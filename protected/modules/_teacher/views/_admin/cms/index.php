@@ -8,13 +8,17 @@
 
 <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
 
-<div ng-controller="cmsCtrl" ng-controller="cmsGeneralSettingsCtrl">
+<div ng-controller="cmsCtrl" >
     <?php
+
+
+    $this->renderPartial('_settings', array());
     $this->renderPartial('_header', array());
     $this->renderPartial('_slider', array());
     $this->renderPartial('_about_us', array());
     $this->renderPartial('_news', array());
     $this->renderPartial('_footer', array());
+
     ?>
         <input id="save" name="save" type="submit" class="btn btn-primary">
 </div>
