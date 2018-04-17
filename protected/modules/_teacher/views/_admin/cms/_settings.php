@@ -85,7 +85,7 @@ hr {
         height: 350px;
         margin:0 auto;
     }
-    .slide {
+    .slide_footer {
     margin-right: 2px;
     }
     #slides {
@@ -176,7 +176,7 @@ hr {
     </div>
     <div id="slides">
         <ul>
-            <li class="slide">
+            <li class="slide_footer">
                 <div class="first_box">
                     <div class="row ">
                         <div class="col-md-6 col-sm-12"  >
@@ -274,7 +274,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide">
+            <li class="slide_footer">
                 <div class="first_box">
                     <div class="row ">
                         <div class="col-md-6 col-sm-12"  >
@@ -369,7 +369,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide">
+            <li class="slide_footer">
                 <div class="first_box">
                     <div class="row " >
                         <div class="col-md-6 col-sm-12"  >
@@ -463,7 +463,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide">
+            <li class="slide_footer">
                 <div class="first_box">
                     <div class="row " >
                         <div class="col-md-6 col-sm-12"  >
@@ -535,7 +535,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide">
+            <li class="slide_footer">
                 <div class="first_box">
                     <div class="row" >
                         <div class="col-md-6 col-sm-12"  >
@@ -614,7 +614,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide">
+            <li class="slide_footer">
 
                 <div class="first_box">
                     <div class="row ">
@@ -703,7 +703,7 @@ hr {
 
 <script>
 $jq(document).ready(function () {
-    var slides = $jq('.slide');
+    var slides = $jq('.slide_footer');
     var container = $jq('#slides ul');
     var elm = container.find(':first-child').prop("tagName");
     var item_width = container.width();

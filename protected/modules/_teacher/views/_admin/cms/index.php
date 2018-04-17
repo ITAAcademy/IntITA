@@ -13,7 +13,6 @@
     <div id="cms_content">
     <?php
 
-
     $this->renderPartial('_settings', array());
     $this->renderPartial('_header', array());
     $this->renderPartial('_slider', array());
