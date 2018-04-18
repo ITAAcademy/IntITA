@@ -553,7 +553,7 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
     }
     $scope.getDocument = function (documentID) {
         bootbox.alert({
-            message: "<img width='100%' src='" + basePath + '/_teacher/_accountant/accountant/getDocument?id=' + documentID + "'>",
+            message: "<img width='100%' src='" + basePath + '/profile/getdocument?documentId=' + documentID + "'>",
             size: 'large'
         })
     }

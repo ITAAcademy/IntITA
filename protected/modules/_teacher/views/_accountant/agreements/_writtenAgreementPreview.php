@@ -76,9 +76,15 @@
                 <option name="writtenTemplates" value="" disabled selected>(Обери шаблон)</option>
             </select>
             <div style="overflow: hidden;cursor: pointer">
-                <i ng-if="(options.selectedTemplate || actualAgreement.id) && agreementRequestStatus!=0" class="fa fa-edit fa-2x fa-fw" ng-click="editUserAgreement()" style="float: right;"></i>
+                <i title="редагувати договір" ng-if="(options.selectedTemplate || actualAgreement.id) && agreementRequestStatus!=0" class="fa fa-edit fa-2x fa-fw" ng-click="editUserAgreement()" style="float: right;"></i>
+            </div>
+            <div style="overflow: hidden;cursor: pointer;" class="fixed-button">
+                <i title="редагувати договір" ng-if="(options.selectedTemplate || actualAgreement.id) && agreementRequestStatus!=0" class="fa fa-edit fa-2x fa-fw" ng-click="editUserAgreement()" style="float: right; margin-top: 40px"></i>
             </div>
             <button ng-if="options.updatedUserAgreement" class="btn btn-primary" ng-click="saveUpdateAgreement(writtenAgreement.agreement, options.updatedUserAgreement)" style="margin-bottom: 5px">
+                Зберегти
+            </button>
+            <button ng-if="options.updatedUserAgreement" class="btn btn-primary fixed-button" ng-click="saveUpdateAgreement(writtenAgreement.agreement, options.updatedUserAgreement)" style="margin-bottom: 5px">
                 Зберегти
             </button>
             <textarea ng-if="editModeAgreement" id="CKE" ng-cloak ckeditor="editorOptionsAgreement" name="html_block" ng-model="options.updatedUserAgreement" required></textarea>
