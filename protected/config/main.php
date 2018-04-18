@@ -60,6 +60,7 @@ return array(
         'application.components.Exceptions.*',
         'application.models.quiz.TaskMarks.php',
         'ext.yii-pdf.*', // html to pdf
+        'application.models.cms.*',
     ),
 
     'modules' => array(
@@ -69,11 +70,12 @@ return array(
                 'ext.giix-core', // giix generators
             ),
             'password' => 'admin',
-            'ipFilters' => ['127.0.0.1', '10.0.0.1', 'localhost', '::1'] // '::1' - needs for work gii generator
+            'ipFilters' => ['127.0.0.1', '10.0.0.1','172.17.*.*', 'localhost', '::1'] // '::1' - needs for work gii generator
         ),
         '_admin',
         '_teacher',
         '_accountancy',
+        'cms',
         //'debug',
     ),
 
@@ -140,7 +142,7 @@ return array(
                 'cabinet/mail' => '_teacher/cabinet/mail',
                 'profile/edit' => 'studentreg/edit',
                 'agreement/<id:\d+>' => 'payments/showAgreement',
-
+                'cms' => 'cms/cms/index',
 
                 array('class' => 'CourseRule'),//rules for course page ($routes: 'course/index', 'module/index', 'lesson/index')
                 '<module:\w+>/<controller:\w+>/<id:\d+>' => '<module>/<controller>/view',

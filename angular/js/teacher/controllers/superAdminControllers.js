@@ -7,6 +7,7 @@ angular
     .controller('mainSuperAdminCtrl', mainSuperAdminCtrl)
     .controller('bannersCtrl', bannersCtrl)
     .controller('bannersBootboxCtrl', bannersBootboxCtrl)
+    .controller('subdomainsCtrl', subdomainsCtrl)
 
 function mainSuperAdminCtrl($scope, $rootScope, $http) {
     $scope.getNewResponses=function(){
@@ -136,5 +137,72 @@ function bannersBootboxCtrl($scope, $rootScope, FileUploader, $ngBootbox) {
         $rootScope.$broadcast('reloadNgTable', true);
         $ngBootbox.hideAll();
     };
+}
 
+function subdomainsCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast) {
+       $scope.subdomainsTableUrl = basePath + '/_teacher/_super_admin/subdomains/list';
+       $scope.subdomainsTableData = new NgTableParams({}, {
+        getData: function(params) {
+         NgTableDataService.setUrl($scope.subdomainsTableUrl);
+         return NgTableDataService.getData(params.url())
+         .then(function (data) {
+          params.total(data.count);
+          return data.rows;
+         });
+        }
+       });
+ 
+     $scope.addSubdomain = function (subdomain) {
+      $http({
+       method:'POST',
+       url: basePath + '/_teacher/_super_admin/subdomains/addSubdomain',
+       data:$jq.param({subdomain:subdomain}),
+       headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+      }).success(function (response) {
+       if (response.data === true){
+        ngToast.create({
+         className: 'success',
+         content: 'Субдомен додано!'
+        });
+        $scope.subdomainsTableData.reload();
+       }
+       else{
+        $ngBootbox.alert(response.message)
+       }
+      })
+     }
+     
+     $scope.changeSubdomain = function (subdomainId,newData) {
+      $http({
+       method:'POST',
+       url: basePath + '/_teacher/_super_admin/subdomains/changeSubdomain',
+       data:$jq.param({id:subdomainId,subdomain:newData}),
+       headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+      }).success(function (response) {
+       if (response.data === true){
+        ngToast.create({
+         className: 'success',
+         content: 'Субдомен змінено!'
+        });
+        $scope.subdomainsTableData.reload();
+       }
+       else{
+        $ngBootbox.alert(response.message)
+       }
+      })
+     }
+ 
+     $scope.changeState = function (subdomainId,state) {
+      $http({
+       method:'POST',
+       url: basePath + '/_teacher/_super_admin/subdomains/changeSubdomain',
+       data:$jq.param({id:bannerId,attribute:'visible', value: parseInt((!parseInt(state,10)*1),10)}),
+       headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+      }).success(function (response) {
+       if (response.data === true){
+        $scope.bannersTableData.reload();
+       }
+      })
+     };
+     
 }

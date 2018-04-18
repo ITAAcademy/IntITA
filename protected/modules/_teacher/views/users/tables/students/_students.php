@@ -21,12 +21,16 @@ $startOfDay = date('Y-m-d H:i:s', strtotime(date('Y-m-d')));
     </button>
 
     <button class="btn btn-primary"
-            ng-click="updateStudentList(organization,startDate+ ' 00:00:00', endDate+' 23:59:59')">
+            ng-click="updateStudentList(organization,from+ ' 00:00:00', to+' 23:59:59')">
         За період:
     </button>
 
-    <span> з </span><input type="text" class="form-inline" ng-model=startDate id="startDate"/>
-    <span> по </span><input type="text" class="form-inline" ng-model=endDate id="endDate"/>
+    з : <input type="text" ng-model='from' id="from" name="from">
+    по: <input type="text" ng-model='to' id="to" name = "to">
+
+    <script>
+     
+    </script>
     <a title="Експорт" class="glyphicon glyphicon-floppy-disk btn btn-primary pull-right" style="margin: 5px;"
        href="/_teacher/users/export/type/students">
     </a>

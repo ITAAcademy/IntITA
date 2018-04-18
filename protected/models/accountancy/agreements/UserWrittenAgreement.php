@@ -24,6 +24,7 @@ class UserWrittenAgreement extends CActiveRecord
 {
     const NOT_ACTUAL = 0;
     const ACTUAL = 1;
+    const PRINTED = 2;
     const CHECKED = 1;
     const NOT_CHECKED = 0;
 
@@ -140,7 +141,7 @@ class UserWrittenAgreement extends CActiveRecord
         return [
             'actualAgreement' => [
                 'alias'=>'aa',
-                'condition' => 'aa.actual='.self::ACTUAL,
+                'condition' => 'aa.actual='.self::ACTUAL.' or aa.actual='.self::PRINTED,
             ]
         ];
     }

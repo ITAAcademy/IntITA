@@ -50,6 +50,9 @@
                             <span ng-cloak class="label label-success" ng-if="countOfNewResponses > 0">{{countOfNewResponses}}</span>
                         </a>
                     </li>
+                 <li>
+                  <a href="#/subdomains">Субдомени</a>
+                 </li>
                 </ul>
             </div>
             <div class="panel-footer">

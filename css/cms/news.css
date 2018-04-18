@@ -1,0 +1,23 @@
+html{font-family:"MyriadPro";}
+.news_container{
+    margin: 0px auto;
+    max-width:1020px;
+}
+.text{
+    margin: 0px 15px 0px 15px;
+}
+.img_news {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+}
+.container {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.news_wrapper{
+    margin-bottom: 5px;
+    padding-bottom: 8px;
+}

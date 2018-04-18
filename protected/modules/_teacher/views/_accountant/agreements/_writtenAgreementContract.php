@@ -54,6 +54,8 @@
             </div>
         </fieldset>
         <h2 style="text-align:center">Договір затверджений <span style="color:red" ng-if="writtenAgreement.agreement.cancel_date">(скасований)</span></h2>
+        <span ng-if="writtenAgreement.agreement.actualWrittenAgreement.actual==2" class="pull-right" style="color:green">Роздруковано</span>
+        <button class="btn btn-primary pull-right" style="margin: 5px 0;" ng-if="writtenAgreement.agreement.actualWrittenAgreement.actual==1" ng-click="printed(writtenAgreement.agreement.actualWrittenAgreement.id, writtenAgreement.agreement.id)">Відмітити, що договір роздруковано</button>
         <div style="text-align: center">
             <embed src="/_teacher/_accountant/agreements/getAgreementFile?id=<?php echo $agreementId ?>" width="90%" height="1200px">
         </div>

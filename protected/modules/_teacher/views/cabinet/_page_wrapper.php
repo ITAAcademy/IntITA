@@ -1,6 +1,8 @@
 <?php
 /* @var $model StudentReg */
 ?>
+<link href="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/color-picker/dist/color-picker.css'); ?>" rel="stylesheet"/>
+<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/color-picker/dist/color-picker.js'); ?>"></script>
 <div id="page-wrapper">
     <div class="row">
         <h2 style="margin-bottom: 10px;margin-top: 20px" class="page-header" id="pageTitle">Особистий кабінет</h2>

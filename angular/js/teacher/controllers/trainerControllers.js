@@ -105,6 +105,25 @@ function studentsProjectsCtrl($scope, NgTableDataService, NgTableParams, $http, 
             }
         })
     };
+ 
+ $scope.deleteProject = function (projectId) {
+  bootbox.confirm('Видалити проект?',function (result) {
+   if (result){
+    $http({
+     method: 'POST',
+     url: basePath+"/_teacher/_trainer/trainer/deleteStudentProject",
+     data: $jq.param({id: projectId}),
+     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).then(function successCallback(response) {
+     bootbox.alert(response.data.message, function () {
+      $scope.studentProjectTable.reload();
+     });
+    }, function errorCallback() {
+     bootbox.alert("Операцію не вдалося виконати");
+    });
+   }
+  })
+ }
 
     if ($state.is('studentsProject')){
         $scope.files = $http({

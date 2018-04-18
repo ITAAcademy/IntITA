@@ -109,7 +109,7 @@ angular
                         transformRequest : transformRequest.bind(null)
                     },
                     cancelAppliedAgreement: {
-                        url: url + '/cancelAppliedAgreement',
+                        url: basePath+'/_teacher/_accountant/template/cancelAppliedAgreement',
                         method: 'POST',
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)
@@ -134,6 +134,12 @@ angular
                     },
                     getAgreementFile: {
                         url: url + '/getAgreementFile'
+                    },
+                    writtenAreementPrinted : {
+                        url: url + '/setWrittenAreementPrinted',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
                     },
                 });
         }])

@@ -15,7 +15,7 @@
             <td>
                 <div id='coursesHeader'>
                     <p class="coursesInfoBlock"><?php echo Yii::t('courses', '0148'); ?>
-                        <a href="#detailCourseInfoLarge<?php echo $index?>" data-toggle="collapse" style="color: #000;" id="showMyTextLarge" class="detailCourseInfoLarge collapsed"></a>
+
                     </p>
                     <div id="detailCourseInfoLarge<?php echo $index ?>" class="collapse">
                         <div class="courseBox2">
@@ -25,4 +25,12 @@
             </td>
         </tr>
     </table>
+    <a href="#detailCourseInfoLarge<?php echo $index?>" data-toggle="collapse" style="color: #000;" id="showMyTextLarge" class="detailCourseInfoLarge collapsed">
+        <span ng-click="isDeploy = !isDeploy" ng-show="!isDeploy" class="expandText">
+                розгорнути &#9662;
+            </span>
+        <span ng-click="isDeploy = !isDeploy" ng-show="isDeploy" class="expandText">
+                згорнути&#9652;
+            </span>
+    </a>
 </div>

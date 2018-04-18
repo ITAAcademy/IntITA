@@ -8,13 +8,14 @@
                 <table ng-table="writtenAgreementsTableParams" class="table table-bordered table-striped table-condensed">
                     <colgroup>
                         <col/>
-                        <col width="20%"/>
+                        <col width="15%"/>
                         <col/>
-                        <col width="20%"/>
+                        <col width="15%"/>
                         <col/>
                         <col/>
                         <col/>
                         <col width="4%"/>
+                        <col width="8%"/>
                     </colgroup>
                     <tr ng-repeat="row in $data track by $index">
                         <td data-title="'Сервіс'" filter="{'service.description': 'text'}" sortable="'service.description'">
@@ -43,6 +44,11 @@
                             <a title="переглянути" ng-href="#/accountant/writtenAgreement/id/{{row.id}}">
                                 <i class="fa fa-eye fa-fw"></i>
                             </a>
+                        </td>
+                        <td data-title="'Роздруковано'">
+                            <label>
+                                <input type="checkbox" ng-checked="row.actual==2" ng-click="printed(row.id)">
+                            </label>
                         </td>
                     </tr>
                 </table>

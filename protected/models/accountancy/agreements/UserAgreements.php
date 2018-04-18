@@ -315,9 +315,13 @@ class UserAgreements extends CActiveRecord {
 
         if($calculator){
             $billableObjectOrganization = $billableObject->organization;
-            $corporateEntity = $billableObjectOrganization->getCorporateEntityFor($billableObject, $educForm);
-            $checkingAccount = $billableObjectOrganization->getCheckingAccountFor($billableObject, $educForm);
-
+            if (isset($schemas->id_template) && PaymentSchemeTemplate::model()->findByPk($schemas->id_template)->checkingAccount){
+                $checkingAccount = PaymentSchemeTemplate::model()->findByPk($schemas->id_template)->checkingAccount;;
+                $corporateEntity = $checkingAccount->corporateEntity;
+            }else{
+                $corporateEntity = $billableObjectOrganization->getCorporateEntityFor($billableObject, $educForm);
+                $checkingAccount = $billableObjectOrganization->getCheckingAccountFor($billableObject, $educForm);
+            }
             $builder = new ContractingPartyBuilder();
 
             $contractingParty = $builder->makeCorporateEntity($corporateEntity, $checkingAccount);
