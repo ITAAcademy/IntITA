@@ -187,20 +187,21 @@ JS;
             include "../activeDomains.php";
             if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
               exit("Domain not active!");
-            };?>');
-            file_put_contents($path, $_POST["data"],FILE_APPEND);
-            file_put_contents($path, $deleteButtonCode,FILE_APPEND);
-
-            $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
-            if (file_exists($address)){
-                array_map('unlink', glob("$address/*.*"));
-            }
-            if (!file_exists($address)){
-                mkdir($address, '777', true);
-            }
-            $path = $address .  '/index.php';
-            file_put_contents($path, $_POST["data"], FILE_APPEND);
-            file_put_contents($path, $deleteButtonCode,FILE_APPEND);
+            };?>'.$_POST["data"].$deleteButtonCode);
+//            file_put_contents($path, $_POST["data"],FILE_APPEND);
+//            file_put_contents($path, $deleteButtonCode,FILE_APPEND);
+//
+//            $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
+//            if (file_exists($address)){
+//                array_map('unlink', glob("$address/*.*"));
+//            }
+//            if (!file_exists($address)){
+//                mkdir($address, '777', true);
+//            }
+//            //$path = $address .  '/index.php';
+//
+//            file_put_contents($path, $_POST["data"], FILE_APPEND);
+//            file_put_contents($path, $deleteButtonCode,FILE_APPEND);
     }
 
 

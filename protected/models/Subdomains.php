@@ -45,7 +45,9 @@
     {
      // NOTE: you may need to adjust the relation name and the related
      // class name for the relations automatically generated below.
-     return array();
+     return array(
+         'organization' => [self::BELONGS_TO, 'Organization', ['organization' => 'id']],
+     );
     }
 
   /**
@@ -108,7 +110,6 @@
       {
        $this->makeDomainDirectory();
        $this->exportSubdomainsList();
-       $this->generateTemplateFile();
       }
 
      return $result;
@@ -134,16 +135,5 @@
        mkdir(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema(), 0777, true);
       }
     }
-
-   protected function generateTemplateFile(){
-//    $file = '<?php
-//    include "../activeDomains.php";
-//    if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
-//      exit("Domain not active!");
-//    };
-//    echo "It Works!";
-/*    ?>';*/
-//    file_put_contents(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php', $file);
-   }
 
   }
