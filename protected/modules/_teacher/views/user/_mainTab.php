@@ -52,6 +52,34 @@ $user = $model->registrationData;
                        target="_blank">почати чат <i class="fa fa-wechat fa-fw"></i>
                     </a>
                 </li>
+
+                <li class="list-group-item">
+                    Додати студента в підгрупу:
+                    <div class="row">
+                        <div class="col-md-6">
+                            <oi-select
+                                    oi-options="subgroup.groupName for subgroup in getSubGroups($query) track by subgroup.id"
+                                    ng-model="newSubgroup"
+                                    placeholder="Назва підгрупи"
+                                    oi-select-options="{
+                            debounce: 200,
+                            closeList: false,
+                            dropdownFilter: 'subgroupsTaskFilter',
+                            searchFilter: 'subgroupsTaskSearchFilter',
+                            }"
+                            ></oi-select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="date" id="dateInSubgroup" ng-model="dateInSubgroup" class="form-control" placeholder="Виберіть дату">
+                        </div>
+                        <div class="col-md-2">
+                            <button ng-click="addStudentToSubgroup(user.id, newSubgroup.id, dateInSubgroup)" type="submit" class="btn btn-outline btn-primary btn-xs" ng-disabled="studentSubgroup.$invalid" disabled="disabled">Зберегти
+                            </button>
+                        </div>
+
+                    </div>
+                </li>
+
                 <li ng-if="offline.offlineStudents.length" class="list-group-item">
                     Офлайн навчання:
                     <ul class="list-group" >
@@ -73,11 +101,11 @@ $user = $model->registrationData;
                     </ul>
                 </li>
                 <?php if (Yii::app()->user->model->isSuperVisor() && $model->isStudent()) { ?>
-                <li ng-if="offline.offlineStudent" class="list-group-item">
-                    <a ng-href="#/supervisor/addOfflineStudent/{{user.id}}">
-                        Додати студента в підгрупу
-                    </a>
-                </li>
+                    <li ng-if="offline.offlineStudent" class="list-group-item">
+                        <a ng-href="#/supervisor/addOfflineStudent/{{user.id}}">
+                            Додати студента в підгрупу
+                        </a>
+                    </li>
                 <?php }?>
                 <li ng-if="user.student" class="list-group-item">
                     Тренер:
@@ -143,7 +171,3 @@ $user = $model->registrationData;
         </div>
     </div>
 </div>
-
-
-
-

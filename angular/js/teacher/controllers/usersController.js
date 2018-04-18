@@ -390,7 +390,7 @@ function authorsTableCtrl ($scope, usersService, NgTableParams, roleService, $at
     };
 }
 
-function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, $q, userService, $state, agreementsService){
+function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, $q, userService, $state, agreementsService, usersService, $resource, chatIntITAMessenger){
     $scope.changePageHeader('Профіль користувача');
     $scope.userId=$stateParams.id;
     $scope.formData={};
@@ -526,6 +526,87 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
 
     $scope.collapse=function (el) {
         $jq(el).toggle("medium");
+    };
+
+    var subGroupsArray =$resource(basePath+'/_teacher/newsletter/getSubGroups');
+
+    $scope.getGroupsNames = function () {
+        usersService
+            .getGroupNumber()
+            .$promise
+            .then(function (data) {
+                $scope.groupsNames = data;
+            })
+    };
+    $scope.getGroupsNames();
+
+    $scope.getSubGroups = function(query) {
+
+        return subGroupsArray.query({query:query}).$promise.then(function(response) {
+
+            return response;
+        });
+    };
+    $scope.getSubGroups();
+
+    $scope.addStudentToSubgroup=function (idUser,idSubgroup,dateInSubgroup) {
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            return [year, month, day].join('-');
+        }
+        dateInSubgroup = formatDate(dateInSubgroup);
+            $http({
+                method: 'POST',
+                url: basePath+'/_teacher/_supervisor/superVisor/addStudentToSubgroup',
+                data: $jq.param({userId: idUser, subgroupId: idSubgroup, startDate: dateInSubgroup}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(function successCallback(response) {
+                chatIntITAMessenger.updateSubgroup(idSubgroup);
+                $scope.addUIHandlers(response.data);
+                $scope.reloadUserOfflineEducationData();
+            }, function errorCallback() {
+                bootbox.alert("Операцію не вдалося виконати");
+            });
+    };
+
+    $scope.reloadUserOfflineEducationData=function(){
+        userService.userOfflineEducationData({userId: $scope.userId})
+            .$promise
+            .then(function (results) {
+                $scope.offline = results;
+            });
+    };
+
+    $scope.updateOfflineStudentSubgroup=function (idUser, idSubgroup, modelId, services) {
+        services.modules.forEach(function (item, key) {
+            if (item.rat) {
+                item.rat = item.rat/10;
+            }
+        });
+        services.courses.forEach(function (item, key) {
+            if (item.rat) {
+                item.rat = item.rat/10;
+            }
+        });
+        $http({
+            method: 'POST',
+            url: basePath+'/_teacher/_supervisor/superVisor/updateOfflineStudent',
+            data: $jq.param({
+                userId: idUser, subgroupId: idSubgroup,
+                modelId: modelId,
+                services: services}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then(function successCallback(response) {
+            $scope.addUIHandlers(response.data.message);
+            $scope.loadOfflineStudentModel($scope.studentModelId);
+        }, function errorCallback() {
+            bootbox.alert("Операцію не вдалося виконати");
+        });
     };
 }
 
