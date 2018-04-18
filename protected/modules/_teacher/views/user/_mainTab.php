@@ -76,7 +76,6 @@ $user = $model->registrationData;
                             <button ng-click="addStudentToSubgroup(user.id, newSubgroup.id, dateInSubgroup)" type="submit" class="btn btn-outline btn-primary btn-xs" ng-disabled="studentSubgroup.$invalid" disabled="disabled">Зберегти
                             </button>
                         </div>
-
                     </div>
                 </li>
 

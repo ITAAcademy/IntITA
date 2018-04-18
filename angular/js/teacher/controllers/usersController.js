@@ -547,6 +547,7 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
             return response;
         });
     };
+
     $scope.getSubGroups();
 
     $scope.addStudentToSubgroup=function (idUser,idSubgroup,dateInSubgroup) {
