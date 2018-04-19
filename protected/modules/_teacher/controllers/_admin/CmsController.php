@@ -185,11 +185,6 @@ class CmsController extends TeacherCabinetController
         }
         $path = $address .  '/index.php';
         file_put_contents($path, $_POST["data"], FILE_APPEND);
-
-
-
-
-
             $subdomain =  Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()));
             $path = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php';
             file_put_contents($path,'<?php
@@ -199,7 +194,6 @@ class CmsController extends TeacherCabinetController
             };?>');
             file_put_contents($path, $_POST["data"],FILE_APPEND);
             file_put_contents($path, $deleteButtonCode,FILE_APPEND);
-
 
     }
 
