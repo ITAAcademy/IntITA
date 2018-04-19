@@ -175,12 +175,21 @@ class CmsController extends TeacherCabinetController
 
     public function actionGeneratePage()
     {
-            $deleteButtonCode = <<<JS
-                <script>
-                    document.getElementsByClassName("mainAboutBlock")[0].removeChild(document.getElementById("save"));
-                    document.getElementsByClassName("row")[0].removeChild(document.getElementById("pageTitle"));
-                </script>     
-JS;
+
+        $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
+        if (file_exists($address)){
+            array_map('unlink', glob("$address/*.*"));
+        }
+        if (!file_exists($address)){
+            mkdir($address, '777', true);
+        }
+        $path = $address .  '/index.php';
+        file_put_contents($path, $_POST["data"], FILE_APPEND);
+
+
+
+
+
             $subdomain =  Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()));
             $path = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php';
             file_put_contents($path,'<?php
@@ -191,16 +200,7 @@ JS;
             file_put_contents($path, $_POST["data"],FILE_APPEND);
             file_put_contents($path, $deleteButtonCode,FILE_APPEND);
 
-            $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
-            if (file_exists($address)){
-                array_map('unlink', glob("$address/*.*"));
-            }
-            if (!file_exists($address)){
-                mkdir($address, '777', true);
-            }
-            $path = $address .  '/index.php';
-            file_put_contents($path, $_POST["data"], FILE_APPEND);
-            file_put_contents($path, $deleteButtonCode,FILE_APPEND);
+
     }
 
 
