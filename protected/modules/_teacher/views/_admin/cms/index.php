@@ -14,8 +14,6 @@
             <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/news.css'); ?>"/>
             <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/footer.css'); ?>"/>
             <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>">
-            <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-animate/angular-animate.min.js'); ?>"></script>
-            <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-sanitize/angular-sanitize.min.js'); ?>"></script>
             <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'); ?>"></script>
             <?php
             $this->renderPartial('_header', array());
@@ -26,7 +24,7 @@
             ?>
             <script>
                  angular
-                        .module('cmsAppNew',['ngAnimate', 'ngSanitize', 'ui.bootstrap'])
+                        .module('cmsAppNew',['ui.bootstrap'])
                           .controller('sliderGeneratedCtrl', ['$scope',
                             function ($scope) {
                                 $scope.test = 5;
