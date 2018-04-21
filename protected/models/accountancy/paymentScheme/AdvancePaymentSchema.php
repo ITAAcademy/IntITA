@@ -48,21 +48,21 @@ class AdvancePaymentSchema implements IPaymentCalculator{
         } else {
             $endDate->modify('+'.$this->duration.' month');
             $interval = date_diff($startDate, $endDate);
-            return round($interval->days/30);
+            return $interval->days;
         }
     }
 
     public function getInvoicesList(IBillableObject $payObject,  DateTime $startDate){
         $invoicesList = [];
         $currentTimeInterval = $startDate;
-        $timeInterval = ceil($this->getDuration($startDate)/ $this->payCount); //months
+        $timeInterval = ceil($this->getDuration($startDate)/ $this->payCount); //days
         $arrayInvoiceSumma = GracefulDivision::getArrayInvoiceSumma($this->getSumma($payObject),
             $this->payCount);
 
         for($i = 0; $i < $this->payCount; $i++){
             if(isset($arrayInvoiceSumma[$i])){
                 array_push($invoicesList, Invoice::createInvoice($arrayInvoiceSumma[$i], $currentTimeInterval));
-                $currentTimeInterval = $currentTimeInterval->modify(' +'.$timeInterval.' month');
+                $currentTimeInterval = $currentTimeInterval->modify(' +'.$timeInterval.' day');
             }
         }
         return $invoicesList;

@@ -615,8 +615,8 @@ class UserAgreements extends CActiveRecord {
     }
 
     public function canBeCanceled() {
-        if ($this->getAgreementPaidSum()==0 &&
-            $this->corporateEntity->organization->id==Yii::app()->user->model->getCurrentOrganizationId()) {
+//        $this->getAgreementPaidSum()==0
+        if ($this->corporateEntity->organization->id==Yii::app()->user->model->getCurrentOrganizationId()) {
            return true;
         } else {
             return false;
