@@ -146,4 +146,10 @@
 //    file_put_contents(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php', $file);
    }
 
+     public function createSubdomainDirectory($path){
+         if (!file_exists($path)){
+             mkdir($path, '777', true);
+         }
+     }
+
   }

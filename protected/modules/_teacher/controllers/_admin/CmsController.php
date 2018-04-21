@@ -16,7 +16,16 @@ class CmsController extends TeacherCabinetController
 
     public function actionIndex()
     {
-       $this->renderPartial('index', array(), false, true);
+
+
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+
+        if (isset($subdomain)) {
+            $this->renderPartial('index', array(), false, true);
+        } else {
+            echo '<p style="color:red">*Конструктор сайту буде доступний після створення субдомену</p>';
+            return $this->renderPartial('subdomain');
+        }
     }
 
     public function actionMenuLists()
@@ -35,28 +44,32 @@ class CmsController extends TeacherCabinetController
         $statusCode = 201;
         try {
             $addressForFile = "";
-            $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
+            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
             if (isset($_FILES) && !empty($_FILES)) {
-                $folderAddress = 'images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/lists/";
+                $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+                $path_domain = 'domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+                $folderAddress = $path_domain . "/lists/";
+
                 if (!file_exists($folderAddress)) {
                     mkdir($folderAddress, '777', true);
                 }
-                if (file_exists($previousImage)) {
-                    unlink($previousImage);
+
+                if ($previousImage && file_exists($folderAddress . $previousImage)) {
+                    unlink($folderAddress . $previousImage);
                 }
                 $end_file_name = $_FILES["logo"]["name"];
                 $tmp_file_name = $_FILES["logo"]["tmp_name"];
                 if (getimagesize($tmp_file_name)) {
-                    $addressForFile = $folderAddress . date("jYgi") . basename($end_file_name);
+                    $endAddress = date("jYgi") . basename($end_file_name);  // '21042018name.jpg'
+                    $addressForFile = $folderAddress . $endAddress;   // "domains/Madagascar1/lists/21042018name.jpg"
                 }
                 copy($tmp_file_name, $addressForFile);
-                echo $addressForFile;
             }
             $params = array_filter((array)json_decode($_POST['data']));
             $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
             $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $menuLink->attributes = $params;
-            $menuLink->image = $addressForFile;
+            $menuLink->image = $endAddress;
             if (!$menuLink->save()) {
                 throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
             }
@@ -70,9 +83,12 @@ class CmsController extends TeacherCabinetController
 
     public function actionRemoveMenuLink()
     {
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+        $folderAddress = $path_domain . "/lists/";
         $imageAddress = $_POST["image"];
-        if (file_exists($imageAddress)) {
-            unlink($imageAddress);
+        if (file_exists($folderAddress . $imageAddress)) {
+            unlink($folderAddress . $imageAddress);
         }
         $result = ['message' => 'OK'];
         $statusCode = 201;
@@ -100,6 +116,7 @@ class CmsController extends TeacherCabinetController
         echo CJSON::encode(CmsNews::model()->findAll());
     }
 
+
     public function actionUpdateNews()
     {
         $result = ['message' => 'OK'];
@@ -108,33 +125,37 @@ class CmsController extends TeacherCabinetController
         $current_date = date("Y-m-d H:i:s");
         try {
             $addressForFile = "";
-            $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
+            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
             if (isset($_FILES) && !empty($_FILES)) {
-                $folderAddress = 'images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/news/";
+                $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+                $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+                $folderAddress = $path_domain . "/news/";
+
                 if (!file_exists($folderAddress)) {
                     mkdir($folderAddress, '777', true);
                 }
-                if (file_exists($previousImage)) {
-                    unlink($previousImage);
+
+                if ($previousImage && file_exists($folderAddress . $previousImage)) {
+                    unlink($folderAddress . $previousImage);
                 }
                 $end_file_name = $_FILES["photo"]["name"];
                 $tmp_file_name = $_FILES["photo"]["tmp_name"];
                 if (getimagesize($tmp_file_name)) {
-                    $addressForFile = $folderAddress . date("jYgi") . basename($end_file_name);
+                    $endAddress = date("jYgi") . basename($end_file_name);  // '21042018name.jpg'
+                    $addressForFile = $folderAddress . $endAddress;
                 }
                 copy($tmp_file_name, $addressForFile);
-                echo $addressForFile;
             }
             $params = array_filter((array)json_decode($_POST['data']));
-            $menuLink = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
-            $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-            $menuLink->date= $current_date;
-            $menuLink->attributes = $params;
+            $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
+            $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $new->date = $current_date;
+            $new->attributes = $params;
 
-            $menuLink->logo = $addressForFile;
+            $new->img = $endAddress;
 
-            if (!$menuLink->save()) {
-                throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
+            if (!$new->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $new->getValidationErrors());
             }
         } catch (Exception $error) {
             $statusCode = 500;
@@ -146,9 +167,13 @@ class CmsController extends TeacherCabinetController
 
     public function actionRemoveNews()
     {
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+        $folderAddress = $path_domain . "/news/";
+
         $imageAddress = $_POST["image"];
-        if (file_exists($imageAddress)) {
-            unlink($imageAddress);
+        if (file_exists($folderAddress . $imageAddress)) {
+            unlink($folderAddress . $imageAddress);
         }
         $result = ['message' => 'OK'];
         $statusCode = 201;
@@ -166,44 +191,47 @@ class CmsController extends TeacherCabinetController
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
-    public function actionGetSettings(){
+    public function actionGetSettings()
+    {
         $id_org = Yii::app()->user->model->getCurrentOrganizationId();
-        $model=CJSON::encode(CmsGeneralSettings::model()->findByAttributes(['id_organization' => $id_org]));
-        $model=CJSON::encode(CmsGeneralSettings::model()->findByAttributes(['id_organization' => $id_org]));
+        $model = CJSON::encode(CmsGeneralSettings::model()->findByAttributes(['id_organization' => $id_org]));
         echo $model;
     }
 
     public function actionGeneratePage()
     {
 
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+        $subdomain->createSubdomainDirectory($path_domain);
+
+        $path = $path_domain . '/index.php';
+
+        file_put_contents($path, '<?php
+                include "../activeDomains.php";
+                if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
+                  exit("Domain not active!");
+                };?>');
+
+        file_put_contents($path, $_POST["data"], FILE_APPEND);
         $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
-        if (file_exists($address)){
+        if (file_exists($address)) {
             array_map('unlink', glob("$address/*.*"));
         }
-        if (!file_exists($address)){
+        if (!file_exists($address)) {
             mkdir($address, '777', true);
         }
-        $path = $address .  '/index.php';
+        $path = $address . '/index.php';
         file_put_contents($path, $_POST["data"], FILE_APPEND);
-            $subdomain =  Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()));
-            $path = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php';
-            file_put_contents($path,'<?php
-            include "../activeDomains.php";
-            if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
-              exit("Domain not active!");
-            };?>');
-            file_put_contents($path, $_POST["data"],FILE_APPEND);
-            file_put_contents($path, $deleteButtonCode,FILE_APPEND);
-
     }
 
-
-    public function actionUpdateSettings(){
+    public function actionUpdateSettings()
+    {
         $result = ['message' => 'OK'];
         $statusCode = 201;
         try {
             $addressForFile = "";
-            $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
+            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
             if (isset($_FILES) && !empty($_FILES)) {    //$_FILES Переменные файлов, загруженных по HTTP // прилітає картінка
                 $folderAddress = '/images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/generalSettings/";  // прописуєм шлях
                 if (!file_exists($folderAddress)) {
@@ -246,9 +274,9 @@ class CmsController extends TeacherCabinetController
     public function actionOrganizationSubdomain()
     {
         $adapter = new NgTableAdapter(Subdomains::class, $_GET);
-        $criteria =  new CDbCriteria();
+        $criteria = new CDbCriteria();
         $criteria->alias = 't';
-        $criteria->addCondition('t.organization='.Yii::app()->user->model->getCurrentOrganizationId());
+        $criteria->addCondition('t.organization=' . Yii::app()->user->model->getCurrentOrganizationId());
         $adapter->mergeCriteriaWith($criteria);
         return $this->renderJSON($adapter->getData());
     }
@@ -261,7 +289,7 @@ class CmsController extends TeacherCabinetController
         $model->organization = Yii::app()->user->model->getCurrentOrganizationId();
         $model->save();
 
-        return $this->renderJSON(['data'=>true]);
+        return $this->renderJSON(['data' => true]);
     }
 
 }
