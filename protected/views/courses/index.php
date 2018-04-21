@@ -13,15 +13,15 @@ $this->breadcrumbs = array(
     Yii::t('breadcrumbs', '0050'),
 ); ?>
 <div id='coursesMainBox'>
-    <?php $this->renderPartial('_menuLine', array('counters'=>$counters));?>
+    <?php $this->renderPartial('_menuLine', array('counters'=>$counters)); ?>
     <?php if($selector=='modules'){ ?>
         <div id="coursesTable">
-            <?php echo $this->renderPartial('_modulesList', array('dataProvider'=>$dataProvider,'lang'=>$lang)); ?>
+            <?php  echo $this->renderPartial('_modulesList', array('dataProvider'=>$dataProvider,'lang'=>$lang)); ?>
         </div>
-    <?php } else { ?>
+    <?php  } else { ?>
         <div id="coursesTable">
             <div class="leftColumn">
-                <?php $this->renderPartial('_coursesPart1', array('blocks' => $blocks));?>
+                <?php $this->renderPartial('_coursesPart1', array('blocks' => $blocks)); ?>
             </div>
             <div class="rightColumn">
                 <?php $this->renderPartial('_coursesPart2', array('blocks' => $blocks));?>

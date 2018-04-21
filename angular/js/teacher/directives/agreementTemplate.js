@@ -47,6 +47,11 @@ angular
             template: '{{writtenAgreement.agreement.summa | toPhrase}}'
         };
     })
+    .directive('aStartEndDate', function() {
+        return {
+            template: 'з {{writtenAgreement.agreement.start_date | date}} по {{writtenAgreement.agreement.close_date | withoutTime | date}}'
+        };
+    })
 
     .directive('aInvoices', function() {
         return {
@@ -225,6 +230,11 @@ angular
             return toPhrase(sum);
         }
     })
+    .filter("withoutTime", function () {
+        return function (input) {
+            return new Date(input);
+        }
+    });
 
 function toPhrase(summa) {
     var x = parseFloat(summa).toFixed(2);

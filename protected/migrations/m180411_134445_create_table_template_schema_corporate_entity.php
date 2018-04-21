@@ -11,8 +11,8 @@ class m180411_134445_create_table_template_schema_corporate_entity extends CDbMi
 
     public function safeDown()
     {
-        $this->dropForeignKey('FK_acc_payment_schema_template_checking_account', 'acc_payment_schema');
+        $this->dropForeignKey('FK_acc_payment_schema_template_checking_account', 'acc_payment_schema_template');
 
-        $this->dropColumn('acc_payment_schema', 'id_checking_account');
+        $this->dropColumn('acc_payment_schema_template', 'id_checking_account');
     }
 }

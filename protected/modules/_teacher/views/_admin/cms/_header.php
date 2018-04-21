@@ -1,4 +1,4 @@
-<div class="header" ng-style="{'background-color':settings.header_background_color}">
+<div class="header" ng-style="{'background-color':settings.header_background_color}" id="headerCms">
     <nav class="navbar">
         <div class="col-md-3 navbar-header">
 <!--            <a href="/IntITA/">-->

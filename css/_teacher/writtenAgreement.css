@@ -30,7 +30,7 @@ span.cke_button__c_checking_account_label,
 span.cke_button__u_user_passport_date_label,
 span.cke_button__a_sum_string_label,
 span.cke_button__a_service_hours_label,
-span.cke_button__a_sum_string_label,
+span.cke_button__a_start_end_date_label,
 span.cke_button__rightspan_label{
     display: inline-block !important;
 }

@@ -124,8 +124,6 @@ class CmsController extends TeacherCabinetController
         try {
             $addressForFile = "";
             $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
-
-
             if (isset($_FILES) && !empty($_FILES)) {
 
 //                                "domains/Madagascar1/news/"
@@ -148,7 +146,6 @@ class CmsController extends TeacherCabinetController
                 copy($tmp_file_name, $addressForFile);
                 echo $addressForFile;
             }
-
             $params = array_filter((array)json_decode($_POST['data']));
             $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
             $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
@@ -233,9 +230,7 @@ class CmsController extends TeacherCabinetController
             $addressForFile = "";
             $previousImage = isset($_POST["previousImage"])?$_POST["previousImage"]:null;
             if (isset($_FILES) && !empty($_FILES)) {    //$_FILES Переменные файлов, загруженных по HTTP // прилітає картінка
-
                 $folderAddress = '/images/cms/' . Yii::app()->user->model->getCurrentOrganizationId() . "/generalSettings/";  // прописуєм шлях
-
                 if (!file_exists($folderAddress)) {
                     mkdir($folderAddress, '777', true); //створення каталога
                 }
@@ -255,8 +250,6 @@ class CmsController extends TeacherCabinetController
             $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
             $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $settings->attributes = $params;
-
-
             $settings->logo = $addressForFile;
             if (!$settings->save()) {
 
