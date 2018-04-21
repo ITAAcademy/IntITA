@@ -700,7 +700,6 @@ hr {
 
 
 
-
 <script>
 $jq(document).ready(function () {
     var slides = $jq('.slide_settings');

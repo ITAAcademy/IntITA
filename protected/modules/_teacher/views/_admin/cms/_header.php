@@ -5,7 +5,7 @@
 <!--                <img id="logo" src="http://localhost/IntITA/images/mainpage/Logo_bigUA.png">-->
 <!--            </a>-->
             <a href="">
-                <img id="logo" src="{{settings.logo}}">
+                <img id="logo" ng-src='{{settings.id && domainPath+settings.logo || settings.logo}}'>
             </a>
 
 
