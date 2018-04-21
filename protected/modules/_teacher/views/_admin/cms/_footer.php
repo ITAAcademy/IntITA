@@ -46,7 +46,7 @@
             <div class="left_part col-md-6 col-sm-5 col-xs-12">
                 <div class="logo">
                     <a href="">
-                        <img id="footerLogo" src="{{settings.logo}}">
+                        <img id="footerLogo" ng-src='{{settings.id && domainPath+settings.logo || settings.logo}}'>
                     </a>
                 </div>
                 <div class="footer_logo2">
