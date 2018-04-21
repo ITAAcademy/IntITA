@@ -124,9 +124,6 @@ $header = new Header();
                             <li>
                                 <a href="<?php echo Config::getBaseUrl() . '/forPartners' ?>"><?php echo Yii::t('header', '0981'); ?></a>
                             </li>
-                            <li>
-                                <a href="https://hack.intita.com" target="_blank"><?php echo Yii::t('header', 'Школа хакерів'); ?></a>
-                            </li>
 <!--                            <li>-->
 <!--                                <a href="--><?php //echo Config::getBaseUrl() . '/library'; ?><!--">Бібліотека</a>-->
 <!--                            </li>-->
@@ -306,7 +303,7 @@ $header = new Header();
                         <a href="http://profitday.info/upcomingevents" target="_blank"><?php echo Yii::t('header', '0912'); ?></a>
                     </li>
                     <li>
-                        <a href="<?php echo Mainpage::getPartnerLink() ?>" target="_blank"><?php echo Yii::t('header', '0981'); ?></a>
+                        <a href="<?php echo Config::getBaseUrl() . '/forPartners' ?>"><?php echo Yii::t('header', '0981'); ?></a>
                     </li>
                 </ul>
             </div>
