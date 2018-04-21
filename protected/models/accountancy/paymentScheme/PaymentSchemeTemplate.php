@@ -13,6 +13,8 @@
  * @property string $description_en
  * @property integer $id_organization
  * @property integer $id_checking_account
+ * @property integer $duration
+ * @property integer $start_date
  *
  */
 class PaymentSchemeTemplate extends CActiveRecord {
@@ -33,9 +35,11 @@ class PaymentSchemeTemplate extends CActiveRecord {
         return array(
             array('template_name_ua', 'required'),
             // The following rule is used by search().
-            array('id, template_name_ua, template_name_ru, template_name_en, description_ua,description_ru, description_en, id_organization, id_checking_account', 'safe'),
+            array('id, template_name_ua, template_name_ru, template_name_en, description_ua,description_ru, 
+            description_en, id_organization, id_checking_account, duration, start_date', 'safe'),
             // @todo Please remove those attributes that should not be searched.
-            array('id, template_name_ua, template_name_ru, template_name_en, description_ua,description_ru, description_en, id_organization, id_checking_account', 'safe', 'on' => 'search'),
+            array('id, template_name_ua, template_name_ru, template_name_en, description_ua,description_ru, 
+            description_en, id_organization, id_checking_account, duration, start_date', 'safe', 'on' => 'search'),
         );
     }
 
@@ -66,6 +70,8 @@ class PaymentSchemeTemplate extends CActiveRecord {
             'description_en' => 'опис en',
             'id_organization' => 'ID organization',
             'id_checking_account' => 'Р/р',
+            'duration' => 'Тривалість',
+            'start_date' => 'Початок договору',
         );
     }
 
@@ -95,6 +101,8 @@ class PaymentSchemeTemplate extends CActiveRecord {
         $criteria->compare('description_en', $this->description_en, true);
         $criteria->compare('id_organization', $this->id_organization, true);
         $criteria->compare('id_checking_account', $this->id_checking_account, true);
+        $criteria->compare('duration', $this->duration, true);
+        $criteria->compare('start_date', $this->start_date, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -116,7 +124,7 @@ class PaymentSchemeTemplate extends CActiveRecord {
 
         $param = Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua";
         foreach ($this->schemes as $scheme){
-            $schema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id, $scheme->schemeName->$param, $scheme->contract);
+            $schema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id, $scheme->schemeName->$param, $scheme->contract, $scheme->template->duration, $scheme->template->start_date);
             array_push($schemes,$schema);
         }
 

@@ -19,6 +19,33 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
+                    <div class="col-md-5">
+                        <label>Початок договору</label>
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="btn btn-default" ng-click="startDateOptions.open()">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </span>
+                        </span>
+                            <input type="text"
+                                   class="form-control"
+                                   uib-datepicker-popup
+                                   ng-model="template.start_date"
+                                   is-open="startDateOptions.popupOpened"
+                                   datepicker-options="openDateOptions"
+                                   clear-text='Очистити'
+                                   close-text='Закрити'
+                                   current-text='Сьогодні'>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label>Тривалість сервісу в місяцях</label>
+                            <input type="number" name="duration" class="form-control" min="1" max="99" ng-model="template.duration" required maxlength="2">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
                     <div class="form-group">
                         <label>Опис, умови, перелік документів (ua)</label>
                         <textarea name="description_ua" class="form-control" ng-model="template.description_ua" style="resize:none"></textarea>
@@ -30,28 +57,6 @@
                     *Опис буде відображатися для користувачів, якщо шаблон встановлений як акційна схема проплат
                     (умови застосування схем; перелік документів, потрібних для активації даних схем і т.д.)
                 </div>
-
-                <div class="row col-md-12">
-                    <div class="col-md-4">
-                        <span class="control-label"><b>Розрахунковий рахунок</b>
-                        (*приорітет р/р закріплений до шаблона - вищий, ніж той який закріплений до сервіса)</span>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="input-group">
-                            <div class="form-group col-xs-10">
-                                <select class="form-control" ng-model="template.company" ng-options="company.id as company.title for company in companies" ng-change="loadCheckingAccounts(template.company)">
-                                    <option value="" disabled>Оберіть компанію</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-xs-10">
-                                <select class="form-control" ng-model="template.id_checking_account" ng-options="account.id as (account.bank_name + ', р/р:' + account.checking_account) for account in checkingAccounts">
-                                    <option value="">рахунок не вибрано</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div>
                     <table class="table">
                         <thead>
