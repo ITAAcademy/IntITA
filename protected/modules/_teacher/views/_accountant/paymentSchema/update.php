@@ -20,6 +20,12 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="form-group">
+                        <label>Тривалість сервісу в місяцях (термін на який розподіляються проплати)</label>
+                        <input type="number" name="duration" class="form-control" ng-model="template.duration" required maxlength="2">
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="form-group">
                         <label>Опис, умови, перелік документів (ua)</label>
                         <textarea name="description_ua" class="form-control" ng-model="template.description_ua" style="resize:none"></textarea>
                         <label>Опис, умови, перелік документів (ru)</label>

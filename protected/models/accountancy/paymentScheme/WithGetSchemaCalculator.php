@@ -12,7 +12,7 @@ trait WithGetSchemaCalculator {
 
         $param = Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua";
         foreach ($this->schemes as $scheme){
-            $schema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id, $scheme->schemeName->$param, $scheme->contract);
+            $schema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id, $scheme->schemeName->$param, $scheme->contract, $scheme->template->duration);
             array_push($schemes,$schema);
         }
 
@@ -23,7 +23,7 @@ trait WithGetSchemaCalculator {
         $serviceModel = CourseService::model()->getService($courseId, $educationForm);
         $schemas = PaymentScheme::model()->getPaymentScheme(null, $serviceModel);
         $scheme=TemplateSchemes::model()->findByAttributes(array('id_template'=>$schemas->id_template,'pay_count'=>1));
-        $actualAdvancePaymentSchema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id,$scheme->schemeName->title_ua, $scheme->contract);
+        $actualAdvancePaymentSchema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id,$scheme->schemeName->title_ua, $scheme->contract, $scheme->template->duration);
 
         return $actualAdvancePaymentSchema;
     }

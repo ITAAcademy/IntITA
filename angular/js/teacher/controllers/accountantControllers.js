@@ -899,6 +899,7 @@ angular
                     description_ua: response.data.description_ua,
                     description_ru: response.data.description_ru,
                     description_en: response.data.description_en,
+                    duration: Number(response.data.duration),
                     schemes: $scope.schemes,
                     company: response.data.checkingAccount?response.data.checkingAccount.corporate_entity:'',
                     id_checking_account: response.data.checkingAccount?response.data.checkingAccount.id:'',

@@ -13,13 +13,15 @@ class LoanPaymentSchema implements IPaymentCalculator{
     private $payCount;
     private $educForm;
     private $name;
+    private $duration;
 
-    function __construct($loan, $payCount, $educForm, $id, $name){
+    function __construct($loan, $payCount, $educForm, $id, $name, $duration){
         $this->id = $id;
         $this->loanValue = $loan;
         $this->payCount = $payCount;
         $this->educForm = $educForm;
         $this->name = $name;
+        $this->duration = $duration;
      }
 
     public function getSumma(IBillableObject $payObject){
@@ -39,7 +41,7 @@ class LoanPaymentSchema implements IPaymentCalculator{
         if($this->payCount>12){
             return $this->payCount;
         }else{
-            $endDate->modify('+1 year');
+            $endDate->modify('+'.$this->duration.' month');
             $interval = date_diff($startDate, $endDate);
             return round($interval->days/30);
         }

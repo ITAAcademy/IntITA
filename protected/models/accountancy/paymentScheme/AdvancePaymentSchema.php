@@ -16,8 +16,9 @@ class AdvancePaymentSchema implements IPaymentCalculator{
     public $name;
     public $loanValue;
     public $contract;
+    public $duration;
 
-    function __construct($discount, $loan, $payCount, $educForm, $id, $name, $contract){
+    function __construct($discount, $loan, $payCount, $educForm, $id, $name, $contract, $duration){
         $this->id = $id;
         $this->discount = min($discount, 100);
         $this->loanValue = $loan;
@@ -25,6 +26,7 @@ class AdvancePaymentSchema implements IPaymentCalculator{
         $this->educForm = $educForm;
         $this->name = $name;
         $this->contract = $contract;
+        $this->duration = $duration;
     }
 
     public function getSumma(IBillableObject $payObject){
@@ -43,8 +45,8 @@ class AdvancePaymentSchema implements IPaymentCalculator{
         $endDate = clone $startDate;
         if($this->payCount>12){
             return $this->payCount;
-        }else{
-            $endDate->modify('+1 year');
+        } else {
+            $endDate->modify('+'.$this->duration.' month');
             $interval = date_diff($startDate, $endDate);
             return round($interval->days/30);
         }
