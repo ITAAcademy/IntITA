@@ -79,16 +79,16 @@ hr {
     margin-top: -83px;
     }
 
-    #carousel {
+    #carousel_settings {
         position: relative;
         width:90%;
         height: 350px;
         margin:0 auto;
     }
-    .slide_footer {
+    .slide_settings {
     margin-right: 2px;
     }
-    #slides {
+    #slides_settings {
         padding: 16px;
         border-style: double;
         border-width: 5px;
@@ -103,7 +103,7 @@ hr {
         height: 185px;
     }
 
-    #slides ul {
+    #slides_settings ul {
         list-style: none;
         width:100%;
         height:250px;
@@ -112,7 +112,7 @@ hr {
         position: relative;
     }
 
-    #slides li {
+    #slides_settings li {
         width:100%;
         height:250px;
         float:left;
@@ -163,7 +163,7 @@ hr {
 </style>
 
 
-<div id="carousel">
+<div id="carousel_settings">
 
     <div class="row button_box" >
         <div class="col-md-12 col-xs-12">
@@ -174,15 +174,15 @@ hr {
     <div class="btn-bar">
         <div id="buttons"><a id="prev" href="#"><</a><a id="next" href="#">></a> </div>
     </div>
-    <div id="slides">
+    <div id="slides_settings">
         <ul>
-            <li class="slide_footer">
+            <li class="slide_settings">
                 <div class="first_box">
                     <div class="row ">
                         <div class="col-md-6 col-sm-12"  >
                             <div class="row group" >
                                 <div  class="col-md-2 col-xs-2 square" >
-                                    <input  class="in_square" type="color" ng-model="settings.header_background_color">
+                                    <input  class="in_square" type="color" ng-model="settings.header_background_color ">
                                 </div>
                                 <div class="col-md-4 col-xs-4 rectangle" >
                                     <input class="in_rectangle"  ng-model="settings.header_background_color" color-picker color-picker-model="settings.header_background_color" type="text" >
@@ -274,7 +274,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide_footer">
+            <li class="slide_settings">
                 <div class="first_box">
                     <div class="row ">
                         <div class="col-md-6 col-sm-12"  >
@@ -369,7 +369,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide_footer">
+            <li class="slide_settings">
                 <div class="first_box">
                     <div class="row " >
                         <div class="col-md-6 col-sm-12"  >
@@ -463,7 +463,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide_footer">
+            <li class="slide_settings">
                 <div class="first_box">
                     <div class="row " >
                         <div class="col-md-6 col-sm-12"  >
@@ -535,7 +535,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide_footer">
+            <li class="slide_settings">
                 <div class="first_box">
                     <div class="row" >
                         <div class="col-md-6 col-sm-12"  >
@@ -614,7 +614,7 @@ hr {
                     </div>
                 </div>
             </li>
-            <li class="slide_footer">
+            <li class="slide_settings">
 
                 <div class="first_box">
                     <div class="row ">
@@ -703,8 +703,8 @@ hr {
 
 <script>
 $jq(document).ready(function () {
-    var slides = $jq('.slide_footer');
-    var container = $jq('#slides ul');
+    var slides = $jq('.slide_settings');
+    var container = $jq('#slides_settings ul');
     var elm = container.find(':first-child').prop("tagName");
     var item_width = container.width();
     var previous = 'prev'; //id of previous button

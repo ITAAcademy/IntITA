@@ -1,8 +1,8 @@
 console.log('cms start');
 
-var content = document.getElementById("page-wrapper");
+var content = document.getElementById("cms_content_generate");
 if(content != null){
-    $jq("#save").click(function(){
+    $jq("#save_cms").click(function(){
         $jq.ajax({
             method: "POST",
             url: basePath + '/_teacher/_admin/cms/generatePage',

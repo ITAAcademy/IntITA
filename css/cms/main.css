@@ -1,6 +1,9 @@
 *{
     font-family: "MyriadPro";
 }
+#cms_content .nav>li>a:hover {
+    background-color: inherit;
+}
 .preview{
     width: 101px;
     margin: 0 auto;
