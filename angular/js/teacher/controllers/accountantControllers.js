@@ -901,6 +901,7 @@ angular
                     description_en: response.data.description_en,
                     duration: Number(response.data.duration),
                     schemes: $scope.schemes,
+                    start_date: response.data.start_date ? new Date(response.data.start_date) : null,
                     company: response.data.checkingAccount?response.data.checkingAccount.corporate_entity:'',
                     id_checking_account: response.data.checkingAccount?response.data.checkingAccount.id:'',
                 };
@@ -955,6 +956,7 @@ angular
         $scope.template = {
             name: '',
             schemes: $scope.schemes,
+            duration: 12,
         }
 
         $scope.payCount = [
@@ -1058,6 +1060,8 @@ angular
                 bootbox.alert(msgError);
             }
         };
+
+        $scope.startDateOptions = new DateOptions();
     }])
 
     .controller('paymentsSchemaTemplateApplyCtrl', ['$scope', 'lodash', '$http', '$state', '$stateParams', 'paymentSchemaService', '$q', '$rootScope',
@@ -2028,6 +2032,7 @@ angular
 
             $http.get(basePath + '/angular/js/teacher/templates/accountancy/agreementExample.json').success(function (response) {
                 $scope.writtenAgreement = response;
+                console.log($scope.writtenAgreement);
             });
 
             $scope.saveAgreementTemplate = function (agreement, action) {

@@ -14,14 +14,16 @@ class LoanPaymentSchema implements IPaymentCalculator{
     private $educForm;
     private $name;
     private $duration;
+    private $start_date;
 
-    function __construct($loan, $payCount, $educForm, $id, $name, $duration){
+    function __construct($loan, $payCount, $educForm, $id, $name, $duration, $start_date){
         $this->id = $id;
         $this->loanValue = $loan;
         $this->payCount = $payCount;
         $this->educForm = $educForm;
         $this->name = $name;
         $this->duration = $duration;
+        $this->start_date = $start_date;
      }
 
     public function getSumma(IBillableObject $payObject){

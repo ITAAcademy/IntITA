@@ -17,8 +17,9 @@ class AdvancePaymentSchema implements IPaymentCalculator{
     public $loanValue;
     public $contract;
     public $duration;
+    public $start_date;
 
-    function __construct($discount, $loan, $payCount, $educForm, $id, $name, $contract, $duration){
+    function __construct($discount, $loan, $payCount, $educForm, $id, $name, $contract, $duration, $start_date){
         $this->id = $id;
         $this->discount = min($discount, 100);
         $this->loanValue = $loan;
@@ -27,6 +28,7 @@ class AdvancePaymentSchema implements IPaymentCalculator{
         $this->name = $name;
         $this->contract = $contract;
         $this->duration = $duration;
+        $this->start_date = $start_date;
     }
 
     public function getSumma(IBillableObject $payObject){
