@@ -13,7 +13,7 @@ class UsersController extends TeacherCabinetController
         $allowedForStudent = ['getGroupNumber'];
 
         $action = Yii::app()->controller->action->id;
-        return (Yii::app()->user->model->isDirector() || Yii::app()->user->model->isSuperAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isAccountant() && !in_array($action, $allowedDenySetActions)) ||
+        return (Yii::app()->user->model->isDirector() || Yii::app()->user->model->isApiKeyManager() || Yii::app()->user->model->isSuperAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isAccountant() && !in_array($action, $allowedDenySetActions)) ||
         (Yii::app()->user->model->isSuperVisor() || Yii::app()->user->model->isTrainer() && in_array($action, $allowedUsersTables)) ||
         Yii::app()->user->model->isAdmin() ||
         (Yii::app()->user->model->isContentManager() && in_array($action, $allowedCMActions)) ||
@@ -51,6 +51,7 @@ class UsersController extends TeacherCabinetController
         $counters["supervisors"] = UserSuperVisor::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
         $counters["superAdmins"] = UserSuperAdmin::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
         $counters["directors"] = UserDirector::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
+        $counters["apiKeyManagers"] = UserApiKeyManager::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
         $counters["auditors"] = UserAuditor::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
 
         $i=0;
@@ -82,6 +83,7 @@ class UsersController extends TeacherCabinetController
         $counters["supervisors"] = UserSuperVisor::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL".$sql);
         $counters["superAdmins"] = UserSuperAdmin::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
         $counters["directors"] = UserDirector::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
+        $counters["apiKeyManagers"] = UserApiKeyManager::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
         $counters["auditors"] = UserAuditor::model()->with('user')->count("user.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
 
         $i=0;
@@ -178,6 +180,10 @@ class UsersController extends TeacherCabinetController
         $this->renderPartial('tables/_directorsTable', array(), false, true);
     }
 
+    public function actionApiKeyManagers()
+    {
+        $this->renderPartial('tables/_apiKeyManagerTable', array(), false, true);
+    }
     public function actionTeacherConsultants($organization)
     {
         $this->renderPartial('tables/_teacherConsultantsTable', array('organization'=>$organization), false, true);
@@ -476,6 +482,17 @@ class UsersController extends TeacherCabinetController
         $criteria = new CDbCriteria();
         $criteria->addCondition('end_date IS NULL');
         $ngTable = new NgTableAdapter('UserDirector', $requestParams);
+        $ngTable->mergeCriteriaWith($criteria);
+        $result = $ngTable->getData();
+        echo json_encode($result);
+    }
+
+    public function actionGetApiKeyManagersList()
+    {
+        $requestParams = $_GET;
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('end_date IS NULL');
+        $ngTable = new NgTableAdapter('UserApiKeyManager', $requestParams);
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
         echo json_encode($result);

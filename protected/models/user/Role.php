@@ -62,6 +62,9 @@ abstract class Role
             case "supervisor":
                 $model = new SuperVisor();
                 break;
+            case "api_key_manager":
+                $model = new ApiKeyManager();
+                break;
             default :
                 $model = null;
         }
@@ -110,6 +113,9 @@ abstract class Role
                 break;
             case "super_admin":
                 $model = new SuperAdmin();
+                break;
+            case "api_key_manager":
+                $model = new ApiKeyManager();
                 break;
             default :
                 $model = null;

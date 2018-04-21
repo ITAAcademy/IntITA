@@ -272,6 +272,10 @@ class RegisteredUser
     {
         return $this->hasRole(UserRoles::DIRECTOR);
     }
+    public function isApiKeyManager()
+    {
+        return $this->hasRole(UserRoles::API_KEY_MANAGER);
+    }
 
     public function isAuditor()
     {
