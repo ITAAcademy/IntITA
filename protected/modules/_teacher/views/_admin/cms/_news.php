@@ -13,7 +13,7 @@
                 <p class="text-left text" ng-style="{color:settings.news_date_color}">{{list.date}}</p>
                 <div class="row text" ng-style="{color:settings.text_color}">
                     <div class="col-md-4 col-sm-5" >
-                        <img src="/{{list.img}}" class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
+                        <img src="{{list.img}}" class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
                     </div>
                     <div class="col-md-8 col-sm-7" style="box-shadow: 0 0 5px {{settings.news_text_border_color}}">
                         {{list.text| limitTo:list.strLimit }} {{list.text.length > lists[$index].strLimit ? '&hellip;' : ''}}
@@ -39,7 +39,7 @@
                         </span>
                     </div>
                     <div class="col-md-4 col-sm-5">
-                        <img src="/{{list.img}}" class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
+                        <img src="{{list.img}}" class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
                     </div>
                 </div>
             </div>
