@@ -19,6 +19,7 @@ class AllRolesDataSource implements IRolesDataSource
             UserRoles::STUDENT,
             UserRoles::TENANT,
             UserRoles::SUPERVISOR,
+            UserRoles::API_KEY_MANAGER,
         );
     }
 
@@ -52,6 +53,7 @@ class AllRolesDataSource implements IRolesDataSource
             UserRoles::DIRECTOR,
             UserRoles::SUPER_ADMIN,
             UserRoles::AUDITOR,
+            UserRoles::API_KEY_MANAGER,
         );
     }
 }

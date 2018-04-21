@@ -29,6 +29,7 @@ angular
     .controller('careerStudentsCtrl', careerStudentsCtrl)
     .controller('contractStudentsCtrl', contractStudentsCtrl)
     .controller('visitInfoCtrl', visitInfoCtrl)
+    .controller('apiKeyManagerTableCtrl', apiKeyManagerTableCtrl)
 
 function blockedUsersCtrl ($http, $scope, usersService, NgTableParams) {
     $scope.blockedUsersTable = new NgTableParams({
@@ -838,6 +839,7 @@ function usersTabsCtrl ($scope, $state, usersService, lodash) {
         { title: "Автори контенту", route: "contentAuthors"},
         { title: "Викладачі", route: "teacherConsultants"},
         { title: "Консультанти", route: "tenants"},
+        { title: "Api Key Manager", route: "apiKeyManagers"},
     ];
 
     usersService
@@ -875,6 +877,7 @@ function organizationUsersTabsCtrl ($scope, $state, usersService, lodash) {
         { title: "Автори контенту", route: "contentAuthors"},
         { title: "Викладачі", route: "teacherConsultants"},
         { title: "Консультанти", route: "tenants"},
+        { title: "Api Key Manager", route: "apiKeyManagers"},
     ];
 
     usersService
@@ -1581,4 +1584,26 @@ function visitInfoCtrl($scope, trainerService, usersService, NgTableParams, myFa
         .catch(function(){
             bootbox.alert('Помилка, зверніться до адміністратора');
         });
+}
+function apiKeyManagerTableCtrl($scope, usersService, NgTableParams, roleService) {
+    $scope.apiKeyManagerTableParams = new NgTableParams({}, {
+        getData: function (params) {
+            return usersService
+                .apiKeyManagersList(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    return data.rows;
+                });
+        }
+    });
+
+    $scope.cancelRoleByDirector = function (user, role) {
+        bootbox.confirm('Скасувати роль?', function (result) {
+            if (result) {roleService.cancelRoleByDirector({'userId': user, 'role': role}).$promise.then(function successCallback(response) {
+                if(response.data=='success') $scope.apiKeyManagerTableParams.reload();
+                else bootbox.alert(response.data);
+            }, function errorCallback() { bootbox.alert("Операцію не вдалося виконати");});}
+        });
+    }
 }

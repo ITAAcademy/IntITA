@@ -40,6 +40,7 @@ angular
         'paymentsSchemes.directives',
         'chatIntITAMessenger',
         'directorRouter',
+        'apiKeyManagerRouter',
         'superAdminRouter',
         'auditorRouter',
         'ngImgCrop',
