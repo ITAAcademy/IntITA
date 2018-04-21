@@ -34,7 +34,7 @@ $lastLink=Yii::app()->user->isGuest?null:Yii::app()->user->model->lastLink();
                 <li><a href="<?php echo Yii::app()->createUrl('/_teacher/cabinet/index'); ?>"><?php echo Yii::t('profile', '0815'); ?></a></li>
             <?php } ?>
             <li><a href="http://profitday.info/upcomingevents" target="_blank"><?php echo Yii::t('header', '0912'); ?></a></li>
-               <li><a href="<?php echo Mainpage::getPartnerLink() ?>" target="_blank"><?php echo Yii::t('header', '0981'); ?></a></li>
+            <li><a href="<?php echo Config::getBaseUrl() . '/forPartners' ?>" ><?php echo Yii::t('header', '0981'); ?></a></li>
             <li><a href="https://hack.intita.com" target="_blank"><?php echo Yii::t('header', 'Школа хакерів'); ?></a></li>
 <!--            <li>-->
 <!--                <a href="--><?php //echo Config::getBaseUrl() . '/library'; ?><!--">Бібліотека</a>-->
