@@ -44,10 +44,6 @@
     max-width: 140px;
     max-height: 40px;
 }
-
-.footer_logo2 {
-    display: none;
-}
 .footer_contact {
     line-height: 14px;
     font-size: 14px;
@@ -126,9 +122,6 @@
     padding-left: 10px;
     }
     .logo{
-    display: none;
-    }
-    .footer_logo2{
     display: block;
     padding-top: 10px;
     padding-left: 10px;
@@ -168,7 +161,7 @@
         display: block;
         padding-left: 20px;
     }
-    .footer_logo2{
+    .logo{
         padding-left: 25px;
     }
 }

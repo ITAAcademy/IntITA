@@ -1,12 +1,8 @@
 <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
 
 <script type="text/javascript">
-
-
-//    "http://intita/domains/Madagascar1/lists/212018715name.jpg"
-    domainPath='<?php echo  Config::getBaseUrl()."/domains/". Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()))->domain_name.Yii::app()->user->model->getCurrentOrganizationId()."/lists/" ; ?>';
-    domainPathNews='<?php echo  Config::getBaseUrl()."/domains/". Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()))->domain_name.Yii::app()->user->model->getCurrentOrganizationId()."/news/" ; ?>';
-
+    domainPath='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/lists/"   ?>';
+    domainPathNews='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/news/"   ?>';
 </script>
 <div ng-controller="cmsCtrl">
         <?php
