@@ -39,13 +39,22 @@
 
    public function actionChangeSubdomain()
     {
-
-     return $this->renderJSON(['data'=>true]);
+     $model = $this->loadModel(Yii::app()->request->getPost('id'));
+     $attribute = Yii::app()->request->getPost('attribute');
+     $model->$attribute = Yii::app()->request->getPost('value');
+     $model->save();
+     return $this->renderJSON(['data'=>$model->save(),'message'=>$model->getError($attribute)]);
     }
 
    protected function loadModel($id)
     {
-     return Subdomains::model()->findByPk((int)$id);
+     $model = Subdomains::model()->findByPk((int)$id);
+     if ($model != null){
+
+      return $model;
+     }
+      throw new CHttpException('404','Субдомен не знайдено');
+
     }
 
 

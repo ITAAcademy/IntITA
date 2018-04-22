@@ -202,7 +202,6 @@ class CmsController extends TeacherCabinetController
 
     public function actionGeneratePage()
     {
-
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
         $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
         $subdomain->createSubdomainDirectory($path_domain);
