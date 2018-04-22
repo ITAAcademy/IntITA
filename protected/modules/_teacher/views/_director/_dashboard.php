@@ -32,6 +32,7 @@
                     <li><a ui-sref="auditors">Аудитори</a></li>
                     <li><a ui-sref="superAdmins">Суперадміни</a></li>
                     <li><a ui-sref="admins">Адміністратори (локальні)</a></li>
+                    <li><a ui-sref="apiKeyManagers">Api Key Manager</a></li>
                 </ul>
             </div>
             <div class="panel-footer">

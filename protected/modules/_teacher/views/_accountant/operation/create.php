@@ -132,7 +132,7 @@
                         </div>
 
                         <div ng-repeat="invoice in operation.invoices" class="form-group row">
-                            <label class="control-label col-md-2">Рахунок</label>
+                            <label class="control-label col-md-2">Рахунок{{invoice.id}}</label>
                             <div class="col-md-7">
                                 <label class="control-label"
                                        data-value="{{invoice}}">{{typeaheadProviders.invoice.label(invoice)}}</label>

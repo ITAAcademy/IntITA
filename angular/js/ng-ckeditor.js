@@ -100,7 +100,7 @@
                             { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','RightSpan','-','BidiLtr','BidiRtl' ] },
                             { name: 'styles', items : [ 'Font','FontSize' ] },
                             '/',
-                            { name: 'agreement', items : [ 'a_number','a_date','a_description','a_summa','a_invoices','a_service_hours','a_sum_string'] },
+                            { name: 'agreement', items : [ 'a_number','a_date','a_description','a_summa','a_invoices','a_service_hours','a_sum_string','a_start_end_date'] },
                             '/',
                             { name: 'user', items : [ 'u_user_passport','u_user_passport_issued','u_user_passport_date','u_user_inn','u_user_data_address','u_name','u_user_phone','u_user_email'] },
                             // '/',

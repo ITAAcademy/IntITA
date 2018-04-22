@@ -10,7 +10,7 @@
 	"general_hover_color":"#666666",
 	"text_color":"#696969",
 
-	"about_us_background_color":"#fafafa",
+	"about_us_background_color":"#ffffff",
 	"news_background_color": "#f3f3f3",
 	"news_image_border_color":"#4b75a4",
 	"news_text_border_color": "#ACACAC",
@@ -32,7 +32,7 @@
 	"logo": "http://intita.com/images/mainpage/Logo_small.png",
 	"footer_logo2": "http://intita.com/images/mainpage/Logo_small800.png",
 
-	"footer_background_color":"#fafafa",
+	"footer_background_color":"#ffffff",
 	"footer_link_color": "#114988",
 	"footer_hover_color":"#666666",
 	"footer_border_color": "#44bdf6",

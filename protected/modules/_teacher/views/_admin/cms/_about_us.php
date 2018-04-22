@@ -10,20 +10,35 @@
         <div>
             <div class="col-md-2 col-xs-3"></div>
             <div class="col-md-8 col-xs-6">
-                <div class="row ">
-                    <div class="block_about " ng-repeat="item in listsItemMenu track by $index">
-                        <div class="icon_about">
-                            <img id="image_about" src="{{item.image}}" >
+                <div class="row  card-group">
+                    <div class="block_about card" ng-repeat="item in listsItemMenu track by $index">
+
+                        <div class="icon_about card-img-top">
+                            <img class="image_about" ng-src='{{item.id && domainPath+item.image || item.image}}'>
                         </div>
-                        <div class="title_about" ng-style="{color:settings.subtitle_color}">{{item.title}}<p
+                        <div class="title_about card-body" ng-style="{color:settings.subtitle_color}">{{item.title}}<p class="card-text"
                                     ng-style="{color:settings.text_color}">{{item.description}}</p>
                         </div>
-                        <a href="{{item.link}}" ng-style="{color:settings.general_link_color}">детальніше ...</a>
+
+
+                        <div class="card-footer">
+                            <a href="{{item.link}}" ng-style="{color:settings.general_link_color}">детальніше ...</a>
+                        </div>
                     </div>
                 </div>
+
+
+
+
+
+
                 <div class="col-md-2 col-xs-3"></div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
 

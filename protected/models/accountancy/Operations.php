@@ -106,7 +106,9 @@ class Operations {
             }
             $transaction->commit();
             $agreement = UserAgreements::model()->findByPk($operation['agreementId']);
-            $agreement->updateNextInvoicesDate();
+            if($agreement->educForm==EducationForm::ONLINE){
+                $agreement->updateNextInvoicesDate();
+            }
             $agreement->provideAccess();
         } catch (Exception $e) {
             $transaction->rollback();

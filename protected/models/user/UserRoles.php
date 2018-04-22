@@ -15,4 +15,5 @@ class UserRoles extends Enum
     const DIRECTOR = 'director';
     const AUDITOR = 'auditor';
     const SUPER_ADMIN = 'super_admin';
+    const API_KEY_MANAGER = 'api_key_manager';
 }

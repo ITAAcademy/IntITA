@@ -93,6 +93,10 @@ angular
                         url: url + '/getDirectorsList',
                         method: 'GET'
                     },
+                    apiKeyManagersList:{
+                        url: url + '/getApiKeyManagersList',
+                        method: 'GET'
+                    },
                     auditorsList: {
                         url: url + '/getAuditorsList',
                         method: 'GET'

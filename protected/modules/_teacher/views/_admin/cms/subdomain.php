@@ -1,4 +1,5 @@
 <div class="panel panel-default" ng-controller="subdomainCtrl">
+    <p ng-if="subdomainsTableData.total()!=0"><a class="text-right" href="#/admin/intita_cms">Конструктор сайту</a></p>
     <a href="" ng-show="subdomainsTableData.total()==0" ng-click="showForm=!showForm">Створити субдомен</a>
     <form name='subdomainForm' ng-if="showForm && subdomainsTableData.total()==0">
         <label>Назва піддомену*</label>
