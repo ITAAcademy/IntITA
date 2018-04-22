@@ -2,8 +2,10 @@ angular
     .module('cmsApp')
     .controller('cmsCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
+            // $scope.subdomain = subdomain;
+            // $scope.path_domain = path_domain;
             $scope.domainPath = domainPath;
-            $scope.domainPathNews = domainPathNews;
+            // $scope.domainPathNews = domainPathNews;
 
             $scope.changePageHeader('Конструктор сайту');
 

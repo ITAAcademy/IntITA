@@ -49,11 +49,11 @@
                         <img id="footerLogo" ng-src='{{settings.id && domainPath+settings.logo || settings.logo}}'>
                     </a>
                 </div>
-                <div class="footer_logo2">
-                    <a href="/">
-                        <img id="footerLogo800" src="{{settings.footer_logo2}}">
-                    </a>
-                </div>
+<!--                <div class="footer_logo2">-->
+<!--                    <a href="/">-->
+<!--                        <img id="footerLogo800" src="{{settings.footer_logo2}}">-->
+<!--                    </a>-->
+<!--                </div>-->
                 <div class="footer_contact" ng-style="{color:settings.footer_link_color}"  >
                     <div><span ng-bind="settings.mobile_phone"></span></div>
                     <div><span ng-bind="settings.mobile_phone_2"></span></div>

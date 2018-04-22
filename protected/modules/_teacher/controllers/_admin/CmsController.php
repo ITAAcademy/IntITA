@@ -172,8 +172,8 @@ class CmsController extends TeacherCabinetController
         $folderAddress = $path_domain . "/news/";
 
         $imageAddress = $_POST["image"];
-        if (file_exists($folderAddress . $imageAddress)) {
-            unlink($folderAddress . $imageAddress);
+        if ($previousImage && file_exists($folderAddress . $previousImage)) {
+            unlink($folderAddress . $previousImage);
         }
         $result = ['message' => 'OK'];
         $statusCode = 201;

@@ -1,7 +1,7 @@
 
 <div class="news_wrapper" ng-style="{'background-color':settings.news_background_color}" >
 
-    <div class="container text-center">
+    <div class="container_n text-center">
         <h1 class="text-muted" ng-style="{color:settings.title_color}"  ng-bind="settings.title_2"></h1>
         <h3 class="text-primary info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}"   ng-bind="settings.subtitle_2"></h3>
     </div>
@@ -11,16 +11,11 @@
             <div ng-if="$index%2==0">
                 <h3 class="text-left text" ng-style="{color:settings.title_color}">{{list.title}}</h3>
                 <p class="text-left text" ng-style="{color:settings.news_date_color}">{{list.date}}</p>
-                <div class="row text" ng-style="{color:settings.text_color}">
+                <div class="row text" id="column_news" ng-style="{color:settings.text_color}">
                     <div class="col-md-4 col-sm-5" >
 
 <!--                        <img src="{{list.img}}" class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}">-->
                         <img src='{{list.id && domainPathNews+ list.img || list.img}}' class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
-
-
-
-
-
 
                     </div>
                     <div class="col-md-8 col-sm-7" style="box-shadow: 0 0 5px {{settings.news_text_border_color}}">
@@ -36,7 +31,7 @@
             <div ng-if="$index%2!=0">
                 <h3 class="text-right text" ng-style="{color:settings.title_color}">{{list.title}}</h3>
                 <p class="text-right text" ng-style="{color:settings.news_date_color}">{{list.date}}</p>
-                <div class="row text" ng-style="{color:settings.text_color}">
+                <div class="row text" id="column_news" ng-style="{color:settings.text_color}">
                     <div class="col-md-8 col-sm-7" style="box-shadow: 0 0 5px {{settings.news_text_border_color}}">
                         {{list.text| limitTo:lists[$index].strLimit }}{{list.text.length > lists[$index].strLimit ? '&hellip;' : ''}}
                         <span ng-if="list.text.length > lists[$index].strLimit">

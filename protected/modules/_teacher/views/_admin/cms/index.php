@@ -1,12 +1,17 @@
 <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
 
 <script type="text/javascript">
-
+    //subdomain = "<?php //echo  Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId())) ?>//";
+    //path_domain = "<?php //echo  Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema()?>//";
+    //domainPath = "<?php //echo  $path_domain . '/lists/' ?>//";
+    //domainPathNews = "<?php //echo  $path_domain . '/news/' ?>//";
 
 //    "http://intita/domains/Madagascar1/lists/212018715name.jpg"
-    domainPath='<?php echo  Config::getBaseUrl()."/domains/". Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()))->domain_name.Yii::app()->user->model->getCurrentOrganizationId()."/lists/" ; ?>';
-    domainPathNews='<?php echo  Config::getBaseUrl()."/domains/". Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()))->domain_name.Yii::app()->user->model->getCurrentOrganizationId()."/news/" ; ?>';
-
+//    domainPath='<?php //echo  Config::getBaseUrl()."/domains/". Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()))->domain_name.Yii::app()->user->model->getCurrentOrganizationId()."/lists/" ; ?>//';
+//    domainPathNews='<?php //echo  Config::getBaseUrl()."/domains/". Subdomains::model()->findByAttributes(array('organization'=> Yii::app()->user->model->getCurrentOrganizationId()))->domain_name.Yii::app()->user->model->getCurrentOrganizationId()."/news/" ; ?>//';
+    domainPath='<?php echo  Yii::app()->basePath . '/../domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema(). '/lists/'  ?>';
+    domainPathNews='<?php Config::getBaseUrl() . '/../domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/news/"   ?>';
+console.log('zzzzzzz'+'<?php echo  Config::getBaseUrl(); ?>');
 </script>
 <div ng-controller="cmsCtrl">
         <?php
