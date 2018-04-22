@@ -10,6 +10,7 @@
 </style>
 
 <div class="form-group form-link" ng-controller="cmsMenuListCtrl">
+    <p>Повернутися до <a class="text-right" href="#/admin/intita_cms">Конструктора сайту</a></p>
     <label>Список меню</label>
     <div ng-repeat="list in lists track by $index" class="row">
         <div class="col-md-2">
@@ -19,7 +20,7 @@
             <input type="text" class="form-control" placeholder="Посилання" ng-model="list.link">
         </div>
         <div class="col-md-2">
-            <!--<img class="preview" src="/{{list.image}}">-->
+            <img class="preview"  ng-src='{{list.id && domainPath+list.image || list.image}}'>
             <input id="logoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control logoUpdate" placeholder="Логотип" name="logo">
         </div>
         <div class="col-md-5">

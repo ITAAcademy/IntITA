@@ -62,7 +62,7 @@
             </div>
 
             <div class="footer_menu col-md-6 col-sm-7 hidden-xs">
-                <a ng-style="{color:settings.footer_link_color}"  ng-repeat="section in listsItemMenu track by $index" href= {{section.link}}><span>{{section.title}}</span></a>
+                <a ng-style="{color:settings.footer_link_color}"  ng-repeat="section in listsItemMenu track by $index" href={{section.link}}><span>{{section.title}}</span></a>
             </div>
         </div>
     </div>

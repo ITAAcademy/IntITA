@@ -2,10 +2,8 @@ angular
     .module('cmsApp')
     .controller('cmsCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
-            // $scope.subdomain = subdomain;
-            // $scope.path_domain = path_domain;
             $scope.domainPath = domainPath;
-            // $scope.domainPathNews = domainPathNews;
+            $scope.domainPathNews = domainPathNews;
 
             $scope.changePageHeader('Конструктор сайту');
 
@@ -115,6 +113,13 @@ angular
         function ($scope, cmsService, $http) {
             $scope.changePageHeader('Menu list');
 
+            cmsService.domainPath().$promise
+                .then(function successCallback(response) {
+                    $scope.domainPath = response.domainPath+'/lists/';
+                }, function errorCallback() {
+                    bootbox.alert("Отримати піддомен не вдалося");
+                });
+
             $scope.loadCmsMenuList = function () {
                 cmsService.menuList().$promise
                     .then(function successCallback(response) {
@@ -187,6 +192,13 @@ angular
         function ($scope, cmsService, $http) {
             $scope.changePageHeader('Конструктор новин');
 
+            cmsService.domainPath().$promise
+                .then(function successCallback(response) {
+                    $scope.domainPathNews = response.domainPath+'/news/';
+                }, function errorCallback() {
+                    bootbox.alert("Отримати піддомен не вдалося");
+                });
+
             $scope.loadCmsNews = function () {
                 cmsService.newsList().$promise
                     .then(function successCallback(response){
@@ -230,8 +242,8 @@ angular
                 });
             };
 
-            $scope.removeNews = function (id) {
-                cmsService.removeNews({id: id}).$promise
+            $scope.removeNews = function (id, image) {
+                cmsService.removeNews({id: id, image: image}).$promise
                     .then(function successCallback() {
                         $scope.loadCmsNews();
                     }, function errorCallback(response){

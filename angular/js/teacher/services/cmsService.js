@@ -63,5 +63,9 @@ angular
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)
                     },
+                    domainPath: {
+                        url: url + '/getDomainPath',
+                        method: 'GET',
+                    },
                 });
         }])

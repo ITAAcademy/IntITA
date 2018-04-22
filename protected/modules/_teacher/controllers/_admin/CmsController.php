@@ -69,7 +69,9 @@ class CmsController extends TeacherCabinetController
             $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
             $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $menuLink->attributes = $params;
-            $menuLink->image = $endAddress;
+            if(isset($endAddress)){
+                $menuLink->image = $endAddress;
+            }
             if (!$menuLink->save()) {
                 throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
             }
@@ -151,9 +153,9 @@ class CmsController extends TeacherCabinetController
             $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $new->date = $current_date;
             $new->attributes = $params;
-
-            $new->img = $endAddress;
-
+            if(isset($endAddress)){
+                $new->img = $endAddress;
+            }
             if (!$new->save()) {
                 throw new \application\components\Exceptions\IntItaException(500, $new->getValidationErrors());
             }
@@ -170,10 +172,10 @@ class CmsController extends TeacherCabinetController
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
         $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
         $folderAddress = $path_domain . "/news/";
-
         $imageAddress = $_POST["image"];
-        if ($previousImage && file_exists($folderAddress . $previousImage)) {
-            unlink($folderAddress . $previousImage);
+
+        if (file_exists($folderAddress . $imageAddress)) {
+            unlink($folderAddress . $imageAddress);
         }
         $result = ['message' => 'OK'];
         $statusCode = 201;
@@ -290,6 +292,13 @@ class CmsController extends TeacherCabinetController
         $model->save();
 
         return $this->renderJSON(['data' => true]);
+    }
+
+    public function actionGetDomainPath()
+    {
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        $path_domain = Config::getBaseUrl() . '/domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+        return $this->renderJSON(['domainPath' => $path_domain]);
     }
 
 }

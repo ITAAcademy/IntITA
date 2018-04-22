@@ -6,7 +6,7 @@
             <input type="text" class="form-control" placeholder="Заголовок" ng-model="list.title">
         </div>
         <div class="col-md-2">
-            <!--<img class="preview" src="{{list.img}}">-->
+            <img class="preview"  ng-src='{{list.id && domainPathNews+list.img || list.img}}'>
             <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
         </div>
         <div class="col-md-4">
