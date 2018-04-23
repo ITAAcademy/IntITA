@@ -88,7 +88,7 @@ hr {
     .slide_settings {
     margin-right: 2px;
     }
-    #slides_settings {
+    #slides_settings_1 {
         padding: 16px;
         border-style: double;
         border-width: 5px;
@@ -103,7 +103,7 @@ hr {
         height: 185px;
     }
 
-    #slides_settings ul {
+    #slides_settings_1 ul {
         list-style: none;
         width:100%;
         height:250px;
@@ -112,7 +112,7 @@ hr {
         position: relative;
     }
 
-    #slides_settings li {
+    #slides_settings_1 li {
         width:100%;
         height:250px;
         float:left;
@@ -174,7 +174,7 @@ hr {
     <div class="btn-bar">
         <div id="buttons"><a id="prev" href="#"><</a><a id="next" href="#">></a> </div>
     </div>
-    <div id="slides_settings">
+    <div id="slides_settings_1">
         <ul>
             <li class="slide_settings">
                 <div class="first_box">
@@ -703,7 +703,7 @@ hr {
 <script>
 $jq(document).ready(function () {
     var slides = $jq('.slide_settings');
-    var container = $jq('#slides_settings ul');
+    var container = $jq('#slides_settings_1 ul');
     var elm = container.find(':first-child').prop("tagName");
     var item_width = container.width();
     var previous = 'prev'; //id of previous button

@@ -172,11 +172,11 @@ function subdomainsCtrl($scope, $rootScope, $http, NgTableDataService, NgTablePa
       })
      }
      
-     $scope.changeSubdomain = function (subdomainId,newData) {
+     $scope.changeActive = function (subdomainId,state) {
       $http({
        method:'POST',
        url: basePath + '/_teacher/_super_admin/subdomains/changeSubdomain',
-       data:$jq.param({id:subdomainId,subdomain:newData}),
+       data:$jq.param({id:subdomainId,attribute:'active', value: parseInt((!parseInt(state,10)*1),10)}),
        headers:{'Content-Type': 'application/x-www-form-urlencoded'}
       }).success(function (response) {
        if (response.data === true){
@@ -186,21 +186,11 @@ function subdomainsCtrl($scope, $rootScope, $http, NgTableDataService, NgTablePa
         });
         $scope.subdomainsTableData.reload();
        }
-       else{
-        $ngBootbox.alert(response.message)
-       }
-      })
-     }
- 
-     $scope.changeState = function (subdomainId,state) {
-      $http({
-       method:'POST',
-       url: basePath + '/_teacher/_super_admin/subdomains/changeSubdomain',
-       data:$jq.param({id:bannerId,attribute:'visible', value: parseInt((!parseInt(state,10)*1),10)}),
-       headers:{'Content-Type': 'application/x-www-form-urlencoded'}
-      }).success(function (response) {
-       if (response.data === true){
-        $scope.bannersTableData.reload();
+       else {
+        ngToast.create({
+         className: 'error',
+         content: response.message,
+        });
        }
       })
      };
