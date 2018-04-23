@@ -48,19 +48,19 @@ $this->breadcrumbs = array(
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
-                    <span class='ico' ng-click="addRevisionToModuleFromCurrentList(revision.id_revision, $index, revisionProposedToRelease, searchCurrent)">+</span>
+                    <span class='ico' ng-click="addRevisionToModuleFromCurrentList(revision.id_lecture_revision, $index, revisionProposedToRelease, searchCurrent)">+</span>
                 </div>
                 <div ng-if="current.released" ng-repeat="revision in approvedLecture.current.released | filter:searchCurrent track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
-                    <span class='ico' ng-click="addRevisionToModuleFromCurrentList(revision.id_revision, $index, revisionReleased, searchCurrent)">+</span>
+                    <span class='ico' ng-click="addRevisionToModuleFromCurrentList(revision.id_lecture_revision, $index, revisionReleased, searchCurrent)">+</span>
                 </div>
                 <div ng-if="current.approved" ng-repeat="revision in approvedLecture.current.approved | filter:searchCurrent track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
-                    <span class='ico' ng-click="addRevisionToModuleFromCurrentList(revision.id_revision, $index, revisionApproved, searchCurrent)">+</span>
+                    <span class='ico' ng-click="addRevisionToModuleFromCurrentList(revision.id_lecture_revision, $index, revisionApproved, searchCurrent)">+</span>
                 </div>
             </div>
         </div>
@@ -85,19 +85,19 @@ $this->breadcrumbs = array(
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
-                    <span class='ico' ng-click="addRevisionToModuleFromForeignList(revision.id_revision, $index, revisionProposedToRelease, searchForeign)">+</span>
+                    <span class='ico' ng-click="addRevisionToModuleFromForeignList(revision.id_lecture_revision, $index, revisionProposedToRelease, searchForeign)">+</span>
                 </div>
                 <div ng-if="foreign.released" ng-repeat="revision in approvedLecture.foreign.released | filter:searchForeign track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
-                    <span class='ico' ng-click="addRevisionToModuleFromForeignList(revision.id_revision, $index, revisionReleased, searchForeign)">+</span>
+                    <span class='ico' ng-click="addRevisionToModuleFromForeignList(revision.id_lecture_revision, $index, revisionReleased, searchForeign)">+</span>
                 </div>
                 <div ng-if="foreign.approved" ng-repeat="revision in approvedLecture.foreign.approved | filter:searchForeign track by $index">
                     <a ng-href="{{revision.link}}" target="_blank" ng-class="{notActive: !revision.author}">
                         Ревізія №{{revision.id_lecture_revision}} {{revision.title}}
                     </a>
-                    <span class='ico' ng-click="addRevisionToModuleFromForeignList(revision.id_revision, $index, revisionApproved, searchForeign)">+</span>
+                    <span class='ico' ng-click="addRevisionToModuleFromForeignList(revision.id_lecture_revision, $index, revisionApproved, searchForeign)">+</span>
                 </div>
             </div>
         </div>

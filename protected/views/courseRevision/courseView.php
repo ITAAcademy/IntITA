@@ -90,7 +90,7 @@ $this->breadcrumbs = array(
         <br>
     </div>
     <br>
-        <div class="container">
+        <div class="container" ng-cloak>
             <div class="row">
                 <div class="panel-body wrap-tabel-module">
                     <div class="panel panel-info">
@@ -101,8 +101,7 @@ $this->breadcrumbs = array(
                         <div class="col-md-2 col-xs-2"></div>
                     </div>
                 </div>
-                <ul class="list-group" dnd-list dnd-drop="callback({targetList: model, targetIndex: index})"
-            >
+                <ul class="list-group" dnd-list dnd-drop="callback({targetList: model, targetIndex: index})">
                     <li class="list-group-item" ng-repeat="item in model track by $index"
                     dnd-draggable="null" dnd-callback="onDrop(model, $index, targetList, targetIndex)">
                         <div class="col-md-2 col-xs-2">

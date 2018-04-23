@@ -16,8 +16,10 @@ class AdvancePaymentSchema implements IPaymentCalculator{
     public $name;
     public $loanValue;
     public $contract;
+    public $duration;
+    public $start_date;
 
-    function __construct($discount, $loan, $payCount, $educForm, $id, $name, $contract){
+    function __construct($discount, $loan, $payCount, $educForm, $id, $name, $contract, $duration, $start_date){
         $this->id = $id;
         $this->discount = min($discount, 100);
         $this->loanValue = $loan;
@@ -25,6 +27,8 @@ class AdvancePaymentSchema implements IPaymentCalculator{
         $this->educForm = $educForm;
         $this->name = $name;
         $this->contract = $contract;
+        $this->duration = $duration;
+        $this->start_date = $start_date;
     }
 
     public function getSumma(IBillableObject $payObject){
@@ -43,24 +47,24 @@ class AdvancePaymentSchema implements IPaymentCalculator{
         $endDate = clone $startDate;
         if($this->payCount>12){
             return $this->payCount;
-        }else{
-            $endDate->modify('+1 year');
+        } else {
+            $endDate->modify('+'.$this->duration.' month');
             $interval = date_diff($startDate, $endDate);
-            return round($interval->days/30);
+            return $interval->days;
         }
     }
 
     public function getInvoicesList(IBillableObject $payObject,  DateTime $startDate){
         $invoicesList = [];
         $currentTimeInterval = $startDate;
-        $timeInterval = ceil($this->getDuration($startDate)/ $this->payCount); //months
+        $timeInterval = ceil($this->getDuration($startDate)/ $this->payCount); //days
         $arrayInvoiceSumma = GracefulDivision::getArrayInvoiceSumma($this->getSumma($payObject),
             $this->payCount);
 
         for($i = 0; $i < $this->payCount; $i++){
             if(isset($arrayInvoiceSumma[$i])){
                 array_push($invoicesList, Invoice::createInvoice($arrayInvoiceSumma[$i], $currentTimeInterval));
-                $currentTimeInterval = $currentTimeInterval->modify(' +'.$timeInterval.' month');
+                $currentTimeInterval = $currentTimeInterval->modify(' +'.$timeInterval.' day');
             }
         }
         return $invoicesList;

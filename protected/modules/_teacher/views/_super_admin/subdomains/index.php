@@ -18,7 +18,7 @@
                 <tr ng-repeat="row in $data"style="cursor: pointer;">
                     <td data-title="'ID'">{{row.id}}</td>
                     <td data-title="'Субдомен'">{{row.domain_name}}</td>
-                    <td data-title="'Організація'">{{row.organization}}</a></td>
+                    <td data-title="'Організація'">{{row.organization.name}}</a></td>
                     <td data-title="'Статус'">
                         <span ng-show="row.active == 1" title="Активний "><i class="glyphicon glyphicon-eye-open"></i></span>
                         <span ng-show="row.active != 1"><i class="glyphicon glyphicon-eye-close"></i></span>
@@ -27,16 +27,9 @@
                     <td data-title="'Дії'" ng-drag="false">
                         <div style="vertical-align: middle; display: table-cell">
                             <span><button class="btn btn-success" ng-bootbox-confirm="Ви впевнені, що бажаєте змінити статус відображеня субдомену?"
-                                          ng-bootbox-confirm-action="changeState(row.id,row.active)" title="Змінити статус відображеня субдомену">
+                                          ng-bootbox-confirm-action="changeActive(row.id,row.active)" title="Змінити статус відображеня субдомену">
                                     <i  ng-show="row.visible != 1" class="glyphicon glyphicon-eye-open" title="Активний"></i>
                                     <i  ng-show="row.visible == 1" class="glyphicon glyphicon-eye-close" title="Заблокований"></i>
-                                </button>
-                            </span>
-                            <span><button class="btn btn-info" title="Змінити субдомен"
-                                          ng-bootbox-prompt="Змінити субдомен"
-                                          ng-bootbox-prompt-default-value="{{row.domain_name}}"
-                                          ng-bootbox-prompt-action="changeSubdomain(row.id,result)">
-                                    <i class="glyphicon glyphicon-tag"></i>
                                 </button>
                             </span>
                             </div>

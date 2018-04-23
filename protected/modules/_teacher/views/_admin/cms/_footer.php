@@ -46,14 +46,14 @@
             <div class="left_part col-md-6 col-sm-5 col-xs-12">
                 <div class="logo">
                     <a href="">
-                        <img id="footerLogo" src="{{settings.logo}}">
+                        <img id="footerLogo" ng-src='{{settings.id && domainPath+settings.logo || settings.logo}}'>
                     </a>
                 </div>
-                <div class="footer_logo2">
-                    <a href="/">
-                        <img id="footerLogo800" src="{{settings.footer_logo2}}">
-                    </a>
-                </div>
+<!--                <div class="footer_logo2">-->
+<!--                    <a href="/">-->
+<!--                        <img id="footerLogo800" src="{{settings.footer_logo2}}">-->
+<!--                    </a>-->
+<!--                </div>-->
                 <div class="footer_contact" ng-style="{color:settings.footer_link_color}"  >
                     <div><span ng-bind="settings.mobile_phone"></span></div>
                     <div><span ng-bind="settings.mobile_phone_2"></span></div>
@@ -62,7 +62,7 @@
             </div>
 
             <div class="footer_menu col-md-6 col-sm-7 hidden-xs">
-                <a ng-style="{color:settings.footer_link_color}"  ng-repeat="section in listsItemMenu track by $index" href= {{section.link}}><span>{{section.title}}</span></a>
+                <a ng-style="{color:settings.footer_link_color}"  ng-repeat="section in listsItemMenu track by $index" href={{section.link}}><span>{{section.title}}</span></a>
             </div>
         </div>
     </div>

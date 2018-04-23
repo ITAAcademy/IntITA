@@ -45,7 +45,9 @@
     {
      // NOTE: you may need to adjust the relation name and the related
      // class name for the relations automatically generated below.
-     return array();
+     return array(
+         'organization' => [self::BELONGS_TO, 'Organization', ['organization' => 'id']],
+     );
     }
 
   /**
@@ -108,7 +110,6 @@
       {
        $this->makeDomainDirectory();
        $this->exportSubdomainsList();
-       $this->generateTemplateFile();
       }
 
      return $result;
@@ -145,5 +146,11 @@
 /*    ?>';*/
 //    file_put_contents(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema().'/index.php', $file);
    }
+
+     public function createSubdomainDirectory($path){
+         if (!file_exists($path)){
+             mkdir($path, '777', true);
+         }
+     }
 
   }

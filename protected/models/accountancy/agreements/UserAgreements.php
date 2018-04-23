@@ -27,6 +27,7 @@
  * @property integer $id_checking_account
  * @property boolean $contract
  * @property integer $educForm
+ * @property integer $start_date
  *
  * @property Service $service
  * @property StudentReg $user
@@ -70,11 +71,11 @@ class UserAgreements extends CActiveRecord {
             array('service_id, payment_schema', 'length', 'max' => 10),
             array('number', 'length', 'max' => 50),
             array('passport, document_type, inn', 'length', 'max' => 30),
-            array('approval_date, cancel_date, close_date, educForm', 'safe'),
+            array('approval_date, cancel_date, close_date, educForm, start_date', 'safe'),
             // The following rule is used by search().
             array('id, user_id, summa, service_id, number, create_date, approval_user, approval_date, cancel_user,
 			cancel_date, close_date, payment_schema, cancel_reason_type, passport, document_type, inn,
-			document_issued_date, passport_issued, status, id_checking_account, contract, educForm', 'safe', 'on' => 'search'),
+			document_issued_date, passport_issued, status, id_checking_account, contract, educForm, start_date', 'safe', 'on' => 'search'),
         );
     }
 
@@ -133,6 +134,7 @@ class UserAgreements extends CActiveRecord {
             'id_checking_account' => 'Р/р',
             'contract' => 'контракт',
             'educForm' => 'форма(онлайн/офлайн)',
+            'start_date' => 'Дата відкриття',
         );
     }
 
@@ -173,6 +175,7 @@ class UserAgreements extends CActiveRecord {
         $criteria->compare('id_checking_account', $this->id_checking_account, true);
         $criteria->compare('contract', $this->contract, true);
         $criteria->compare('educForm', $this->educForm, true);
+        $criteria->compare('start_date', $this->start_date, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -342,15 +345,18 @@ class UserAgreements extends CActiveRecord {
             //used only in computing agreement and invoices price
             $billableObjectUAH = clone $billableObject->getModelUAH();
 
+            //start date for offline service
+            $startDate = ($educForm->id==EducationForm::OFFLINE && $calculator->start_date)?new DateTime($calculator->start_date):new DateTime();
+            $startPaymentDate = clone $startDate;
             $model->summa = $calculator->getSumma($billableObjectUAH);
-            $model->close_date = $calculator->getCloseDate($billableObject, new DateTime())->format(Yii::app()->params['dbDateFormat']);
+            $model->start_date = $startPaymentDate;
+            $model->close_date = $calculator->getCloseDate($billableObject, $startDate)->format(Yii::app()->params['dbDateFormat']);
             $model->status = 1;
-
             if ($model->save()) {
 
                 $contractingParty->bindToAgreement($model, ContractingParty::ROLE_COMPANY);
 
-                $invoicesList = $calculator->getInvoicesList($billableObjectUAH, new DateTime());
+                $invoicesList = $calculator->getInvoicesList($billableObjectUAH, $startPaymentDate);
                 $agreementId = $model->id;
                 $model->updateByPk($agreementId, array(
                     'number' => UserAgreements::generateNumber($billableObject, $agreementId
@@ -615,8 +621,8 @@ class UserAgreements extends CActiveRecord {
     }
 
     public function canBeCanceled() {
-        if ($this->getAgreementPaidSum()==0 &&
-            $this->corporateEntity->organization->id==Yii::app()->user->model->getCurrentOrganizationId()) {
+//        $this->getAgreementPaidSum()==0
+        if ($this->corporateEntity->organization->id==Yii::app()->user->model->getCurrentOrganizationId()) {
            return true;
         } else {
             return false;

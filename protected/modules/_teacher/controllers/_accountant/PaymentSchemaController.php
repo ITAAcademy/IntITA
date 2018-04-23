@@ -134,6 +134,8 @@ class PaymentSchemaController extends TeacherCabinetController
         $templateModel->description_ru=isset($template->description_ru)?$template->description_ru:null;
         $templateModel->description_en=isset($template->description_en)?$template->description_en:null;
         $templateModel->id_organization=$template->id_organization;
+        $templateModel->duration=$template->duration;
+        $templateModel->start_date=isset($template->start_date)?$template->start_date:null;
         $templateModel->id_checking_account=isset($template->id_checking_account)?$template->id_checking_account:null;
         $transaction = Yii::app()->db->beginTransaction();
 
@@ -174,6 +176,8 @@ class PaymentSchemaController extends TeacherCabinetController
         $templateModel->description_ru=isset($template->description_ru)?$template->description_ru:null;
         $templateModel->description_en=isset($template->description_en)?$template->description_en:null;
         $templateModel->id_checking_account=isset($template->id_checking_account)?$template->id_checking_account:null;
+        $templateModel->duration=$template->duration;
+        $templateModel->start_date=isset($template->start_date)?$template->start_date:null;
         $templateModel->update();
         $transaction = Yii::app()->db->beginTransaction();
 
