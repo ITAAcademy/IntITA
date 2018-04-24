@@ -675,9 +675,25 @@ function sendTeacherLetter($scope, $http) {
             url: basePath+"/teachers/teacherletter",
             method: "POST",
             data: $.param({
-                firstname: $scope.firstname,lastname:$scope.lastname,
-                age:$scope.age,education:$scope.education,phone:$scope.phone,
+                firstname: $scope.firstname,lastname:$scope.lastname,phone:$scope.phone,
                 courses:$scope.courses,email:$scope.email
+            }),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
+        }).then(function successCallback(response) {
+            bootbox.alert(response.data,function () {
+                location.reload();
+            });
+        }, function errorCallback() {
+            bootbox.alert("Виникла помилка при відпправлені листа. Зв\'яжіться з адміністрацією.");
+        });
+    }
+    $scope.sendLetterFromPartner=function () {
+        $http({
+            url: basePath+"/forPartners/partnerLetter",
+            method: "POST",
+            data: $.param({
+                firstname: $scope.firstname,lastname:$scope.lastname,phone:$scope.phone,
+                question:$scope.question,email:$scope.email
             }),
             headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
         }).then(function successCallback(response) {

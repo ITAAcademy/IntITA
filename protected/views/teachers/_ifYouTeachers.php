@@ -13,9 +13,6 @@
             <td valign="center">
                 <div id="formTeacher3">
                     <?php echo Yii::t('teachers', '0060');?>
-                    <a href="#detailTeacherInfoLarge<?php echo $index ?>" data-toggle="collapse" style="color: #000;" id="showMyTextLarge" class="detailTeacherInfoLarge collapsed">
-
-                    </a>
                     <?php $form=$this->beginWidget('CActiveForm',array(
                         'id'=>'teacherletter-form',
                         'enableClientValidation'=>true,
@@ -32,7 +29,7 @@
                         )
                     )); ?>
 
-                    <div id="detailTeacherInfoLarge<?php echo $index ?>" class="collapse">
+                    <div class="formInModalTeachersMobile">
                         <div class="row">
                             <?=$form->label($teacherletter,'firstname')?><span>*</span>
                             <?=$form->textField($teacherletter,'firstname',array('ng-model'=>"firstname", 'ng-pattern'=>'/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s\'’]+$/u',"required"=>true))?>
@@ -42,25 +39,12 @@
                             </div>
                         </div>
                         <div class="row">
-                            <?=$form->label($teacherletter,'lastname')?><span>*</span>
+                            <?=$form->label($teacherletter,'lastname')?>
                             <?=$form->textField($teacherletter,'lastname',array('ng-model'=>"lastname", 'ng-pattern'=>'/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s\'’]+$/u',"required"=>true))?>
                             <div ng-cloak  class="clientValidationError" ng-show="letter['TeacherLetter[lastname]'].$dirty && letter['TeacherLetter[lastname]'].$invalid">
                                 <span ng-show="letter['TeacherLetter[lastname]'].$error.required"><?php echo Yii::t('error','0268') ?></span>
                                 <span ng-show="letter['TeacherLetter[lastname]'].$error.pattern"><?php echo Yii::t('error','0429') ?></span>
                             </div>
-                        </div>
-                        <div class="row">
-                            <?=$form->label($teacherletter,'age')?>
-                            <?=$form->numberField($teacherletter,'age',array('class'=>'letterAge','ng-model'=>"age",
-                                "ng-min"=>"16", "ng-max"=>"100",'min'=>16,'max'=>100))?>
-                            <div ng-cloak  class="clientValidationError" ng-show="letter['TeacherLetter[age]'].$invalid">
-                                <span ng-show="letter['TeacherLetter[age]'].$invalid"><?php echo Yii::t('validation','0913') ?></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <?=$form->label($teacherletter,'education')?>
-                            <?=$form->textField($teacherletter,'education')?>
-                            <?=$form->error($teacherletter,'education')?>
                         </div>
                         <div class="row">
                             <?=$form->label($teacherletter,'phone')?><span>*</span>
@@ -80,7 +64,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <?=$form->label($teacherletter,'courses',array('class'=>'courseslabel'))?><span>*</span>
+                            <?=$form->label($teacherletter,'courses',array('class'=>'courseslabel'))?>
                             <?=$form->textArea($teacherletter,'courses', array("required"=>true,'ng-model'=>"courses"))?>
                             <div ng-cloak class="clientValidationError" ng-show="letter['TeacherLetter[courses]'].$dirty && letter['TeacherLetter[courses]'].$invalid">
                                 <span ng-show="letter['TeacherLetter[courses]'].$error.required"><?php echo Yii::t('error','0268') ?></span>

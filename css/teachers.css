@@ -272,7 +272,7 @@ div.aboutMore{
     visibility: hidden;
 }
 .teacherTable .teacherName{display: none}
-#minTeacherForm{display:none}
+/*#minTeacherForm{display:none}*/
 .teacherBlock ul li{
     word-break:break-word; ;
 }
@@ -316,7 +316,7 @@ div.aboutMore{
     .teacherBlock {
         width: 98%;
     }
-    #maxTeacherForm {
+    #joinTeamMaxButton {
         display:none;
     }
     .one.column #minTeacherForm:first-child {
@@ -327,10 +327,14 @@ div.aboutMore{
     .teacherTable>div {display: inline-block}
     .teacherTable .teacherName,.teacherTable .profileTeacher{display: table-cell}
     .teacherTable{display: inherit}
-    .adaptiveTeacherName, div.ifYouTeachers{display:none}
+    .adaptiveTeacherName{display:none}
     div.aboutMore{
         float:inherit;
         border-bottom: 1px solid #d8d8d8;
+    }
+    div.ifYouTeachers label{
+        min-width: 0;
+        font-size: 14px;
     }
     .graduatesFilter td:nth-child(3) {
         display: block;
@@ -386,6 +390,11 @@ div.aboutMore{
 @media screen and (max-width:800px) {
     #minTeacherForm{
         display: block !important;
+    }
+}
+@media screen and (min-width: 800px){
+    #joinTeamMinButton{
+        display: none;
     }
 }
 @media screen and (max-width: 920px){
