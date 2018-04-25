@@ -687,20 +687,13 @@ function sendTeacherLetter($scope, $http) {
             bootbox.alert("Виникла помилка при відпправлені листа. Зв\'яжіться з адміністрацією.");
         });
     }
-    $scope.sendLetterFromPartner=function () {
-        $http({
-            url: basePath+"/forPartners/partnerLetter",
-            method: "POST",
-            data: $.param({
-                firstname: $scope.firstname,lastname:$scope.lastname,phone:$scope.phone,
-                question:$scope.question,email:$scope.email
-            }),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
-        }).then(function successCallback(response) {
+    $scope.sendLetterFromPartner=function (letter) {
+        var url = basePath+"/forPartners/partnerLetter";
+        $http.post(url,letter).then(function successCallback(response) {
             bootbox.alert(response.data,function () {
                 location.reload();
             });
-        }, function errorCallback() {
+        },function errorCallback() {
             bootbox.alert("Виникла помилка при відпправлені листа. Зв\'яжіться з адміністрацією.");
         });
     }

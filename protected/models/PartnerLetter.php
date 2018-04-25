@@ -27,8 +27,8 @@ class PartnerLetter extends CFormModel
             'firstname' => Yii::t('teachers', '0174'),
             'lastname' => Yii::t('teachers', '0175'),
             'phone' => Yii::t('teachers', '0178'),
-            'email' => Yii::t('teachers', '0418')
-//            'courses' => Yii::t('teachers', '0179')
+            'email' => Yii::t('teachers', '0418'),
+            'question' => Yii::t('teachers', '0179')
         );
     }
     public function sendmail()

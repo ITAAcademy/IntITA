@@ -2674,3 +2674,8 @@ div.ifYouTeachers label.courseslabel {
     }
 
 }
+.clientValidationError{
+    color: darkred;
+    text-align: left;
+    margin-left: 30%;
+}

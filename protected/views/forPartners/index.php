@@ -525,7 +525,6 @@
 </script>
 <div class="teacherForm" id="maxTeacherForm">
     <a id="joinTeamMaxButton" data-toggle="modal" data-target="#joinTeamMax" class="buttonBeginInTeachers" href="#form">ДЕТАЛЬНА ІНФОРМАЦІЯ  /&gt;</a>
-
     <!-- Modal -->
     <div class="modal fade" id="joinTeamMax" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -534,51 +533,50 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title" id="myModalLabel">Детальна інформація</h4>
                 </div>
-
-                <!--                    <div class="modal-body">-->
                 <div class="ifYouTeachers" id="xex">
                     <table class="detailInfoForPartners">
                         <tbody><tr>
                             <td valign="center">
                                 <div id="formTeacher3">
-
-                                    <form method="post" name="letter" ng-controller="sendTeacherLetter" novalidate="novalidate" id="teacherletter-form" action="/forPartners" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-email">
+                                    <form method="post" name="letter" ng-controller="sendTeacherLetter" novalidate="novalidate" id="teacherletter-form" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-email">
                                         <div class="formInModalTeachersMobile">
                                             <div class="row">
                                                 <label for="TeacherLetter_firstname">Ім'я</label><span>*</span>
-                                                <input ng-model="firstname" ng-pattern="/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s'’]+$/u" required="required" name="PartnerLetter[firstname]" id="TeacherLetter_firstname" type="text" maxlength="35" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength">                            <div class="clientValidationError ng-hide" ng-show="letter['TeacherLetter[firstname]'].$dirty &amp;&amp; letter['PartnerLetter[firstname]'].$invalid">
-                                                    <span ng-show="letter['PartnerLetter[firstname]'].$error.required">Будь ласка заповни поле</span>
-                                                    <span ng-show="letter['PartnerLetter[firstname]'].$error.pattern" class="ng-hide">Недопустимі символи!</span>
+                                                <input ng-model="letter.firstname" ng-pattern="/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s'’]+$/u" required="required" name="firstName" id="TeacherLetter_firstname" type="text" maxlength="35" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength">
+                                                <div class="clientValidationError" ng-show="letter.firstName.$dirty && letter.firstName.$invalid">
+                                                    <span ng-show="letter.firstName.$error.required">Будь ласка заповни поле</span>
+                                                    <span ng-show="letter.firstName.$error.pattern" class="ng-hide">Недопустимі символи!</span>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <label for="TeacherLetter_lastname">Прізвище</label>                            <input ng-model="lastname" ng-pattern="/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s'’]+$/u"  name="PartnerLetter[lastname]" id="TeacherLetter_lastname" type="text" maxlength="35" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength">                            <div class="clientValidationError ng-hide" ng-show="letter['PartnerLetter[lastname]'].$dirty &amp;&amp; letter['TeacherLetter[lastname]'].$invalid">
-                                                    <span ng-show="letter['PartnerLetter[lastname]'].$error.required">Будь ласка заповни поле</span>
-                                                    <span ng-show="letter['PartnerLetter[lastname]'].$error.pattern" class="ng-hide">Недопустимі символи!</span>
+                                                <label for=""TeacherLetter_lastname">Прізвище</label>
+                                                <input ng-model="letter.lastname" ng-pattern="/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s'’]+$/u" name="lastName" id="TeacherLetter_lastname" type="text" maxlength="35" class="ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength">
+                                                <div class="clientValidationError" ng-show="letter.lastName.$dirty && letter.lastName.$invalid">
+                                                    <span ng-show="letter.lastName.$error.pattern" class="ng-hide">Недопустимі символи!</span>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <label for="TeacherLetter_phone">Телефон</label><span>*</span>
-                                                <input maxlength="13" class="letterPhone ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" ng-model="phone" ng-pattern="/^[0-9\+\-\(\)\s]+$/u" required="required" name="PartnerLetter[phone]" id="TeacherLetter_phone" type="text">                            <div class="clientValidationError ng-hide" ng-show="letter['TeacherLetter[phone]'].$dirty &amp;&amp; letter['TeacherLetter[phone]'].$invalid">
-                                                    <span ng-show="letter['PartnerLetter[phone]'].$error.required">Будь ласка заповни поле</span>
-                                                    <span ng-show="letter['PartnerLetter[phone]'].$error.pattern" class="ng-hide">Недопустимі символи!</span>
+                                                <input name="phone_partner" maxlength="13" class="letterPhone ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" ng-model="letter.phone" ng-pattern="/^[0-9\+\-\(\)\s]+$/u" required="required" type="text" id="TeacherLetter_phone">
+                                                <div class="clientValidationError" ng-show="letter.phone_partner.$dirty">
+                                                    <span ng-show="letter.phone_partner.$error.required">Будь ласка заповни поле</span>
+                                                    <span ng-show="letter.phone_partner.$error.pattern" class="ng-hide">Недопустимі символи!</span>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <label for="TeacherLetter_email">Email</label><span>*</span>
-                                                <input class="letterEmail ng-pristine ng-untouched ng-empty ng-valid-email ng-invalid ng-invalid-required ng-valid-maxlength" ng-model="email" required="required" name="PartnerLetter[email]" id="TeacherLetter_email" type="email" maxlength="50">                            <div class="clientValidationError ng-hide" ng-show="letter['TeacherLetter[email]'].$dirty &amp;&amp; letter['TeacherLetter[email]'].$invalid">
-                                                    <span ng-show="letter['PartnerLetter[email]'].$error.required">Будь ласка заповни поле</span>
-                                                    <span ng-show="letter['PartnerLetter[email]'].$error.email" class="ng-hide">Електронна пошта не являється правильною</span>
-                                                    <span ng-show="letter['PartnerLetter[email]'].$error.maxlength" class="ng-hide">Електронна пошта не являється правильною</span>
+                                                <input class="letterEmail ng-pristine ng-untouched ng-empty ng-valid-email ng-invalid ng-invalid-required ng-valid-maxlength" ng-model="letter.email" required="required" name="email_partner" id="TeacherLetter_email" type="email" maxlength="50">
+                                                <div class="clientValidationError" ng-show="letter.email_partner.$dirty && letter.email_partner.$invalid">
+                                                    <span ng-show="letter.email_partner.$error.required">Будь ласка заповни поле</span>
+                                                    <span ng-show="letter.email_partner.$error.email">Невірний email!</span>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <label class="courseslabel" for="TeacherLetter_courses">Ваші питання</label>                            <textarea required="required" ng-model="question" name="PartnerLetter[question]" id="TeacherLetter_courses" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"></textarea>                            <div class="clientValidationError ng-hide" ng-show="letter['TeacherLetter[courses]'].$dirty &amp;&amp; letter['TeacherLetter[courses]'].$invalid">
-                                                    <span ng-show="letter['PartnerLetter[question]'].$error.required">Будь ласка заповни поле</span>
-                                                </div>
+                                                <label class="courseslabel" for="TeacherLetter_courses">Ваші питання</label>
+                                                <textarea ng-model="letter.question" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"></textarea>
                                             </div>
                                             <ul class="actions">
-                                                <input id="send_btn" type="button" name="sendletter" ng-click="sendLetterFromPartner()" value="Відправити" ng-disabled="letter.$invalid" disabled="disabled">
+                                                <input id="send_btn" type="button" name="sendletter" ng-click="sendLetterFromPartner(letter)" value="Відправити" ng-disabled="letter.$invalid" disabled="disabled">
                                             </ul>
                                         </div>
                                     </form></div></td>
