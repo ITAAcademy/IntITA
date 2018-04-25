@@ -67,21 +67,21 @@ function blockedUsersCtrl ($http, $scope, usersService, NgTableParams) {
 };
 
 function usersTableCtrl ($scope, usersService, NgTableParams){
-        $scope.usersTableParams = new NgTableParams({
-            sorting: {
-                reg_time: 'desc'
-            },
-        }, {
-            getData: function (params) {
-                return usersService
-                    .usersList(params.url())
-                    .$promise
-                    .then(function (data) {
-                        params.total(data.count);
-                        return data.rows;
-                    });
-            }
-        });
+    $scope.usersTableParams = new NgTableParams({
+        sorting: {
+            reg_time: 'desc'
+        },
+    }, {
+        getData: function (params) {
+            return usersService
+                .usersList(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    return data.rows;
+                });
+        }
+    });
 }
 function studentsTableCtrl ($scope, usersService, NgTableParams, $attrs){
     $jq("#startDate").datepicker(lang);
@@ -330,37 +330,37 @@ function trainersTableCtrl ($scope, usersService, NgTableParams,roleService, $at
 
 function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
 
-     $scope.getTrainers = function() {
+    $scope.getTrainers = function() {
         usersService
             .actualTrainers()
             .$promise
             .then(function (data) {
                 $scope.trainers = data;
             });
-         $jq('#apply-btn').prop('disabled', true);
+        $jq('#apply-btn').prop('disabled', true);
     };
 
-     $jq('#selectNewTrainer, #selectOldTrainer').on('change', function(){
-         setTimeout(function(){
-             if( $scope.id_oldTrainer != $scope.id_newTrainer && $scope.id_oldTrainer != undefined
-                                                                && $scope.id_newTrainer != undefined ){
-                 $jq('#apply-btn').prop('disabled', false);
-             }else{
-                 $jq('#apply-btn').prop('disabled', true);
-             }
-         }, 100);
-     });
+    $jq('#selectNewTrainer, #selectOldTrainer').on('change', function(){
+        setTimeout(function(){
+            if( $scope.id_oldTrainer != $scope.id_newTrainer && $scope.id_oldTrainer != undefined
+                && $scope.id_newTrainer != undefined ){
+                $jq('#apply-btn').prop('disabled', false);
+            }else{
+                $jq('#apply-btn').prop('disabled', true);
+            }
+        }, 100);
+    });
 
     $scope.exchangeTrainers = function(id_old, id_new){
         usersService
             .exchangeTrainers({'id_old':id_old, 'id_new':id_new})
             .$promise
             .then(function () {
-                console.info('success, exchanged trainers');
-            },
-            function (error) {
-                console.error(error);
-            });
+                    console.info('success, exchanged trainers');
+                },
+                function (error) {
+                    console.error(error);
+                });
     };
 }
 
@@ -410,7 +410,7 @@ function authorsTableCtrl ($scope, usersService, NgTableParams, roleService, $at
     };
 }
 
-function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, $q, userService, $state, agreementsService, usersService, $resource, chatIntITAMessenger){
+function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, $q, userService, $state, agreementsService, usersService, $resource, chatIntITAMessenger, superVisorService){
     $scope.changePageHeader('Профіль користувача');
     $scope.userId=$stateParams.id;
     $scope.formData={};
@@ -439,7 +439,7 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
             .$promise
             .then(function (results) {
                 $scope.roles = results;
-        });
+            });
     };
     $scope.reloadUserProfileData=function(userId){
         userService.userProfileData({userId: userId})
@@ -581,18 +581,18 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
             return [year, month, day].join('-');
         }
         dateInSubgroup = formatDate(dateInSubgroup);
-            $http({
-                method: 'POST',
-                url: basePath+'/_teacher/_supervisor/superVisor/addStudentToSubgroup',
-                data: $jq.param({userId: idUser, subgroupId: idSubgroup, startDate: dateInSubgroup}),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(function successCallback(response) {
-                chatIntITAMessenger.updateSubgroup(idSubgroup);
-                $scope.addUIHandlers(response.data);
-                $scope.reloadUserOfflineEducationData();
-            }, function errorCallback() {
-                bootbox.alert("Операцію не вдалося виконати");
-            });
+        $http({
+            method: 'POST',
+            url: basePath+'/_teacher/_supervisor/superVisor/addStudentToSubgroup',
+            data: $jq.param({userId: idUser, subgroupId: idSubgroup, startDate: dateInSubgroup}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then(function successCallback(response) {
+            chatIntITAMessenger.updateSubgroup(idSubgroup);
+            $scope.addUIHandlers(response.data);
+            $scope.reloadUserOfflineEducationData();
+        }, function errorCallback() {
+            bootbox.alert("Операцію не вдалося виконати");
+        });
     };
 
     $scope.reloadUserOfflineEducationData=function(){
@@ -603,44 +603,90 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
             });
     };
 
-    $scope.updateOfflineStudentSubgroup=function (idUser, idSubgroup, modelId, services) {
-        services.modules.forEach(function (item, key) {
-            if (item.rat) {
-                item.rat = item.rat/10;
-            }
-        });
-        services.courses.forEach(function (item, key) {
-            if (item.rat) {
-                item.rat = item.rat/10;
-            }
-        });
-        $http({
-            method: 'POST',
-            url: basePath+'/_teacher/_supervisor/superVisor/updateOfflineStudent',
-            data: $jq.param({
-                userId: idUser, subgroupId: idSubgroup,
-                modelId: modelId,
-                services: services}),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).then(function successCallback(response) {
-            $scope.addUIHandlers(response.data.message);
-            $scope.loadOfflineStudentModel($scope.studentModelId);
-        }, function errorCallback() {
-            bootbox.alert("Операцію не вдалося виконати");
-        });
+    $scope.cancelStudentFromSubgroup=function (idUser, idSubgroup) {
+        $scope.option_str = '<option selected="true" disabled="disabled">Вибери причину...</option>';
+
+        superVisorService
+            .getAllReasons()
+            .$promise
+            .then(function(response){
+                    var res_length = response.length;
+                    for(var i=0; i<res_length; i++){
+                        $scope.option_str = $scope.option_str+'<option value="'+response[i].id+'">'+response[i].description+'</option>';
+                    }
+
+                    bootbox.dialog({
+                            title: "Вибери, будь ласка, причину виключення:",
+                            message: '<div class="panel-body"><div class="row"><form role="form" name="rejectMessage"><div class="form-group col-md-12">'+
+                            '<select class="form-control" id="selected_reason">'+$scope.option_str+'</select>'+
+                            '<input type="text" id="datepicker" class="form-control" placeholder="Виберіть дату" style="margin-top: 25px;">'+
+                            '<textarea class="form-control custom-control" id="comment" rows="7" cols="45" name="text" placeholder="Ваш коментар ..." style="margin-top: 25px;"></textarea>'+
+                            '</div></form></div></div>',
+                            buttons: {
+                                success: {label: "Підтвердити", className: "btn btn-primary apply-btn",
+                                    callback: function () {
+                                        var reasonId = $jq('#selected_reason').val();
+
+                                        var comment = $jq('#comment').val();
+                                        if(comment == ''){
+                                            comment = null;
+                                        }
+
+                                        var dateObject = $jq("#datepicker").datepicker( 'getDate' );
+                                        var year = dateObject.getFullYear();
+                                        var month = dateObject.getMonth()+1;
+                                        var day = dateObject.getDate();
+                                        var full_date = year+'-'+month+'-'+day;
+                                        $http({
+                                            method: 'POST',
+                                            url: basePath+'/_teacher/_supervisor/superVisor/cancelStudentFromSubgroup',
+                                            data: $jq.param({userId: idUser, subgroupId: idSubgroup, reasonId: reasonId, fullDate: full_date, comment: comment}),
+                                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                                        }).then(function successCallback(response) {
+                                            chatIntITAMessenger.updateSubgroup(idSubgroup);
+                                            $scope.addUIHandlers(response.data);
+                                            $scope.reloadUserOfflineEducationData();
+                                        }, function errorCallback() {
+                                            bootbox.alert("Операцію не вдалося виконати");
+                                        });
+                                    }
+                                },
+                                cancel: {label: "Скасувати", className: "btn btn-default",
+                                    callback: function () {
+                                    }
+                                }
+                            }
+                        }
+                    );
+                    $jq('.apply-btn').prop('disabled', true);
+
+                    $jq('#selected_reason').on('change', function () {
+                        $jq('.apply-btn').prop('disabled', false);
+                    });
+
+                    $jq(function () {
+                        var firstday = new Date();
+                        $jq('#datepicker').datepicker().on('changeDate', function (e) {
+                            $jq(this).datepicker('hide');
+                        });
+                    });
+                },
+                function (error) {
+                    console.error(error);
+                });
     };
 }
 
 function usersEmailCtrl ($http, $scope,  usersService, NgTableParams, $ngBootbox) {
     $scope.emailsCategoriesList = usersService
-            .emailsCategoryList()
-            .$promise
-            .then(function (data) {
-                $scope.emailsCategory=data;
-                return data.map(function (item) {
-                    return {id: item.id, title: item.title}
-                })
-            });
+        .emailsCategoryList()
+        .$promise
+        .then(function (data) {
+            $scope.emailsCategory=data;
+            return data.map(function (item) {
+                return {id: item.id, title: item.title}
+            })
+        });
 
     $scope.usersEmailTableParams = new NgTableParams({}, {
         getData: function (params) {
@@ -665,22 +711,22 @@ function usersEmailCtrl ($http, $scope,  usersService, NgTableParams, $ngBootbox
             return false;
         }
 
-            var file_data = files[0];
-            var form_data = new FormData();
-            form_data.append('file', file_data);
-            $jq.ajax({
-                url: basePath + "/_teacher/users/saveExcelFile", // point to server-side PHP script
-                dataType: 'text',  // what to expect back from the PHP script, if anything
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: form_data,
-                type: 'post',
-                success: function () {
-                    bootbox.alert('Файл завантажено');
-                    $scope.isFile = true;
-                }
-            });
+        var file_data = files[0];
+        var form_data = new FormData();
+        form_data.append('file', file_data);
+        $jq.ajax({
+            url: basePath + "/_teacher/users/saveExcelFile", // point to server-side PHP script
+            dataType: 'text',  // what to expect back from the PHP script, if anything
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function () {
+                bootbox.alert('Файл завантажено');
+                $scope.isFile = true;
+            }
+        });
     };
 
     $scope.importExcel=function (emailCategory) {
@@ -716,7 +762,7 @@ function usersEmailCtrl ($http, $scope,  usersService, NgTableParams, $ngBootbox
             bootbox.alert("Операцію не вдалося виконати");
         });
     }
-    
+
     $scope.removeEmail=function (email, category) {
         bootbox.confirm('Видалити email?', function (result) {
             if (result) {
@@ -1040,87 +1086,6 @@ function addStudentTrainerCtrl ($scope, $stateParams, userService, superVisorSer
     $scope.collapse=function (el) {
         $jq(el).toggle("medium");
     };
-
-    var subGroupsArray =$resource(basePath+'/_teacher/newsletter/getSubGroups');
-
-    $scope.getGroupsNames = function () {
-        usersService
-            .getGroupNumber()
-            .$promise
-            .then(function (data) {
-                $scope.groupsNames = data;
-            })
-    };
-    $scope.getGroupsNames();
-
-    $scope.getSubGroups = function(query) {
-
-        return subGroupsArray.query({query:query}).$promise.then(function(response) {
-
-            return response;
-        });
-    };
-    $scope.getSubGroups();
-
-    $scope.addStudentToSubgroup=function (idUser,idSubgroup,dateInSubgroup) {
-        function formatDate(date) {
-            var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-            return [year, month, day].join('-');
-        }
-        dateInSubgroup = formatDate(dateInSubgroup);
-            $http({
-                method: 'POST',
-                url: basePath+'/_teacher/_supervisor/superVisor/addStudentToSubgroup',
-                data: $jq.param({userId: idUser, subgroupId: idSubgroup, startDate: dateInSubgroup}),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(function successCallback(response) {
-                chatIntITAMessenger.updateSubgroup(idSubgroup);
-                $scope.addUIHandlers(response.data);
-                $scope.reloadUserOfflineEducationData();
-            }, function errorCallback() {
-                bootbox.alert("Операцію не вдалося виконати");
-            });
-    };
-
-    $scope.reloadUserOfflineEducationData=function(){
-        userService.userOfflineEducationData({userId: $scope.userId})
-            .$promise
-            .then(function (results) {
-                $scope.offline = results;
-            });
-    };
-
-    $scope.updateOfflineStudentSubgroup=function (idUser, idSubgroup, modelId, services) {
-        services.modules.forEach(function (item, key) {
-            if (item.rat) {
-                item.rat = item.rat/10;
-            }
-        });
-        services.courses.forEach(function (item, key) {
-            if (item.rat) {
-                item.rat = item.rat/10;
-            }
-        });
-        $http({
-            method: 'POST',
-            url: basePath+'/_teacher/_supervisor/superVisor/updateOfflineStudent',
-            data: $jq.param({
-                userId: idUser, subgroupId: idSubgroup,
-                modelId: modelId,
-                services: services}),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).then(function successCallback(response) {
-            $scope.addUIHandlers(response.data.message);
-            $scope.loadOfflineStudentModel($scope.studentModelId);
-        }, function errorCallback() {
-            bootbox.alert("Операцію не вдалося виконати");
-        });
-    };
 }
 
 function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableParams, lodash, myFactory, $attrs) {
@@ -1225,11 +1190,11 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
         .getGroupNumber()
         .$promise
         .then(function (data) {
-                var res = data;
-                $scope.temp = [];
-                $scope.temp = $scope.temp.concat(res);
-                return $scope.temp;
-            })
+            var res = data;
+            $scope.temp = [];
+            $scope.temp = $scope.temp.concat(res);
+            return $scope.temp;
+        })
         .catch(function () {
             bootbox.alert('Помилка, зверніться до адміністратора');
         });

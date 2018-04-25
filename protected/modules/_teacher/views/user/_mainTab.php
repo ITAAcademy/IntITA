@@ -92,10 +92,18 @@ $user = $model->registrationData;
                             <label>Дата випуску:</label> {{subgroup.graduate_date}}<br>
                             <?php if (Yii::app()->user->model->isSuperVisor()) { ?>
                             <a ng-if="!subgroup.end_date && organization==subgroup.subgroupName.organization.id"
+                               type="button" class="btn btn-outline btn-primary btn-xs" style="margin-right: 20px;"
                                ng-href="#/supervisor/updateOfflineStudent/{{subgroup.id}}">
                                 Редагувати студента в підгрупі
                             </a>
                             <?php }?>
+
+                            <?php if (Yii::app()->user->model->isSuperVisor()) { ?>
+                            <a ng-if=!end_date type="button" class="btn btn-outline btn-primary btn-xs"
+                               ng-click="cancelStudentFromSubgroup(user.id, subgroup.id_subgroup)">
+                                Виключити студента з підгрупи
+                            </a>
+                        <?php } ?>
                         </li>
                     </ul>
                 </li>
