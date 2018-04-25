@@ -416,7 +416,7 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
     $scope.userId=$stateParams.id;
     $scope.formData={};
     $rootScope.$on('mailAddressCreated', function (event, data) {
-        $scope.data.teacher.corporate_mail = data.mailbox;
+        $scope.teacher.teacher.corporate_mail = data.mailbox;
     });
 
     $q.all([
@@ -547,6 +547,35 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
 
     $scope.collapse=function (el) {
         $jq(el).toggle("medium");
+    };
+
+    $scope.addMailAddressDialogOptions = {
+        templateUrl: basePath + '/angular/js/teacher/templates/addMailAddress.html',
+        scope: $scope,
+        title: 'Адреса корпоративної пошти без домену',
+    };
+
+    $scope.hideMailError = function () {
+        $scope.usernameError = undefined;
+    }
+    $scope.addCorpAddress = function () {
+        if ($scope.mailForm.mailAddress.$dirty && $scope.mailForm.mailAddress.$valid) {
+            $http({
+                method: 'POST',
+                url: basePath + "/_teacher/user/addCorpMail",
+                data: $jq.param({userId: $stateParams.id, address: $scope.address}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (response) {
+                if (response.error == undefined) {
+                    $scope.$emit('mailAddressCreated', response);
+                    $ngBootbox.hideAll();
+                }
+                else {
+                    $scope.usernameError = response.error.username[0];
+                }
+            })
+        }
+
     };
 
     var subGroupsArray =$resource(basePath+'/_teacher/newsletter/getSubGroups');

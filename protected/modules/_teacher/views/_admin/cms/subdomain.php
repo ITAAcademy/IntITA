@@ -25,7 +25,7 @@
                 <tr ng-repeat="row in $data" style="cursor: pointer;">
                     <td data-title="'ID'">{{row.id}}</td>
                     <td data-title="'Субдомен'">{{row.domain_name}}</td>
-                    <td data-title="'Організація'">{{row.organization}}</a></td>
+                    <td data-title="'Організація'">{{row.organization.name}}</a></td>
                     <td data-title="'Статус'">
                         <span ng-show="row.active == 1" title="Активний ">
                             <i class="glyphicon glyphicon-eye-open"></i>
