@@ -40,6 +40,7 @@ hr {
     padding-right:5px;
         padding-left:5px;
         width: 300px;
+        margin-left: 20px;
     }
     .intent{
     margin-top:6px;
@@ -57,7 +58,8 @@ hr {
         font-size: 18px;
     }
     .logo{
-    padding-left: 0px;
+        margin-left: 40px;
+        padding-left: 0px;
         padding-right: 0px;
     }
     .logo_show {
@@ -68,12 +70,21 @@ hr {
     padding-left: 5px;
     }
     .image_update{
-    max-width: 131px;
+        max-width: 145px;
         padding-left: 5px;
     }
-    .preview{
+    #logo_name{
+        margin-left: -55px;
+
+    }
+#logo_img{
+    margin-left: 36px;
+}
+
+.preview{
     max-width: 300px;
         max-height: 100px;
+
     }
     .button_box{
     margin-top: -83px;
@@ -86,10 +97,16 @@ hr {
         margin:0 auto;
     }
     .slide_settings {
-    margin-right: 2px;
+    /*margin-right: 2px;*/
+    /*padding-left: 5px;*/
+    /*padding-right: 5px;*/
+        /*margin-left: 20px;*/
+        margin-left: -5px;
+        margin-right: 10px;
     }
     #slides_settings_1 {
-        padding: 16px;
+        padding-top: 16px;
+        padding-bottom: 16px;
         border-style: double;
         border-width: 5px;
         border-radius: 5px;
@@ -158,6 +175,11 @@ hr {
     .first_box, .second_box, .third_box{
     display: table;
     width: 100%;
+
+    .col-xs-6 .intent {
+        padding-right: 40px;
+        padding-left: 10px;
+    }
 }
 
 </style>
@@ -167,7 +189,7 @@ hr {
 
     <div class="row button_box" >
         <div class="col-md-12 col-xs-12">
-            <button class="save_butt btn btn-success" ng-click="updateSettings(settings, settings.image)"><strong>Save all</strong></button>
+            <button class="save_butt btn btn-success" ng-click="updateSettings(settings, settings.logo )"><strong>Save all</strong></button>
         </div>
     </div>
 
@@ -402,7 +424,7 @@ hr {
                 </div>
                 <div class="second_box">
                     <!--<p class="quote-author">John Doe // Local Business Owner</p>-->
-<div class="row ">
+                    <div class="row ">
                         <div class="col-md-6 col-sm-12">
                             <div class="row group" >
                                 <div  class="col-md-2 col-xs-2 square" >
@@ -542,7 +564,7 @@ hr {
                             <div class="row group" >
 
                                 <div class="col-md-6 col-xs-6 rectangle" >
-                                    <input class="in_rectangle_soc" type="text" ng-model="settings.twitter_link">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.twitter">
                                 </div>
                                 <div class="col-md-6 col-xs-6 intent" >
                                     <p class="in_intent" >Twitter link</p></div>
@@ -553,7 +575,7 @@ hr {
                             <div class="row group" >
 
                                 <div class="col-md-6 col-xs-6 rectangle" >
-                                    <input class="in_rectangle_soc" type="text" ng-model="settings.youtube_link">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.youtube">
                                 </div>
                                 <div class="col-md-6 col-xs-6 intent" >
                                     <p class="in_intent" >Youtube link</p></div>
@@ -569,7 +591,7 @@ hr {
                             <div class="row group" >
 
                                 <div class="col-md-6 col-xs-6 rectangle" >
-                                    <input class="in_rectangle_soc" type="text" ng-model="settings.google_link">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.google">
                                 </div>
                                 <div class="col-md-6 col-xs-6 intent" >
                                     <p class="in_intent" >Google link</p></div>
@@ -580,7 +602,7 @@ hr {
                             <div class="row group" >
 
                                 <div class="col-md-6 col-xs-6 rectangle" >
-                                    <input class="in_rectangle_soc" type="text" ng-model="settings.facebook_link">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.facebook">
                                 </div>
                                 <div class="col-md-6 col-xs-6 intent" >
                                     <p class="in_intent" >Facebook link</p></div>
@@ -594,7 +616,7 @@ hr {
                             <div class="row group" >
 
                                 <div class="col-md-6 col-xs-6 rectangle" >
-                                    <input class="in_rectangle_soc" type="text" ng-model="settings.linkedin_link">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.linkedin">
                                 </div>
                                 <div class="col-md-6 col-xs-6 intent" >
                                     <p class="in_intent" >Linkedin link</p></div>
@@ -605,7 +627,7 @@ hr {
                             <div class="row group" >
 
                                 <div class="col-md-6 col-xs-6 rectangle" >
-                                    <input class="in_rectangle_soc" type="text" ng-model="settings.instagram_link">
+                                    <input class="in_rectangle_soc" type="text" ng-model="settings.instagram">
                                 </div>
                                 <div class="col-md-6 col-xs-6 intent" >
                                     <p class="in_intent" >Instagram link</p></div>
@@ -624,12 +646,12 @@ hr {
                                     <input id="logoUpdate" enctype="multipart/form-data" type="file" class="form-control image_update" placeholder="Лого компанії" name="photo">
                                 </div>
 
-                                <div class="col-md-5 col-xs-5 intent">
-                                    <p class="in_intent" >Footer logo </p>
+                                <div class="col-md-5 col-xs-5 intent" id="logo_name">
+                                    <p class="in_intent" >Logo </p>
                                 </div>
                                 <div class="col-md-2 col-xs-2 intent">
                                     <a href="javascript:void(0)">
-                                        <i class="fa fa-trash" title="Видалити" aria-hidden="true"  ng-click="removeLogo(settings.logo)"></i>
+                                        <i class="fa fa-trash" title="Видалити" aria-hidden="true"  ng-click="removeLogo(settings.id, settings.logo)"></i>
                                     </a>
                                 </div>
                             </div>
@@ -652,7 +674,7 @@ hr {
                             <div class="row group_logo_show " >
                                 <div class="col-md-11 col-xs-11 " >
                                     <a  href="/">
-                                        <img class="preview" src="/{{settings.logo}}">
+                                        <img class="preview" id="logo_img"  ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
                                     </a>
                                 </div>
                                 <div class="col-md-1 col-xs-1 " >
