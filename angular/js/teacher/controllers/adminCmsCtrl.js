@@ -291,10 +291,11 @@ angular
     .controller('sliderCtrl', ['$scope',
         function ($scope) {
             $scope.myInterval = 3000;   /*період зміни слайдів*/
-            $scope.noWrapSlides = false;   /*???*/
-            $scope.active = 3;   /*індекс першого слайду*/
+            $scope.active = 0;   /*індекс першого слайду*/
             var slides = $scope.slides = [];   /*масив об'єктів з властивостями слайдів*/
             var currIndex = 0;   /*поточна кількість доданих слайдів*/
+
+            $scope.corousels = response;
             var sliders_src = [
                 'https://intita.com/images/mainpage/5acb3f77a8ea7.jpg',
                 'https://intita.com/images/mainpage/5acb3f1e920d6.jpg',
@@ -331,4 +332,82 @@ angular
                 $scope.addSlide();
             }
         }
-    ]);
+    ])
+    .controller('cmsMenuSliderCtrl', ['$scope', 'cmsService', '$http',
+        function ($scope, cmsService, $http) {
+            $scope.changePageHeader('Menu slider');
+
+            cmsService.domainPath().$promise
+                .then(function successCallback(response) {
+                    $scope.domainPath = response.domainPath+'/lists/';
+                }, function errorCallback() {
+                    bootbox.alert("Отримати піддомен не вдалося");
+                });
+
+            $scope.loadCmsMenuList = function () {
+                cmsService.menuList().$promise
+                    .then(function successCallback(response) {
+                        if (response.length == 0) {
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
+                                $scope.lists = response;
+                            });
+                        }
+                        else {
+                            $scope.lists = response;
+                        }
+                    }, function errorCallback() {
+                        bootbox.alert("Отримати дані списку меню не вдалося");
+                    });
+            };
+            $scope.loadCmsMenuList();
+
+            $scope.updateMenuLink = function (link, index, previousImage) {
+                var uploadImage = new FormData();
+                uploadImage.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#logoUpdate' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadImage.append("logo", imageUpdate);
+                    uploadImage.append("previousImage", previousImage);
+                }
+                else {
+                    var image = $jq('#logo').prop('files')[0];
+                    uploadImage.append("logo", image);
+                }
+                $http.post(basePath + '/_teacher/_admin/cms/updateMenuLink', uploadImage, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.loadCmsMenuList();
+                    $scope.newLink = {id: null, description: null, link: null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+            };
+            $scope.removeMenuLink = function (id, image) {
+                cmsService.removeMenuLink({id: id, image: image}).$promise
+                    .then(function successCallback() {
+                        $scope.loadCmsMenuList();
+                    }, function errorCallback(response) {
+                        bootbox.alert(response.data.reason);
+                    });
+            };
+            $scope.getSettings = function () {
+                cmsService.settingList().$promise
+                    .then(function successCallback(response) {
+                        if (!response.id) {
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
+                                $scope.settings = response;
+                            });
+                        }
+                        else {
+                            $scope.settings = response;
+                        }
+                    }, function errorCallback() {
+                        bootbox.alert("Отримати дані не вдалося");
+                    });
+            }
+            $scope.getSettings();
+        }
+    ])
