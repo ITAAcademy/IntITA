@@ -16,10 +16,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionIndex()
     {
-
-
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-
         if (isset($subdomain)) {
             $this->renderPartial('index', array(), false, true);
         } else {
@@ -49,11 +46,9 @@ class CmsController extends TeacherCabinetController
                 $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
                 $path_domain = 'domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
                 $folderAddress = $path_domain . "/lists/";
-
                 if (!file_exists($folderAddress)) {
                     mkdir($folderAddress, '777', true);
                 }
-
                 if ($previousImage && file_exists($folderAddress . $previousImage)) {
                     unlink($folderAddress . $previousImage);
                 }
@@ -171,7 +166,6 @@ class CmsController extends TeacherCabinetController
         $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
         $folderAddress = $path_domain . "/news/";
         $imageAddress = $_POST["image"];
-
         if (file_exists($folderAddress . $imageAddress)) {
             unlink($folderAddress . $imageAddress);
         }
@@ -249,7 +243,6 @@ class CmsController extends TeacherCabinetController
             }
             $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
             //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
-
             $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
             $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $settings->attributes = $params;
@@ -265,7 +258,6 @@ class CmsController extends TeacherCabinetController
             $statusCode = 500;
             $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
-
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
     public function actionRemoveLogo()
@@ -274,7 +266,6 @@ class CmsController extends TeacherCabinetController
     $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
     $folderAddress = $path_domain . "/logo/";
     $imageAddress = $_POST["image"];
-
     if (file_exists($folderAddress . $imageAddress)) {
         unlink($folderAddress . $imageAddress);
     }
@@ -293,8 +284,6 @@ class CmsController extends TeacherCabinetController
     }
     $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
 }
-
-
 
     public function actionSubdomain()
     {
@@ -318,7 +307,6 @@ class CmsController extends TeacherCabinetController
         $model->active = 1;
         $model->organization = Yii::app()->user->model->getCurrentOrganizationId();
         $model->save();
-
         return $this->renderJSON(['data' => true]);
     }
 

@@ -12,8 +12,6 @@ angular
                     bootbox.alert("Отримати піддомен не вдалося");
                 });
 
-
-
             $scope.changePageHeader('Конструктор сайту');
 
             $scope.loadCmsMenuList = function () {
@@ -52,19 +50,10 @@ angular
             $scope.updateSettings = function (link,  previousImage) {
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
-
-                //
-                // if (index !== undefined) {
                     var imageUpdateBlock = '#logoUpdate';
                     var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
                     uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
                     uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
-                // }
-                // else {
-                //
-                //     var image = $jq('#logoUpdate').prop('files')[0];
-                //     uploadSettings.append("photo", image);      // записуємо в БД першу картинку
-                // }
                 $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
                     withCredentials: true,
                     headers: {'Content-Type': undefined},

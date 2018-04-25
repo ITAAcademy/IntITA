@@ -4,184 +4,170 @@
 hr {
     border: none; /* Убираем границу */
     background-color: #f0eeee; /* Цвет линии */
-        color: #f0eeee; /* Цвет линии для IE6-7 */
-        height: 2px; /* Толщина линии */
+    color: #f0eeee; /* Цвет линии для IE6-7 */
+    height: 2px; /* Толщина линии */
     }
-    .group{
+.group{
     padding-top: 5px;
-        padding-bottom: 5px;
-        margin-left: 10px;
-        margin-right: 10px;
-        height: 50px;
-    }
-
-    .square{
-    padding-right: 0px;
-        padding-left: 0px;
-
-    }
-    .in_square{
-    width:35px;
-        height:35px;
-    }
-    .rectangle{
-    margin-top:2px;
-        padding-right:2px;
-        padding-left:2px;
-        padding-top: 2px;
-        padding-bottom: 2px;
-    }
-    .in_rectangle{
-    padding-right:5px;
-        padding-left:5px;
-        width: 90px;
-    }
-    .in_rectangle_soc{
-    padding-right:5px;
-        padding-left:5px;
-        width: 300px;
-        margin-left: 20px;
-    }
-    .intent{
-    margin-top:6px;
-        padding-right: 0px;
-        padding-left: 0px;
-    }
-    .in_intent{
+    padding-bottom: 5px;
     margin-left: 10px;
-        margin-right: 10px;
+    margin-right: 10px;
+    height: 50px;
     }
-    .save_butt{
-    margin-top: 25px;
-        float: right;
-        margin-right: 25px;
-        font-size: 18px;
+
+.square{
+    padding-right: 0px;
+    padding-left: 0px;
     }
-    .logo{
-        margin-left: 40px;
-        padding-left: 0px;
-        padding-right: 0px;
+.in_square{
+    width:35px;
+    height:35px;
     }
-    .logo_show {
-    position: relative;
+.rectangle{
+    margin-top:2px;
+    padding-right:2px;
+    padding-left:2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    }
+.in_rectangle{
+    padding-right:5px;
+    padding-left:5px;
+    width: 90px;
+    }
+.in_rectangle_soc{
+    padding-right:5px;
+    padding-left:5px;
+    width: 300px;
+    margin-left: 20px;
+    }
+.intent{
+    margin-top:6px;
+    padding-right: 0px;
+    padding-left: 0px;
 }
-    .group_logo_show{
+.in_intent{
+    margin-left: 10px;
+    margin-right: 10px;
+    }
+.save_butt{
+    margin-top: 25px;
+    float: right;
+    margin-right: 25px;
+    font-size: 18px;
+}
+.logo{
+    margin-left: 40px;
+    padding-left: 0px;
+    padding-right: 0px;
+    }
+.logo_show {
+    position: relative;
+    }
+.group_logo_show{
     position: absolute;
     padding-left: 5px;
     }
-    .image_update{
-        max-width: 145px;
-        padding-left: 5px;
+.image_update{
+    max-width: 145px;
+    padding-left: 5px;
     }
-    #logo_name{
-        margin-left: -55px;
-
+#logo_name{
+    margin-left: -55px;
     }
 #logo_img{
     margin-left: 36px;
-}
+    }
 
 .preview{
     max-width: 300px;
         max-height: 100px;
 
     }
-    .button_box{
+.button_box{
     margin-top: -83px;
     }
-
-    #carousel_settings {
-        position: relative;
-        width:90%;
-        height: 350px;
-        margin:0 auto;
+#carousel_settings {
+    position: relative;
+    width:90%;
+    height: 350px;
+    margin:0 auto;
     }
-    .slide_settings {
-    /*margin-right: 2px;*/
-    /*padding-left: 5px;*/
-    /*padding-right: 5px;*/
-        /*margin-left: 20px;*/
-        margin-left: -5px;
-        margin-right: 10px;
+.slide_settings {
+    margin-left: -5px;
+    margin-right: 10px;
     }
-    #slides_settings_1 {
-        padding-top: 16px;
-        padding-bottom: 16px;
-        border-style: double;
-        border-width: 5px;
-        border-radius: 5px;
-        border-color: #8cfa8c;
-        background: aliceblue;
-        margin-left: auto;
-        margin-right: auto;
-        overflow: hidden;
-        position: relative;
-        width: 100%;
-        height: 185px;
+#slides_settings_1 {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border-style: double;
+    border-width: 5px;
+    border-radius: 5px;
+    border-color: #8cfa8c;
+    background: aliceblue;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 185px;
     }
-
-    #slides_settings_1 ul {
-        list-style: none;
-        width:100%;
-        height:250px;
-        margin: 0;
-        padding: 0;
-        position: relative;
+#slides_settings_1 ul {
+    list-style: none;
+    width:100%;
+    height:250px;
+    margin: 0;
+    padding: 0;
+    position: relative;
     }
-
-    #slides_settings_1 li {
-        width:100%;
-        height:250px;
-        float:left;
-        text-align: center;
-        position: relative;
-        font-family:lato, sans-serif;
+#slides_settings_1 li {
+    width:100%;
+    height:250px;
+    float:left;
+    text-align: center;
+    position: relative;
+    font-family:lato, sans-serif;
     }
     /* Styling for prev and next buttons */
-    .btn-bar{
+.btn-bar{
     max-width: 346px;
-        margin: 0 auto;
-        display: block;
-        position: relative;
-        top: 40px;
-        width: 100%;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    top: 40px;
+    width: 100%;
     }
-
-    #buttons {
-        padding:0 0 5px 0;
-        float:right;
-        margin-top: -45px;
-        margin-bottom: 20px;
+#buttons {
+    padding:0 0 5px 0;
+    float:right;
+    margin-top: -45px;
+    margin-bottom: 20px;
     }
-
-    #buttons a {
-        text-align:center;
-        display:block;
-        font-size:50px;
-        float:left;
-        outline:0;
-        margin:0 60px;
-        color:#3eb65a;
-        text-decoration:none;
-        display:block;
-        padding:9px;
-        width:35px;
+#buttons a {
+    text-align:center;
+    display:block;
+    font-size:50px;
+    float:left;
+    outline:0;
+    margin:0 60px;
+    color:#3eb65a;
+    text-decoration:none;
+    display:block;
+    padding:9px;
+    width:35px;
     }
-
-    a#prev:hover, a#next:hover {
-        color:#FFF;
-        text-shadow:.5px 0px #b14943;
+a#prev:hover, a#next:hover {
+    color:#FFF;
+    text-shadow:.5px 0px #b14943;
     }
-    .first_box, .second_box, .third_box{
+.first_box, .second_box, .third_box {
     display: table;
     width: 100%;
-
-    .col-xs-6 .intent {
-        padding-right: 40px;
-        padding-left: 10px;
-    }
 }
-
+.col-xs-6 .intent {
+    padding-right: 40px;
+    padding-left: 10px;
+    }
 </style>
 
 
