@@ -495,13 +495,13 @@
         $(".school").css("top",parseInt(getComputedStyle(buttonForFran[0]).top) + 73 + "px");
         if ($(document).width() < 655) {
             sliderWidth = $("#camera_wrap_2").width();
-            $(".camera_commands").css("right", sliderWidth/2 - 25);
+            $(".camera_commands").css("left", $(window).width()/2 - 12);
             $(".camera_prev").css("left",sliderWidth/2-100);
             $(".camera_next").css("right",sliderWidth/2-100);
         }
         else{
             sliderWidth = $("#camera_wrap_2").width();
-            $(".camera_commands").css("right", sliderWidth/2);
+            $(".camera_commands").css("left", $(window).width()/2 - 12);
             $(".camera_prev").css("left",sliderWidth/2-300);
             $(".camera_next").css("right",sliderWidth/2-300);
         }
@@ -509,13 +509,13 @@
         $(window).resize(function(){
             if ($(document).width() < 655) {
                 var sliderWidth = $("#camera_wrap_2").width();
-                $(".camera_commands").css("right", sliderWidth/2 - 25);
+                $(".camera_commands").css("left", $(window).width()/2 - 12);
                 $(".camera_prev").css("left",sliderWidth/2-100);
                 $(".camera_next").css("right",sliderWidth/2-100);
             }
             else{
                 var sliderWidth = $("#camera_wrap_2").width();
-                $(".camera_commands").css("right", sliderWidth/2);
+                $(".camera_commands").css("left", sliderWidth/2);
                 $(".camera_prev").css("left",sliderWidth/2-300);
                 $(".camera_next").css("right",sliderWidth/2-300);
             }
@@ -523,3 +523,69 @@
         })
     })
 </script>
+<div class="teacherForm" id="maxTeacherForm">
+    <a id="joinTeamMaxButton" data-toggle="modal" data-target="#joinTeamMax" class="buttonBeginInTeachers" href="#form">ДЕТАЛЬНА ІНФОРМАЦІЯ  /&gt;</a>
+    <!-- Modal -->
+    <div class="modal fade" id="joinTeamMax" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Детальна інформація</h4>
+                </div>
+                <div class="ifYouTeachers" id="xex">
+                    <table class="detailInfoForPartners">
+                        <tbody><tr>
+                            <td valign="center">
+                                <div id="formTeacher3">
+                                    <form method="post" name="letter" ng-controller="sendPartnerLetter" novalidate="novalidate" id="teacherletter-form" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-email">
+                                        <div class="formInModalTeachersMobile">
+                                            <div class="row">
+                                                <label for="TeacherLetter_firstname">Ім'я</label><span>*</span>
+                                                <input ng-model="letter.firstname" ng-pattern="/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s'’]+$/u" required="required" name="firstName" id="TeacherLetter_firstname" type="text" maxlength="35" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength">
+                                                <div class="clientValidationError" ng-show="letter.firstName.$dirty && letter.firstName.$invalid">
+                                                    <span ng-show="letter.firstName.$error.required"><?php echo Yii::t('error','0268') ?></span>
+                                                    <span ng-show="letter.firstName.$error.pattern" class="ng-hide"><?php echo Yii::t('error','0429') ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label for=""TeacherLetter_lastname">Прізвище</label>
+                                                <input ng-model="letter.lastname" ng-pattern="/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s'’]+$/u" name="lastName" id="TeacherLetter_lastname" type="text" maxlength="35" class="ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength">
+                                                <div class="clientValidationError" ng-show="letter.lastName.$dirty && letter.lastName.$invalid">
+                                                    <span ng-show="letter.lastName.$error.pattern" class="ng-hide"><?php echo Yii::t('error','0429') ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label for="TeacherLetter_phone">Телефон</label><span>*</span>
+                                                <input name="phone_partner" maxlength="13" class="letterPhone ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" ng-model="letter.phone" ng-pattern="/^[0-9\+\-\(\)\s]+$/u" required="required" type="text" id="TeacherLetter_phone">
+                                                <div class="clientValidationError" ng-show="letter.phone_partner.$dirty">
+                                                    <span ng-show="letter.phone_partner.$error.required"><?php echo Yii::t('error','0268') ?></span>
+                                                    <span ng-show="letter.phone_partner.$error.pattern" class="ng-hide"><?php echo Yii::t('error','0429') ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label for="TeacherLetter_email">Email</label><span>*</span>
+                                                <input class="letterEmail ng-pristine ng-untouched ng-empty ng-valid-email ng-invalid ng-invalid-required ng-valid-maxlength" ng-model="letter.email" required="required" name="email_partner" id="TeacherLetter_email" type="email" maxlength="50">
+                                                <div class="clientValidationError" ng-show="letter.email_partner.$dirty && letter.email_partner.$invalid">
+                                                    <span ng-show="letter.email_partner.$error.required"><?php echo Yii::t('error','0268') ?></span>
+                                                    <span ng-show="letter.email_partner.$error.email"><?php echo Yii::t('error','0271') ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="courseslabel" for="TeacherLetter_courses">Ваші питання</label>
+                                                <textarea ng-model="letter.question" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"></textarea>
+                                            </div>
+                                            <ul class="actions">
+                                                <input id="send_btn" type="button" name="sendletter" ng-click="sendLetterFromPartner(letter)" value="Відправити" ng-disabled="letter.$invalid" disabled="disabled">
+                                            </ul>
+                                        </div>
+                                    </form></div></td>
+                        </tr>
+                        </tbody></table>
+                    <div id="letterFlash">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
