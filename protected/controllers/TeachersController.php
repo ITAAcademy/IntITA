@@ -46,17 +46,19 @@ class TeachersController extends Controller
 
     public function actionTeacherLetter()
     {
-        $obj = new TeacherLetter;
-        $obj->firstname=Yii::app()->request->getPost('firstname');
-        $obj->lastname=Yii::app()->request->getPost('lastname');
-        $obj->phone=Yii::app()->request->getPost('phone');
-        $obj->courses=Yii::app()->request->getPost('courses');
-        $obj->email=Yii::app()->request->getPost('email');
-        if ($obj->validate()){
+        $answer = json_decode(file_get_contents('php://input'), true);
+        $obj = new TeacherLetter();
+        $obj->attributes = $answer;
+        $obj->courses = $answer["courses"];
             $title = "Teacher_Work " . $obj->firstname . " " . $obj->lastname;
             $mess = "Ім'я: " . $obj->firstname . " " . $obj->lastname . "\r\n" . "Телефон: " . $obj->phone . "\r\n" . "Курси які готовий викладати: " . $obj->courses;
             $to = Config::getAdminEmail();
-            mail($to, $title, $mess, "Content-type: text/plain; charset=utf-8 \r\n" . "From:" . $obj->email . "\r\n");
+            if(mail($to, $title, $mess, "Content-type: text/plain; charset=utf-8 \r\n" . "From:" . $obj->email . "\r\n")){
+                echo Yii::t('letter', '0914');
+            }
+            else {
+                echo Yii::t('letter', '0915');
+            }
             $directors = Teacher::requestDirectorsArray();
             foreach($directors as $director){
                 $email = $director->email;
@@ -64,10 +66,6 @@ class TeachersController extends Controller
                     mail($email, $title, $mess, "Content-type: text/plain; charset=utf-8 \r\n" . "From:" . $obj->email . "\r\n");
                 }
             }
-            echo Yii::t('letter', '0914');
-        } else {
-            echo Yii::t('letter', '0915');
-        }
     }
 
     private function renderIndex($teacherLetter)

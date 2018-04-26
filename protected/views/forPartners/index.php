@@ -538,37 +538,37 @@
                         <tbody><tr>
                             <td valign="center">
                                 <div id="formTeacher3">
-                                    <form method="post" name="letter" ng-controller="sendTeacherLetter" novalidate="novalidate" id="teacherletter-form" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-email">
+                                    <form method="post" name="letter" ng-controller="sendPartnerLetter" novalidate="novalidate" id="teacherletter-form" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-email">
                                         <div class="formInModalTeachersMobile">
                                             <div class="row">
                                                 <label for="TeacherLetter_firstname">Ім'я</label><span>*</span>
                                                 <input ng-model="letter.firstname" ng-pattern="/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s'’]+$/u" required="required" name="firstName" id="TeacherLetter_firstname" type="text" maxlength="35" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength">
                                                 <div class="clientValidationError" ng-show="letter.firstName.$dirty && letter.firstName.$invalid">
-                                                    <span ng-show="letter.firstName.$error.required">Будь ласка заповни поле</span>
-                                                    <span ng-show="letter.firstName.$error.pattern" class="ng-hide">Недопустимі символи!</span>
+                                                    <span ng-show="letter.firstName.$error.required"><?php echo Yii::t('error','0268') ?></span>
+                                                    <span ng-show="letter.firstName.$error.pattern" class="ng-hide"><?php echo Yii::t('error','0429') ?></span>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <label for=""TeacherLetter_lastname">Прізвище</label>
                                                 <input ng-model="letter.lastname" ng-pattern="/^[a-zа-яіїёєЄA-ZА-ЯІЇЁ\s'’]+$/u" name="lastName" id="TeacherLetter_lastname" type="text" maxlength="35" class="ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength">
                                                 <div class="clientValidationError" ng-show="letter.lastName.$dirty && letter.lastName.$invalid">
-                                                    <span ng-show="letter.lastName.$error.pattern" class="ng-hide">Недопустимі символи!</span>
+                                                    <span ng-show="letter.lastName.$error.pattern" class="ng-hide"><?php echo Yii::t('error','0429') ?></span>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <label for="TeacherLetter_phone">Телефон</label><span>*</span>
                                                 <input name="phone_partner" maxlength="13" class="letterPhone ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" ng-model="letter.phone" ng-pattern="/^[0-9\+\-\(\)\s]+$/u" required="required" type="text" id="TeacherLetter_phone">
                                                 <div class="clientValidationError" ng-show="letter.phone_partner.$dirty">
-                                                    <span ng-show="letter.phone_partner.$error.required">Будь ласка заповни поле</span>
-                                                    <span ng-show="letter.phone_partner.$error.pattern" class="ng-hide">Недопустимі символи!</span>
+                                                    <span ng-show="letter.phone_partner.$error.required"><?php echo Yii::t('error','0268') ?></span>
+                                                    <span ng-show="letter.phone_partner.$error.pattern" class="ng-hide"><?php echo Yii::t('error','0429') ?></span>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <label for="TeacherLetter_email">Email</label><span>*</span>
                                                 <input class="letterEmail ng-pristine ng-untouched ng-empty ng-valid-email ng-invalid ng-invalid-required ng-valid-maxlength" ng-model="letter.email" required="required" name="email_partner" id="TeacherLetter_email" type="email" maxlength="50">
                                                 <div class="clientValidationError" ng-show="letter.email_partner.$dirty && letter.email_partner.$invalid">
-                                                    <span ng-show="letter.email_partner.$error.required">Будь ласка заповни поле</span>
-                                                    <span ng-show="letter.email_partner.$error.email">Невірний email!</span>
+                                                    <span ng-show="letter.email_partner.$error.required"><?php echo Yii::t('error','0268') ?></span>
+                                                    <span ng-show="letter.email_partner.$error.email"><?php echo Yii::t('error','0271') ?></span>
                                                 </div>
                                             </div>
                                             <div class="row">

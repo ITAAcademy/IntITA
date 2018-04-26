@@ -88,6 +88,7 @@ div.ifYouTeachers label.courseslabel{
 .ifYouTeachers .clientValidationError {
     color: darkred;
     margin-left: 30%;
+    text-align: left;
 }
 .ifYouTeachers .row>label+span{font-size: 18px;color:#fff}
 .subLinksTeachers a{

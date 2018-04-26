@@ -5,6 +5,7 @@ angular
     .controller('registrationFormController',registrationFormController)
     .controller('aboutUsCtrl',aboutUsCtrl)
     .controller('sendTeacherLetter',sendTeacherLetter)
+    .controller('sendPartnerLetter',sendPartnerLetter)
     .controller('teacherResponse', teacherResponse)
     .controller('promotionSchemesCtrl',promotionSchemesCtrl)
     .controller('studentProjectsCtrl',studentProjectsCtrl)
@@ -668,27 +669,21 @@ function aboutUsCtrl($scope, $http) {
         $scope.openPage=buttonNumber;
     }
 }
-
-function sendTeacherLetter($scope, $http) {
-    $scope.sendLetter=function () {
-        $http({
-            url: basePath+"/teachers/teacherletter",
-            method: "POST",
-            data: $.param({
-                firstname: $scope.firstname,lastname:$scope.lastname,phone:$scope.phone,
-                courses:$scope.courses,email:$scope.email
-            }),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
-        }).then(function successCallback(response) {
+function sendPartnerLetter($scope,$http){
+    $scope.sendLetterFromPartner=function (letter) {
+        var url = basePath+"/forPartners/partnerLetter";
+        $http.post(url,letter).then(function successCallback(response) {
             bootbox.alert(response.data,function () {
                 location.reload();
             });
-        }, function errorCallback() {
+        },function errorCallback() {
             bootbox.alert("Виникла помилка при відпправлені листа. Зв\'яжіться з адміністрацією.");
         });
-    }
-    $scope.sendLetterFromPartner=function (letter) {
-        var url = basePath+"/forPartners/partnerLetter";
+    };
+}
+function sendTeacherLetter($scope, $http) {
+    $scope.sendLetterFromTeacher = function (letter) {
+        var url = basePath+"/teachers/teacherletter";
         $http.post(url,letter).then(function successCallback(response) {
             bootbox.alert(response.data,function () {
                 location.reload();
