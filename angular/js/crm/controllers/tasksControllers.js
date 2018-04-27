@@ -36,6 +36,14 @@ angular
         function ($attrs, $scope, crmTaskServices, ngToast, $rootScope, NgTableParams, $state, lodash, $filter, $uibModal, $timeout, $window, usersService) {
             $scope.changePageHeader('Завдання');
             var initializing = true;
+            var isMobile = {
+                Android: () => navigator.userAgent.match(/Android/i),
+                BlackBerry: () => navigator.userAgent.match(/BlackBerry/i),
+                iOS: () => navigator.userAgent.match(/iPhone|iPad|iPod/i),
+                Opera: () => navigator.userAgent.match(/Opera Mini/i),
+                Windows: () => navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i),
+                any: () => (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()),
+            };
 
             $rootScope.$on('$stateChangeStart',
                 function(event, toState, toParams, fromState, fromParams){
@@ -391,6 +399,11 @@ angular
             };
 
             $scope.changeRouterState($state.$current.name);
+
+            // deny drag&drop for mobile devices
+            $scope.ngDragHelper = function () {
+                return isMobile.any() ? false : true;
+            };
         }])
     .controller('crmManagerCtrl', ['$scope', 'crmTaskServices','NgTableParams','$state','$rootScope',
         function ($scope, crmTaskServices, NgTableParams, $state, $rootScope) {

@@ -10,6 +10,7 @@ class ForPartnersController extends Controller
     public function actionIndex(){
         $this->render('index',array());
     }
+
     public function actionPartnerLetter(){
         $answer = json_decode(file_get_contents('php://input'), true);
         $obj = new PartnerLetter;
