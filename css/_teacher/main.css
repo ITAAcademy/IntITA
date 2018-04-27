@@ -663,6 +663,9 @@ div.loader > div {
 .scroll-table table{
     table-layout: inherit;
 }
+div.form-group.row.ng-scope > label{
+    word-break: break-all;
+}
 @media screen and (max-width: 1200px) {
     table{
         table-layout: auto;
