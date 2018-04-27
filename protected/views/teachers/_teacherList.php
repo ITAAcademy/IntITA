@@ -12,7 +12,12 @@ $this->widget('application.components.ColumnListView', array(
         'lastPageLabel' => '&#187;&#187;',
         'prevPageLabel' => '&#171;',
         'nextPageLabel' => '&#187;',
-        'header' => '',
+        'header' => '<div
+            class="showMore"
+            align="right"
+            ng-controller="showMoreTeacherCtrl"
+            ng-click="showMore()"
+        >Показати ще ...</div>',
         'maxButtonCount' => 6,
         'cssFile' => Config::getBaseUrl() . '/css/pager.css'
     ),
@@ -21,6 +26,3 @@ $this->widget('application.components.ColumnListView', array(
 ));
 ?>
 
-<div class="showMore" ng-hide="currentCount=='<?php echo $dataProvider->totalItemCount?>'" align="right" ng-controller="showMoreTeacherCtrl">
-    <a href="" ng-click="showMore()" class="" style="">Показати ще ... </a>
-</div>

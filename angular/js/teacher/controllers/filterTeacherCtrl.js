@@ -55,6 +55,8 @@ angular
     .controller('showMoreTeacherCtrl', function($scope){
         var size=2;
         $scope.showMore = function(){
+            console.log(size);
+            console.log('here');
             $.fn.yiiListView.update(
                 // this is the id of the CListView
                 'ajaxListTeacher',
