@@ -305,69 +305,80 @@ class UserAgreements extends CActiveRecord {
 
     private static function newAgreement($userId, $modelFactory, $param_id, $schemaId, EducationForm $educForm)
     {
-        $user = StudentReg::model()->findByPk($userId);
-        $serviceModel = $modelFactory::getService($param_id, $educForm);
-        if(!$serviceModel->checkServiceAccess()){
-            throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Статус сервісу: "В РОЗРОБЦІ"');
+        $transaction = null;
+        if (Yii::app()->db->getCurrentTransaction() == null) {
+            $transaction = Yii::app()->db->beginTransaction();
         }
-
-        $billableObject = $serviceModel->getBillableObject();
-
-        $schemas = PaymentScheme::model()->getPaymentScheme($user, $serviceModel);
-        $calculators = $schemas->getSchemaCalculator($educForm);
-        $calculator = array_filter($calculators, function($item) use ($schemaId) {
-            return $item->id == $schemaId;
-        });
-
-        if($calculator){
-            $billableObjectOrganization = $billableObject->organization;
-            if (isset($schemas->id_template) && PaymentSchemeTemplate::model()->findByPk($schemas->id_template)->checkingAccount){
-                $checkingAccount = PaymentSchemeTemplate::model()->findByPk($schemas->id_template)->checkingAccount;;
-                $corporateEntity = $checkingAccount->corporateEntity;
-            }else{
-                $corporateEntity = $billableObjectOrganization->getCorporateEntityFor($billableObject, $educForm);
-                $checkingAccount = $billableObjectOrganization->getCheckingAccountFor($billableObject, $educForm);
-            }
-            $builder = new ContractingPartyBuilder();
-
-            $contractingParty = $builder->makeCorporateEntity($corporateEntity, $checkingAccount);
-            $calculator = array_values($calculator)[0];
-            $model = new UserAgreements();
-            $model->user_id = $userId;
-            $model->payment_schema = $calculator->payCount;
-            $model->service_id = $serviceModel->service_id;
-            $model->id_corporate_entity = $corporateEntity->id;
-            $model->id_checking_account = $checkingAccount->id;
-            $model->contract = $calculator->contract;
-            $model->educForm = $educForm->id;
-
-            //create phantom billableObject model for converting object's price to UAH
-            //used only in computing agreement and invoices price
-            $billableObjectUAH = clone $billableObject->getModelUAH();
-
-            //start date for offline service
-            $startDate = ($educForm->id==EducationForm::OFFLINE && $calculator->start_date)?new DateTime($calculator->start_date):new DateTime();
-            $startPaymentDate = clone $startDate;
-            $model->summa = $calculator->getSumma($billableObjectUAH);
-            $model->start_date = $startPaymentDate;
-            $model->close_date = $calculator->getCloseDate($billableObject, $startDate)->format(Yii::app()->params['dbDateFormat']);
-            $model->status = 1;
-            if ($model->save()) {
-
-                $contractingParty->bindToAgreement($model, ContractingParty::ROLE_COMPANY);
-
-                $invoicesList = $calculator->getInvoicesList($billableObjectUAH, $startPaymentDate);
-                $agreementId = $model->id;
-                $model->updateByPk($agreementId, array(
-                    'number' => UserAgreements::generateNumber($billableObject, $agreementId
-                    )));
-                Invoice::setInvoicesParamsAndSave($invoicesList, $userId, $agreementId);
-                $model->provideAccess();
-            } else {
-                throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Зверніться до адміністратора '.Config::getAdminEmail());
+        try {
+            $user = StudentReg::model()->findByPk($userId);
+            $serviceModel = $modelFactory::getService($param_id, $educForm);
+            if(!$serviceModel->checkServiceAccess()){
+                throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Статус сервісу: "В РОЗРОБЦІ"');
             }
 
-            return $model;
+            $billableObject = $serviceModel->getBillableObject();
+
+            $schemas = PaymentScheme::model()->getPaymentScheme($user, $serviceModel);
+            $calculators = $schemas->getSchemaCalculator($educForm);
+            $calculator = array_filter($calculators, function($item) use ($schemaId) {
+                return $item->id == $schemaId;
+            });
+
+            if($calculator){
+                $billableObjectOrganization = $billableObject->organization;
+                if (isset($schemas->id_template) && PaymentSchemeTemplate::model()->findByPk($schemas->id_template)->checkingAccount){
+                    $checkingAccount = PaymentSchemeTemplate::model()->findByPk($schemas->id_template)->checkingAccount;;
+                    $corporateEntity = $checkingAccount->corporateEntity;
+                }else{
+                    $corporateEntity = $billableObjectOrganization->getCorporateEntityFor($billableObject, $educForm);
+                    $checkingAccount = $billableObjectOrganization->getCheckingAccountFor($billableObject, $educForm);
+                }
+                $builder = new ContractingPartyBuilder();
+
+                $contractingParty = $builder->makeCorporateEntity($corporateEntity, $checkingAccount);
+                $calculator = array_values($calculator)[0];
+                $model = new UserAgreements();
+                $model->user_id = $userId;
+                $model->payment_schema = $calculator->payCount;
+                $model->service_id = $serviceModel->service_id;
+                $model->id_corporate_entity = $corporateEntity->id;
+                $model->id_checking_account = $checkingAccount->id;
+                $model->contract = $calculator->contract;
+                $model->educForm = $educForm->id;
+
+                //create phantom billableObject model for converting object's price to UAH
+                //used only in computing agreement and invoices price
+                $billableObjectUAH = clone $billableObject->getModelUAH();
+
+                //start date for offline service
+                $startDate = ($educForm->id==EducationForm::OFFLINE && $calculator->start_date)?new DateTime($calculator->start_date):new DateTime();
+                $startPaymentDate = clone $startDate;
+                $model->summa = $calculator->getSumma($billableObjectUAH);
+                $model->start_date = $startPaymentDate->format('Y-m-d');
+                $model->close_date = $calculator->getCloseDate($billableObject, $startDate)->format(Yii::app()->params['dbDateFormat']);
+                $model->status = 1;
+                if ($model->save()) {
+                    $contractingParty->bindToAgreement($model, ContractingParty::ROLE_COMPANY);
+                    $invoicesList = $calculator->getInvoicesList($billableObjectUAH, $startPaymentDate);
+                    $agreementId = $model->id;
+                    $model->updateByPk($agreementId, array(
+                        'number' => UserAgreements::generateNumber($billableObject, $agreementId
+                        )));
+                    Invoice::setInvoicesParamsAndSave($invoicesList, $userId, $agreementId);
+                    $model->provideAccess();
+                } else {
+                    throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Зверніться до адміністратора '.Config::getAdminEmail());
+                }
+            }
+            if ($transaction) {
+                $transaction->commit();
+                return $model;
+            }
+        } catch (Exception $e) {
+            if ($transaction) {
+                $transaction->rollback();
+            }
+            throw new \application\components\Exceptions\IntItaException(500, $e->getMessage());
         }
     }
 
