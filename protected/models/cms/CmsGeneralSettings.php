@@ -60,12 +60,18 @@ class CmsGeneralSettings extends CActiveRecord
 		return array(
 			array('id_organization', 'required'),
 			array('id_organization', 'numerical', 'integerOnly'=>true),
-			array('logo, email, twitter, youtube, google, facebook, linkedin, instagram', 'length', 'max'=>255),
+			array('logo, email, twitter, youtube, google, facebook, linkedin, instagram,title, subtitle,title_2, subtitle_2', 'length', 'max'=>255),
 			array('mobile_phone, mobile_phone_2', 'length', 'max'=>50),
-			array('footer_background_color, header_background_color, news_background_color, about_us_background_color, footer_link_color, header_link_color, general_link_color, footer_hover_color, header_hover_color, general_hover_color, footer_border_color, header_border_color, news_image_border_color, news_text_border_color, title_color, subtitle_color, text_color, icon_shadow_color', 'length', 'max'=>32),
+			array('footer_background_color, header_background_color, news_background_color, about_us_background_color, footer_link_color, header_link_color,
+			 general_link_color, footer_hover_color, header_hover_color, general_hover_color, footer_border_color, header_border_color, news_image_border_color,
+			  news_text_border_color, title_color, subtitle_color, text_color, icon_shadow_color, news_date_color', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_organization, logo, mobile_phone, mobile_phone_2, email, twitter, youtube, google, facebook, linkedin, instagram, footer_background_color, header_background_color, news_background_color, about_us_background_color, footer_link_color, header_link_color, general_link_color, footer_hover_color, header_hover_color, general_hover_color, footer_border_color, header_border_color, news_image_border_color, news_text_border_color, title_color, subtitle_color, text_color, icon_shadow_color', 'safe', 'on'=>'search'),
+			array('id, id_organization, logo, mobile_phone, mobile_phone_2, email, twitter, youtube, google, facebook, linkedin, instagram,
+			 footer_background_color, header_background_color, news_background_color, about_us_background_color, footer_link_color, header_link_color,
+			  general_link_color, footer_hover_color, header_hover_color, general_hover_color, footer_border_color, header_border_color, news_image_border_color,
+			   news_text_border_color, title_color, subtitle_color, text_color, icon_shadow_color, title, subtitle, title_2, subtitle_2, news_date_color',
+                'safe', 'on'=>'search'),
 		);
 	}
 
@@ -117,6 +123,11 @@ class CmsGeneralSettings extends CActiveRecord
 			'subtitle_color' => 'Subtitle Color',
 			'text_color' => 'Text Color',
 			'icon_shadow_color' => 'Icon Shadow Color',
+            'title' => 'Title',
+            'subtitle' => 'Subtitle',
+            'title_2' => 'Title 2',
+            'subtitle_2' => 'Subtitle 2',
+            'news_date_color' => 'News Date Color'
 		);
 	}
 
@@ -168,8 +179,14 @@ class CmsGeneralSettings extends CActiveRecord
 		$criteria->compare('subtitle_color',$this->subtitle_color,true);
 		$criteria->compare('text_color',$this->text_color,true);
 		$criteria->compare('icon_shadow_color',$this->icon_shadow_color,true);
+        $criteria->compare('title',$this->title,true);
+        $criteria->compare('subtitle',$this->subtitle,true);
+        $criteria->compare('title_2',$this->title_2,true);
+        $criteria->compare('subtitle_2',$this->subtitle_2,true);
+        $criteria->compare('news_date_color',$this->news_date_color,true);
 
-		return new CActiveDataProvider($this, array(
+
+        return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}

@@ -25,6 +25,7 @@
         <label><?php echo Yii::t('regexp', '0927') ?></label>
         <input ng-if="document.type==1" type="text" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-model="document.number">
         <input ng-if="document.type==2" type="text" name="inn" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-pattern="/\d{10}/g" ng-model="document.number">
+        <input ng-if="document.type==3" type="text" name="certificate" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-model="document.number">
         <div ng-cloak class="clientValidationError" ng-show="documents.inn.$error.pattern">
             Введіть 10-значний ідентифікаційний номер
         </div>

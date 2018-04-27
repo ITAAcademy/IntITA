@@ -7,29 +7,29 @@
         <table class="icon_table">
             <tbody ><tr>
                 <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.twitter_link}}" target="_blank" title="Twitter">
+                    <a href="{{settings.twitter}}" target="_blank" title="Twitter">
                         <img src="http://intita.com//images/mainpage/twitter.png">
                     </a>
                 </td>
                 <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.youtube_link}}" target="_blank" title="Youtube">
+                    <a href="{{settings.youtube}}" target="_blank" title="Youtube">
                         <img src="http://intita.com//images/mainpage/youtube.png">
                     </a>
                 </td>
                 <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.google_link}} " target="_blank" title="Google+">
+                    <a href="{{settings.google}} " target="_blank" title="Google+">
                         <img src="http://intita.com//images/mainpage/googlePlus.png">
                     </a>
                 </td>
             </tr>
             <tr>
                 <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.facebook_link}}" target="_blank" title="Facebook">
+                    <a href="{{settings.facebook}}" target="_blank" title="Facebook">
                         <img src="http://intita.com//images/mainpage/facebook.png">
                     </a>
                 </td>
                 <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.linkedin_link}}" target="_blank" title="Linkedin">
+                    <a href="{{settings.linkedin}}" target="_blank" title="Linkedin">
                         <img src="http://intita.com//images/mainpage/inl.png">
                     </a>
                 </td>
@@ -46,14 +46,9 @@
             <div class="left_part col-md-6 col-sm-5 col-xs-12">
                 <div class="logo">
                     <a href="">
-                        <img id="footerLogo" ng-src='{{settings.id && domainPath+settings.logo || settings.logo}}'>
+                        <img id="footerLogo" ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
                     </a>
                 </div>
-<!--                <div class="footer_logo2">-->
-<!--                    <a href="/">-->
-<!--                        <img id="footerLogo800" src="{{settings.footer_logo2}}">-->
-<!--                    </a>-->
-<!--                </div>-->
                 <div class="footer_contact" ng-style="{color:settings.footer_link_color}"  >
                     <div><span ng-bind="settings.mobile_phone"></span></div>
                     <div><span ng-bind="settings.mobile_phone_2"></span></div>
