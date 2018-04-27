@@ -424,3 +424,55 @@ ul[rn-carousel] {
         display: none;
     }
 }
+.buttonBeginInTeachers{
+    width: 329px;
+    height: 43px;
+    display: block;
+    text-shadow: 0.1em 0.1em 0.1em black;
+    color: white !important;
+    font: normal 400 0.54em/2.16em "MyriadPro2";
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 300;
+    border-top: 0.05em solid #007cbf;
+    background: #4b70a3;
+    border-radius: 0.3em;
+    box-shadow: 0em 0.1em 0em black;
+    z-index: 4;
+    font-size: 20px;
+    margin-left: -80px;
+    margin-top: 45px;
+    padding-top: 4px;
+    margin: 0 auto;
+    margin-bottom: 32px;
+}
+.buttonBeginInTeachers:hover,.buttonBeginInTeachers:focus{
+    border-top-color: #454545;
+    background: #454545;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.formInModalTeachersMobile{
+    position: relative;
+    left: -47px;
+    text-align: center;
+}
+#joinTeamMin,#joinTeamMax{
+    padding-right: 0 !important;
+}
+#send_btn{
+    margin-bottom: 10px;
+}
+@media only screen and (max-width: 450px){
+    .formInModalTeachersMobile{
+        position: relative;
+        left: -22px;
+    }
+}
+@media only screen and (max-width: 433px){
+    .buttonBeginInTeachers{
+        width: 301px;
+    }
+}
