@@ -63,6 +63,24 @@
         <td>{{agreementData.expiration_date  | shortDate:'dd.MM.yyyy'}}</td>
     </tr>
     <tr>
+        <th>Паперовий договір:</th>
+        <td>{{agreementData.contract?'Присутній':'Відсутній'}}</td>
+    </tr>
+    <tr ng-if="agreementData.contract">
+        <th>Статус запиту на підтвердження паперового договору:</th>
+        <td>{{writtenAgreementRequestStatus}}</td>
+    </tr>
+    <tr ng-if="agreementData.contract">
+        <th>Статус паперового договору:</th>
+        <td>
+            <ul>
+                <li ng-repeat="status in writtenAgreementStatuses track by $index">
+                    {{status}}
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
         <th>Підтверджено користувачем:</th>
         <td>{{agreementData.approval_user.fullName}}</td>
     </tr>
