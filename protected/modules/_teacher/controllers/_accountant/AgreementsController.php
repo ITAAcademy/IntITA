@@ -130,7 +130,6 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionGetAgreement($id) {
         $agreements = new Agreements();
-        $agreements->getUserAgreement($id);
         echo json_encode($agreements->getUserAgreement($id), JSON_FORCE_OBJECT);
     }
 

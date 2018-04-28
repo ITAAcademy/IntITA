@@ -69,8 +69,9 @@
         <br>
         <div ng-if="waitingForApproval">
             <h3>Тобі надіслано запит на перевірку і погодження з умовами договору.
-            Натисни кнопку <button type="button" class="btn btn-success btn-xs" ng-click="checkWrittenAgreementRequestByUser(actualAgreement)" >Підтвердити</button>, якщо ти погоджуєшся з договором.
+            Натисни кнопку <button type="button" class="btn btn-success" ng-click="checkWrittenAgreementRequestByUser(actualAgreement)" >Підтвердити</button>, якщо ти погоджуєшся з договором.
             </h3>
+            <button type="button" class="btn btn-success fixed-button" ng-click="checkWrittenAgreementRequestByUser(actualAgreement)" >Підтвердити</button>
         </div>
         <br>
         <div ng-if="writtenAgreement">
