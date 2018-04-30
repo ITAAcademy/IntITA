@@ -4,6 +4,10 @@ angular
         function ($scope, cmsService, $http) {
             $scope.domainPath = domainPath;
             $scope.domainPathNews = domainPathNews;
+            $scope.data;
+            $scope.buttonShow;
+
+
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
@@ -41,9 +45,13 @@ angular
                         else {
                             $scope.settings = response;
                         }
+                        $scope.buttonShow=true;
+                        console.log($scope.buttonShow);
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
                     });
+
+
             }
             $scope.getSettings();
 
@@ -64,15 +72,41 @@ angular
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
+
+            };
+
+            $scope.showDefaultSettings =function (){
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response1) {
+                                $scope.listsItemMenu = response1;
+                            });
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response2) {
+                                $scope.settings = response2;
+                            });
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
+                                $scope.lists = response3;
+                                for (var i=0; i<$scope.lists.length; i++){
+                                    $scope.lists[i].strLimit=500;
+                                }
+                            });
+                        $scope.buttonShow=false;
+                        console.log($scope.buttonShow);
+                    };
+
+            $scope.mySettings=function (){
+                $scope.loadCmsMenuList();
+                $scope.getSettings()
+                $scope.loadCmsNews();
             };
 
             $scope.removeLogo = function (id, image) {
+                console.log("delete img");
                 cmsService.removeLogo({image: image}).$promise
                     .then(function successCallback() {
                         $scope.getSettings();
                     }, function errorCallback(response) {
                         bootbox.alert(response.data.reason);
                     });
+
             };
 
             $scope.loadCmsNews = function () {
