@@ -1,5 +1,3 @@
-<!-- ngCkeditor -->
-<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
 <style>
     #firstBlockEditProfileInfo,#secondBlockEditProfileInfo{
         display: none;
@@ -65,7 +63,9 @@ if ($editMode){
 
                 <script>
                     CKEDITOR.replace( 'editor1', {
-
+                        fullPage: true,
+                        allowedContent: true,
+                        extraPlugins: 'wysiwygarea'
                     } );
                 </script>
             <?php } ?>
@@ -94,7 +94,9 @@ if ($editMode){
 
                 <script>
                     CKEDITOR.replace( 'editor2', {
-
+                        fullPage: true,
+                        allowedContent: true,
+                        extraPlugins: 'wysiwygarea'
                     } );
                 </script>
             <?php } ?>
@@ -134,7 +136,7 @@ if ($editMode) {
                 'js' => array('video.js',),
             ),
             'fontsize' => array(
-                'js' => array('fontsifullscreenze.js',),
+                'js' => array('fontsize.js',),
             ),
             'fontfamily' => array(
                 'js' => array('fontfamily.js',),
