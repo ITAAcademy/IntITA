@@ -4,12 +4,12 @@
  * @property string $lastname
  * @property string $phone
  * @property string $email
- * @property string $courses
+ * @property string $question
  */
 
-class TeacherLetter extends CFormModel
+class PartnerLetter extends CFormModel
 {
-    public $firstname, $lastname, $phone, $email, $courses;
+    public $firstname, $lastname, $phone, $email, $question;
     public function rules()
     {
         return array(
@@ -28,7 +28,7 @@ class TeacherLetter extends CFormModel
             'lastname' => Yii::t('teachers', '0175'),
             'phone' => Yii::t('teachers', '0178'),
             'email' => Yii::t('teachers', '0418'),
-            'courses' => Yii::t('teachers', '0179')
+            'question' => Yii::t('teachers', '0179')
         );
     }
     public function sendmail()

@@ -36,6 +36,16 @@ angular
         function ($attrs, $scope, crmTaskServices, ngToast, $rootScope, NgTableParams, $state, lodash, $filter, $uibModal, $timeout, $window, usersService) {
             $scope.changePageHeader('Завдання');
             var initializing = true;
+            var isMobile = {
+                Android: () => navigator.userAgent.match(/Android/i),
+                BlackBerry: () => navigator.userAgent.match(/BlackBerry/i),
+                iOS: () => navigator.userAgent.match(/iPhone|iPad|iPod/i),
+                Opera: () => navigator.userAgent.match(/Opera Mini/i),
+                Windows: () => navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i),
+                any: () => (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()),
+            };
+            // deny drag&drop for mobile devices
+            $scope.canDrag = isMobile.any() ? false : true;
 
             $rootScope.$on('$stateChangeStart',
                 function(event, toState, toParams, fromState, fromParams){
@@ -273,8 +283,11 @@ angular
                                 return {
                                     id: item.idTask.id,
                                     title: item.idTask.name,
+                                    observers: item.idTask.observers,
+                                    producer: item.idTask.producerName.id,
                                     producerName: item.idTask.producerName.fullName,
                                     producerAvatar: basePath + '/images/avatars/' + item.idTask.producerName.avatar,
+                                    executant: item.idTask.executantName.id,
                                     executantName: item.idTask.executantName.fullName,
                                     executantAvatar: basePath + '/images/avatars/' + item.idTask.executantName.avatar,
                                     description: $filter('limitTo')(item.idTask.body, 70),
@@ -349,24 +362,28 @@ angular
             // function for on dropping
             $scope.onDrop = function onDrop(data, event, stage) {
                 if (data && data.stage_id != stage.id) {
-                    crmTaskServices.changeTaskState({id: data.id, state: stage.id}).$promise.then(function () {
-                        $scope.loadKanbanTasks($rootScope.roleId);
-                        $scope.setKanbanHeight();
-                    });
+                    $scope.changeKanbanState(data, stage.id);
                 }
                 if (data) data.dragging = false;
-            }
+            };
+
             $scope.changeKanbanState = function (task, state) {
-                crmTaskServices.changeTaskState({id: task.id, state: state}).$promise.then(function () {
-                    if ($scope.board == 1) {
-                        $scope.loadKanbanTasks($rootScope.roleId);
-                        $scope.setKanbanHeight();
-                    } else {
-                        $scope.loadTableTasks($rootScope.roleId)
-                        $scope.tasksTableParams.reload();
-                    }
-                });
-            }
+                if (state == 4 && !$scope.canComplete(task)) {
+                    bootbox.alert('Співвиконавець не може завершити завдання');
+                } else if (state == 1 && !$scope.canComplete(task)) {
+                    bootbox.alert('Співвиконавець не може перенести завдання в статус очікування');
+                } else {
+                    crmTaskServices.changeTaskState({id: task.id, state: state}).$promise.then(function () {
+                        if ($scope.board == 1) {
+                            $scope.loadKanbanTasks($rootScope.roleId);
+                            $scope.setKanbanHeight();
+                        } else {
+                            $scope.loadTableTasks($rootScope.roleId)
+                            $scope.tasksTableParams.reload();
+                        }
+                    });
+                }
+            };
 
             $scope.cancelKanbanCrmTask = function (task) {
                 bootbox.confirm('Ти впевнений, що хочеш видалити завдання?', function (result) {
@@ -391,6 +408,14 @@ angular
             };
 
             $scope.changeRouterState($state.$current.name);
+
+            $scope.canComplete = function (task) {
+                if(task.producer==$scope.currentUser || task.executant==$scope.currentUser || _.isObject(_.find(task.observers, {id: String($scope.currentUser)}))){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }])
     .controller('crmManagerCtrl', ['$scope', 'crmTaskServices','NgTableParams','$state','$rootScope',
         function ($scope, crmTaskServices, NgTableParams, $state, $rootScope) {

@@ -41,7 +41,7 @@
                     </div>
                 </td>
                 <td>
-                    <?php if(Yii::app()->user->model->isAdmin() && Yii::app()->user->model->getCurrentOrganization()->id==$model->id_organization){ ?>
+                    <?php if(Yii::app()->user->model->isAdmin() || Yii::app()->user->model->isAccountant() && Yii::app()->user->model->getCurrentOrganization()->id==$model->id_organization){ ?>
                     <div ng-controller="modulePriceCtrl">
                         <input class="col-md-2" style="border-radius: 5px; margin-right: 5px" ng-model="modulePrice" type="number" min="0"
                                ng-init="modulePrice=+'<?php echo $model->module_price; ?>'">

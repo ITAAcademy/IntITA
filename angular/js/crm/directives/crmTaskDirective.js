@@ -288,23 +288,25 @@ angular
                         });
                     },
                     loadTasksComments:function (id) {
-                        crmTaskServices
-                            .getTaskComments({id:id})
-                            .$promise
-                            .then(function (data) {
-                                if(!(self.data.rolesSubgroup.observer.length+self.data.rolesSubgroup.collaborator.length)){
-                                    var comments = data.rows;
-                                }else{
-                                    var comments = _.filter(data.rows, function(item) {
-                                        return item.id_user==self.currentUser || self.currentUser==self.data.roles.executant.id || self.currentUser==self.data.roles.producer.id
-                                            || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == self.currentUser; }) ||
-                                            (!item.id_parent && (item.id_user==self.data.roles.producer.id || item.id_user==self.data.roles.executant.id || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == item.id_user; }) ))
-                                            || (item.id_parent && isUserParentComment(data.rows, self.currentUser, item.id_parent));
-                                    });
-                                };
+                        if(id){
+                            crmTaskServices
+                                .getTaskComments({id:id})
+                                .$promise
+                                .then(function (data) {
+                                    if(!(self.data.rolesSubgroup.observer.length+self.data.rolesSubgroup.collaborator.length)){
+                                        var comments = data.rows;
+                                    }else{
+                                        var comments = _.filter(data.rows, function(item) {
+                                            return item.id_user==self.currentUser || self.currentUser==self.data.roles.executant.id || self.currentUser==self.data.roles.producer.id
+                                                || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == self.currentUser; }) ||
+                                                (!item.id_parent && (item.id_user==self.data.roles.producer.id || item.id_user==self.data.roles.executant.id || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == item.id_user; }) ))
+                                                || (item.id_parent && isUserParentComment(data.rows, self.currentUser, item.id_parent));
+                                        });
+                                    };
 
-                                self.comments = transformToTree(comments).reverse();
-                            });
+                                    self.comments = transformToTree(comments).reverse();
+                                });
+                        }
                     },
                     loadSpentTimeTask:function (id) {
                         scope.spentTimeTableParams = new NgTableParams({id: id}, {
@@ -569,6 +571,13 @@ angular
                             return false;
                         }
                     },
+                    canComplete: function () {
+                        if(self.data.producer || self.data.executant || _.isObject(_.find(self.data.roles['observer'], {id: String(self.currentUser)}))){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    },
                 };
 
                 crmTaskServices
@@ -751,31 +760,6 @@ angular
                         return !parentId;
                     });
                 }
-
-                // $rootScope.$on('$includeContentLoaded', function() {
-                //     $timeout(function(){
-                //         setEventToEditableField();
-                //     });
-                // });
-                //
-                // var setEventToEditableField = function() {
-                //     $jq( ".cke_editable" ).keyup(function(e) {
-                //     });
-                // }
-                // setEventToEditableField();
-                //
-                // scope.$watch('comment.message', function (newValue, oldValue) {
-                //     // console.log(pressedSymbol);
-                //     // if (pressedSymbol==="#"){
-                //     //     console.log('ajax');
-                //     // }
-                // });
-                // function keyUp(e){
-                //     console.log(e.key);
-                //     pressedSymbol=e.key;
-                // }
-                //
-                // addEventListener("keyup", keyUp);
             }
 
             return {
