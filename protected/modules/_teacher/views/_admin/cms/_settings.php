@@ -170,11 +170,12 @@ a#prev:hover, a#next:hover {
     }
 </style>
 
-
 <div id="carousel_settings">
 
     <div class="row button_box" >
         <div class="col-md-12 col-xs-12">
+            <button class="save_butt btn btn-warning" ng-show="buttonShow"  ng-click="showDefaultSettings()"><strong>Show default settings</strong></button>
+            <button class="save_butt btn btn-warning" ng-hide="buttonShow"  ng-click="mySettings()"><strong>Show my settings</strong></button>
             <button class="save_butt btn btn-success" ng-click="updateSettings(settings, settings.logo )"><strong>Save all</strong></button>
         </div>
     </div>
@@ -660,7 +661,7 @@ a#prev:hover, a#next:hover {
                             <div class="row group_logo_show " >
                                 <div class="col-md-11 col-xs-11 " >
                                     <a  href="/">
-                                        <img class="preview" id="logo_img"  ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
+                                        <img ng-if="settings.logo" class="preview" id="logo_img"  ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
                                     </a>
                                 </div>
                                 <div class="col-md-1 col-xs-1 " >

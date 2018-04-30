@@ -67,5 +67,6 @@ angular
                         url: url + '/getDomainPath',
                         method: 'GET',
                     },
+
                 });
         }])
