@@ -1,25 +1,16 @@
+<!-- ngCkeditor -->
+<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
+<style>
+    #firstBlockEditProfileInfo,#secondBlockEditProfileInfo{
+        display: none;
+    }
+</style>
 <?php
 /* @var $model Teacher*/
 if ($editMode){
     ?>
     <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'fileValidation.js');?>"></script>
-    <script type="text/javascript">
-        idTeacher = <?php echo $model->teacher_id;?>;
 
-        function editTeacherText(selected_block_id){
-            document.getElementById(selected_block_id).dispatchEvent( new Event("click") );
-            var textId = "#"+selected_block_id,originText = $(textId).text();
-            var statusSave=0;
-                $('[rel=save]').click(function(){
-                    statusSave = 1;
-                });
-                $('[rel=close]').click(function(){
-                    if(!statusSave){
-                        $(textId).text(originText);
-                    }
-                })
-        }
-    </script>
 <?php }?>
 
 <div class="TeacherProfileblock1">
@@ -58,15 +49,28 @@ if ($editMode){
             </div>
 
             <?php if($editMode){?>
-                <div class="editTextButton">
-                    <span onclick="editTeacherText('t1');">
+                <div class="editTextButton" id="firstButtonEditProfileInfo">
+                    <span>
                         <em>Натисніть для редагування профілю</em>
                         <i class="fas fa-pencil-alt"></i>
                     </span>
                 </div>
+                <div id="firstBlockEditProfileInfo">
+                    <textarea name="editor1" ><?php echo $model->profile_text_first; ?></textarea>
+                    <button type="button" class="btn btn-success" id="saveFirstBlockEditProfileInfo">
+                        Зберегти
+                    </button>
+                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton1">Відміна</button>
+                </div>
+
+                <script>
+                    CKEDITOR.replace( 'editor1', {
+
+                    } );
+                </script>
             <?php } ?>
 
-            <div <?php if ($editMode){ ?> class="editableText" id="t1" <?php } ?>>
+            <div <?php if ($editMode){ ?>  id="firstTextProfileInfo" <?php } ?>>
                 <p>
                    <?php if($model->profile_text_first != '') { echo $model->profile_text_first; } ?>
                 </p>
@@ -74,15 +78,28 @@ if ($editMode){
             <?php $this->renderPartial('_courses', array('model' => $model));?>
 
             <?php if($editMode){?>
-                <div class="editTextButton">
-                    <span onclick="editTeacherText('t2');">
+                <div class="editTextButton" id="secondButtonEditProfileInfo">
+                    <span>
                         <em>Натисніть для редагування профілю</em>
                         <i class="fas fa-pencil-alt"></i>
                     </span>
                 </div>
+                <div id="secondBlockEditProfileInfo">
+                    <textarea name="editor2" ><?php echo $model->profile_text_last; ?></textarea>
+                    <button type="button" class="btn btn-success" id="saveSecondBlockEditProfileInfo">
+                        Зберегти
+                    </button>
+                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton2">Відміна</button>
+                </div>
+
+                <script>
+                    CKEDITOR.replace( 'editor2', {
+
+                    } );
+                </script>
             <?php } ?>
 
-            <div  <?php if ($editMode){ ?> class="editableText" id="t2" <?php } ?>>
+            <div  <?php if ($editMode){ ?> id="secondTextProfileInfo" <?php } ?>>
                 <p>
                     <?php if($model->profile_text_last != '') { echo $model->profile_text_last; } ?>
                 </p>
@@ -117,7 +134,7 @@ if ($editMode) {
                 'js' => array('video.js',),
             ),
             'fontsize' => array(
-                'js' => array('fontsize.js',),
+                'js' => array('fontsifullscreenze.js',),
             ),
             'fontfamily' => array(
                 'js' => array('fontfamily.js',),
@@ -138,3 +155,45 @@ if ($editMode) {
     ));
 }
 ?>
+<script type="text/javascript">
+    function editingFomForTeachersProfile(editButton,editForm,saveButton,cancelButton,mainText) {
+        document.getElementById(editButton).onclick = function () {
+            document.getElementById(editForm).style.display = "block";
+            document.getElementById(mainText).style.display = "none";
+        };
+        document.getElementById(cancelButton).onclick = function(){
+            document.getElementById(editForm).style.display = "none";
+            document.getElementById(mainText).style.display = "block";
+        };
+        document.getElementById(saveButton).onclick = function () {
+            if(saveButton == "saveFirstBlockEditProfileInfo"){
+                $.ajax({
+                    url: "/profile/save",
+                    method: "POST",
+                    data: {block: "t1", content: CKEDITOR.instances.editor1.getData(),id: <?php echo $model->user_id; ?>},
+                    success: function (data) {
+                        window.location.replace(data);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
+                })
+            }
+            else if(saveButton == "saveSecondBlockEditProfileInfo"){
+                $.ajax({
+                    url: "/profile/save",
+                    method: "POST",
+                    data: {block: "t2", content: CKEDITOR.instances.editor2.getData(),id: <?php echo $model->user_id; ?>},
+                    success: function (data) {
+                        window.location.replace(data);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
+                })
+            }
+        }
+    };
+    editingFomForTeachersProfile("firstButtonEditProfileInfo","firstBlockEditProfileInfo","saveFirstBlockEditProfileInfo","cancelTeacherEditButton1","firstTextProfileInfo");
+    editingFomForTeachersProfile("secondButtonEditProfileInfo","secondBlockEditProfileInfo","saveSecondBlockEditProfileInfo","cancelTeacherEditButton2","secondTextProfileInfo");
+</script>

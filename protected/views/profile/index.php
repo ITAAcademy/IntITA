@@ -3,6 +3,8 @@
     <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'teacherProfile.css'); ?>" />
     <link href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bootstrapRewrite.css') ?>"/>
+    <script src="https://cdn.ckeditor.com/4.5.4/standard/ckeditor.js"></script>
+
 <?php
 /* @var $this ProfileController */
 /* @var $model Teacher */
