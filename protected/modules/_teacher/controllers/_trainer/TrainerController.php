@@ -196,9 +196,18 @@ class TrainerController extends TeacherCabinetController
         $criteria->join .= ' left join course c on c.course_ID=cs.course_id';
         $criteria->join .= ' left join acc_module_service ms on ms.service_id=t.service_id';
         $criteria->join .= ' left join module m on m.module_ID=ms.module_id';
-        $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and studentTrainer.end_time is null 
-        and (m.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
-        or c.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.')');
+        $criteria->addCondition('studentTrainer.trainer=:userId and studentTrainer.end_time is null 
+        and (m.id_organization=:organizationId or c.id_organization=:organizationId)');
+
+        $criteria->params = array(
+            ':userId' => Yii::app()->user->getId(),
+            ':organizationId' => Yii::app()->user->model->getCurrentOrganizationId(),
+        );
+
+        if(isset($requestParams["filter"]["payment_schema"])) {
+            $criteria->params[':paymentSchemaNumber'] = $requestParams["filter"]["payment_schema"];
+        }
+
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
         echo json_encode($result);
