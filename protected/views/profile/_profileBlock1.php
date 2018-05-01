@@ -65,7 +65,19 @@ if ($editMode){
                     CKEDITOR.replace( 'editor1', {
                         fullPage: true,
                         allowedContent: true,
-                        extraPlugins: 'wysiwygarea'
+                        extraPlugins: 'wysiwygarea',
+                        toolbar: [
+                            { name: 'document', items: [ 'Source', '-', 'NewPage', 'Preview', '-', 'Templates' ] },	// Defines toolbar group with name (used to create voice label) and items in 3 subgroups.
+                            [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],			// Defines toolbar group without name.
+                            { name: 'editing', items: ['SelectAll', 'Scayt' ] },
+                            '/',																					// Line break - next group will be placed in new line.
+                            { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'CopyFormatting', 'RemoveFormat' ] },
+                            { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+                            { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+                            { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                            { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+                            { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+                        ]
                     } );
                 </script>
             <?php } ?>
@@ -96,7 +108,19 @@ if ($editMode){
                     CKEDITOR.replace( 'editor2', {
                         fullPage: true,
                         allowedContent: true,
-                        extraPlugins: 'wysiwygarea'
+                        extraPlugins: 'wysiwygarea',
+                        toolbar: [
+                            { name: 'document', items: [ 'Source', '-', 'NewPage', 'Preview', '-', 'Templates' ] },	// Defines toolbar group with name (used to create voice label) and items in 3 subgroups.
+                            [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],			// Defines toolbar group without name.
+                            { name: 'editing', items: ['SelectAll', 'Scayt' ] },
+                            '/',																					// Line break - next group will be placed in new line.
+                            { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'CopyFormatting', 'RemoveFormat' ] },
+                            { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+                            { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+                            { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                            { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+                            { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+                        ]
                     } );
                 </script>
             <?php } ?>
