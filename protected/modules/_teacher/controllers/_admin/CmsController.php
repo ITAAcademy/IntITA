@@ -32,7 +32,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionGetMenuList()
     {
-        echo CJSON::encode(CmsMenuList::model()->findAll());
+        echo  CJSON::encode(CmsMenuList::model()->findAllByAttributes(array('id_organization' => Yii::app()->user->model->getCurrentOrganizationId())));
     }
 
     public function actionUpdateMenuLink()
