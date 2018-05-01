@@ -1170,7 +1170,7 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
         { title: "Закріплені студенти", route: "main"},
         { title: "Особиста інформація", route: "personalInfo"},
         { title: "Кар'єра", route: "career"},
-        { title: "Договір", route: "contract"},
+        { title: "Договора", route: "contract"},
         { title: "Відвідування", route: "visit"},
     ];
     if($scope.trainer){
@@ -1646,6 +1646,15 @@ function contractStudentsCtrl($scope, trainerService, usersService, NgTableParam
         .then(function (data) {
             return data.map(function (item) {
                 return {id: item.pay_count, title: item.title_ua}
+            })
+        });
+
+    $scope.getAgreementStatuses = paymentSchemaService
+        .statuses()
+        .$promise
+        .then(function (data) {
+            return data.map(function (item) {
+                return {id: item.id, title: item.title_ua}
             })
         });
 

@@ -102,6 +102,11 @@ angular
                     getActualSchemesRequests: {
                         url: url + '/getActualSchemesRequestsCount',
                     },
+                    statuses: {
+                        url: url + '/getStatuses',
+                        method: 'GET',
+                        isArray: true
+                    },
                 });
         }])
 ;

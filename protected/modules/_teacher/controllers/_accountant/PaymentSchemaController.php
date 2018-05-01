@@ -3,7 +3,7 @@
 class PaymentSchemaController extends TeacherCabinetController
 {
     public function hasRole() {
-        $allowedCuratorsActions = ['getSchemas'];
+        $allowedCuratorsActions = ['getSchemas','getStatuses'];
         $action = Yii::app()->controller->action->id;
         return Yii::app()->user->model->isAccountant() || Yii::app()->user->model->isAdmin() ||
         (Yii::app()->user->model->isTrainer() || Yii::app()->user->model->isSupervisor() || Yii::app()->user->model->isAuditor() && in_array($action, $allowedCuratorsActions));
@@ -11,6 +11,10 @@ class PaymentSchemaController extends TeacherCabinetController
 
     public function actionGetSchemas() {
         echo json_encode(ActiveRecordToJSON::toAssocArray(SchemesName::model()->findAll()));
+    }
+
+    public function actionGetStatuses() {
+        echo json_encode(ActiveRecordToJSON::toAssocArray(UserAgreementStatus::model()->findAll()));
     }
 
     public function actionCreateSchema () {

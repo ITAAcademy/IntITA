@@ -467,6 +467,7 @@ class StudentController extends TeacherCabinetController
                     $message->create();
                     $sender = new MailTransport();
                     $message->send($sender);
+                    $agreement->setSenRequest();
                     $transaction->commit();
                     $result = ['message' => 'success', 'reason' => 'Запит на затвердження паперового договору відіслано. Зачекайте, поки ваш запит буде оброблено'];
                 }
@@ -574,6 +575,7 @@ class StudentController extends TeacherCabinetController
             $params = array_filter($_POST);
             $writtenAgreement=UserWrittenAgreement::model()->findByPk($params['id']);
             $writtenAgreement->checked_by_user=UserWrittenAgreement::CHECKED;
+            $writtenAgreement->agreement->setUserApproved();
             if(!$writtenAgreement->save()){
                 throw new \application\components\Exceptions\IntItaException(500, "Підтвердити договір не вдалося. Зверніться до адміністрації.");
             }

@@ -4,8 +4,8 @@
 
 angular
     .module('teacherApp')
-    .controller('agreementsCtrl', ['$scope', 'agreementsService', 'paymentSchemaService', 'NgTableParams', 'lodash', 'agreementsInformation','usersService',
-        function ($scope, agreements, paymentSchema, NgTableParams, _, agreementsInformation, usersService) {
+    .controller('agreementsCtrl', ['$scope', 'agreementsService', 'paymentSchemaService', 'NgTableParams', 'lodash', 'agreementsInformation','usersService','paymentSchemaService',
+        function ($scope, agreements, paymentSchema, NgTableParams, _, agreementsInformation, usersService, paymentSchemaService) {
             $scope.changePageHeader('Список договорів');
             $scope.currentDate = currentDate;
             $scope.agreementsTableParams = new NgTableParams({sorting: {create_date: "desc"}}, {
@@ -95,6 +95,15 @@ angular
                     }
                 );
             }
+
+            $scope.getAgreementStatuses = paymentSchemaService
+                .statuses()
+                .$promise
+                .then(function (data) {
+                    return data.map(function (item) {
+                        return {id: item.id, title: item.title_ua}
+                    })
+                });
         }])
 
     .controller('agreementDetailCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {
@@ -1668,6 +1677,15 @@ angular
                 .then(function (data) {
                     return data.map(function (item) {
                         return {id: item.pay_count, title: item.title_ua}
+                    })
+                });
+
+            $scope.getAgreementStatuses = paymentSchema
+                .statuses()
+                .$promise
+                .then(function (data) {
+                    return data.map(function (item) {
+                        return {id: item.id, title: item.title_ua}
                     })
                 });
         }])

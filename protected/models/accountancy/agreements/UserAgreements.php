@@ -49,7 +49,15 @@ class UserAgreements extends CActiveRecord {
     const DELAY_STATUS = 'delay';
     const EXPIRED_STATUS = 'expired';
     const NO_AGREEMENT = 'no_agreement';
-    
+
+    const CREATED = 1;
+    const APPROVED = 2;
+    const CANCELED = 3;
+    const SEND_REQUEST = 4;
+    const ACCOUNT_APPROVED = 5;
+    const USER_APPROVED = 6;
+    const GENERATED = 7;
+
     /**
      * @return string the associated database table name
      */
@@ -222,6 +230,7 @@ class UserAgreements extends CActiveRecord {
         if ($this->canBeCanceled()) {
             $this->cancel_date = new CDbExpression('NOW()');
             $this->cancel_user = $user->getId();
+            $this->status = self::CANCELED;
             if ($this->save()) {
                 return true;
             } else {
@@ -746,33 +755,6 @@ class UserAgreements extends CActiveRecord {
 
         $userWrittenAgreement->notifyUserAboutGenerateAgreement();
         return $userWrittenAgreement;
-
-//        if($this->actualWrittenAgreement){
-//            $this->actualWrittenAgreement->attributes=$params;
-//            $this->actualWrittenAgreement->checked_by=Yii::app()->user->getId();
-//            $this->actualWrittenAgreement->actual=UserWrittenAgreement::ACTUAL;
-//            $this->actualWrittenAgreement->checked_by_accountant=UserWrittenAgreement::CHECKED;
-//            $this->actualWrittenAgreement->checked=UserWrittenAgreement::CHECKED;
-//            $this->actualWrittenAgreement->checked_date=new CDbExpression('NOW()');
-//            if(!$this->actualWrittenAgreement->save()){
-//                throw new \application\components\Exceptions\IntItaException(403, 'Виникла помилка при затверджені паперового договору');
-//            }
-//            return $this->actualWrittenAgreement;
-//        }else{
-//            $userWrittenAgreement=new UserWrittenAgreement();
-//            $userWrittenAgreement->attributes=$params;
-//            $userWrittenAgreement->checked_by=Yii::app()->user->getId();
-//            $userWrittenAgreement->id_agreement=$this->id;
-//            $userWrittenAgreement->actual=UserWrittenAgreement::ACTUAL;
-//            $userWrittenAgreement->checked_by_accountant=UserWrittenAgreement::CHECKED;
-//            $userWrittenAgreement->checked=UserWrittenAgreement::CHECKED;
-//            $userWrittenAgreement->checked_date=new CDbExpression('NOW()');
-//            if(!$userWrittenAgreement->save()){
-//                throw new \application\components\Exceptions\IntItaException(403, 'Виникла помилка при затверджені паперового договору');
-//            }
-//
-//            return $userWrittenAgreement;
-//        }
     }
 
     public function sendAgreementRequestToUser($params, $id_template=null) {
@@ -843,6 +825,40 @@ class UserAgreements extends CActiveRecord {
         return $model;
     }
 
+    public function setCreated() {
+        $this->status = self::CREATED;
+        $this->save();
+    }
+
+    public function setApproved() {
+        $this->status = self::APPROVED;
+        $this->save();
+    }
+
+    public function setCanceled() {
+        $this->status = self::CANCELED;
+        $this->save();
+    }
+
+    public function setSenRequest() {
+        $this->status = self::SEND_REQUEST;
+        $this->save();
+    }
+
+    public function setAccountApproved() {
+        $this->status = self::ACCOUNT_APPROVED;
+        $this->save();
+    }
+
+    public function setUserApproved() {
+        $this->status = self::USER_APPROVED;
+        $this->save();
+    }
+
+    public function setGenerated() {
+        $this->status = self::GENERATED;
+        $this->save();
+    }
 }
 
 
