@@ -75,7 +75,7 @@ class CabinetController extends TeacherCabinetController
             if ($corpEmail['corporate_mail'] != null && $corpEmail['mail_password'] != null && $corpEmail['mailActive']) {
                 if (extension_loaded('imap')) {
                     $mailPassword = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256,Yii::app()->params['secretKey'], base64_decode(urldecode($corpEmail['mail_password'])),MCRYPT_MODE_ECB));
-                    $conn = imap_open('{localhost:993/imap/ssl/novalidate-cert}INBOX', $corpEmail['corporate_mail'], $mailPassword, OP_READONLY,1);
+                    $conn = imap_open('{'.Config::getImapServerAddress().'/imap/ssl/novalidate-cert}INBOX', $corpEmail['corporate_mail'], $mailPassword, OP_READONLY,1);
                     $countMailBoxMessages = imap_search($conn, 'UNSEEN');
                     if ($countMailBoxMessages) {
                         $imapMessages = count($countMailBoxMessages);
