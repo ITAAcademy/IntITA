@@ -598,8 +598,6 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
         });
     };
 
-    $scope.getSubGroups();
-
     $scope.addStudentToSubgroup=function (idUser,idSubgroup,dateInSubgroup) {
         function formatDate(date) {
             var d = new Date(date),

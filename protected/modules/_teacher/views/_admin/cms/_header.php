@@ -2,7 +2,7 @@
     <nav class="navbar">
         <div class="col-md-3 navbar-header">
             <a href="">
-                <img id="logo" ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
+                <img ng-if="settings.logo" id="logo" ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
             </a>
         </div>
         <div class="col-md-9" >

@@ -66,6 +66,35 @@ angular
                 .catch(function () {
                     bootbox.alert('Помилка, зверніться до адміністратора');
                 });
+
+            $scope.updateContractInfo = function (id_student, attr, text) {
+                text = text?text:'';
+                bootbox.dialog({
+                        title: "Введіть нову назву:",
+                        message: '<div class="panel-body"><div class="row"><form role="form" name="commentMessage"><div class="form-group col-md-12">'+
+                        '<textarea class="form-control" style="resize: none" rows="6" id="commentMessageText" ' +
+                        'placeholder="тут можна ввести нову назву поля">' +text+ '</textarea>'+'</div></form></div></div>',
+                        buttons:
+                            {success:
+                                    {label: "Підтвердити", className: "btn btn-primary",
+                                        callback: function () {
+                                            var data = $jq('#commentMessageText').val();
+                                            usersService.updateStudentData({id_student: id_student, data: data, attr: attr})
+                                                .$promise
+                                                .then(function(){
+                                                    $scope.agreementsTableParams.reload();
+                                                });
+                                        }
+                                    },
+                                cancel:
+                                    {label: "Скасувати", className: "btn btn-default",
+                                        callback: function () {
+                                        }
+                                    }
+                            }
+                    }
+                );
+            }
         }])
 
     .controller('agreementDetailCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {

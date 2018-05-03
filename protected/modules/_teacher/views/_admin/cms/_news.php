@@ -1,6 +1,4 @@
-
 <div class="news_wrapper" ng-style="{'background-color':settings.news_background_color}" >
-
     <div class="container_n text-center">
         <h1 class="text-muted" ng-style="{color:settings.title_color}"  ng-bind="settings.title_2"></h1>
         <h3 class="text-primary info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}"   ng-bind="settings.subtitle_2"></h3>
