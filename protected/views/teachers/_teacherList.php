@@ -15,8 +15,7 @@ $this->widget('application.components.ColumnListView', array(
         'header' => '<div
             class="showMore"
             align="right"
-            ng-controller="showMoreTeacherCtrl"
-            ng-click="showMore()"
+            onclick="showMore()"
         >Показати ще ...</div>',
         'maxButtonCount' => 6,
         'cssFile' => Config::getBaseUrl() . '/css/pager.css'
@@ -26,3 +25,23 @@ $this->widget('application.components.ColumnListView', array(
 ));
 ?>
 
+<script>
+    var size=2;
+    function showMore() {
+        $.fn.yiiListView.update(
+            // this is the id of the CListView
+            'ajaxListTeacher',
+            {
+                url:'teachers/ShowMoreAjaxFilter',
+                data: {
+                    size: size
+                },
+                complete: function () {
+                    $scope.currentCount = $('.teacherBlock').length;
+                    $scope.$apply();
+                }
+            }
+        );
+        size++;
+    };
+</script>

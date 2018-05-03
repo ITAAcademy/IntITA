@@ -51,26 +51,4 @@ angular
             // this is the delay
             300);
         };
-    })
-    .controller('showMoreTeacherCtrl', function($scope){
-        var size=2;
-        $scope.showMore = function(){
-            console.log(size);
-            console.log('here');
-            $.fn.yiiListView.update(
-                // this is the id of the CListView
-                'ajaxListTeacher',
-                {
-                    url:'teachers/ShowMoreAjaxFilter',
-                    data: {
-                        size: size
-                    },
-                    complete: function () {
-                        $scope.currentCount = $('.teacherBlock').length;
-                        $scope.$apply();
-                    }
-                }
-            );
-            size++;
-        };
     });
