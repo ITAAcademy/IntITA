@@ -83,7 +83,7 @@
         </div>
     </div>
 </div>
-<input id="save_cms" name="save" value="Згенерувати сторінку" type="submit" class="btn btn-primary">
+<input id="save_cms" name="save" value="Згенерувати сторінку" type="submit"  onclick="bootbox.alert('Сторінку згенеровано!')" class="btn btn-primary" >
 
 
 
