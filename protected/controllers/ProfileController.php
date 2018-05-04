@@ -90,15 +90,17 @@ class ProfileController extends Controller
     {
         if (isset($_POST['id'])) {
             if ($_POST['block'] == 't1' || $_POST['block'] == '1') {
-                Teacher::updateFirstText($_POST['id'], $_POST['content']);
+                if(Teacher::updateFirstText($_POST['id'], $_POST['content'])){
+                    echo (Yii::app()->request->urlReferrer);
+                }
             }
             if ($_POST['block'] == 't2' || $_POST['block'] == '2') {
-                Teacher::updateSecondText($_POST['id'], $_POST['content']);
+                if(Teacher::updateSecondText($_POST['id'], $_POST['content'])){
+                    echo (Yii::app()->request->urlReferrer);
+                }
             }
         }
         Yii::app()->user->setFlash('success', "Ваш профіль оновлено!");
-
-        $this->redirect(Yii::app()->request->urlReferrer);
     }
 
     public function getCourses()

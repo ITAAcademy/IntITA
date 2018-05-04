@@ -67,17 +67,9 @@
         <td>{{agreementData.contract?'Присутній':'Відсутній'}}</td>
     </tr>
     <tr ng-if="agreementData.contract">
-        <th>Статус запиту на підтвердження паперового договору:</th>
-        <td>{{writtenAgreementRequestStatus}}</td>
-    </tr>
-    <tr ng-if="agreementData.contract">
         <th>Статус паперового договору:</th>
         <td>
-            <ul>
-                <li ng-repeat="status in writtenAgreementStatuses track by $index">
-                    {{status}}
-                </li>
-            </ul>
+            {{agreementData.status0.title_ua}}
         </td>
     </tr>
     <tr>
