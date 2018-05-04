@@ -11,6 +11,9 @@
                         href="#/accountant/agreement/{{row.id}}">{{row.service.description}}</a></td>
             <td data-title="'Номер'" filter="{number: 'text'}" sortable="'number'"><a
                         href="#/accountant/agreement/{{row.id}}">{{row.number}}</a></td>
+            <td data-title="'Статус паперового договору:'" filter="{status: 'select'}" filter-data="getAgreementStatuses" sortable="'status'">
+                {{row.status0.title_ua}}
+            </td>
             <td data-title="'Дата затвердження договору'" filter="{'approval_date': 'text'}" sortable="'approval_date'">
                 {{row.approval_date}}
             </td>
