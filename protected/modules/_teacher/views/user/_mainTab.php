@@ -53,31 +53,33 @@ $user = $model->registrationData;
                     </a>
                 </li>
 
-                <li class="list-group-item">
-                    Додати студента в підгрупу:
-                    <div class="row">
-                        <div class="col-md-6">
-                            <oi-select
-                                    oi-options="subgroup.groupName for subgroup in getSubGroups($query) track by subgroup.id"
-                                    ng-model="newSubgroup"
-                                    placeholder="Назва підгрупи"
-                                    oi-select-options="{
-                            debounce: 200,
-                            closeList: false,
-                            dropdownFilter: 'subgroupsTaskFilter',
-                            searchFilter: 'subgroupsTaskSearchFilter',
-                            }"
-                            ></oi-select>
+                <?php if (Yii::app()->user->model->isSuperVisor()) { ?>
+                    <li class="list-group-item">
+                        Додати студента в підгрупу:
+                        <div class="row">
+                            <div class="col-md-6">
+                                <oi-select
+                                        oi-options="subgroup.groupName for subgroup in getSubGroups($query) track by subgroup.id"
+                                        ng-model="newSubgroup"
+                                        placeholder="Назва підгрупи"
+                                        oi-select-options="{
+                                debounce: 200,
+                                closeList: false,
+                                dropdownFilter: 'subgroupsTaskFilter',
+                                searchFilter: 'subgroupsTaskSearchFilter',
+                                }"
+                                ></oi-select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="date" id="dateInSubgroup" ng-model="dateInSubgroup" class="form-control" placeholder="Виберіть дату">
+                            </div>
+                            <div class="col-md-2">
+                                <button ng-click="addStudentToSubgroup(user.id, newSubgroup.id, dateInSubgroup)" type="submit" class="btn btn-outline btn-primary btn-xs" ng-disabled="studentSubgroup.$invalid" disabled="disabled">Зберегти
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <input type="date" id="dateInSubgroup" ng-model="dateInSubgroup" class="form-control" placeholder="Виберіть дату">
-                        </div>
-                        <div class="col-md-2">
-                            <button ng-click="addStudentToSubgroup(user.id, newSubgroup.id, dateInSubgroup)" type="submit" class="btn btn-outline btn-primary btn-xs" ng-disabled="studentSubgroup.$invalid" disabled="disabled">Зберегти
-                            </button>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                <?php } ?>
 
                 <li ng-if="offline.offlineStudents.length" class="list-group-item">
                     Офлайн навчання:
