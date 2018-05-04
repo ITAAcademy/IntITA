@@ -46,28 +46,28 @@ angular
                             $scope.settings = response;
                         }
                         $scope.buttonShow=true;
-                        console.log($scope.buttonShow);
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
                     });
 
 
-            }
+            };
             $scope.getSettings();
 
             $scope.updateSettings = function (link,  previousImage) {
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
-                    var imageUpdateBlock = '#logoUpdate';
-                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
-                    uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
-                    uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
+                var imageUpdateBlock = '#logoUpdate';
+                var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
+                uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
+                uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
                 $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
                     withCredentials: true,
                     headers: {'Content-Type': undefined},
                     transformRequest: angular.identity
                 }).success(function () {
                     $scope.getSettings();
+                    bootbox.alert('Дані успішно збережені!');
                     $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
@@ -89,17 +89,15 @@ angular
                                 }
                             });
                         $scope.buttonShow=false;
-                        console.log($scope.buttonShow);
                     };
 
             $scope.mySettings=function (){
                 $scope.loadCmsMenuList();
-                $scope.getSettings()
+                $scope.getSettings();
                 $scope.loadCmsNews();
             };
 
             $scope.removeLogo = function (id, image) {
-                console.log("delete img");
                 cmsService.removeLogo({image: image}).$promise
                     .then(function successCallback() {
                         $scope.getSettings();

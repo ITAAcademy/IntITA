@@ -19,8 +19,12 @@ if(content != null){
             method: "POST",
             url: basePath + '/_teacher/_admin/cms/generatePage',
             dataType : 'html',
-            data: {data: content.innerHTML}
+            data: {data: content.innerHTML},
+            success : function() {
+                location.reload();
+            }
         });
+
     });
 }
 
