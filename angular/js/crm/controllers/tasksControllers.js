@@ -362,18 +362,20 @@ angular
             // function for on dropping
             $scope.onDrop = function onDrop(data, event, stage) {
                 if (data && data.stage_id != stage.id) {
-                    $scope.changeKanbanState(data, stage.id);
+                    $scope.changeKanbanState(data, stage.id, data.stage_id);
                 }
                 if (data) data.dragging = false;
             };
 
-            $scope.changeKanbanState = function (task, state) {
-                if (state == 4 && !$scope.canComplete(task)) {
+            $scope.changeKanbanState = function (task, newstate, oldstate) {
+                if (oldstate == 4 && !$scope.canComplete(task)) {
+                    bootbox.alert('Співвиконавець не може виконувати дії з завершеними завданнями');
+                }else if (newstate == 4 && !$scope.canComplete(task)) {
                     bootbox.alert('Співвиконавець не може завершити завдання');
-                } else if (state == 1 && !$scope.canComplete(task)) {
+                } else if (newstate == 1 && !$scope.canComplete(task)) {
                     bootbox.alert('Співвиконавець не може перенести завдання в статус очікування');
                 } else {
-                    crmTaskServices.changeTaskState({id: task.id, state: state}).$promise.then(function () {
+                    crmTaskServices.changeTaskState({id: task.id, state: newstate}).$promise.then(function () {
                         if ($scope.board == 1) {
                             $scope.loadKanbanTasks($rootScope.roleId);
                             $scope.setKanbanHeight();
