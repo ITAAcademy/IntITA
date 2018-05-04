@@ -620,9 +620,9 @@ class TasksController extends TeacherCabinetController
 
         $counters["executant"] = CrmRolesTasks::model()->with('idTask')->count("idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND role=" . CrmTasks::EXECUTANT . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL");
         $counters["producer"] = CrmRolesTasks::model()->with('idTask')->count("idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND role=" . CrmTasks::PRODUCER . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL");
-        $counters["collaborator"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::COLLABORATOR, true ));
-        $counters["observer"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::OBSERVER, true ));
-        $counters["all"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, false, true ));
+        $counters["collaborator"] = strval(count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::COLLABORATOR, true )));
+        $counters["observer"] = strval(count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::OBSERVER, true )));
+        $counters["all"] = strval(count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, false, true )));
 
         $i = 0;
         foreach ($counters as $key => $counter) {
