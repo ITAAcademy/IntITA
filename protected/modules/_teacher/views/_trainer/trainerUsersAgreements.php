@@ -4,6 +4,7 @@
             <table ng-table="trainerUsersAgreementsTableParams" class="table table-bordered table-striped table-condensed">
                 <colgroup>
                     <col/>
+                    <col/>
                     <col width="20%"/>
                     <col/>
                     <col/>
@@ -19,6 +20,9 @@
                     'bg-success': (row.summa==row.paidAmount)}">
                     <td data-title="'Номер'" filter="{number: 'text'}" sortable="'number'">
                         <a ng-href="#/accountant/agreement/{{row.id}}">{{row.number}}</a></td>
+                    <td data-title="'Статус паперового договору:'" filter="{status: 'select'}" filter-data="getAgreementStatuses" sortable="'status'">
+                        {{row.status0.title_ua}}
+                    </td>
                     <td data-title="'Користувач'" filter="{'user.fullName': 'text'}" sortable="'user.fullName'">
                         <a ng-href="#/users/profile/{{row.user_id}}">{{row.user.fullName}}</a>
                     </td>

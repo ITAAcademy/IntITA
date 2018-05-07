@@ -2,9 +2,9 @@
 
 angular
     .module('teacherApp')
-    .directive('agreementDetailed', ['agreementsService','lodash', agreementDetailed]);
+    .directive('agreementDetailed', ['agreementsService','lodash','studentService', agreementDetailed]);
 
-function agreementDetailed(agreements, _) {
+function agreementDetailed(agreements, _, studentService) {
     function link($scope, element, attrs) {
         agreements
             .getById({id: attrs.agreementId || 0})

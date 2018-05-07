@@ -33,7 +33,7 @@
         </select>
     </div>
     <div class="col-xs-2 col-md-2 col-lg-1 pull-right" style="height: 32px;">
-        <i class="fa fa-refresh" style="line-height: 32px; cursor: pointer" aria-hidden="true" title="Очистити" ng-click="clearFilter()"></i>
+        <i class="fa fa-remove" style="line-height: 32px; cursor: pointer" aria-hidden="true" title="Очистити" ng-click="clearFilter()"></i>
     </div>
 </div>
 <section id="kanban-container">
@@ -41,7 +41,7 @@
         <h3 class="kanbanStageHeader" ng-class="{'ex_to_ex': stage.id == 1, 'ex': stage.id == 2, 'cmp': stage.id == 4,
                  'psd': stage.id == 3}">{{stage.name}}</h3>
         <div class="cards-container">
-            <div class="card" ng-drag="true" ng-drag-data="task"
+            <div class="card" ng-drag="canDrag" ng-drag-data="task"
                  ng-repeat="task in tasks" ng-if="task.stage_id == stage.id"
                  ng-class="{'expect_to_execute': task.stage_id == 1, 'executed': task.stage_id == 2, 'completed': task.stage_id == 4,
                  'paused': task.stage_id == 3, 'bg-warning-kanban': (task.stage_id !=4 && task.endTask && currentDate>=(task.endTask  | shortDate:'yyyy-MM-dd')),
@@ -102,7 +102,7 @@
                 <div data-toggle="collapse" data-target="#task-card-{{task.id}}"  style="text-align:center;">
                     <div ng-show="more">
                         <div ng-click="more=!more">
-                            <div class="arrowLess"ng-click="more=!more" style="width:30px;margin:10px auto 0 auto;" ng-include="pathToCrmTemplates+'/svg/less.svg'" title="Закрити"></div>
+                            <div class="arrowLess" ng-click="more=!more" style="width:30px;margin:10px auto 0 auto;" ng-include="pathToCrmTemplates+'/svg/less.svg'" title="Закрити"></div>
                             <hr class="thinRedLine">
                         </div>
                     </div>

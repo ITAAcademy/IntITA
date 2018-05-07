@@ -4,6 +4,10 @@ angular
         function ($scope, cmsService, $http) {
             $scope.domainPath = domainPath;
             $scope.domainPathNews = domainPathNews;
+            $scope.data;
+            $scope.buttonShow;
+
+
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
@@ -41,29 +45,56 @@ angular
                         else {
                             $scope.settings = response;
                         }
+                        $scope.buttonShow=true;
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
                     });
-            }
+
+
+            };
             $scope.getSettings();
 
             $scope.updateSettings = function (link,  previousImage) {
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
-                    var imageUpdateBlock = '#logoUpdate';
-                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
-                    uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
-                    uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
+                var imageUpdateBlock = '#logoUpdate';
+                var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
+                uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
+                uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
                 $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
                     withCredentials: true,
                     headers: {'Content-Type': undefined},
                     transformRequest: angular.identity
                 }).success(function () {
                     $scope.getSettings();
+                    bootbox.alert('Дані успішно збережені!');
                     $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
+
+            };
+
+            $scope.showDefaultSettings =function (){
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response1) {
+                                $scope.listsItemMenu = response1;
+                            });
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response2) {
+                                $scope.settings = response2;
+                            });
+                            $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
+                                $scope.lists = response3;
+                                for (var i=0; i<$scope.lists.length; i++){
+                                    $scope.lists[i].strLimit=500;
+                                }
+                            });
+                        $scope.buttonShow=false;
+                    };
+
+            $scope.mySettings=function (){
+                $scope.loadCmsMenuList();
+                $scope.getSettings();
+                $scope.loadCmsNews();
             };
 
             $scope.removeLogo = function (id, image) {
@@ -73,6 +104,7 @@ angular
                     }, function errorCallback(response) {
                         bootbox.alert(response.data.reason);
                     });
+
             };
 
             $scope.loadCmsNews = function () {

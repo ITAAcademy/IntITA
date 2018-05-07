@@ -32,8 +32,9 @@ trait WithGetSchemaCalculator {
         $criteria = new CDbCriteria;
         $criteria->alias='ps';
         $startDate=$this->startDate?$this->startDate:'NOW()';
-        $criteria->condition='ps.id_organization='.$this->id_organization.' 
-        and ps.startDate<="'.$this->endDate.'" and "'.$startDate.'"<=ps.endDate';
+        $criteria->condition='ps.id_organization=:organization';
+        $criteria->addCondition('ps.startDate <= :endDate AND ps.endDate >= :startDate');
+        $criteria->params = array(':startDate' => $startDate, ':endDate' => $this->endDate, ':organization' => $this->id_organization);
         if($offer){
             $criteria->addCondition('ps.id != ' . $offer->id);
         }

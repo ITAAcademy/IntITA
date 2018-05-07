@@ -130,7 +130,6 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionGetAgreement($id) {
         $agreements = new Agreements();
-        $agreements->getUserAgreement($id);
         echo json_encode($agreements->getUserAgreement($id), JSON_FORCE_OBJECT);
     }
 
@@ -335,6 +334,7 @@ class AgreementsController extends TeacherCabinetController {
             $actualWrittenAgreement->saveAgreementPdf();
 
             $transaction->commit();
+            $agreement->setGenerated();
         } catch (Exception $error) {
             $transaction->rollback();
             $statusCode = 500;
@@ -356,7 +356,7 @@ class AgreementsController extends TeacherCabinetController {
             $params = array_filter($_POST);
             $userAgreement=UserAgreements::model()->findByPk($params['id_agreement']);
             $userAgreement->sendAgreementRequestToUser($params);
-
+            $userAgreement->setAccountApproved();
             $transaction->commit();
         } catch (Exception $error) {
             $transaction->rollback();
@@ -380,6 +380,7 @@ class AgreementsController extends TeacherCabinetController {
             $agreement=UserWrittenAgreement::model()->findByPk($params['id']);
             $agreement->checked_by_accountant=UserWrittenAgreement::NOT_CHECKED;
             $agreement->checked_by_user=UserWrittenAgreement::NOT_CHECKED;
+            $agreement->agreement->setSenRequest();
             $agreement->save();
 
             $transaction->commit();
@@ -396,6 +397,7 @@ class AgreementsController extends TeacherCabinetController {
         $comment=$_POST['reject_comment']?$_POST['reject_comment']:null;
         $model=MessagesWrittenAgreementRequest::model()->findByPk($_POST['id_message']);
         Yii::app()->user->model->hasAccessToOrganizationModel($model->agreement->corporateEntity);
+        $model->agreement->setCreated();
         $model->setCancelled($comment);
     }
 

@@ -226,4 +226,8 @@ class Config extends CActiveRecord
     public static function getBannerSliderTime(){
         return Yii::app()->config->get('bannersSlideTime');
     }
+
+  public static function getImapServerAddress(){
+   return Yii::app()->config->get('imapServerAddress');
+  }
 }

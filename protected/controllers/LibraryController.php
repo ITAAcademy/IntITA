@@ -127,9 +127,15 @@ class LibraryController extends Controller
 	            'with'=>array('libraryDependsBookCategories')
             ),
         ));
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+
+        if (!Yii::app()->session['lg'] || Yii::app()->session['lg']=='ua')
+            $lang = 'uk';
+        else $lang = Yii::app()->session['lg'];
+
+        $this->render('index', array(
+            'dataProvider' => $dataProvider,
+            'lang'=>$lang
+        ));
 	}
 	/**
 	 * Manages all models.

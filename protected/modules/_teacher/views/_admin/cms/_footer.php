@@ -44,9 +44,9 @@
     <div class="center_footer col-lg-9 col-md-9 col-sm-9 col-xs-9">
         <div class=" row">
             <div class="left_part col-md-6 col-sm-5 col-xs-12">
-                <div class="logo">
+                <div  class="logo">
                     <a href="">
-                        <img id="footerLogo" ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
+                        <img ng-if="settings.logo" id="footerLogo" ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
                     </a>
                 </div>
                 <div class="footer_contact" ng-style="{color:settings.footer_link_color}"  >
