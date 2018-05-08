@@ -1258,4 +1258,8 @@ class Module extends CActiveRecord implements IBillableObject, IServiceableWithE
     {
         return $this->module_ID;
     }
+    public function getModuleLogo($id){
+        $module = Module::model()->findByPk($id);
+        return $module->module_img;
+    }
 }
