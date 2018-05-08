@@ -47,6 +47,7 @@ if ($editMode){
             </div>
 
             <?php if($editMode){?>
+                <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
                 <div class="editTextButton" id="firstButtonEditProfileInfo">
                     <span>
                         <em>Натисніть для редагування профілю</em>
@@ -123,6 +124,48 @@ if ($editMode){
                         ]
                     } );
                 </script>
+                <script type="text/javascript">
+                    function editingFomForTeachersProfile(editButton,editForm,saveButton,cancelButton,mainText) {
+                        document.getElementById(editButton).onclick = function () {
+                            document.getElementById(editForm).style.display = "block";
+                            document.getElementById(mainText).style.display = "none";
+                        };
+                        document.getElementById(cancelButton).onclick = function(){
+                            document.getElementById(editForm).style.display = "none";
+                            document.getElementById(mainText).style.display = "block";
+                        };
+                        document.getElementById(saveButton).onclick = function () {
+                            if(saveButton == "saveFirstBlockEditProfileInfo"){
+                                $.ajax({
+                                    url: "/profile/save",
+                                    method: "POST",
+                                    data: {block: "t1", content: CKEDITOR.instances.editor1.getData(),id: <?php echo $model->user_id; ?>},
+                                    success: function (data) {
+                                        window.location.replace(data);
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                    },
+                                })
+                            }
+                            else if(saveButton == "saveSecondBlockEditProfileInfo"){
+                                $.ajax({
+                                    url: "/profile/save",
+                                    method: "POST",
+                                    data: {block: "t2", content: CKEDITOR.instances.editor2.getData(),id: <?php echo $model->user_id; ?>},
+                                    success: function (data) {
+                                        window.location.replace(data);
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                    },
+                                })
+                            }
+                        }
+                    };
+                    editingFomForTeachersProfile("firstButtonEditProfileInfo","firstBlockEditProfileInfo","saveFirstBlockEditProfileInfo","cancelTeacherEditButton1","firstTextProfileInfo");
+                    editingFomForTeachersProfile("secondButtonEditProfileInfo","secondBlockEditProfileInfo","saveSecondBlockEditProfileInfo","cancelTeacherEditButton2","secondTextProfileInfo");
+                </script>
             <?php } ?>
 
             <div  <?php if ($editMode){ ?> id="secondTextProfileInfo" <?php } ?>>
@@ -181,45 +224,3 @@ if ($editMode) {
     ));
 }
 ?>
-<script type="text/javascript">
-    function editingFomForTeachersProfile(editButton,editForm,saveButton,cancelButton,mainText) {
-        document.getElementById(editButton).onclick = function () {
-            document.getElementById(editForm).style.display = "block";
-            document.getElementById(mainText).style.display = "none";
-        };
-        document.getElementById(cancelButton).onclick = function(){
-            document.getElementById(editForm).style.display = "none";
-            document.getElementById(mainText).style.display = "block";
-        };
-        document.getElementById(saveButton).onclick = function () {
-            if(saveButton == "saveFirstBlockEditProfileInfo"){
-                $.ajax({
-                    url: "/profile/save",
-                    method: "POST",
-                    data: {block: "t1", content: CKEDITOR.instances.editor1.getData(),id: <?php echo $model->user_id; ?>},
-                    success: function (data) {
-                        window.location.replace(data);
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    },
-                })
-            }
-            else if(saveButton == "saveSecondBlockEditProfileInfo"){
-                $.ajax({
-                    url: "/profile/save",
-                    method: "POST",
-                    data: {block: "t2", content: CKEDITOR.instances.editor2.getData(),id: <?php echo $model->user_id; ?>},
-                    success: function (data) {
-                        window.location.replace(data);
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    },
-                })
-            }
-        }
-    };
-    editingFomForTeachersProfile("firstButtonEditProfileInfo","firstBlockEditProfileInfo","saveFirstBlockEditProfileInfo","cancelTeacherEditButton1","firstTextProfileInfo");
-    editingFomForTeachersProfile("secondButtonEditProfileInfo","secondBlockEditProfileInfo","saveSecondBlockEditProfileInfo","cancelTeacherEditButton2","secondTextProfileInfo");
-</script>
