@@ -462,7 +462,11 @@ angular
                     templateUrl: basePath+"/_teacher/users/directors",
                     controller: function($scope){$scope.changePageHeader('Директора');},
                 })
-                
+                .state('apiKeyManagers',{
+                    url: '/apiKeyManagers',
+                    templateUrl: basePath+"/_teacher/users/apiKeyManagers",
+                    controller: function($scope){$scope.changePageHeader('Api Key Managers');},
+                })
                 .state('auditors', {
                     url: '/auditors',
                     templateUrl: basePath+"/_teacher/users/auditors",

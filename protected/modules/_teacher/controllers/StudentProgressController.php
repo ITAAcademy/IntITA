@@ -70,6 +70,14 @@ class StudentProgressController extends TeacherCabinetController
         }
 
         $model = Rating::getInstance($filter->service);
+        if ($filter->service == "1"){
+            $criteria->join = "LEFT JOIN course c ON c.course_ID = t.id_course";
+            $criteria->addCondition('c.id_organization='.Yii::app()->user->model->getCurrentOrganizationId());
+        }
+        if ($filter->service == "2"){
+            $criteria->join = "LEFT JOIN module m ON m.module_ID = t.id_module";
+            $criteria->addCondition('m.id_organization='.Yii::app()->user->model->getCurrentOrganizationId());
+        }
         $models = $model->count($criteria);
         $criteria->limit = $count;
         $criteria->offset = ($page-1)*$count;

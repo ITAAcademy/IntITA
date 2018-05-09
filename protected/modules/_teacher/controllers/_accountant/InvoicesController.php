@@ -31,7 +31,7 @@ class InvoicesController extends TeacherCabinetController
         $ngTable = new NgTableAdapter(Invoice::model()->belongsToOrganization($organization), $requestParams);
         $criteria =  new CDbCriteria();
         $criteria->with='agreement';
-        $criteria->order = 't.id ASC';
+        $criteria->order='t.id ASC';
         $ngTable->mergeCriteriaWith($criteria);
 
         $result = $ngTable->getData();

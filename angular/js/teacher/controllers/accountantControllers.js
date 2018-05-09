@@ -4,8 +4,8 @@
 
 angular
     .module('teacherApp')
-    .controller('agreementsCtrl', ['$scope', 'agreementsService', 'paymentSchemaService', 'NgTableParams', 'lodash', 'agreementsInformation','usersService',
-        function ($scope, agreements, paymentSchema, NgTableParams, _, agreementsInformation, usersService) {
+    .controller('agreementsCtrl', ['$scope', 'agreementsService', 'paymentSchemaService', 'NgTableParams', 'lodash', 'agreementsInformation','usersService','paymentSchemaService',
+        function ($scope, agreements, paymentSchema, NgTableParams, _, agreementsInformation, usersService, paymentSchemaService) {
             $scope.changePageHeader('Список договорів');
             $scope.currentDate = currentDate;
             $scope.agreementsTableParams = new NgTableParams({sorting: {create_date: "desc"}}, {
@@ -65,6 +65,44 @@ angular
                 })
                 .catch(function () {
                     bootbox.alert('Помилка, зверніться до адміністратора');
+                });
+
+            $scope.updateContractInfo = function (id_student, attr, text) {
+                text = text?text:'';
+                bootbox.dialog({
+                        title: "Введіть нову назву:",
+                        message: '<div class="panel-body"><div class="row"><form role="form" name="commentMessage"><div class="form-group col-md-12">'+
+                        '<textarea class="form-control" style="resize: none" rows="6" id="commentMessageText" ' +
+                        'placeholder="тут можна ввести нову назву поля">' +text+ '</textarea>'+'</div></form></div></div>',
+                        buttons:
+                            {success:
+                                    {label: "Підтвердити", className: "btn btn-primary",
+                                        callback: function () {
+                                            var data = $jq('#commentMessageText').val();
+                                            usersService.updateStudentData({id_student: id_student, data: data, attr: attr})
+                                                .$promise
+                                                .then(function(){
+                                                    $scope.agreementsTableParams.reload();
+                                                });
+                                        }
+                                    },
+                                cancel:
+                                    {label: "Скасувати", className: "btn btn-default",
+                                        callback: function () {
+                                        }
+                                    }
+                            }
+                    }
+                );
+            }
+
+            $scope.getAgreementStatuses = paymentSchemaService
+                .statuses()
+                .$promise
+                .then(function (data) {
+                    return data.map(function (item) {
+                        return {id: item.id, title: item.title_ua}
+                    })
                 });
         }])
 
@@ -873,7 +911,7 @@ angular
             }
         }])
 
-    .controller('paymentsSchemaTemplateCtrl', ['$scope', 'lodash', '$http', '$state', '$stateParams', function ($scope, _, $http, $state, $stateParams) {
+    .controller('paymentsSchemaTemplateCtrl', ['$scope', 'lodash', '$http', '$state', '$stateParams','companiesService', function ($scope, _, $http, $state, $stateParams, companiesService) {
         $scope.changePageHeader('Створення та редагування шаблонів схем');
         $scope.loadSchemesTemplate = function (templateId) {
             $http({
@@ -899,15 +937,47 @@ angular
                     description_ua: response.data.description_ua,
                     description_ru: response.data.description_ru,
                     description_en: response.data.description_en,
+                    duration: Number(response.data.duration),
                     schemes: $scope.schemes,
+                    start_date: response.data.start_date ? new Date(response.data.start_date) : null,
+                    company: response.data.checkingAccount?response.data.checkingAccount.corporate_entity:'',
+                    id_checking_account: response.data.checkingAccount?response.data.checkingAccount.id:'',
                 };
+                $scope.companyList();
             }, function errorCallback() {
                 bootbox.alert("Отримати дані шаблона схем не вдалося");
             });
         };
 
+        $scope.companyList = function () {
+            companiesService.list()
+                .$promise
+                .then(function (response) {
+                    $scope.companies = response.rows;
+                    if($scope.template.id_checking_account){
+                        $scope.loadCheckingAccounts($scope.template.id_checking_account);
+                    }
+                })
+                .catch(function () {
+                    bootbox.alert('Помилка завантаження данних');
+                });
+        };
+
+        $scope.loadCheckingAccounts = function (companyId) {
+            companiesService.companyCheckingAccountsList({companyId:companyId})
+                .$promise
+                .then(function (response) {
+                    $scope.checkingAccounts = response;
+                })
+                .catch(function () {
+                    bootbox.alert('Помилка завантаження данних');
+                });
+        }
+
         if ($stateParams.id) {
             $scope.loadSchemesTemplate($stateParams.id);
+        }else{
+            $scope.companyList();
         }
 
         $scope.schemes = [
@@ -924,6 +994,7 @@ angular
         $scope.template = {
             name: '',
             schemes: $scope.schemes,
+            duration: 12,
         }
 
         $scope.payCount = [
@@ -1027,6 +1098,8 @@ angular
                 bootbox.alert(msgError);
             }
         };
+
+        $scope.startDateOptions = new DateOptions();
     }])
 
     .controller('paymentsSchemaTemplateApplyCtrl', ['$scope', 'lodash', '$http', '$state', '$stateParams', 'paymentSchemaService', '$q', '$rootScope',
@@ -1606,6 +1679,15 @@ angular
                         return {id: item.pay_count, title: item.title_ua}
                     })
                 });
+
+            $scope.getAgreementStatuses = paymentSchema
+                .statuses()
+                .$promise
+                .then(function (data) {
+                    return data.map(function (item) {
+                        return {id: item.id, title: item.title_ua}
+                    })
+                });
         }])
     .controller('agreementsRequestsTableCtrl', ['$scope', '$stateParams', 'NgTableParams', 'agreementsService', '$http', '$rootScope',
         function ($scope, $stateParams, NgTableParams, agreementsService, $http, $rootScope) {
@@ -1628,16 +1710,47 @@ angular
                         });
                 }
             });
+
+            $scope.rejectAgreementRequest = function (id_message) {
+                bootbox.dialog({
+                        title: "Ти впевнений, що хочеш відхилити запит?",
+                        message: '<div class="panel-body"><div class="row"><form role="form" name="rejectMessage"><div class="form-group col-md-12">' +
+                        '<textarea class="form-control" style="resize: none" rows="6" id="rejectMessageText" ' +
+                        'placeholder="тут можна залишити коментар, причина відхилення запиту на затвердження договору, яка надійде користувачу на його email"></textarea>' +
+                        '</div></form></div></div>',
+                        buttons: {
+                            success: {
+                                label: "Підтвердити", className: "btn btn-primary",
+                                callback: function () {
+                                    var comment = $jq('#rejectMessageText').val();
+                                    agreementsService.rejectAgreementRequest({
+                                        id_message: id_message,
+                                        reject_comment: comment
+                                    }).$promise.then(function () {
+                                        $scope.agreementsRequestsTableParams.reload();
+                                    });
+                                }
+                            },
+                            cancel: {
+                                label: "Скасувати", className: "btn btn-default",
+                                callback: function () {
+                                }
+                            }
+                        }
+                    }
+                );
+            };
         }])
 
     .controller('writtenAgreementsTableCtrl', ['$scope', '$stateParams', 'NgTableParams', 'agreementsService', '$http', '$rootScope',
         function ($scope, $stateParams, NgTableParams, agreementsService, $http, $rootScope) {
-            $scope.changePageHeader('Паперові договора');
+            $scope.changePageHeader('Паперові договори');
 
             $scope.status = [
-                {id: '1', title: 'затвердженні і згенеровані'},
+                {id: '1', title: 'затвердженні і згенеровані(не роздруковані)'},
                 {id: '2', title: 'очікують затвердження користувача'},
                 {id: '3', title: 'затверджені користувачем, але не згенеровані'},
+                {id: '4', title: 'роздруковані'},
             ];
 
             $scope.writtenAgreementsTableParams = new NgTableParams({filter: {'status': '3'},
@@ -1658,7 +1771,7 @@ angular
 
     .controller('writtenAgreementsAppliedTableCtrl', ['$scope', '$stateParams', 'NgTableParams', 'agreementsService', '$http', '$rootScope',
         function ($scope, $stateParams, NgTableParams, agreementsService, $http, $rootScope) {
-            $scope.changePageHeader('Застосовані паперові договора до сервісів');
+            $scope.changePageHeader('Застосовані паперові договори до сервісів');
 
             $scope.writtenAgreementsAppliedTableParams = new NgTableParams({}, {
                 getData: function (params) {
@@ -1945,6 +2058,14 @@ angular
                     size: 'large'
                 })
             }
+
+            $scope.printed = function (id, idAgreement) {
+                agreementsService.writtenAreementPrinted({
+                    id: id,
+                }).$promise.then(function () {
+                    $scope.writtenAgreementPreview(idAgreement);
+                });
+            }
         }])
     .controller('writtenAgreementTemplate', ['$scope', '$http', '$stateParams', '$state', 'agreementsService',
         function ($scope, $http, $stateParams, $state, agreementsService) {
@@ -1958,6 +2079,7 @@ angular
 
             $http.get(basePath + '/angular/js/teacher/templates/accountancy/agreementExample.json').success(function (response) {
                 $scope.writtenAgreement = response;
+                console.log($scope.writtenAgreement);
             });
 
             $scope.saveAgreementTemplate = function (agreement, action) {

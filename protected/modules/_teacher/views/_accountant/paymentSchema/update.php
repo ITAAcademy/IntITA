@@ -19,6 +19,33 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
+                    <div class="col-md-5">
+                        <label>Початок договору</label>
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="btn btn-default" ng-click="startDateOptions.open()">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </span>
+                        </span>
+                            <input type="text"
+                                   class="form-control"
+                                   uib-datepicker-popup
+                                   ng-model="template.start_date"
+                                   is-open="startDateOptions.popupOpened"
+                                   datepicker-options="openDateOptions"
+                                   clear-text='Очистити'
+                                   close-text='Закрити'
+                                   current-text='Сьогодні'>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label>Тривалість сервісу в місяцях</label>
+                            <input type="number" name="duration" class="form-control" min="1" max="99" ng-model="template.duration" required maxlength="2">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
                     <div class="form-group">
                         <label>Опис, умови, перелік документів (ua)</label>
                         <textarea name="description_ua" class="form-control" ng-model="template.description_ua" style="resize:none"></textarea>

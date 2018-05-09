@@ -19,7 +19,7 @@
                         <a ui-sref="students/progress">Прогрес навчання студентів</a>
                     </li>
                     <li>
-                        <a href="#/trainer/students/agreements">Договора студентів</a>
+                        <a href="#/trainer/students/agreements">Договори студентів</a>
                     </li>
                     <li>
                         <a href="#/offlineGroups">Офлайнові групи</a>

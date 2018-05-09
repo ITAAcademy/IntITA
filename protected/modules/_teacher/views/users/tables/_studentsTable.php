@@ -3,7 +3,7 @@
         table-layout: inherit;
     }
 </style>
-<div ng-controller="studentsInfoCtrl" organization="<?php echo $organization ?>" trainer="<?php echo $trainer ?>" class="row scroll-table">
+<div ng-controller="studentsInfoCtrl" organization="<?php echo $organization ?>" trainer="<?php echo $trainer ?>" class="row scroll-table supervisorStudent">
     <uib-tabset active="active">
         <?php if($trainer){ ?>
             <uib-tab ng-repeat="tab in tabs" heading="{{tab.title}}" ui-sref="trainerStudentsTable/students.{{tab.route}}" ></uib-tab>

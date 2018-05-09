@@ -29,6 +29,7 @@ angular
     .controller('careerStudentsCtrl', careerStudentsCtrl)
     .controller('contractStudentsCtrl', contractStudentsCtrl)
     .controller('visitInfoCtrl', visitInfoCtrl)
+    .controller('apiKeyManagerTableCtrl', apiKeyManagerTableCtrl)
 
 function blockedUsersCtrl ($http, $scope, usersService, NgTableParams) {
     $scope.blockedUsersTable = new NgTableParams({
@@ -67,26 +68,46 @@ function blockedUsersCtrl ($http, $scope, usersService, NgTableParams) {
 };
 
 function usersTableCtrl ($scope, usersService, NgTableParams){
-        $scope.usersTableParams = new NgTableParams({
-            sorting: {
-                reg_time: 'desc'
-            },
-        }, {
-            getData: function (params) {
-                return usersService
-                    .usersList(params.url())
-                    .$promise
-                    .then(function (data) {
-                        params.total(data.count);
-                        return data.rows;
-                    });
-            }
-        });
+    $scope.usersTableParams = new NgTableParams({
+        sorting: {
+            reg_time: 'desc'
+        },
+    }, {
+        getData: function (params) {
+            return usersService
+                .usersList(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    return data.rows;
+                });
+        }
+    });
 }
 function studentsTableCtrl ($scope, usersService, NgTableParams, $attrs){
     $jq("#startDate").datepicker(lang);
     $jq("#endDate").datepicker(lang);
-
+    $scope.changePageHeader('Закріплені студенти');
+    $jq(function() {
+        $jq( "#from" ).datepicker({
+            dateFormat: 'dd-mm-yy',
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            onClose: function( selectedDate ) {
+                $jq( "#to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $jq( "#to" ).datepicker({
+            dateFormat:'yy-mm-dd',
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            onClose: function( selectedDate ) {
+                $jq( "#from" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+    });
     // // $scope.changePageHeader('Закріплені студенти');
     // // $scope.trainersStudentsTableParams = new NgTableParams({
     // //     sorting: {
@@ -310,37 +331,37 @@ function trainersTableCtrl ($scope, usersService, NgTableParams,roleService, $at
 
 function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
 
-     $scope.getTrainers = function() {
+    $scope.getTrainers = function() {
         usersService
             .actualTrainers()
             .$promise
             .then(function (data) {
                 $scope.trainers = data;
             });
-         $jq('#apply-btn').prop('disabled', true);
+        $jq('#apply-btn').prop('disabled', true);
     };
 
-     $jq('#selectNewTrainer, #selectOldTrainer').on('change', function(){
-         setTimeout(function(){
-             if( $scope.id_oldTrainer != $scope.id_newTrainer && $scope.id_oldTrainer != undefined
-                                                                && $scope.id_newTrainer != undefined ){
-                 $jq('#apply-btn').prop('disabled', false);
-             }else{
-                 $jq('#apply-btn').prop('disabled', true);
-             }
-         }, 100);
-     });
+    $jq('#selectNewTrainer, #selectOldTrainer').on('change', function(){
+        setTimeout(function(){
+            if( $scope.id_oldTrainer != $scope.id_newTrainer && $scope.id_oldTrainer != undefined
+                && $scope.id_newTrainer != undefined ){
+                $jq('#apply-btn').prop('disabled', false);
+            }else{
+                $jq('#apply-btn').prop('disabled', true);
+            }
+        }, 100);
+    });
 
     $scope.exchangeTrainers = function(id_old, id_new){
         usersService
             .exchangeTrainers({'id_old':id_old, 'id_new':id_new})
             .$promise
             .then(function () {
-                console.info('success, exchanged trainers');
-            },
-            function (error) {
-                console.error(error);
-            });
+                    console.info('success, exchanged trainers');
+                },
+                function (error) {
+                    console.error(error);
+                });
     };
 }
 
@@ -390,12 +411,12 @@ function authorsTableCtrl ($scope, usersService, NgTableParams, roleService, $at
     };
 }
 
-function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, $q, userService, $state, agreementsService){
+function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, $q, userService, $state, agreementsService, usersService, $resource, chatIntITAMessenger, superVisorService){
     $scope.changePageHeader('Профіль користувача');
     $scope.userId=$stateParams.id;
     $scope.formData={};
     $rootScope.$on('mailAddressCreated', function (event, data) {
-        $scope.data.teacher.corporate_mail = data.mailbox;
+        $scope.teacher.teacher.corporate_mail = data.mailbox;
     });
 
     $q.all([
@@ -419,7 +440,7 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
             .$promise
             .then(function (results) {
                 $scope.roles = results;
-        });
+            });
     };
     $scope.reloadUserProfileData=function(userId){
         userService.userProfileData({userId: userId})
@@ -527,18 +548,173 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
     $scope.collapse=function (el) {
         $jq(el).toggle("medium");
     };
+
+    $scope.addMailAddressDialogOptions = {
+        templateUrl: basePath + '/angular/js/teacher/templates/addMailAddress.html',
+        scope: $scope,
+        title: 'Адреса корпоративної пошти без домену',
+    };
+
+    $scope.hideMailError = function () {
+        $scope.usernameError = undefined;
+    }
+    $scope.addCorpAddress = function () {
+        if ($scope.mailForm.mailAddress.$dirty && $scope.mailForm.mailAddress.$valid) {
+            $http({
+                method: 'POST',
+                url: basePath + "/_teacher/user/addCorpMail",
+                data: $jq.param({userId: $stateParams.id, address: $scope.address}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (response) {
+                if (response.error == undefined) {
+                    $scope.$emit('mailAddressCreated', response);
+                    $ngBootbox.hideAll();
+                }
+                else {
+                    $scope.usernameError = response.error.username[0];
+                }
+            })
+        }
+
+    };
+
+    var subGroupsArray =$resource(basePath+'/_teacher/newsletter/getSubGroups');
+
+    $scope.getGroupsNames = function () {
+        usersService
+            .getGroupNumber()
+            .$promise
+            .then(function (data) {
+                $scope.groupsNames = data;
+            })
+    };
+    $scope.getGroupsNames();
+
+    $scope.getSubGroups = function(query) {
+
+        return subGroupsArray.query({query:query}).$promise.then(function(response) {
+
+            return response;
+        });
+    };
+
+    $scope.addStudentToSubgroup=function (idUser,idSubgroup,dateInSubgroup) {
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            return [year, month, day].join('-');
+        }
+        dateInSubgroup = formatDate(dateInSubgroup);
+        $http({
+            method: 'POST',
+            url: basePath+'/_teacher/_supervisor/superVisor/addStudentToSubgroup',
+            data: $jq.param({userId: idUser, subgroupId: idSubgroup, startDate: dateInSubgroup}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then(function successCallback(response) {
+            chatIntITAMessenger.updateSubgroup(idSubgroup);
+            $scope.addUIHandlers(response.data);
+            $scope.reloadUserOfflineEducationData();
+        }, function errorCallback() {
+            bootbox.alert("Операцію не вдалося виконати");
+        });
+    };
+
+    $scope.reloadUserOfflineEducationData=function(){
+        userService.userOfflineEducationData({userId: $scope.userId})
+            .$promise
+            .then(function (results) {
+                $scope.offline = results;
+            });
+    };
+
+    $scope.cancelStudentFromSubgroup=function (idUser, idSubgroup) {
+        $scope.option_str = '<option selected="true" disabled="disabled">Вибери причину...</option>';
+
+        superVisorService
+            .getAllReasons()
+            .$promise
+            .then(function(response){
+                    var res_length = response.length;
+                    for(var i=0; i<res_length; i++){
+                        $scope.option_str = $scope.option_str+'<option value="'+response[i].id+'">'+response[i].description+'</option>';
+                    }
+
+                    bootbox.dialog({
+                            title: "Вибери, будь ласка, причину виключення:",
+                            message: '<div class="panel-body"><div class="row"><form role="form" name="rejectMessage"><div class="form-group col-md-12">'+
+                            '<select class="form-control" id="selected_reason">'+$scope.option_str+'</select>'+
+                            '<input type="text" id="datepicker" class="form-control" placeholder="Виберіть дату" style="margin-top: 25px;">'+
+                            '<textarea class="form-control custom-control" id="comment" rows="7" cols="45" name="text" placeholder="Ваш коментар ..." style="margin-top: 25px;"></textarea>'+
+                            '</div></form></div></div>',
+                            buttons: {
+                                success: {label: "Підтвердити", className: "btn btn-primary apply-btn",
+                                    callback: function () {
+                                        var reasonId = $jq('#selected_reason').val();
+
+                                        var comment = $jq('#comment').val();
+                                        if(comment == ''){
+                                            comment = null;
+                                        }
+
+                                        var dateObject = $jq("#datepicker").datepicker( 'getDate' );
+                                        var year = dateObject.getFullYear();
+                                        var month = dateObject.getMonth()+1;
+                                        var day = dateObject.getDate();
+                                        var full_date = year+'-'+month+'-'+day;
+                                        $http({
+                                            method: 'POST',
+                                            url: basePath+'/_teacher/_supervisor/superVisor/cancelStudentFromSubgroup',
+                                            data: $jq.param({userId: idUser, subgroupId: idSubgroup, reasonId: reasonId, fullDate: full_date, comment: comment}),
+                                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                                        }).then(function successCallback(response) {
+                                            chatIntITAMessenger.updateSubgroup(idSubgroup);
+                                            $scope.addUIHandlers(response.data);
+                                            $scope.reloadUserOfflineEducationData();
+                                        }, function errorCallback() {
+                                            bootbox.alert("Операцію не вдалося виконати");
+                                        });
+                                    }
+                                },
+                                cancel: {label: "Скасувати", className: "btn btn-default",
+                                    callback: function () {
+                                    }
+                                }
+                            }
+                        }
+                    );
+                    $jq('.apply-btn').prop('disabled', true);
+
+                    $jq('#selected_reason').on('change', function () {
+                        $jq('.apply-btn').prop('disabled', false);
+                    });
+
+                    $jq(function () {
+                        var firstday = new Date();
+                        $jq('#datepicker').datepicker().on('changeDate', function (e) {
+                            $jq(this).datepicker('hide');
+                        });
+                    });
+                },
+                function (error) {
+                    console.error(error);
+                });
+    };
 }
 
 function usersEmailCtrl ($http, $scope,  usersService, NgTableParams, $ngBootbox) {
     $scope.emailsCategoriesList = usersService
-            .emailsCategoryList()
-            .$promise
-            .then(function (data) {
-                $scope.emailsCategory=data;
-                return data.map(function (item) {
-                    return {id: item.id, title: item.title}
-                })
-            });
+        .emailsCategoryList()
+        .$promise
+        .then(function (data) {
+            $scope.emailsCategory=data;
+            return data.map(function (item) {
+                return {id: item.id, title: item.title}
+            })
+        });
 
     $scope.usersEmailTableParams = new NgTableParams({}, {
         getData: function (params) {
@@ -563,22 +739,22 @@ function usersEmailCtrl ($http, $scope,  usersService, NgTableParams, $ngBootbox
             return false;
         }
 
-            var file_data = files[0];
-            var form_data = new FormData();
-            form_data.append('file', file_data);
-            $jq.ajax({
-                url: basePath + "/_teacher/users/saveExcelFile", // point to server-side PHP script
-                dataType: 'text',  // what to expect back from the PHP script, if anything
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: form_data,
-                type: 'post',
-                success: function () {
-                    bootbox.alert('Файл завантажено');
-                    $scope.isFile = true;
-                }
-            });
+        var file_data = files[0];
+        var form_data = new FormData();
+        form_data.append('file', file_data);
+        $jq.ajax({
+            url: basePath + "/_teacher/users/saveExcelFile", // point to server-side PHP script
+            dataType: 'text',  // what to expect back from the PHP script, if anything
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function () {
+                bootbox.alert('Файл завантажено');
+                $scope.isFile = true;
+            }
+        });
     };
 
     $scope.importExcel=function (emailCategory) {
@@ -614,7 +790,7 @@ function usersEmailCtrl ($http, $scope,  usersService, NgTableParams, $ngBootbox
             bootbox.alert("Операцію не вдалося виконати");
         });
     }
-    
+
     $scope.removeEmail=function (email, category) {
         bootbox.confirm('Видалити email?', function (result) {
             if (result) {
@@ -818,6 +994,7 @@ function usersTabsCtrl ($scope, $state, usersService, lodash) {
         { title: "Автори контенту", route: "contentAuthors"},
         { title: "Викладачі", route: "teacherConsultants"},
         { title: "Консультанти", route: "tenants"},
+        { title: "Api Key Manager", route: "apiKeyManagers"},
     ];
 
     usersService
@@ -855,6 +1032,7 @@ function organizationUsersTabsCtrl ($scope, $state, usersService, lodash) {
         { title: "Автори контенту", route: "contentAuthors"},
         { title: "Викладачі", route: "teacherConsultants"},
         { title: "Консультанти", route: "tenants"},
+        { title: "Api Key Manager", route: "apiKeyManagers"},
     ];
 
     usersService
@@ -992,7 +1170,7 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
         { title: "Закріплені студенти", route: "main"},
         { title: "Особиста інформація", route: "personalInfo"},
         { title: "Кар'єра", route: "career"},
-        { title: "Договір", route: "contract"},
+        { title: "Договора", route: "contract"},
         { title: "Відвідування", route: "visit"},
     ];
     if($scope.trainer){
@@ -1042,11 +1220,11 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
         .getGroupNumber()
         .$promise
         .then(function (data) {
-                var res = data;
-                $scope.temp = [];
-                $scope.temp = $scope.temp.concat(res);
-                return $scope.temp;
-            })
+            var res = data;
+            $scope.temp = [];
+            $scope.temp = $scope.temp.concat(res);
+            return $scope.temp;
+        })
         .catch(function () {
             bootbox.alert('Помилка, зверніться до адміністратора');
         });
@@ -1471,6 +1649,15 @@ function contractStudentsCtrl($scope, trainerService, usersService, NgTableParam
             })
         });
 
+    $scope.getAgreementStatuses = paymentSchemaService
+        .statuses()
+        .$promise
+        .then(function (data) {
+            return data.map(function (item) {
+                return {id: item.id, title: item.title_ua}
+            })
+        });
+
     $scope.updateContractInfo = function (id_student, attr, text) {
         text = text?text:'';
         bootbox.dialog({
@@ -1561,4 +1748,26 @@ function visitInfoCtrl($scope, trainerService, usersService, NgTableParams, myFa
         .catch(function(){
             bootbox.alert('Помилка, зверніться до адміністратора');
         });
+}
+function apiKeyManagerTableCtrl($scope, usersService, NgTableParams, roleService) {
+    $scope.apiKeyManagerTableParams = new NgTableParams({}, {
+        getData: function (params) {
+            return usersService
+                .apiKeyManagersList(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    return data.rows;
+                });
+        }
+    });
+
+    $scope.cancelRoleByDirector = function (user, role) {
+        bootbox.confirm('Скасувати роль?', function (result) {
+            if (result) {roleService.cancelRoleByDirector({'userId': user, 'role': role}).$promise.then(function successCallback(response) {
+                if(response.data=='success') $scope.apiKeyManagerTableParams.reload();
+                else bootbox.alert(response.data);
+            }, function errorCallback() { bootbox.alert("Операцію не вдалося виконати");});}
+        });
+    }
 }

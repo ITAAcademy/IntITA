@@ -1,3 +1,4 @@
+
 <div class="row">
     <div class="col-lg-12">
         Адміністратор
@@ -65,3 +66,24 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                Конструктор сайту
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><a href="#/admin/subdomain">Субдомен</a></li>
+                    <li><a ng-href="#/admin/intita_cms">Конструктор сайту</a></li>
+                    <li><a ng-href="#/admin/cms_list">Меню ліст</a></li>
+                    <li><a ng-href="#/admin/cms_news">Меню новини</a></li>
+                    <li><a ng-href="#/admin/cms_main_settings">Головні налаштування</a></li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <em>Створення піддомену, та конструктор сайту</em>
+            </div>
+        </div>
+    </div>
+</div>

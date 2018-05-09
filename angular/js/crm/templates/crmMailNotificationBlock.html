@@ -39,6 +39,14 @@
             {{crmTask.data.notification.error.weekdays}}
         </div>
     </div>
+    <div class="row form-group col-md-12">
+        <div class="controls form-inline">
+                  <input type="checkbox" ng-model=crmTask.data.notification.oneTimeNotification> Оповістити один раз
+        </div>
+        <div role="alert" class="errorMessage" ng-show="crmTask.data.notification.error.weekdays">
+            {{crmTask.data.notification.error.oneTimeNotification}}
+        </div>
+    </div>
     <br>
 
     <div class="row form-group form-inline">

@@ -74,6 +74,32 @@ angular
                 return basePath+"/_teacher/users/emailsCategoryUpdate/id/"+$stateParams.id;
             }
         })
+        .state('admin/intita_cms', {
+            url: "/admin/intita_cms",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_admin/cms/index",
+        })
+        .state('admin/cms_list', {
+            url: "/admin/cms_list",
+            cache: false,
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/lists.html",
+        })
+        .state('admin/cms_news', {
+            url: "/admin/cms_news",
+            cache: false,
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/news.html",
+        })
+        .state('admin/cms_main_settings', {
+            url: "/admin/cms_main_settings",
+            cache: false,
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/main_settings.html",
+        })
+        .state('admin/subdomain', {
+            url: "/admin/subdomain",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_admin/cms/subdomain",
+        })
+
 });
 
 

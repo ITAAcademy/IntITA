@@ -38,6 +38,7 @@ class PromotionServiceSpecialOffer extends ASpecialOffer {
 		// class name for the relations automatically generated below.
 		return [
 			'schemes' => array(self::HAS_MANY, 'TemplateSchemes', ['id_template'=>'id_template'], 'order' => 'schemes.pay_count'),
+            'schemesTemplate' => array(self::BELONGS_TO, 'PaymentSchemeTemplate', ['id_template'=>'id']),
         ];
 	}
 

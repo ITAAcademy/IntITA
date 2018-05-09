@@ -288,23 +288,25 @@ angular
                         });
                     },
                     loadTasksComments:function (id) {
-                        crmTaskServices
-                            .getTaskComments({id:id})
-                            .$promise
-                            .then(function (data) {
-                                if(!(self.data.rolesSubgroup.observer.length+self.data.rolesSubgroup.collaborator.length)){
-                                    var comments = data.rows;
-                                }else{
-                                    var comments = _.filter(data.rows, function(item) {
-                                        return item.id_user==self.currentUser || self.currentUser==self.data.roles.executant.id || self.currentUser==self.data.roles.producer.id
-                                            || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == self.currentUser; }) ||
-                                            (!item.id_parent && (item.id_user==self.data.roles.producer.id || item.id_user==self.data.roles.executant.id || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == item.id_user; }) ))
-                                            || (item.id_parent && isUserParentComment(data.rows, self.currentUser, item.id_parent));
-                                    });
-                                };
+                        if(id){
+                            crmTaskServices
+                                .getTaskComments({id:id})
+                                .$promise
+                                .then(function (data) {
+                                    if(!(self.data.rolesSubgroup.observer.length+self.data.rolesSubgroup.collaborator.length)){
+                                        var comments = data.rows;
+                                    }else{
+                                        var comments = _.filter(data.rows, function(item) {
+                                            return item.id_user==self.currentUser || self.currentUser==self.data.roles.executant.id || self.currentUser==self.data.roles.producer.id
+                                                || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == self.currentUser; }) ||
+                                                (!item.id_parent && (item.id_user==self.data.roles.producer.id || item.id_user==self.data.roles.executant.id || _.find(self.data.roles.observer, function(itemObserver) { return itemObserver.id == item.id_user; }) ))
+                                                || (item.id_parent && isUserParentComment(data.rows, self.currentUser, item.id_parent));
+                                        });
+                                    };
 
-                                self.comments = transformToTree(comments).reverse();
-                            });
+                                    self.comments = transformToTree(comments).reverse();
+                                });
+                        }
                     },
                     loadSpentTimeTask:function (id) {
                         scope.spentTimeTableParams = new NgTableParams({id: id}, {
@@ -508,10 +510,10 @@ angular
                             });
                     },
                     isModelValid: function () {
-                        if (angular.isDefined(self.notification)) {
+                        if (angular.isDefined(self.data.notification)) {
                             self.data.notification.error = [];
                             if (self.data.notification.notify) {
-                                if (!self.data.notification.users || !self.notification.users.length) {
+                                if (!self.data.notification.users || !self.data.notification.users.length) {
                                     self.data.notification.error.user = 'Оберіть групу користувачів для оповіщення';
                                     return false;
                                 }
@@ -519,10 +521,20 @@ angular
                                     self.data.notification.error.template = 'Оберіть шаблон оповіщення';
                                     return false;
                                 }
-                                if (!self.data.notification.weekdays || !self.data.notification.weekdays.length) {
-                                    self.data.notification.error.weekdays = 'Оберіть дні для оповіщення';
-                                    return false;
+                                if (!self.data.notification.oneTimeNotification)
+                                {
+                                    if (!self.data.notification.weekdays || !self.data.notification.weekdays.length) {
+                                        self.data.notification.error.weekdays = 'Оберіть дні для оповіщення';
+                                        return false;
+                                    }
                                 }
+                                else{
+                                    if (self.data.notification.weekdays && self.data.notification.weekdays.length > 1) {
+                                        self.data.notification.error.weekdays = 'Оберіть один день для оповіщення або зніміть всі позначки з днів оповіщення для оповіщення в цей же день';
+                                        return false;
+                                    }
+                                }
+
                                 if (!self.data.notification.time) {
                                     self.data.notification.error.time = 'Оберіть час для оповіщення';
                                     return false;
@@ -554,6 +566,13 @@ angular
                     isObserver: function (user) {
                         var observer = _.find(self.data.roles['observer'], {id: String(user)});
                         if(_.isObject(observer)){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    },
+                    canComplete: function () {
+                        if(self.data.producer || self.data.executant || _.isObject(_.find(self.data.roles['observer'], {id: String(self.currentUser)}))){
                             return true;
                         }else{
                             return false;
@@ -741,31 +760,6 @@ angular
                         return !parentId;
                     });
                 }
-
-                // $rootScope.$on('$includeContentLoaded', function() {
-                //     $timeout(function(){
-                //         setEventToEditableField();
-                //     });
-                // });
-                //
-                // var setEventToEditableField = function() {
-                //     $jq( ".cke_editable" ).keyup(function(e) {
-                //     });
-                // }
-                // setEventToEditableField();
-                //
-                // scope.$watch('comment.message', function (newValue, oldValue) {
-                //     // console.log(pressedSymbol);
-                //     // if (pressedSymbol==="#"){
-                //     //     console.log('ajax');
-                //     // }
-                // });
-                // function keyUp(e){
-                //     console.log(e.key);
-                //     pressedSymbol=e.key;
-                // }
-                //
-                // addEventListener("keyup", keyUp);
             }
 
             return {

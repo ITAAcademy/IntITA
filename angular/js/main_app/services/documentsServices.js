@@ -3,7 +3,7 @@
 /* Services */
 
 angular
-    .module('mainApp')
+    .module('documents',[])
     .service('documentsServices', ['$resource', 'transformRequest',
         function($resource, transformRequest) {
             return $resource(

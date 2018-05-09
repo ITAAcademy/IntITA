@@ -39,6 +39,7 @@
                     'htmlOptions' => array(
                         'class' => 'formatted-form',
                         'enctype' => 'multipart/form-data',
+                        'courseid'=>$model->course_ID,
                     ),
                     'enableAjaxValidation' => false,
                     'enableClientValidation' => true,
@@ -47,7 +48,7 @@
                         'validateOnChange' => true,
                         'afterValidate' => 'js:function(form,data,hasError){
                     if(courseValidation(data,hasError)){
-                         courseActions(form[0].action);
+                         courseActions(form[0].action, form[0].getAttribute("courseid"));
                     }
                     return false;
                 }')

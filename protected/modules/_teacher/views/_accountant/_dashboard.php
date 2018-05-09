@@ -162,24 +162,43 @@
     <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Паперові договора
+                Паперові договори
             </div>
             <div class="panel-body">
                 <ul>
                     <li>
-                        <a ng-href="#/accountant/writtenAgreementsList">Шаблони паперового договору</a>
+                        <a ng-href="#/accountant/writtenAgreementsList">Шаблони паперових договорів</a>
                     </li>
                 </ul>
                 <ul>
                     <li>
-                        <a ng-href="#/accountant/writtenAgreementsApplied">Застосування шаблона до сервісу</a>
+                        <a ng-href="#/accountant/writtenAgreementsApplied">Застосування шаблону до сервісу</a>
                     </li>
                 </ul>
                 <br>
                 <br>
             </div>
             <div class="panel-footer">
-                <em>Паперові договора</em>
+                <em>Паперові договори</em>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                Контент
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><a ui-sref="courses">Курси</a></li>
+                    <li><a ui-sref="modules">Модулі</a></li>
+                    <li><a ui-sref="lectures">Заняття</a></li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <em>Навчальні матеріали</em>
             </div>
         </div>
     </div>

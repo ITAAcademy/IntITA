@@ -52,6 +52,35 @@ $user = $model->registrationData;
                        target="_blank">почати чат <i class="fa fa-wechat fa-fw"></i>
                     </a>
                 </li>
+
+                <?php if (Yii::app()->user->model->isSuperVisor()) { ?>
+                    <li class="list-group-item">
+                        Додати студента в підгрупу:
+                        <div class="row">
+                            <div class="col-md-6">
+                                <oi-select
+                                        oi-options="subgroup.groupName for subgroup in getSubGroups($query) track by subgroup.id"
+                                        ng-model="newSubgroup"
+                                        placeholder="Назва підгрупи"
+                                        oi-select-options="{
+                                debounce: 200,
+                                closeList: false,
+                                dropdownFilter: 'subgroupsTaskFilter',
+                                searchFilter: 'subgroupsTaskSearchFilter',
+                                }"
+                                ></oi-select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="date" id="dateInSubgroup" ng-model="dateInSubgroup" class="form-control" placeholder="Виберіть дату">
+                            </div>
+                            <div class="col-md-2">
+                                <button ng-click="addStudentToSubgroup(user.id, newSubgroup.id, dateInSubgroup)" type="submit" class="btn btn-outline btn-primary btn-xs" ng-disabled="studentSubgroup.$invalid" disabled="disabled">Зберегти
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                <?php } ?>
+
                 <li ng-if="offline.offlineStudents.length" class="list-group-item">
                     Офлайн навчання:
                     <ul class="list-group" >
@@ -65,19 +94,27 @@ $user = $model->registrationData;
                             <label>Дата випуску:</label> {{subgroup.graduate_date}}<br>
                             <?php if (Yii::app()->user->model->isSuperVisor()) { ?>
                             <a ng-if="!subgroup.end_date && organization==subgroup.subgroupName.organization.id"
+                               type="button" class="btn btn-outline btn-primary btn-xs" style="margin-right: 20px;"
                                ng-href="#/supervisor/updateOfflineStudent/{{subgroup.id}}">
                                 Редагувати студента в підгрупі
                             </a>
                             <?php }?>
+
+                            <?php if (Yii::app()->user->model->isSuperVisor()) { ?>
+                            <a ng-if=!end_date type="button" class="btn btn-outline btn-primary btn-xs"
+                               ng-click="cancelStudentFromSubgroup(user.id, subgroup.id_subgroup)">
+                                Виключити студента з підгрупи
+                            </a>
+                        <?php } ?>
                         </li>
                     </ul>
                 </li>
                 <?php if (Yii::app()->user->model->isSuperVisor() && $model->isStudent()) { ?>
-                <li ng-if="offline.offlineStudent" class="list-group-item">
-                    <a ng-href="#/supervisor/addOfflineStudent/{{user.id}}">
-                        Додати студента в підгрупу
-                    </a>
-                </li>
+                    <li ng-if="offline.offlineStudent" class="list-group-item">
+                        <a ng-href="#/supervisor/addOfflineStudent/{{user.id}}">
+                            Додати студента в підгрупу
+                        </a>
+                    </li>
                 <?php }?>
                 <li ng-if="user.student" class="list-group-item">
                     Тренер:
@@ -143,7 +180,3 @@ $user = $model->registrationData;
         </div>
     </div>
 </div>
-
-
-
-

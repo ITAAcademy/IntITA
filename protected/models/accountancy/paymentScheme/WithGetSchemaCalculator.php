@@ -12,7 +12,7 @@ trait WithGetSchemaCalculator {
 
         $param = Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua";
         foreach ($this->schemes as $scheme){
-            $schema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id, $scheme->schemeName->$param, $scheme->contract);
+            $schema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id, $scheme->schemeName->$param, $scheme->contract, $scheme->template->duration, $scheme->template->start_date);
             array_push($schemes,$schema);
         }
 
@@ -23,7 +23,7 @@ trait WithGetSchemaCalculator {
         $serviceModel = CourseService::model()->getService($courseId, $educationForm);
         $schemas = PaymentScheme::model()->getPaymentScheme(null, $serviceModel);
         $scheme=TemplateSchemes::model()->findByAttributes(array('id_template'=>$schemas->id_template,'pay_count'=>1));
-        $actualAdvancePaymentSchema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id,$scheme->schemeName->title_ua, $scheme->contract);
+        $actualAdvancePaymentSchema = new AdvancePaymentSchema($scheme->discount, $scheme->loan, $scheme->pay_count, $educationForm, $scheme->id,$scheme->schemeName->title_ua, $scheme->contract, $scheme->template->duration, $scheme->template->start_date);
 
         return $actualAdvancePaymentSchema;
     }
@@ -32,8 +32,9 @@ trait WithGetSchemaCalculator {
         $criteria = new CDbCriteria;
         $criteria->alias='ps';
         $startDate=$this->startDate?$this->startDate:'NOW()';
-        $criteria->condition='ps.id_organization='.$this->id_organization.' 
-        and ps.startDate<="'.$this->endDate.'" and "'.$startDate.'"<=ps.endDate';
+        $criteria->condition='ps.id_organization=:organization';
+        $criteria->addCondition('ps.startDate <= :endDate AND ps.endDate >= :startDate');
+        $criteria->params = array(':startDate' => $startDate, ':endDate' => $this->endDate, ':organization' => $this->id_organization);
         if($offer){
             $criteria->addCondition('ps.id != ' . $offer->id);
         }

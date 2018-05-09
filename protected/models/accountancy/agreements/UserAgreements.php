@@ -26,6 +26,8 @@
  * @property integer $id_corporate_entity
  * @property integer $id_checking_account
  * @property boolean $contract
+ * @property integer $educForm
+ * @property integer $start_date
  *
  * @property Service $service
  * @property StudentReg $user
@@ -47,7 +49,15 @@ class UserAgreements extends CActiveRecord {
     const DELAY_STATUS = 'delay';
     const EXPIRED_STATUS = 'expired';
     const NO_AGREEMENT = 'no_agreement';
-    
+
+    const CREATED = 1;
+    const APPROVED = 2;
+    const CANCELED = 3;
+    const SEND_REQUEST = 4;
+    const ACCOUNT_APPROVED = 5;
+    const USER_APPROVED = 6;
+    const GENERATED = 7;
+
     /**
      * @return string the associated database table name
      */
@@ -69,11 +79,11 @@ class UserAgreements extends CActiveRecord {
             array('service_id, payment_schema', 'length', 'max' => 10),
             array('number', 'length', 'max' => 50),
             array('passport, document_type, inn', 'length', 'max' => 30),
-            array('approval_date, cancel_date, close_date', 'safe'),
+            array('approval_date, cancel_date, close_date, educForm, start_date', 'safe'),
             // The following rule is used by search().
             array('id, user_id, summa, service_id, number, create_date, approval_user, approval_date, cancel_user,
 			cancel_date, close_date, payment_schema, cancel_reason_type, passport, document_type, inn,
-			document_issued_date, passport_issued, status, id_checking_account, contract', 'safe', 'on' => 'search'),
+			document_issued_date, passport_issued, status, id_checking_account, contract, educForm, start_date', 'safe', 'on' => 'search'),
         );
     }
 
@@ -131,6 +141,8 @@ class UserAgreements extends CActiveRecord {
             'passport_issued' => 'Ким виданий (паспорт)',
             'id_checking_account' => 'Р/р',
             'contract' => 'контракт',
+            'educForm' => 'форма(онлайн/офлайн)',
+            'start_date' => 'Дата відкриття',
         );
     }
 
@@ -170,6 +182,8 @@ class UserAgreements extends CActiveRecord {
         $criteria->compare('passport_issued', $this->passport_issued, true);
         $criteria->compare('id_checking_account', $this->id_checking_account, true);
         $criteria->compare('contract', $this->contract, true);
+        $criteria->compare('educForm', $this->educForm, true);
+        $criteria->compare('start_date', $this->start_date, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -216,6 +230,7 @@ class UserAgreements extends CActiveRecord {
         if ($this->canBeCanceled()) {
             $this->cancel_date = new CDbExpression('NOW()');
             $this->cancel_user = $user->getId();
+            $this->status = self::CANCELED;
             if ($this->save()) {
                 return true;
             } else {
@@ -299,61 +314,93 @@ class UserAgreements extends CActiveRecord {
 
     private static function newAgreement($userId, $modelFactory, $param_id, $schemaId, EducationForm $educForm)
     {
-        $user = StudentReg::model()->findByPk($userId);
-        $serviceModel = $modelFactory::getService($param_id, $educForm);
-        if(!$serviceModel->checkServiceAccess()){
-            throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Статус сервісу: "В РОЗРОБЦІ"');
+        $transaction = null;
+        if (Yii::app()->db->getCurrentTransaction() == null) {
+            $transaction = Yii::app()->db->beginTransaction();
         }
-
-        $billableObject = $serviceModel->getBillableObject();
-
-        $schemas = PaymentScheme::model()->getPaymentScheme($user, $serviceModel);
-        $calculators = $schemas->getSchemaCalculator($educForm);
-        $calculator = array_filter($calculators, function($item) use ($schemaId) {
-            return $item->id == $schemaId;
-        });
-
-        if($calculator){
-            $billableObjectOrganization = $billableObject->organization;
-            $corporateEntity = $billableObjectOrganization->getCorporateEntityFor($billableObject, $educForm);
-            $checkingAccount = $billableObjectOrganization->getCheckingAccountFor($billableObject, $educForm);
-
-            $builder = new ContractingPartyBuilder();
-
-            $contractingParty = $builder->makeCorporateEntity($corporateEntity, $checkingAccount);
-            $calculator = array_values($calculator)[0];
-            $model = new UserAgreements();
-            $model->user_id = $userId;
-            $model->payment_schema = $calculator->payCount;
-            $model->service_id = $serviceModel->service_id;
-            $model->id_corporate_entity = $corporateEntity->id;
-            $model->id_checking_account = $checkingAccount->id;
-            $model->contract = $calculator->contract;
-
-            //create phantom billableObject model for converting object's price to UAH
-            //used only in computing agreement and invoices price
-            $billableObjectUAH = clone $billableObject->getModelUAH();
-
-            $model->summa = $calculator->getSumma($billableObjectUAH);
-            $model->close_date = $calculator->getCloseDate($billableObject, new DateTime())->format(Yii::app()->params['dbDateFormat']);
-            $model->status = 1;
-
-            if ($model->save()) {
-
-                $contractingParty->bindToAgreement($model, ContractingParty::ROLE_COMPANY);
-
-                $invoicesList = $calculator->getInvoicesList($billableObjectUAH, new DateTime());
-                $agreementId = $model->id;
-                $model->updateByPk($agreementId, array(
-                    'number' => UserAgreements::generateNumber($billableObject, $agreementId
-                    )));
-                Invoice::setInvoicesParamsAndSave($invoicesList, $userId, $agreementId);
-                $model->provideAccess();
-            } else {
-                throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Зверніться до адміністратора '.Config::getAdminEmail());
+        try {
+            $user = StudentReg::model()->findByPk($userId);
+            $serviceModel = $modelFactory::getService($param_id, $educForm);
+            if(!$serviceModel->checkServiceAccess()){
+                throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Статус сервісу: "В РОЗРОБЦІ"');
             }
 
-            return $model;
+            $billableObject = $serviceModel->getBillableObject();
+
+            $schemas = PaymentScheme::model()->getPaymentScheme($user, $serviceModel);
+            $calculators = $schemas->getSchemaCalculator($educForm);
+            $calculator = array_filter($calculators, function($item) use ($schemaId) {
+                return $item->id == $schemaId;
+            });
+
+            if($calculator){
+                $billableObjectOrganization = $billableObject->organization;
+                if (isset($schemas->id_template) && PaymentSchemeTemplate::model()->findByPk($schemas->id_template)->checkingAccount){
+                    $checkingAccount = PaymentSchemeTemplate::model()->findByPk($schemas->id_template)->checkingAccount;;
+                    $corporateEntity = $checkingAccount->corporateEntity;
+                }else{
+                    $corporateEntity = $billableObjectOrganization->getCorporateEntityFor($billableObject, $educForm);
+                    $checkingAccount = $billableObjectOrganization->getCheckingAccountFor($billableObject, $educForm);
+                }
+                $builder = new ContractingPartyBuilder();
+
+                $contractingParty = $builder->makeCorporateEntity($corporateEntity, $checkingAccount);
+                $calculator = array_values($calculator)[0];
+                $model = new UserAgreements();
+                $model->user_id = $userId;
+                $model->payment_schema = $calculator->payCount;
+                $model->service_id = $serviceModel->service_id;
+                $model->id_corporate_entity = $corporateEntity->id;
+                $model->id_checking_account = $checkingAccount->id;
+                $model->contract = $calculator->contract;
+                $model->educForm = $educForm->id;
+
+                //create phantom billableObject model for converting object's price to UAH
+                //used only in computing agreement and invoices price
+                $billableObjectUAH = clone $billableObject->getModelUAH();
+
+                //start date for offline service
+                $startDate = ($educForm->id==EducationForm::OFFLINE && $calculator->start_date)?new DateTime($calculator->start_date):new DateTime();
+                $endPaymentDate = null;
+                if($educForm->id==EducationForm::OFFLINE && $calculator->start_date){
+                    if(new DateTime($calculator->start_date) < new DateTime()){
+                        $startDate = new DateTime($calculator->start_date);
+                        $startPaymentDate = new DateTime();
+                    }else {
+                        $startDate = new DateTime($calculator->start_date);
+                        $startPaymentDate = clone $startDate;
+                    }
+                }else{
+                    $startDate = new DateTime();
+                    $startPaymentDate = clone $startDate;
+                }
+
+                $model->summa = $calculator->getSumma($billableObjectUAH);
+                $model->start_date = $startPaymentDate->format('Y-m-d');
+                $model->close_date = $calculator->getCloseDate($billableObject, $startDate)->format(Yii::app()->params['dbDateFormat']);
+                $model->status = 1;
+                if ($model->save()) {
+                    $contractingParty->bindToAgreement($model, ContractingParty::ROLE_COMPANY);
+                    $invoicesList = $calculator->getInvoicesList($billableObjectUAH, $startPaymentDate);
+                    $agreementId = $model->id;
+                    $model->updateByPk($agreementId, array(
+                        'number' => UserAgreements::generateNumber($billableObject, $agreementId
+                        )));
+                    Invoice::setInvoicesParamsAndSave($invoicesList, $userId, $agreementId);
+                    $model->provideAccess();
+                } else {
+                    throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Зверніться до адміністратора '.Config::getAdminEmail());
+                }
+            }
+            if ($transaction) {
+                $transaction->commit();
+                return $model;
+            }
+        } catch (Exception $e) {
+            if ($transaction) {
+                $transaction->rollback();
+            }
+            throw new \application\components\Exceptions\IntItaException(500, $e->getMessage());
         }
     }
 
@@ -565,7 +612,7 @@ class UserAgreements extends CActiveRecord {
 
     public function provideAccess() {
         $unpaidInvoice = $this->getFirstUnpaidInvoice();
-        $firstInvoice=$this->getFirstInvoice();
+        $firstInvoice = $this->getFirstInvoice();
         if ($unpaidInvoice) {
             $endDate = $unpaidInvoice->expiration_date;
         } else {
@@ -607,8 +654,8 @@ class UserAgreements extends CActiveRecord {
     }
 
     public function canBeCanceled() {
-        if ($this->getAgreementPaidSum()==0 &&
-            $this->corporateEntity->organization->id==Yii::app()->user->model->getCurrentOrganizationId()) {
+//        $this->getAgreementPaidSum()==0
+        if ($this->corporateEntity->organization->id==Yii::app()->user->model->getCurrentOrganizationId()) {
            return true;
         } else {
             return false;
@@ -721,33 +768,6 @@ class UserAgreements extends CActiveRecord {
 
         $userWrittenAgreement->notifyUserAboutGenerateAgreement();
         return $userWrittenAgreement;
-
-//        if($this->actualWrittenAgreement){
-//            $this->actualWrittenAgreement->attributes=$params;
-//            $this->actualWrittenAgreement->checked_by=Yii::app()->user->getId();
-//            $this->actualWrittenAgreement->actual=UserWrittenAgreement::ACTUAL;
-//            $this->actualWrittenAgreement->checked_by_accountant=UserWrittenAgreement::CHECKED;
-//            $this->actualWrittenAgreement->checked=UserWrittenAgreement::CHECKED;
-//            $this->actualWrittenAgreement->checked_date=new CDbExpression('NOW()');
-//            if(!$this->actualWrittenAgreement->save()){
-//                throw new \application\components\Exceptions\IntItaException(403, 'Виникла помилка при затверджені паперового договору');
-//            }
-//            return $this->actualWrittenAgreement;
-//        }else{
-//            $userWrittenAgreement=new UserWrittenAgreement();
-//            $userWrittenAgreement->attributes=$params;
-//            $userWrittenAgreement->checked_by=Yii::app()->user->getId();
-//            $userWrittenAgreement->id_agreement=$this->id;
-//            $userWrittenAgreement->actual=UserWrittenAgreement::ACTUAL;
-//            $userWrittenAgreement->checked_by_accountant=UserWrittenAgreement::CHECKED;
-//            $userWrittenAgreement->checked=UserWrittenAgreement::CHECKED;
-//            $userWrittenAgreement->checked_date=new CDbExpression('NOW()');
-//            if(!$userWrittenAgreement->save()){
-//                throw new \application\components\Exceptions\IntItaException(403, 'Виникла помилка при затверджені паперового договору');
-//            }
-//
-//            return $userWrittenAgreement;
-//        }
     }
 
     public function sendAgreementRequestToUser($params, $id_template=null) {
@@ -818,6 +838,40 @@ class UserAgreements extends CActiveRecord {
         return $model;
     }
 
+    public function setCreated() {
+        $this->status = self::CREATED;
+        $this->save();
+    }
+
+    public function setApproved() {
+        $this->status = self::APPROVED;
+        $this->save();
+    }
+
+    public function setCanceled() {
+        $this->status = self::CANCELED;
+        $this->save();
+    }
+
+    public function setSenRequest() {
+        $this->status = self::SEND_REQUEST;
+        $this->save();
+    }
+
+    public function setAccountApproved() {
+        $this->status = self::ACCOUNT_APPROVED;
+        $this->save();
+    }
+
+    public function setUserApproved() {
+        $this->status = self::USER_APPROVED;
+        $this->save();
+    }
+
+    public function setGenerated() {
+        $this->status = self::GENERATED;
+        $this->save();
+    }
 }
 
 

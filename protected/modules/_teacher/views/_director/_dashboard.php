@@ -32,6 +32,7 @@
                     <li><a ui-sref="auditors">Аудитори</a></li>
                     <li><a ui-sref="superAdmins">Суперадміни</a></li>
                     <li><a ui-sref="admins">Адміністратори (локальні)</a></li>
+                    <li><a ui-sref="apiKeyManagers">Api Key Manager</a></li>
                 </ul>
             </div>
             <div class="panel-footer">
@@ -80,11 +81,11 @@
     <div class="col-lg-4">
         <div class="panel panel-yellow">
             <div class="panel-heading">
-                Адмінка чата
+                Адмінка чату
             </div>
             <div class="panel-body">
                 <ul>
-                    <li><a href="<?php echo Config::getFullChatPath() ?>/admin" target="_blank">Адмінка чата</a></li>
+                    <li><a href="<?php echo Config::getFullChatPath() ?>/admin" target="_blank">Адмінка чату</a></li>
                 </ul>
             </div>
             <div class="panel-footer">

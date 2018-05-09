@@ -202,7 +202,7 @@ class TasksController extends TeacherCabinetController
         $params = $_GET;
         $criteria = new CDbCriteria();
         $criteria->alias = 't';
-        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName'];
+        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName', 'idTask.observers'];
         $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
         $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, $params['id'] );
         if (isset($params['filter']['idTask.producerName.fullName'])) {
@@ -297,13 +297,19 @@ class TasksController extends TeacherCabinetController
         if ($crmTask) {
             $notificationMessage = Newsletters::model()->find('related_model_id=:task', ['task' => $crmTask->id]);
             if ($notificationMessage) {
-                $schedulerTask = SchedulerTasks::model()->find('related_model_id=:newsletterId AND type=:type AND status=:status',
-                    ['newsletterId' => $notificationMessage->id, 'type' => TaskFactory::NEWSLETTER, 'status' => SchedulerTasks::STATUSNEW ]);
+                $schedulerTask = SchedulerTasks::model()->find('related_model_id=:newsletterId AND type=:type',
+                    ['newsletterId' => $notificationMessage->id, 'type' => TaskFactory::NEWSLETTER]);
                 if ($schedulerTask) {
                     $data['task']['notification']['notify'] = true;
                     $data['task']['notification']['users'] = $notificationMessage->recipients;
                     $data['task']['notification']['template'] = ActiveRecordToJSON::toAssocArray(MailTemplates::model()->findByPk($notificationMessage->template_id));
-                    $data['task']['notification']['weekdays'] = $schedulerTask->parameters;
+                    if ($schedulerTask->repeat_type == SchedulerTasks::ONCETASK){
+                        $data['task']['notification']['oneTimeNotification'] = true;
+                        $data['task']['notification']['weekdays'][] = date_format(new DateTime($schedulerTask->start_time),'N');
+                    }
+                    else{
+                        $data['task']['notification']['weekdays'] = $schedulerTask->parameters;
+                    }
                     $data['task']['notification']['time'] = $schedulerTask->start_time;
                 }
 
@@ -614,9 +620,9 @@ class TasksController extends TeacherCabinetController
 
         $counters["executant"] = CrmRolesTasks::model()->with('idTask')->count("idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND role=" . CrmTasks::EXECUTANT . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL");
         $counters["producer"] = CrmRolesTasks::model()->with('idTask')->count("idTask.id_state!=" . CrmTaskStatus::COMPLETED . " AND role=" . CrmTasks::PRODUCER . " AND id_user=" . Yii::app()->user->getId() . " and t.cancelled_date IS NULL and idTask.cancelled_date IS NULL");
-        $counters["collaborator"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::COLLABORATOR, true ));
-        $counters["observer"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::OBSERVER, true ));
-        $counters["all"] = count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, false, true ));
+        $counters["collaborator"] = strval(count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::COLLABORATOR, true )));
+        $counters["observer"] = strval(count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, CrmTasks::OBSERVER, true )));
+        $counters["all"] = strval(count(CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, false, true )));
 
         $i = 0;
         foreach ($counters as $key => $counter) {

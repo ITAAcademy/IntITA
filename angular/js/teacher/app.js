@@ -1,5 +1,6 @@
 'use strict';
 angular.module('chatIntITAMessenger', []);
+angular.module('cmsApp', []);
 
 angular
     .module('teacherApp', [
@@ -39,15 +40,17 @@ angular
         'paymentsSchemes.directives',
         'chatIntITAMessenger',
         'directorRouter',
+        'apiKeyManagerRouter',
         'superAdminRouter',
         'auditorRouter',
         'ngImgCrop',
         'crmApp',
-        'vxWamp',
         'angularTreeview',
         'contentProgressApp',
         'dndLists',
+        'cmsApp',
         'libraryRouter',
+        'documents',
     ])
     .filter('shortDate', [
             '$filter', function($filter) {

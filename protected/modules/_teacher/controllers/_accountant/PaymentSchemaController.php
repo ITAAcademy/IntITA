@@ -3,7 +3,7 @@
 class PaymentSchemaController extends TeacherCabinetController
 {
     public function hasRole() {
-        $allowedCuratorsActions = ['getSchemas'];
+        $allowedCuratorsActions = ['getSchemas','getStatuses'];
         $action = Yii::app()->controller->action->id;
         return Yii::app()->user->model->isAccountant() || Yii::app()->user->model->isAdmin() ||
         (Yii::app()->user->model->isTrainer() || Yii::app()->user->model->isSupervisor() || Yii::app()->user->model->isAuditor() && in_array($action, $allowedCuratorsActions));
@@ -11,6 +11,10 @@ class PaymentSchemaController extends TeacherCabinetController
 
     public function actionGetSchemas() {
         echo json_encode(ActiveRecordToJSON::toAssocArray(SchemesName::model()->findAll()));
+    }
+
+    public function actionGetStatuses() {
+        echo json_encode(ActiveRecordToJSON::toAssocArray(UserAgreementStatus::model()->findAll()));
     }
 
     public function actionCreateSchema () {
@@ -134,6 +138,9 @@ class PaymentSchemaController extends TeacherCabinetController
         $templateModel->description_ru=isset($template->description_ru)?$template->description_ru:null;
         $templateModel->description_en=isset($template->description_en)?$template->description_en:null;
         $templateModel->id_organization=$template->id_organization;
+        $templateModel->duration=$template->duration;
+        $templateModel->start_date=isset($template->start_date)?$template->start_date:null;
+        $templateModel->id_checking_account=isset($template->id_checking_account)?$template->id_checking_account:null;
         $transaction = Yii::app()->db->beginTransaction();
 
         try {
@@ -172,6 +179,9 @@ class PaymentSchemaController extends TeacherCabinetController
         $templateModel->description_ua=isset($template->description_ua)?$template->description_ua:null;
         $templateModel->description_ru=isset($template->description_ru)?$template->description_ru:null;
         $templateModel->description_en=isset($template->description_en)?$template->description_en:null;
+        $templateModel->id_checking_account=isset($template->id_checking_account)?$template->id_checking_account:null;
+        $templateModel->duration=$template->duration;
+        $templateModel->start_date=isset($template->start_date)?$template->start_date:null;
         $templateModel->update();
         $transaction = Yii::app()->db->beginTransaction();
 
@@ -486,7 +496,6 @@ class PaymentSchemaController extends TeacherCabinetController
 
             $offer = null;
             if(empty($services)) $services=array(null);
-
             foreach ($services as $service) {
                 $soFactory = new SpecialOfferFactory($user, $service);
                 $offer = $soFactory->createSpecialOffer($params);

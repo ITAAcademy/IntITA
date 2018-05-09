@@ -31,6 +31,7 @@ class Banners extends CActiveRecord
 			array('file_path', 'required'),
 			array('slide_position, visible', 'numerical', 'integerOnly'=>true),
 			array('file_path, url', 'length', 'max'=>255),
+			array('url', 'url'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, file_path, slide_position, visible', 'safe', 'on'=>'search'),
@@ -107,12 +108,10 @@ class Banners extends CActiveRecord
 	    if (!is_dir($path)){
 	        mkdir($path,0777,true);
         }
-        $image = $_FILES['image'];
+        $image = $_FILES['file'];
         $img = new CUploadedFile($image['name'],$image['tmp_name'],$image['type'],$image['size'],$image['error']);
         if($img->saveAs("{$path}/{$image['name']}")){
             $this->file_path = '/images/banners/'.$img->getName();
-            $this->slide_position = 1;
-            $this->visible = 1;
             if($this->save()){
                 return true;
             }
@@ -122,9 +121,9 @@ class Banners extends CActiveRecord
     }
 
     public function delete(){
-        $file =  $path=Yii::getPathOfAlias('webroot').$this->file_path;
         if(parent::delete()){
-            return @unlink($file);
+            $this->deleteImageFile();
+            return true;
         }
 	    return false;
     }
@@ -132,5 +131,30 @@ class Banners extends CActiveRecord
     public function changeStatus(){
         $this->visible = (int)!$this->visible;
         return $this->save();
+    }
+
+    public function deleteImageFile(){
+        $file =  $path=Yii::getPathOfAlias('webroot').$this->file_path;
+        return @unlink($file);
+    }
+
+    public function changePosition($position){
+	    if ($position < $this->slide_position){
+	        $recalcBanners = Banners::model()->findAll('slide_position >= :newPosition AND slide_position < :oldPosition',['newPosition'=>$position,'oldPosition'=>$this->slide_position]);
+	        foreach ($recalcBanners as $newPos){
+	            $newPos->slide_position = ++$newPos->slide_position;
+	            $newPos->save();
+            }
+
+        }
+        else{
+            $recalcBanners = Banners::model()->findAll('slide_position > :oldPosition AND slide_position <= :newPosition',['newPosition'=>$position, 'oldPosition'=>$this->slide_position]);
+            foreach ($recalcBanners as $newPos){
+                $newPos->slide_position = --$newPos->slide_position;
+                $newPos->save();
+            }
+        }
+	    $this->slide_position = $position;
+	    return $this->save();
     }
 }

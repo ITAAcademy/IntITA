@@ -407,10 +407,25 @@ class CrmTasks extends CTaskUnitActiveRecord
         $notifyMessage->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
         $notifyMessage->related_model_id = $task;
         $schedulerTask->type = TaskFactory::NEWSLETTER;
-        $schedulerTask->repeat_type = SchedulerTasks::WEEKDAYS;
-        $schedulerTask->parameters = $notificationParams['weekdays'];
         date_default_timezone_set(Config::getServerTimezone());
-        $schedulerTask->start_time =  date('Y-m-d H:i:s',strtotime($notificationParams['time']));
+        if ($notificationParams['oneTimeNotification']){
+            $schedulerTask->repeat_type = SchedulerTasks::ONCETASK;
+            $schedulerTask->parameters = null;
+            $dayOffset = 0;
+            $currentDayOfWeek = date('N');
+            if (!empty($notificationParams['weekdays']) ){
+                $dayOffset = $notificationParams['weekdays'][0] - $currentDayOfWeek;
+                if ($dayOffset < 0){
+                    $dayOffset = $dayOffset + 7;
+                }
+            }
+            $schedulerTask->start_time =  date('Y-m-d H:i:s',strtotime("+{$dayOffset} days {$notificationParams['time']}"));
+        }
+        else{
+            $schedulerTask->repeat_type = SchedulerTasks::WEEKDAYS;
+            $schedulerTask->parameters = $notificationParams['weekdays'];
+            $schedulerTask->start_time =  date('Y-m-d H:i:s',strtotime($notificationParams['time']));
+        }
         $schedulerTask->end_time =  null;
         if ($notifyMessage->validate() && $schedulerTask->validate()){
             $notifyMessage->save(false);

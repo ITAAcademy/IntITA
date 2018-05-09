@@ -196,9 +196,18 @@ class TrainerController extends TeacherCabinetController
         $criteria->join .= ' left join course c on c.course_ID=cs.course_id';
         $criteria->join .= ' left join acc_module_service ms on ms.service_id=t.service_id';
         $criteria->join .= ' left join module m on m.module_ID=ms.module_id';
-        $criteria->addCondition('studentTrainer.trainer='.Yii::app()->user->getId().' and studentTrainer.end_time is null 
-        and (m.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
-        or c.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.')');
+        $criteria->addCondition('studentTrainer.trainer=:userId and studentTrainer.end_time is null 
+        and (m.id_organization=:organizationId or c.id_organization=:organizationId)');
+
+        $criteria->params = array(
+            ':userId' => Yii::app()->user->getId(),
+            ':organizationId' => Yii::app()->user->model->getCurrentOrganizationId(),
+        );
+
+        if(isset($requestParams["filter"]["payment_schema"])) {
+            $criteria->params[':paymentSchemaNumber'] = $requestParams["filter"]["payment_schema"];
+        }
+
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
         echo json_encode($result);
@@ -232,7 +241,7 @@ class TrainerController extends TeacherCabinetController
 
     public function actionApproveStudentProject(){
         $projectId =  Yii::app()->request->getPost('id');
-        $project = StudentsProjects::model()->findByPk($projectId);
+        $project = StudentsProjects::model()->findByPk((int)$projectId);
         if ($project){
             if (!$project->approveProject()){
                 echo json_encode(['data'=>1,'message'=>'Помилка затвердження проекту! Можливо директорія з проектом порожня. Спробуйте спочатку оновити проект до останньої версії!' ]);
@@ -253,7 +262,7 @@ class TrainerController extends TeacherCabinetController
     }
 
     public function actionGetProjectFiles($projectId){
-        $project = StudentsProjects::model()->findByPk($projectId);
+        $project = StudentsProjects::model()->findByPk((int)$projectId);
         if ($project->showFiles()){
             echo json_encode($project->showFiles());
         }
@@ -267,6 +276,14 @@ class TrainerController extends TeacherCabinetController
         echo file_get_contents(Config::getTempProjectsPath().DIRECTORY_SEPARATOR.$path.DIRECTORY_SEPARATOR.$fileName);
         Yii::app()->end();
 
+    }
+
+    public function actionDeleteStudentProject(){
+     $projectId =  Yii::app()->request->getPost('id');
+     $project = StudentsProjects::model()->findByPk((int)$projectId);
+     if($project && $project->delete()){
+      return $this->renderJSON(['data'=>1,'message'=>'Проект видалено']);
+     }
     }
 
 }
