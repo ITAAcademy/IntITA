@@ -29,7 +29,7 @@ class LoanPaymentSchema implements IPaymentCalculator{
     public function getSumma(IBillableObject $payObject){
         $basePrice = $payObject->getBasePrice() * $this->educForm->getCoefficient();
         $coeff =  pow((1 + $this->loanValue/100), $this->payCount/12);
-        return round($basePrice * $coeff);
+        return round($basePrice * $coeff, 2);
     }
 
     public function getCloseDate(IBillableObject $payObject, DateTime $startDate){
