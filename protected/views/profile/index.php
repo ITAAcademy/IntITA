@@ -1,4 +1,3 @@
-<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
 <? $css_version = 1; ?>
     <!-- teacherProfile style -->
     <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'teacherProfile.css'); ?>" />
