@@ -102,6 +102,31 @@
     .border-right{
         border-right: 1px solid rebeccapurple;
     }
+    .end{
+        width: 10px;
+        color: #273241;
+        font-size: 12px;
+    }
+    .last-item-off-background{
+        background: none;
+    }
+    .trainee-item{
+        background: url(../../images/module/6.png);
+        background-repeat-y: no-repeat;
+        background-position-y: center;
+        background-position-x: -7px;
+    }
+    .trainee-first-item{
+        background: url(../../images/module/trainee-item.png);
+        background-repeat: no-repeat;
+        background-position-y: center;
+    }
+    .trainee-last-item{
+        background: url(../../images/module/trainee-item-trainee.png);
+        background-repeat: no-repeat;
+        background-position-y: center;
+        background-position-x: -6px;
+    }
 </style>
 <?php //var_dump($courseForTemplate->level());?>
 <?php $tr_number=0;?>
@@ -159,7 +184,27 @@
 <!--                --><?php //echo Course::getCourseName($idCourse); ?>
 <!--            </td>-->
 <!--        </tr>-->
+        <?php
+            $traineeCount = 0;
+            echo "<pre>";
+//            var_dump(($modules));die;
+        ?>
         <?php for ($i = 0, $count = count($modules); $i < $count; $i++) {
+            if($i == 0){?>
+                <tr id="trainee-wrap">
+                    <td class="trainee"><?php echo Course::getMessage($message, 'trainee'); ?></td>
+                </tr>
+<!--                --><?php //for($k = $courseDuration; $k >= 0; $k--){?>
+<!--                    --><?php //$traineeCount++;
+//                        if(4 >= $courseDuration - $traineeCount){?>
+<!--                        <td class="last-item"></td>-->
+<!--                    --><?php //}else{ ?>
+<!--                        <td class="last-item last-item-off-background"></td>-->
+<!--                    --><?php //} ?>
+<!---->
+<!--                --><?php //} ?>
+            <?php } ?>
+            <?php
             if (Module::getLessonsCount($modules[$i]['id_module']) > 0) {
                 ?>
                 <?php if ($tr_number % 2 == 0) {
@@ -179,15 +224,14 @@
                 $firstColumnFlag = 0;
                 $lastColumnFlag = 0;
                 $countCells = count($tableCells[$i]) - 1;
-                for ($j = 0; $j < $countCells; $j++) {
-
-                    if ($tableCells[$i][$j] == 0) {
+                for ($j = 0; $j < $courseDuration; $j++) {
+                    if ($tableCells[$i][$j] == 0 ) {
                         ?>
                         <td class="emptyMonthsCell"></td>
                     <?php } else {
                         $firstColumnFlag++;
                           if($firstColumnFlag == 1 && $countCells != 1) {
-                              if($tableCells[$i][$j+1] == '0'){
+                              if($tableCells[$i][$j+1] == '0' || $tableCells[$i][$j+1] == NULL){
                           ?>
 <!--                              <td class="fullMonthsCell first-item-without">-->
                             <td class="fullMonthsCell last-item first-item-without">
@@ -195,11 +239,29 @@
                                   <?php echo $tableCells[$i][$j]; ?>
                                       </div>
                               </td>
+
+
+                              <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>"
+                                    title='<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip() ?>'>
+                <!--                    --><?php //echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>
+                                    <p class="end"><?php echo($modules[$i]->moduleInCourse->lastLecture()->title_ua);?></p>
+                                </td>
+
+
+
+
+
+
                                   <?php } else{ ?>
 
                             <td class="fullMonthsCell first-item">
                                  <div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць"><?php echo $tableCells[$i][$j]; ?></div>
                             </td>
+
+
+
+
+
 
 
                             <?php
@@ -211,12 +273,38 @@
                             <td class="fullMonthsCell last-item first-item-without">
                                  <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць""><?php echo $tableCells[$i][$j]; ?></div>
                             </td>
+
+
+
+
+
+
+                            <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>"
+                                    title='<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip() ?>'>
+                <!--                    --><?php //echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>
+                                    <p class="end"><?php echo($modules[$i]->moduleInCourse->lastLecture()->title_ua);?></p>
+                                </td>
+
+
+
+
                         <?php
                         }
                         else {
                             if($j == $countCells-1){?>
                                 <td class="fullMonthsCell last-item">
                                    <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць" style="padding-right: 10px;"> <?php echo $tableCells[$i][$j]; ?></div>
+                                </td>
+
+
+
+
+
+
+                                 <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>"
+                                    title='<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip() ?>'>
+                <!--                    --><?php //echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>
+                                    <p class="end"><?php echo($modules[$i]->moduleInCourse->lastLecture()->title_ua);?></p>
                                 </td>
                             <?php }else{ ?>
 
@@ -229,22 +317,23 @@
                     }
                 }
                 ?>
-                <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>"
-                    title='<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip() ?>'>
-                    <?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>
-                </td>
+<!--                <td class="examCell--><?php //echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?><!--"-->
+<!--                    title='--><?php //echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip() ?><!--'>-->
+<!--<!--                    -->--><?php ////echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>
+<!--                    <p class="end">--><?php //echo($modules[$i]->moduleInCourse->lastLecture()->title_ua);?><!--</p>-->
+<!--                </td>-->
                 <?php
-                if (Course::getCourseDuration($tableCells) == $j) {
-                    ?>
-                    <td class="trainee" colspan="4"><?php echo Course::getMessage($message, 'trainee'); ?></td>
-                <?php
-                } else {
-                    for (; $j < $courseDuration - 1; $j++) {
-                        ?>
-                        <td class="lastCell"></td>
-                    <?php
-                    }
-                }
+//                if (Course::getCourseDuration($tableCells) == $j) {
+//                    ?>
+<!--                    <td class="trainee" colspan="4">--><?php //echo Course::getMessage($message, 'trainee'); ?><!--</td>-->
+<!--                --><?php
+//                } else {
+//                    for (; $j < $courseDuration - 1; $j++) {
+//                        ?>
+<!--                        <td class="lastCell"></td>-->
+<!--                    --><?php
+//                    }
+//                }
             }
             ?>
             </tr>
@@ -300,5 +389,110 @@ $(document).ready(function(){
     //         console.log($("tr")[j+1]);
     //     }
     // }
+    // $("#1").clone().appendTo("#trainee-wrap");\
 
+
+    // console.log( $("#1").children());
+    // console.log($(".monthsCell")[ $(".monthsCell").length-1].innerText);
+    var traineeWrap = document.getElementById("trainee-wrap");
+    var lastElement = 0;
+    console.log($("#1").children());
+    $("#1").children().each(function(index){
+        console.log('index');
+        console.log(index);
+        // console.log($("#1").children().length);
+        // for(var i=0; i < $(".monthsCell")[ $(".monthsCell").length-1].innerText - $("#1").children().length; i++){
+        //     //    console.log($("#1").children());
+        //     // console.log(this);
+        //         $("#1").children().add("<td class='new'></td>");
+        //     }
+        //     console.log( $("#1").children());
+
+        if(this.className !== "hours" && this.className !== "examCellE"){
+            console.log("this: ");
+            console.log(this);
+            // if(this.className == "fullMonthsCell first-item" || this.className == "fullMonthsCell item" || this.className == "fullMonthsCell last-item"){
+            //     this.style.background = "none";
+            // }
+            traineeWrap.appendChild(this.cloneNode(false));
+
+            var arrClass = this.className.split(" ");
+            var count = 0;
+            for(var i = 0; i < arrClass.length; i++){
+                if (arrClass[i] == "last-item"){
+                    lastElement = index;
+                }
+                // if(count == arrClass.length){
+                //     traineeWrap.appendChild(this.cloneNode(false));
+                // }
+            }
+        }
+    })
+    console.log("traineeWrap: ");
+    console.log(traineeWrap);
+    console.log(traineeWrap.childNodes);
+    console.log(traineeWrap.childNodes.length);
+    console.log("lastElement: ");
+    console.log(lastElement);
+    console.log($(".last-item"));
+    var lastElements = [];
+    for(var i=0; i< $(".last-item").length; i++){
+        console.log("PUSH");
+        lastElements.push($(".last-item")[i].cellIndex);
+    }
+    function compareNumeric(a, b) {
+      if (a > b) return 1;
+      if (a < b) return -1;
+    }
+    console.log(console.log("lastElements.length"));
+    console.log(lastElements);
+    lastElements.sort(compareNumeric);
+    console.log(console.log("lastElements.length"));
+    console.log(lastElements[length-1]);
+    console.log('month:');
+    console.log($(".monthsCell")[ $(".monthsCell").length-1].innerText);
+    console.log("last element:");
+    console.log(lastElements[lastElements.length-1]);
+    var moduleClasses = 0;
+
+
+        for (var i = 0; i < traineeWrap.childNodes.length; i++){
+            console.log(traineeWrap.childNodes[i].className);
+            if(traineeWrap.childNodes[i].className !== undefined){
+                moduleClasses = (traineeWrap.childNodes[i].className.split(" "));
+                console.log(moduleClasses);
+               for (var j=0; j<moduleClasses.length; j++){
+                    if(moduleClasses[j] == "item" || moduleClasses[j] == "last-item" || moduleClasses[j] == "first-item"){
+                        traineeWrap.childNodes[i].style.background = "none";
+                    }
+                }
+            }
+        }
+
+
+
+
+
+        console.log("Module classes: ");
+        console.log(moduleClasses);
+        console.log($(".monthsCell")[ $(".monthsCell").length-1].innerText);
+        console.log($("#trainee-wrap").children());
+
+        for(var j=$(".monthsCell")[ $(".monthsCell").length-1].innerText; j != lastElements[lastElements.length-1]; j--){
+            console.log("j:" + j);
+            $("#trainee-wrap").children()[j].remove();
+        }
+        console.log($(".monthsCell")[ $(".monthsCell").length-1].innerText);
+     for(var i=0; i < ($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1]); i++){
+                console.log(i);
+                if(i==0){
+                    $("#trainee-wrap").append("<td class='trainee-first-item'></td>");
+                }
+                else if(i!==0 && i!==($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1])-1){
+                    $("#trainee-wrap").append("<td class='trainee-item'></td>");
+                }
+                else{
+                    $("#trainee-wrap").append("<td class='trainee-last-item'></td>");
+                }
+            }
 </script>
