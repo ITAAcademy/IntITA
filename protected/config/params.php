@@ -11,7 +11,7 @@ $mailParams = (file_exists(dirname(__FILE__) . '/mailParams.php')?
               [
                   'smtpHost' => '127.0.0.1',
                   'smtpPort' => '25',
-                  'smtpAuth' => true,
+                  'smtpAuth' => false,
                   'smtpDebug' => 0,
                   'smtpUsername' => '',
                   'smtpPassword' => '',

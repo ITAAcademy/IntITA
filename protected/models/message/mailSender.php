@@ -41,6 +41,7 @@
      $this->sender->setFrom($from, $fromName);
      $this->sender->addReplyTo($from);
      $this->sender->addAddress($to);
+     $this->sender->SMTPAutoTLS = false;
      $this->sender->isHTML(true);
      $this->sender->Subject = mb_encode_mimeheader($subject,'utf-8');
      $this->sender->Body = $message;
