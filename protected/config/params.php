@@ -32,7 +32,6 @@ return array(
         'dovecotPasswordScheme'=>'sha',
         'webSocketServer'=>$webSocketServerParams,
         'mailParams'=>$mailParams,
-        'versionsOfFile' =>  2
-
+        'versionsOfFile' =>  3
     ),
 );
