@@ -225,7 +225,7 @@
                 $lastColumnFlag = 0;
                 $countCells = count($tableCells[$i]) - 1;
                 for ($j = 0; $j < $courseDuration; $j++) {
-                    if ($tableCells[$i][$j] == 0 ) {
+                    if ($tableCells[$i][$j] == 0 && $j!= $courseDuration-1) {
                         ?>
                         <td class="emptyMonthsCell"></td>
                     <?php } else {
@@ -307,11 +307,13 @@
                                     <p class="end"><?php echo($modules[$i]->moduleInCourse->lastLecture()->title_ua);?></p>
                                 </td>
                             <?php }else{ ?>
-
-                            <td class="fullMonthsCell item">
+                                <?php if ($j!= $courseDuration-1){ ?>
+                                    <td class="fullMonthsCell item">
                                 <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць" style="padding-right: 10px;"> <?php echo $tableCells[$i][$j]; ?> </div>
-                            </td>
-                                </div>
+                                    </td>
+                                        </div>
+                                <?php } ?>
+
                         <?php }
                         }
                     }
@@ -480,7 +482,9 @@ $(document).ready(function(){
 
         for(var j=$(".monthsCell")[ $(".monthsCell").length-1].innerText; j != lastElements[lastElements.length-1]; j--){
             console.log("j:" + j);
-            $("#trainee-wrap").children()[j].remove();
+            if($("#trainee-wrap").children()[j] != undefined){
+                $("#trainee-wrap").children()[j].remove();
+            }
         }
         console.log($(".monthsCell")[ $(".monthsCell").length-1].innerText);
      for(var i=0; i < ($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1]); i++){
