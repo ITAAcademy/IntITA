@@ -7,7 +7,7 @@ angular
                 cache: false,
                 templateUrl: function ($stateParams) {
                     console.log("OK");
-                    return basePath + "/_teacher/_apiKeyManager/role/renderAddRoleForm/role/" + $stateParams.role;
+                    return basePath + "/_teacher/_api_key_manager/role/renderAddRoleForm/role/" + $stateParams.role;
                 }
             })
     });
