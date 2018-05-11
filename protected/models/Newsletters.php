@@ -26,6 +26,7 @@ class Newsletters extends CActiveRecord implements ITask
 {
 
     use loadFromRequest;
+    use mailSender;
 
     public $email = null;
 	/**
@@ -142,7 +143,7 @@ class Newsletters extends CActiveRecord implements ITask
     public function startSend()
     {
         foreach ($this->getMailList() as $item){
-            $this->sendMail($item);
+            $this->sendLetter($item);
             sleep(1);
         }
     }
@@ -279,7 +280,7 @@ class Newsletters extends CActiveRecord implements ITask
         return array_unique($mailList);
     }
 
-    private function sendMail($recipients){
+    private function sendLetter($recipients){
         $fromName = 'IntITA';
         if ($this->template_id){
             $template = MailTemplates::model()->findByPk($this->template_id);
@@ -290,13 +291,7 @@ class Newsletters extends CActiveRecord implements ITask
             $model = Teacher::model()->with('user')->findByAttributes(array('corporate_mail'=>$this->newsletter_email));
             $fromName = "{$model->user->firstName} {$model->user->middleName} {$model->user->secondName}";
         }
-        $headers = "From: {$fromName} <{$this->newsletter_email}>". "\r\n"
-            . "MIME-Version: 1.0". "\r\n"
-            . "Reply-To: {$this->newsletter_email}" . "\r\n"
-            . "Return-Path: {$this->newsletter_email}". "\r\n"
-            . "Content-type: text/html;charset=utf-8" . "\r\n";
-            mail($recipients, mb_encode_mimeheader($this->subject,"UTF-8"),$this->text,$headers, "-f {$this->newsletter_email}");
-
+       $this->sendmail($this->newsletter_email,$fromName,$recipients,$this->subject,$this->text);
     }
 
     public function getRecipients(){
