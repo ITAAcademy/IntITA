@@ -7,7 +7,7 @@ class UsersController extends TeacherCabinetController
         $allowedDenySetActions = ['addAdmin', 'createAccountant'];
         $allowedUsersTables = ['users','getUsersList','getTrainersList','coworkers','getTeachersList','students','getStudentsList',
             'getEducationTime','getEducationForm','attachStudents','personalInfo','getPersonalInfo','careerInfo','getCareerInfo',
-            'getSpecializationGroup','getPayForm','contractInfo','visitInfo','getVisitInfo','getCancelType','getStudentsProjectList'];
+            'getSpecializationGroup','getPayForm','contractInfo','visitInfo','getVisitInfo','getCancelType','getStudentsProjectList', 'getGroupNumber', 'updateStudent' ];
         $allowedCMActions = ['contentAuthors','getAuthorsList','teacherConsultants','getTeacherConsultantsList'];
         $allowedGroups = ['offlineGroups','offlineGroup','offlineSubgroup'];
         $allowedForStudent = ['getGroupNumber'];
