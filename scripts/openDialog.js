@@ -8,6 +8,7 @@ function openSignIn(){
     return false;
 }
 function openForgotpass(mode){
+    $('#signInEmailM').val('');
     $("#forgotpass").dialog("open");
     if(mode=="fromDialog") $('#toRegistration').attr('for','signUpModeDialog');
     else if(mode=="fromForm") $('#toRegistration').attr('for','signUpMode');
