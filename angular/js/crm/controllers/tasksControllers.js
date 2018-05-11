@@ -283,7 +283,7 @@ angular
                                 return {
                                     id: item.idTask.id,
                                     title: item.idTask.name,
-                                    observers: item.idTask.observers,
+                                    observers: item.observers,
                                     producer: item.idTask.producerName.id,
                                     producerName: item.idTask.producerName.fullName,
                                     producerAvatar: basePath + '/images/avatars/' + item.idTask.producerName.avatar,
@@ -412,7 +412,7 @@ angular
             $scope.changeRouterState($state.$current.name);
 
             $scope.canComplete = function (task) {
-                if(task.producer==$scope.currentUser || task.executant==$scope.currentUser || _.isObject(_.find(task.observers, {id: String($scope.currentUser)}))){
+                if(task.producer==$scope.currentUser || task.executant==$scope.currentUser || _.isObject(_.find(task.observers, {id_user: $scope.currentUser}))){
                     return true;
                 }else{
                     return false;
