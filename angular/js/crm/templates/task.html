@@ -2,8 +2,8 @@
     <span style="float: right" class="glyphicon glyphicon-remove modal-close" ng-click="crmTask.cleanTask();"></span>
     <h1>Завдання <span ng-if="crmTask.data.id" style="color:#ccc">#{{crmTask.data.id}}</span></h1>
 </div>
-<a ng-if="!clone" ng-href="#/task_clone/{{crmTask.data.id}}" target="_blank">
-    <i class="fa fa-copy pull-right" aria-hidden="true" title="Клонувати"></i>
+<a ng-if="!clone"  ng-href="#/task_clone/{{crmTask.data.id}}" target="_blank">
+    <i ng-if="teacherMode"  class="fa fa-copy pull-right" aria-hidden="true" title="Клонувати"></i>
 </a>
 <span ng-if="crmTask.data.id && !modalMode" style="color:#ccc">#{{crmTask.data.id}}</span>
 <div class="form-group">
