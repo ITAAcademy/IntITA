@@ -589,3 +589,9 @@
         </div>
     </div>
 </div>
+<?php $this->renderPartial('/site/_shareMetaTag', array(
+    'url'=>Yii::app()->createAbsoluteUrl(Yii::app()->request->url),
+    'title'=>Yii::t('teachers', '0058').'. '.Yii::t('sharing','0643'),
+    'description'=>Yii::t('sharing','0645'),
+));
+?>
