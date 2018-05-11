@@ -98,7 +98,7 @@ angular
             };
 
             $scope.removeLogo = function (id, image) {
-                cmsService.removeLogo({image: image}).$promise
+                cmsService.removeLogo({image: image, id: id}).$promise
                     .then(function successCallback() {
                         $scope.getSettings();
                     }, function errorCallback(response) {
