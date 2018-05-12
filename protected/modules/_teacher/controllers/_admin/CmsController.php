@@ -204,7 +204,7 @@ class CmsController extends TeacherCabinetController
                   exit("Domain not active!");
                 };?>');
         file_put_contents($path, $_POST["data"], FILE_APPEND);
-        $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
+        $address = Yii::app()->basePath . '/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
         if (file_exists($address)) {
             array_map('unlink', glob("$address/*.*"));
         }
