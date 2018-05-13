@@ -31,7 +31,7 @@
 <div class="fluid_container">
     <div id="hoverText"></div>
     <div class="camera_wrap camera_magenta_skin" id="camera_wrap_2">
-        <div data-thumb="../images/slides/thumbs/bridge.jpg" data-src="../../images/forPartners/icon/back.jpg">
+        <div data-thumb="../images/slides/thumbs/bridge.jpg" data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption111">
                 <p class="title-main">Розпочни свій інтелектуальний бізнес!</p>
                 <p class="fran">Франшиза</p>
@@ -39,7 +39,7 @@
                 <p class="school">Школу Хакерів</p>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption10">
                 <p class="title">Успішний бізнес - це освіта.<br>Освіта - це успішний бізнес!</p>
 
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption2">
 
                 <p class="title">Ідея</p>
@@ -77,7 +77,7 @@
 
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption16">
                 <p class="title">Хто ми</p>
                 <ul class="ul-list">
@@ -104,7 +104,7 @@
 
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption8">
                 <p class="title">Що ми пропонуємо</p>
                 <ul class="ul-list">
@@ -127,7 +127,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption11">
                 <p class="title">Чому це спрацьовує</p>
                 <ul class="ul-list">
@@ -151,7 +151,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption3">
                 <p class="title">Наші досягнення</p>
                 <ul class="ul-list">
@@ -176,7 +176,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption17">
                 <p class="title">Наші досягнення</p>
                 <ul class="ul-list">
@@ -200,7 +200,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption5">
                 <p class="title">Який наш інтерес</p>
                 <ul class="ul-list">
@@ -222,7 +222,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption7">
                 <p class="title">Чому це цікаво вам</p>
                 <ul class="ul-list">
@@ -246,7 +246,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption1">
                 <p class="title">Загальна бізнес-модель</p>
                 <ul class="ul-list">
@@ -275,7 +275,7 @@
 
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption9">
                 <p class="title">Юридична модель</p>
                 <p class="ul-list">Представник ІТ-Академії стає співзасновником компанії представника, як окремої юридичної особи (50%/50%).</p>
@@ -295,7 +295,7 @@
             </div>
         </div>
 
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption0">
                 <p class="title">Фінансова модель</p>
                 <ul class="ul-list">
@@ -316,7 +316,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption12">
                 <p class="title">Цільова аудиторія</p>
                 <ul class="ul-list">
@@ -339,7 +339,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption14">
                 <p class="title">Маркетингова модель</p>
                 <p class="market">Основна стратегія просування послуг:</p>
@@ -362,7 +362,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption15">
                 <p class="title">Виробничі вимоги</p>
                 <p class="ul-list">Необхідне приміщення - близько 100 м.кв.</p>
@@ -387,7 +387,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption13">
                 <p class="title">Основні показники</p>
                 <ul class="ul-list">
@@ -411,7 +411,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption4">
                 <p class="title">План подальших дій</p>
                 <ul class="ul-list">
@@ -437,7 +437,7 @@
                 </div>
             </div>
         </div>
-        <div data-src="../../images/forPartners/icon/back.jpg">
+        <div data-src="<?php echo StaticFilesHelper::createPath('image', 'forPartners', 'icon/back.jpg'); ?>">
             <div class="camera_caption fadeFromBottom" id="camera_caption6">
                 <p class="title">ПРОГРАМУЙ МАЙБУТНЄ!</p>
                 <p class="ul-list">тел. моб.: 067-431-74-24</p>
