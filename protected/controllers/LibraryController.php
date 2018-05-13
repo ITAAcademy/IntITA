@@ -1,5 +1,5 @@
 <?php
-
+include (dirname(__FILE__) . '/../extensions/liqPay/liqPay.php');
 class LibraryController extends Controller
 {
 	/**
@@ -28,7 +28,7 @@ class LibraryController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','pay','buy_coffee_form'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -179,4 +179,104 @@ class LibraryController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+    function getForm($insert_id = 0){
+
+        $public_key = 'i66161139369';
+        $private_key= 'jqhus6G4UAq116vPd3s6RmAr4hgOi1tRMIrtLuaP';
+
+        $liqpay = new LiqPay($public_key, $private_key);
+        $html = $liqpay->cnb_form(array(
+            'version'=>'3',
+            'action'         => 'pay',
+            'amount'         => 1, // сумма заказа
+            'currency'       => 'UAH',
+            /* перед этим мы ведь внесли заказ в  таблицу,
+            $insert_id = $wpdb->query( 'insert into table_orders' );
+            */
+            'description'    => 'Оплата заказа № '.$insert_id,
+            'order_id'       => $insert_id,
+            // если пользователь возжелает вернуться на сайт
+            'result_url'	=>	'http://mydomain.site/thank_you_page/',
+            /*
+                если не вернулся, то Webhook LiqPay скинет нам сюда информацию из формы,
+                в частонсти все тот же order_id, чтобы заказ
+                 можно было обработать как оплаченый
+            */
+            'server_url'	=>	'http://mydomain.site/liqpay_status/',
+            'language'		=>	'uk', // uk, en
+            'sandbox'=>'1' // и куда же без песочницы,
+            // не на реальных же деньгах тестировать
+        ));
+
+        $res_arr = array("status"=>1, 'form'=>$html, 'order_num'=>$insert_id, 'error'=>$error);
+        echo json_encode( $res_arr ); // вернем нашу сгенерированную форму для отправки
+        //покупателя на LiqPay
+        wp_die();
+
+    }
+
+    public function actionBuy_coffee_form()
+    {
+//        $liqpay = new LiqPay('i66161139369', 'jqhus6G4UAq116vPd3s6RmAr4hgOi1tRMIrtLuaP');
+//        $html = $liqpay->cnb_form(array(
+//            'action'         => 'pay',
+//            'amount'         => '1',
+//            'currency'       => 'UAH',
+//            'description'    => 'description text',
+//            'order_id'       => 'order_id_1',
+//            'version'        => '3'
+//        ));
+
+//        $is_ajax = $this->input->is_ajax_request();
+//        if($is_ajax) {
+//            $post = $this->input->post();
+            $order_id = 'coffee_'.rand(10000, 99999);
+//            require("/modules/payment/libraries/LiqPay.php");
+
+            $liqpay = new LiqPay('i66161139369', 'jqhus6G4UAq116vPd3s6RmAr4hgOi1tRMIrtLuaP');
+
+//            $data = $liqpay->cnb_form(array(
+//                'version'        => '3',
+//                'amount'         => '1',
+//                'currency'       => 'UAH',
+//                'description'    => 'Donate polyakov.co.ua',
+//                'order_id'       => $order_id,
+//                'language'      => 'uk',
+//                'type'          => 'pay',
+//                'result_url'    => '/IntITA/library/success_coffee',
+//                'sandbox'=>'1'
+//            ));
+
+        $html = $liqpay->cnb_form(array(
+            'version'=>'3',
+            'action'         => 'pay',
+            'amount'         => 1, // сумма заказа
+            'currency'       => 'UAH',
+            /* перед этим мы ведь внесли заказ в  таблицу,
+            $insert_id = $wpdb->query( 'insert into table_orders' );
+            */
+            'description'    => 'Оплата заказа № '.$order_id,
+            'order_id'       => $order_id,
+            // если пользователь возжелает вернуться на сайт
+            'result_url'	=>	'/IntITA/library/success_coffee',
+            /*
+                если не вернулся, то Webhook LiqPay скинет нам сюда информацию из формы,
+                в частонсти все тот же order_id, чтобы заказ
+                 можно было обработать как оплаченый
+            */
+            'server_url'	=>	'http://mydomain.site/liqpay_status/',
+            'language'		=>	'ru', // uk, en
+            'sandbox'=>'1' // и куда же без песочницы,
+            // не на реальных же деньгах тестировать
+        ));
+
+        $this->render('success',array(
+        'html'=>$html
+        ));
+//        }
+//        else{
+//            show_404();
+//        }
+    }
 }
