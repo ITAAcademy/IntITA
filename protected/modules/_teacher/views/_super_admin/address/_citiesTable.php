@@ -17,12 +17,43 @@
                     <col width="10%" />
                 </colgroup>
                 <tr ng-repeat="row in $data">
-                    <td data-title="'ID'" sortable="'id'" filter="{id:'text'}">{{row.id}}</td>
-                    <td data-title="'Країна'" sortable="'country0.title_ua'" filter="{'country0.title_ua':'text'}">{{row.country0.title_ua}}</td>
-                    <td data-title="'Українською'" sortable="'title_ua'" filter="{title_ua:'text'}">{{row.title_ua}}</td>
-                    <td data-title="'Російською'" sortable="'title_ru'"filter="{title_ru:'text'}">{{row.title_ru}}</td>
-                    <td data-title="'Англійською'" sortable="'title_en'" filter="{title_en:'text'}">{{row.title_en}}</td>
-                    <td data-title="'Редагувати'"><a type="button" class="btn btn-outline btn-success btn-sm" ng-href="#/editcity/{{row.id}}">редагувати</a></td>
+                    <td
+                        data-title="'ID'"
+                        sortable="'id'"
+                        filter="{id:'text'}"
+                        ng-click="showEditModal(row)"
+                    >{{row.id}}</td>
+                    <td
+                        data-title="'Країна'"
+                        sortable="'country0.title_ua'"
+                        filter="{'country0.title_ua':'text'}"
+                        ng-click="showEditModal(row)"
+                    >{{row.country0.title_ua}}</td>
+                    <td
+                        data-title="'Українською'"
+                        sortable="'title_ua'"
+                        filter="{title_ua:'text'}"
+                        ng-click="showEditModal(row)"
+                    >{{row.title_ua}}</td>
+                    <td
+                        data-title="'Російською'"
+                        sortable="'title_ru'"
+                        filter="{title_ru:'text'}"
+                        ng-click="showEditModal(row)"
+                    >{{row.title_ru}}</td>
+                    <td
+                        data-title="'Англійською'"
+                        sortable="'title_en'"
+                        filter="{title_en:'text'}"
+                        ng-click="showEditModal(row)"
+                    >{{row.title_en}}</td>
+                    <td data-title="'Редагувати'">
+                        <a
+                            type="button"
+                            class="btn btn-outline btn-danger btn-sm"
+                            ng-click="removeCity(row)"
+                        >видалити</a>
+                    </td>
                 </tr>
             </table>
         </div>

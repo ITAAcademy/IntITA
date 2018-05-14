@@ -135,18 +135,30 @@ class AddressCity extends CActiveRecord
         return null;
     }
 	
-	public static function newCity(AddressCountry $country, $titleUa, $titleRu, $titleEn){
-		$model = new AddressCity();
+	protected function cityValidate($cityNameUa) {
+    	$newTitleLower = strtolower($cityNameUa);
+    	$criteria = new CDbCriteria();
+    	$criteria->select = 'id, title_ua';
+    	$criteria->addSearchCondition('title_ua', mb_strtolower($newTitleLower), false, 'LIKE');
+    	$city = AddressCity::model()->findAll($criteria);
+        return empty($city);
+	}
 
-		$model->title_ua = $titleUa;
-		$model->title_ru = $titleRu;
-		$model->title_en = $titleEn;
-		$model->country = $country->id;
+	public static function newCity(AddressCountry $country, $data){
+		$addressCity = new AddressCity;
+        $isNewCity = $addressCity->cityValidate($data['title_ua']);
+        if ($isNewCity) {
+        	$model = new AddressCity();
 
-		if($model->save()){
-            return $model;
+			$model->attributes = $data;
+
+			if($model->save()){
+	            return $data['title_ua'].' is saved correctly';
+	        } else {
+	            return 'The operation can`t be done';
+	        }	
         } else {
-            return null;
+        	return $data['title_ua'].' is present in DB';
         }
 	}
 
