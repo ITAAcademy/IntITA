@@ -204,28 +204,35 @@ $param = Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua"
                         <span><?php echo $form->error($model, 'country'); ?></span>
                         <?php echo $form->hiddenField($model, 'country'); ?>
                     </div>
-                    <div ng-show="form.selectedCountry" class="row selectRow">
-                        <?php echo $form->label($model, 'city'); ?>
-                        <div class="selectBox">
-                            <oi-select
-                                oi-options="city.title for city in form.citiesList track by city.id"
-                                ng-model="form.selectedCity"
-                                single
-                                oi-select-options="{
-                                cleanModel: true,
-                                newItem: 'prompt',
-                                newItemModel: {id: null, title: $query},
-                                maxlength:50
-                                }"
-                                placeholder="<?php echo Yii::t('regexp', '0898'); ?>"
-                                class="indicator"
-                                data-source='<?php echo Yii::t('regexp', '0899'); ?>'
-                                id="citySelect"
-                            ></oi-select>
+                    <div class="row">
+                        <div ng-show="form.selectedCountry" class="row selectRow">
+                            <?php echo $form->label($model, 'city'); ?>
+                            <div class="selectBox">
+                                <oi-select
+                                    oi-options="city.title for city in form.citiesList track by city.id"
+                                    ng-model="form.selectedCity"
+                                    single
+                                    oi-select-options="{
+                                    cleanModel: true,
+                                    newItem: 'prompt',
+                                    newItemModel: {id: null, title: $query},
+                                    maxlength:50
+                                    }"
+                                    placeholder="<?php echo Yii::t('regexp', '0898'); ?>"
+                                    ng-class="cityTitleUA ? 'clientValidationError' : 'indicator'"
+                                    data-source="<?php echo Yii::t('regexp', '0899'); ?>"
+                                    id="citySelect"
+                                ></oi-select>
+                            </div>
+                            <input type="hidden" name="cityTitle" />
+                            <span><?php echo $form->error($model, 'city'); ?></span>
+                            <?php echo $form->hiddenField($model, 'city'); ?>
                         </div>
-                        <input type="hidden" name="cityTitle">
-                        <span><?php echo $form->error($model, 'city'); ?></span>
-                        <?php echo $form->hiddenField($model, 'city'); ?>
+                        <div ng-cloak class="clientValidationError" ng-show="cityTitleUA">
+                            <span ng-show="cityTitleUA">
+                                <?php echo Yii::t('error', '0416') ?>
+                            </span>
+                        </div>
                     </div>
                     <div class="row">
                         <?php echo $form->label($model, 'address'); ?>

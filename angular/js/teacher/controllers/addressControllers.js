@@ -36,9 +36,9 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
     );
 
     $scope.regex = {
-        titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\']+$/,
-        titleRu: /^[А-ГДЕЖЗИЙ-Яа-гдежзий-я]+$/,
-        titleEn: /^[A-Za-z]+$/,
+        titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-]+$/,
+        titleRu: /^[А-ГДЕЖЗИЙ-Яа-гдежзий-я\-]+$/,
+        titleEn: /^[A-Za-z\'\-]+$/,
     };
 
     $scope.editCity = function () {
@@ -77,7 +77,6 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
     };
 
     $scope.removeCity = function (city) {
-        console.log(city);
         var fullUrl = url+"/removeCity";
         $http.post(fullUrl, {id: city.id})
         .then(function successCallback(response) {

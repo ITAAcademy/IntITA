@@ -26,6 +26,10 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     };
     $scope.files = [];
     $scope.form = [];
+    
+    $scope.regex = {
+        titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\']+$/
+    };
 
     //init progress bar
     $scope.dataForm=[];
@@ -35,6 +39,7 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     $scope.modelsArr=[];
     $scope.progress = 1;
     $scope.avatar=avatar;
+    $scope.cityTitleUA = false;
     if (avatar == 'noname.png') {
         $scope.progress--;
     }
@@ -279,10 +284,15 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     }, true);
 
     $scope.$watch('form.selectedCity', function() {
-        if(typeof $scope.form.selectedCity!='undefined'){
-            $("#StudentReg_city").val($scope.form.selectedCity.id);
-            $('input[name=cityTitle]').val($scope.form.selectedCity.title);
-        }else{
+        var selectedCity = $scope.form.selectedCity;
+        console.log(selectedCity);
+        if (selectedCity !== undefined) {
+            var isCityValid = Boolean(selectedCity.title.match(/^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-]+$/));
+            console.log(isCityValid);
+            $scope.cityTitleUA = !isCityValid;
+            $("#StudentReg_city").val(selectedCity.id);
+            $('input[name=cityTitle]').val(selectedCity.title);
+        } else {
             $("#StudentReg_city").val(null);
             $('input[name=cityTitle]').val(null);
         }

@@ -97,22 +97,26 @@ class AddressController extends TeacherCabinetController
     public function actionRemoveCity() {
         $data = json_decode(file_get_contents('php://input'), true);
         $city = AddressCity::model()->findByPk($data['id']);
-        $users = $city->users;
-        if ($users) {
-            foreach ($users as $user) {
-                $user->city = '';
-                $user->reg_time = null;
-                // var_dump($user);
-                // die;
-                $user->save();
+
+        $isCES = CorporateEntity::model()->exists('actual_address_city_code = :id', [":id" => $data['id']]);
+
+        if ($isCES) {
+            echo "Операцію не вдалося виконати. Місто закріплено за компанією.";
+        } else {
+            $users = $city->users;
+            if ($users) {
+                foreach ($users as $user) {
+                    $user->city = '';
+                    $user->reg_time = null;
+                    $user->save();
+                }
             }
 
-        }
-
-        if($city->delete()){
-            echo "Операцію успішно виконано.";
-        } else {
-            echo "Операцію не вдалося виконати.";
+            if($city->delete()){
+                echo "Операцію успішно виконано.";
+            } else {
+                echo "Операцію не вдалося виконати.";
+            }
         }
     }
 
