@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>">
 </head>
 <style>
+    @font-face {
+        font-family: MyriadPro; /* Имя шрифта */
+        src: url(../../../font/myriadpro/regular.otf); /* Путь к файлу со шрифтом */
+    }
     .item-data-wrap{
     cursor: pointer;
     color: white;
@@ -80,32 +84,21 @@
         margin-bottom: 9px;
     }
     .yellow-tooltip + .tooltip > .tooltip-inner {background-color: #fff59d;color: black;}
-    /*.yellow-tooltip + .tooltip.bottom > .tooltip-arrow { border-bottom: 1px solid #fff59d; }*/
-    /*.yellow-tooltip + .tooltip.top > .tooltip-arrow { border-bottom: 1px solid #fff59d; }*/
-    /*.yellow-tooltip + .tooltip.top > .tooltip-arrow {*/
-      /*border-top: 5px solid #ccc;*/
-      /*background: red;*/
-    /*}*/
-
   .tooltip-inner {
     border: solid 1px #ccc;
 }
-/*.red-tooltip + .tooltip > .tooltip-arrow { border-bottom-color: #ccc; }*/
-    /*.tooltip.bottom .tooltip-arrow {*/
-      /*top: 0;*/
-      /*left: 50%;*/
-      /*margin-left: -5px;*/
-      /*border-bottom-color: #fff59d; !* black *!*/
-      /*background: #fff59d;*/
-      /*border-width: 0 5px 5px;*/
-    /*}*/
+
     .border-right{
+        border-right: 1px solid #999999;
+    }
+    .border-right-exam{
         border-right: 1px solid #999999;
     }
     .end{
         width: 10px;
         color: #273241;
         font-size: 12px;
+        font-family: "MyriadPro";
     }
     .last-item-off-background{
         background: none;
@@ -161,6 +154,38 @@
     }
     #schema tr:not(:first-child):nth-child(odd){
         background: #f5f5f5;
+    }
+    .coub{
+        background: url(../../images/module/coub.png);
+        height: 30px;
+        background-repeat: no-repeat;
+        position: relative;
+        cursor: pointer;
+        width: 30px;
+        left: 11px;
+    }
+    .coub-tooltip{
+        position: relative;
+        top: -95px;
+        left: 26px;
+    }
+    .coub-exam{
+        background: url(../../images/module/exam.png);
+        height: 40px;
+        background-repeat: no-repeat;
+        position: relative;
+        left: 6px;
+        cursor: pointer;
+        width: 45px;
+    }
+    .trainee-last-item-text{
+        margin-bottom: -39px;
+    }
+    .logo-course-wrap img{
+        width: 109px;
+    }
+    examCellE-witout-background{
+        background: none;
     }
 </style>
 <?php //var_dump($courseForTemplate->level());?>
@@ -398,7 +423,19 @@ $(document).ready(function(){
                 }
             }
         }
-    })
+    });
+
+
+
+
+
+
+
+
+
+
+
+    console.log(traineeWrap);
     console.log("traineeWrap: ");
     console.log(traineeWrap);
     console.log(traineeWrap.childNodes);
@@ -459,13 +496,97 @@ $(document).ready(function(){
      for(var i=0; i < ($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1]); i++){
                 console.log(i);
                 if(i==0){
-                    $("#trainee-wrap").append("<td class='trainee-first-item'>8</td>");
+                    $("#trainee-wrap").append("<td class='trainee-first-item'><div>8<div></td>");
                 }
                 else if(i!==0 && i!==($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1])-1){
-                    $("#trainee-wrap").append("<td class='trainee-item'>8</td>");
+                    $("#trainee-wrap").append("<td class='trainee-item'><div>8</div></td>");
                 }
                 else{
-                    $("#trainee-wrap").append("<td class='trainee-last-item'>8</td>");
+                    $("#trainee-wrap").append("<td class='trainee-last-item border-right-exam'><div class='trainee-last-item-text'>8</div></td>");
                 }
             }
+            console.log($("#trainee-wrap > .border-right"));
+            for(var j=0; j<$("#trainee-wrap > .border-right").length; j++){
+                $("#trainee-wrap > .border-right")[j].innerHTML += "<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"годин/місяць\"><div class='coub'></div></div>";
+            }
+            $("#trainee-wrap > .last-item")[0].innerHTML = "<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"годин/місяць\"><div class='coub'></div></div>";
+            // $("#trainee-wrap > .border-right").append(`<div class='coub' id=${i}></div>`);
+            console.log($(".monthsCell")[$(".monthsCell").length-1]);
+                // $(".monthsCell")[$(".monthsCell").length/2-1].innerHTML += ("<div class='coub-exam'></div>");
+                $(".trainee-last-item").append("<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Дипломний проект\"><div class='coub-exam'></div></div>");
+
+            // $("#trainee-wrap > .trainee-last-item").append("<div class='coub-exam'</div>");
+            //console.log($(".coub").parentNode.cellIndex);
+            $(document).ready(function(){
+                var examWrap = document.createElement("td");
+                examWrap.style.setProperty("background","none","!important");
+                examWrap.innerHTML = "<p class='end'>Дипломний проект</p>";
+                traineeWrap.appendChild(examWrap);
+    })
+
+    console.log($(".coub").parentNode);
+            k=$(".coub").length+1;
+    // for(var i=0; i<$("tr").length-1;i++){
+    //     // console.log($("tr")[i].children);
+    //     for(var j=1; j<$("tr")[i].children.length;j++){
+    //
+    //         if (isNaN(parseInt($("tr")[i].children[j].innerText)) && $("tr")[i].children[j].innerText!=""){
+    //
+    //
+    //                 var text = $("tr")[i].children[j].innerText;
+    //                     $(".coub")[k].innerHTML += text+"<br>";
+    //                     console.log("i: "+i);
+    //                     console.log("j: "+j);
+    //                     console.log("k: "+k);
+    //                 k--;
+    //         }
+    //         // console.log(typeof $("tr")[i].children[j].innerText);
+    //
+    //         //console.log($("tr")[i].children[$(".coub")[i].parentNode.parentNode.rowIndex+2].textContent);
+    //
+    // }
+    //
+    // }
+    // for (var i=0; i<$(".coub").length;i++){
+    //     console.log($(".coub")[i].parentNode);
+    //     console.log("____________");
+    //     for(var j=0; j<$("#schema > td").length; j++){
+    //         console.log($(".coub")[i].parentNode.parentNode.rowIndex);
+    //     }
+    // }
+    // console.log($(".coub"));
+    console.log("len: " + $("tr").length);
+    var arrTooltip = [];
+    for(var i = 0; i < $(".coub").length; i++){
+        arrTooltip[i] = "";
+        for(var j = 1; j <= $("tr").length-1; j++){
+            //console.log($(".coub")[i].parentElement.parentElement.cellIndex+1);
+            if ($("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText != "" && isNaN($("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText)){
+                //console.log($("tr")[j].children[$(".coub")[i].parentElement.cellIndex+1]);
+                arrTooltip[i] += $("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText;
+            }
+        }
+        //console.log($(".coub")[i].parentElement.cellIndex+1);
+
+    }
+    console.log(arrTooltip);
+    for(var i = 0; i < $(".coub").length; i++){
+        var title = arrTooltip[i].split("\n\n");
+        console.log(title);
+        title = title.join(" / ");
+        title = title.slice(0,-2);
+        console.log(title);
+
+            $(".coub")[i].parentElement.setAttribute("title",title);
+
+
+    }
+
+
+
+
+
 </script>
+<div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="годин/місяць">
+          <?php echo $tableCells[$i][$j]; ?>
+    </div>
