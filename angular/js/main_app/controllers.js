@@ -26,10 +26,6 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     };
     $scope.files = [];
     $scope.form = [];
-    
-    $scope.regex = {
-        titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\']+$/
-    };
 
     //init progress bar
     $scope.dataForm=[];
