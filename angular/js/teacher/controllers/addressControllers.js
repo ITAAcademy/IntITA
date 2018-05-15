@@ -36,9 +36,9 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
     );
 
     $scope.regex = {
-        titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-]+$/,
-        titleRu: /^[А-ГДЕЖЗИЙ-Яа-гдежзий-я\-]+$/,
-        titleEn: /^[A-Za-z\'\-]+$/,
+        titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/,
+        titleRu: /^[А-ГДЕЖЗИЙ-Яа-гдежзий-я\-\s]+$/,
+        titleEn: /^[A-Za-z\'\-\s]+$/,
     };
 
     $scope.editCity = function () {

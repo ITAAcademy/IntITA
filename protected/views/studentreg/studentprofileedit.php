@@ -219,9 +219,10 @@ $param = Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua"
                                     maxlength:50
                                     }"
                                     placeholder="<?php echo Yii::t('regexp', '0898'); ?>"
-                                    ng-class="cityTitleUA ? 'clientValidationError' : 'indicator'"
+                                    ng-class="cityTitleUA ? 'citySelectValidationError' : 'indicator'"
                                     data-source="<?php echo Yii::t('regexp', '0899'); ?>"
                                     id="citySelect"
+                                    ng-keyup="keyUpHandler($event)"
                                 ></oi-select>
                             </div>
                             <input type="hidden" name="cityTitle" />
@@ -399,7 +400,7 @@ $param = Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua"
             <br>
             <?php echo CHtml::link(Yii::t('regexp', '0295'), '#', array('id' => 'changepassword', 'onclick' => '$("#changeemail").dialog("open"); return false;')); ?>
             <br>
-            <?php echo CHtml::submitButton(Yii::t('regexp', '0249'), array('id' => "submitEdit", 'onclick' => 'trimNetwork()', 'ng-disabled' => 'profileForm.$invalid')); ?>
+            <?php echo CHtml::submitButton(Yii::t('regexp', '0249'), array('id' => "submitEdit", 'onclick' => 'trimNetwork()', 'ng-disabled' => 'profileForm.$invalid || cityTitleUA')); ?>
         </div>
     </div>
     <?php $this->endWidget(); ?>
