@@ -630,7 +630,7 @@ a#prev:hover, a#next:hover {
                         <div class="col-md-6 col-sm-12"  >
                             <div class="row group" >
                                 <div class="col-md-5 col-xs-5 logo" >
-                                    <input id="logoUpdate" enctype="multipart/form-data" type="file" class="form-control image_update" placeholder="Лого компанії" name="photo">
+                                    <input id="logoUpdate" enctype="multipart/form-data" type="file" class="form-control image_update" ng-model="settings.logo" value="settings.logo" placeholder="Лого компанії" name="photo">
                                 </div>
 
                                 <div class="col-md-5 col-xs-5 intent" id="logo_name">
