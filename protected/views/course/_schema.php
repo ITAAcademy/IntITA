@@ -15,9 +15,15 @@
         font-family: MyriadPro; /* Имя шрифта */
         src: url(../../../font/myriadpro/regular.otf); /* Путь к файлу со шрифтом */
     }
+    body{
+        font-family: "MyriadPro";
+    }
     .item-data-wrap{
-    cursor: pointer;
-    color: white;
+        cursor: pointer;
+        color: white;
+        position: absolute;
+        top: 60%;
+        left: 36%;
     }
     .logo-course-wrap{
         float: left;
@@ -30,8 +36,11 @@
         display: inline-block;
     }
     .logo-module{
-        max-width: 50%;
+        max-width: 52px;
+        margin-left: 24px;
+        margin-top: -4%;
     }
+
     .monthsCell{
         background: #4b75a4;
         color: white;
@@ -45,6 +54,7 @@
     }
     .examCellE{
         background: none;
+        position: relative;
     }
     .lastCell{
         background: none;
@@ -52,29 +62,32 @@
     .item{
         background: url(../../images/module/5.png);
         background-repeat: no-repeat;
-        background-position-y: center;
+        background-position-y: 72%;
         /*background-position-x: -6px;*/
         background-position-x: -7px;
+        position: relative;
     }
     .first-item{
         width: 45px;
         background: url(../../images/module/2.png);
         background-repeat: no-repeat;
-        background-position-y: center;
+        background-position-y: 72%;
         /*background-position-x: 0px;*/
         background-position-x: -2px;
+        position: relative;
     }
     .last-item{
         background: url(../../images/module/last-item.png);
         background-repeat: no-repeat;
-        background-position-y: center;
+        background-position-y: 72%;
         background-position-x: -6px;
-        border-right: 1px solid rebeccapurple;
+        border-right: 1px solid #999999;
+        position: relative;
     }
     .first-item-without{
         background: url(../../images/module/first-item-without.png);
         background-repeat: no-repeat;
-        background-position-y: center;
+        background-position-y: 72%;
         /*background-position-x: 0px;*/
             background-position-x: -2px;
     }
@@ -99,6 +112,9 @@
         color: #273241;
         font-size: 12px;
         font-family: "MyriadPro";
+        padding-left: 10px;
+        position: absolute;
+        top: 60%;
     }
     .last-item-off-background{
         background: none;
@@ -106,30 +122,38 @@
     .trainee-item{
         background: url(../../images/module/6.png);
         background-repeat-y: no-repeat;
-        background-position-y: center;
+        background-position-y: 72%;
         background-position-x: -7px;
         text-align: center;
         color: white;
+        position: relative;
     }
     .trainee-first-item{
         background: url(../../images/module/trainee-item.png);
         background-repeat: no-repeat;
-        background-position-y: center;
+        background-position-y: 72%;
         text-align: center;
         color: white;
+        position: relative;
+    }
+    .trainee-item div, .trainee-last-item-text, .trainee-first-item div{
+        /*position: absolute;*/
+        top: 59%;
+        left: 39%;
     }
     .trainee-last-item{
         background: url(../../images/module/trainee-item-trainee.png);
         background-repeat: no-repeat;
-        background-position-y: center;
+        background-position-y: 72%;
         background-position-x: -6px;
         text-align: center;
         color: white;
+        position: relative;
     }
     #schema .emptyMonthsCell {
         background: url(../../images/module/red-line.png);
         background-repeat-y: no-repeat;
-        background-position-y: center;
+        background-position-y: 69%;
     }
     .examCellE ~ .emptyMonthsCell{
         background: none !important;
@@ -142,15 +166,20 @@
         /*background-repeat-y: no-repeat !important;*/
         /*background-position-y: center !important;*/
     /*}*/
-    #trainee-wrap .trainee, #trainee-wrap .examCellE,  #trainee-wrap .emptyMonthsCell,#trainee-wrap .fullMonthsCell {
+   #trainee-wrap .examCellE,  #trainee-wrap .emptyMonthsCell,#trainee-wrap .fullMonthsCell {
         background: url(../../images/module/yellow-line.png) !important;
         background-repeat-y: no-repeat !important;
-        background-position-y: center !important;
+        background-position-y: 69% !important;
     }
     tr .hours{
         background: url(../../images/module/red-line.png);
         background-repeat-y: no-repeat;
         background-position-y: center;
+        background-repeat: no-repeat;
+        background-position-y: 69%,65px;
+        background-position-x: 38px,24px;
+        padding-top: 26px;
+        padding-bottom: 16px;
     }
     #schema tr:not(:first-child):nth-child(odd){
         background: #f5f5f5;
@@ -166,8 +195,11 @@
     }
     .coub-tooltip{
         position: relative;
-        top: -95px;
+        top: -94px;
         left: 26px;
+    }
+    .trainee-last-item .coub-tooltip{
+        top: -100px;
     }
     .coub-exam{
         background: url(../../images/module/exam.png);
@@ -186,6 +218,100 @@
     }
     examCellE-witout-background{
         background: none;
+    }
+    .courseLevelBox{
+        color:  #4b75a4;
+        font-weight:  700;
+        font-family: "MyriadPro";
+        font-size: 18px;
+    }
+    .colorP{
+        color:  #4b75a4;
+        font-family: "MyriadPro";
+        font-size: 18px;
+    }
+    .grey{
+        color: #666666;
+        font-family: "MyriadPro";
+        font-size: 18px;
+    }
+    #schema .monthTitle{
+           background: url(../../images/module/begin_line.png);
+        background-repeat: no-repeat;
+        text-align: center;
+        background-position-x: 1px;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        width: 179px;
+        height: 31px;
+    }
+    .end-line{
+       width: 68px;
+        height: 30px;
+        background: url(../../images/module/end_line.png);
+        background-size: auto;
+        background-repeat: no-repeat;
+        background-position-x: -33px;
+        position: absolute;
+        top: 0;
+    }
+    .end-line-wrap{
+        border-bottom: 1px solid grey;
+        width: 60px;
+        position: relative;
+    }
+    .monthTitle-wrap{
+        position: relative;
+    }
+    .hours p{
+        font-size: 12px;
+        /*padding-bottom: 12px;*/
+        padding-left: 24px;
+        margin-bottom: 0;
+    }
+    .exam-wrap{
+        position: relative;
+    }
+    .trainee{
+        text-align: left;
+        padding-top: 26px;
+        padding-bottom: 16px;
+        background: url(../../images/module/yellow-line.png);
+        background-repeat-y: no-repeat;
+        background-position-y: center;
+        background-repeat: no-repeat;
+        background-position-y: 69%,65px;
+        background-position-x: 38px,24px;
+    }
+    .trainee p{
+        font-size: 12px;
+        /*padding-bottom: 12px;*/
+        padding-left: 24px;
+        margin-bottom: 0;
+    }
+    .tooltip.top .tooltip-arrow {
+        top: 92%;
+    }
+    .tooltip-inner{
+        min-width: 107px;
+    }
+    .title-line{
+           background: url(../../images/module/title_line.png);
+        background-repeat: no-repeat;
+        background-position-x: -7px;
+        background-position-y: 4px;
+        height: 22px;
+        width: 157px;
+        display: block;
+    }
+    .trainee-last-item:first-child .item-data-wrap{
+        top: -100px;
+    }
+    @media screen and (max-width: 1048px){
+        .coub{
+            left: 4px;
+        }
     }
 </style>
 <?php //var_dump($courseForTemplate->level());?>
@@ -217,10 +343,10 @@
         <div class="courseDetail">
             <div>
                 <span class="colorP"><?php echo Yii::t('course', '0194'); ?></span>
-                <b><?php echo $lessonsCount . ' ' . Yii::t('module', '0216'); ?></b><br>
-                <?php if ($lessonsCount != 0) {
-                    echo Yii::t('course', '0209'); ?>
-                    -<b>
+                <b class="grey"><?php echo $lessonsCount . ' ' . Yii::t('module', '0216'); ?></b><br>
+                <?php if ($lessonsCount != 0) {?>
+                    <span class="colorP"><?php echo Yii::t('course', '0209'); ?></span>
+                    -<b class="grey">
                         <?php echo $courseForTemplate->getApproximatelyDurationInMonths(); ?><?php echo Yii::t('course', '0664'); ?>
                     </b>
                     <?php
@@ -232,10 +358,11 @@
     <table id="schema">
 <!--        --><?php //$tr_number++;?>
         <tr>
-            <td class="monthTitle"><?php echo Course::getMessage($message, 'months') ?></td>
+            <td class="monthTitle-wrap"><div class="monthTitle">Навчальні <?php echo Course::getMessage($message, 'months') ?></div></td>
             <?php for ($i = 0; $i < $courseDuration; $i++) { ?>
                 <td class="monthsCell"><?php echo $i + 1; ?></td>
             <?php } ?>
+            <td class="end-line-wrap"><div class="end-line"></div></td>
         </tr>
 <!--        <tr>-->
 <!--            <td class="monthTitle">--><?php //echo Course::getMessage($message, 'module') ?><!--</td>-->
@@ -251,8 +378,8 @@
             if($i == 0){?>
                 <tr id="trainee-wrap">
                     <td class="trainee">
-                        <?php echo Course::getMessage($message, 'trainee'); ?>
-                        <div class="logo-course-wrap"><img src="<?php echo Config::getBaseUrl() ."/images/course/" .Course::getLogo($idCourse);?>"></div>
+                        <p><?php echo Course::getMessage($message, 'trainee'); ?><span class="title-line"></span></p>
+                        <img class="logo-module" src="<?php echo Config::getBaseUrl() ."/images/course/" .Course::getLogo($idCourse);?>">
                     </td>
                 </tr>
             <?php } ?>
@@ -269,7 +396,7 @@
                         }
                  ?>
                 <td class="hours">
-                    <p><?php echo Module::getModuleName($modules[$i]['id_module'])?></p>
+                    <p><?php echo Module::getModuleName($modules[$i]['id_module'])?><span class="title-line"></span></p>
                 <img class="logo-module" src="<?php echo Config::getBaseUrl(). "/images/module/" . Module::getModuleLogo($modules[$i]['id_module']); ?>">
                 </td>
                 <?php
@@ -293,7 +420,7 @@
 
 
                               <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
-                                    <p class="end"><?php echo($modules[$i]->moduleInCourse->lastLecture()->title_ua);?></p>
+                                    <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
                                 </td>
 
 
@@ -329,7 +456,7 @@
 
                             <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>"'>
 
-                                    <p class="end"><?php echo($modules[$i]->moduleInCourse->lastLecture()->title_ua);?></p>
+                                    <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
                                 </td>
 
 
@@ -349,7 +476,7 @@
 
 
                                  <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
-                                    <p class="end"><?php echo($modules[$i]->moduleInCourse->lastLecture()->title_ua);?></p>
+                                    <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
                                 </td>
                             <?php }else{ ?>
                                 <?php if ($j!= $courseDuration-1){ ?>
@@ -367,12 +494,12 @@
                 ?>
             </tr>
         <?php } ?>
-        <tr>
-            <td class="monthTitle"><?php echo Course::getMessage($message, 'months'); ?></td>
-            <?php for ($i = 0; $i < $courseDuration; $i++) { ?>
-                <td class="monthsCell"><?php echo $i + 1; ?></td>
-            <?php } ?>
-        </tr>
+<!--        <tr>-->
+<!--            <td class="monthTitle">--><?php //echo Course::getMessage($message, 'months'); ?><!--</td>-->
+<!--            --><?php //for ($i = 0; $i < $courseDuration; $i++) { ?>
+<!--                <td class="monthsCell">--><?php //echo $i + 1; ?><!--</td>-->
+<!--            --><?php //} ?>
+<!--        </tr>-->
     </table>
     <?php if (!$save) { ?>
         <br>
@@ -496,13 +623,13 @@ $(document).ready(function(){
      for(var i=0; i < ($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1]); i++){
                 console.log(i);
                 if(i==0){
-                    $("#trainee-wrap").append("<td class='trainee-first-item'><div>8<div></td>");
+                    $("#trainee-wrap").append("<td class='trainee-first-item'><div class='item-data-wrap yellow-tooltip' data-toggle='tooltip' data-placement='top' title='8 годин/місяць'> 8 </div></td>");
                 }
                 else if(i!==0 && i!==($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1])-1){
-                    $("#trainee-wrap").append("<td class='trainee-item'><div>8</div></td>");
+                    $("#trainee-wrap").append("<td class='trainee-item'><div class='item-data-wrap yellow-tooltip' data-toggle='tooltip' data-placement='top' title='8 годин/місяць'> 8 </div></td>");
                 }
                 else{
-                    $("#trainee-wrap").append("<td class='trainee-last-item border-right-exam'><div class='trainee-last-item-text'>8</div></td>");
+                    $("#trainee-wrap").append("<td class='trainee-last-item border-right-exam'><div class='trainee-last-item-text item-data-wrap yellow-tooltip' data-toggle='tooltip' data-placement='top' title='8 годин/місяць'> 8 </div></td>");
                 }
             }
             console.log($("#trainee-wrap > .border-right"));
@@ -519,6 +646,7 @@ $(document).ready(function(){
             //console.log($(".coub").parentNode.cellIndex);
             $(document).ready(function(){
                 var examWrap = document.createElement("td");
+                examWrap.classList.add("exam-wrap");
                 examWrap.style.setProperty("background","none","!important");
                 examWrap.innerHTML = "<p class='end'>Дипломний проект</p>";
                 traineeWrap.appendChild(examWrap);
@@ -563,7 +691,7 @@ $(document).ready(function(){
             //console.log($(".coub")[i].parentElement.parentElement.cellIndex+1);
             if ($("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText != "" && isNaN($("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText)){
                 //console.log($("tr")[j].children[$(".coub")[i].parentElement.cellIndex+1]);
-                arrTooltip[i] += $("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText;
+                arrTooltip[i] += $("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText + " ";
             }
         }
         //console.log($(".coub")[i].parentElement.cellIndex+1);
@@ -574,7 +702,7 @@ $(document).ready(function(){
         var title = arrTooltip[i].split("\n\n");
         console.log(title);
         title = title.join(" / ");
-        title = title.slice(0,-2);
+        title = title.slice(0,-1);
         console.log(title);
 
             $(".coub")[i].parentElement.setAttribute("title",title);
