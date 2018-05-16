@@ -35,15 +35,18 @@
                 ng-disabled="isDisabled">РОЗПОЧАТИ ВИКОНАННЯ <i class="fa fa-play fa-1x" aria-hidden="true"></i>
         </button>
         <button ng-if="crmTask.data.id_state==3" type="button" class="btn executed" ng-click="crmTask.changeState(2)"
-                ng-disabled="isDisabled">ПРОДОВЖИТИ <i class="fa fa-play fa-1x" aria-hidden="true"></i></button>
+                ng-disabled="isDisabled">ПРОДОВЖИТИ <i class="fa fa-play fa-1x" aria-hidden="true"></i>
+        </button>
         <button ng-if="crmTask.data.id_state==2" type="button" class="btn paused" ng-click="crmTask.changeState(3)"
-                ng-disabled="isDisabled">ПРИЗУПИНИТИ <i class="fa fa-pause fa-1x" aria-hidden="true"></i></button>
-        <button ng-if="(crmTask.data.id_state==2 || crmTask.data.id_state==3) && canComplete()" type="button" class="btn completed"
+                ng-disabled="isDisabled">ПРИЗУПИНИТИ <i class="fa fa-pause fa-1x" aria-hidden="true"></i>
+        </button>
+        <button ng-if="(crmTask.data.id_state==2 || crmTask.data.id_state==3) && crmTask.canComplete()" type="button" class="btn completed"
                 ng-click="crmTask.changeState(4)" ng-disabled="isDisabled">ЗАВЕРШИТИ <i
-                class="fa fa-check-square-o fa-1x" aria-hidden="true"></i></button>
-        <button ng-if="crmTask.data.id_state==4 && canComplete()" type="button" class="btn expect_to_execute"
-                ng-click="crmTask.changeState(1)" ng-disabled="isDisabled">ВІДНОВИТИ <i class="fa fa-clock-o fa-1x"
-                                                                                        aria-hidden="true"></i></button>
+                class="fa fa-check-square-o fa-1x" aria-hidden="true"></i>
+        </button>
+        <button ng-if="crmTask.data.id_state==4 && crmTask.canComplete()" type="button" class="btn expect_to_execute"
+                ng-click="crmTask.changeState(1)" ng-disabled="isDisabled">ВІДНОВИТИ <i class="fa fa-clock-o fa-1x" aria-hidden="true"></i>
+        </button>
         <button ng-if="crmTask.canEditCrmTasks" type="button" class="btn remove"
                 ng-click="cancelCrmTaskDialog(crmTask.data.id)" ng-disabled="isDisabled">ВИДАЛИТИ
                 <i class="fa fa-remove fa-1x" aria-hidden="true"></i>
