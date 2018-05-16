@@ -177,7 +177,6 @@ $(document).ready(function(){
      })
     var traineeWrap = document.getElementById("trainee-wrap");
     var lastElement = 0;
-    console.log($("#1").children());
     $("#1").children().each(function(index){
         if(this.className !== "hours" && this.className !== "examCellE"){
             traineeWrap.appendChild(this.cloneNode(false));
@@ -201,10 +200,8 @@ $(document).ready(function(){
     lastElements.sort(compareNumeric);
     var moduleClasses = 0;
         for (var i = 0; i < traineeWrap.childNodes.length; i++){
-            console.log(traineeWrap.childNodes[i].className);
             if(traineeWrap.childNodes[i].className !== undefined){
                 moduleClasses = (traineeWrap.childNodes[i].className.split(" "));
-                console.log(moduleClasses);
                for (var j=0; j<moduleClasses.length; j++){
                     if(moduleClasses[j] == "item" || moduleClasses[j] == "last-item" || moduleClasses[j] == "first-item"){
                         traineeWrap.childNodes[i].style.background = "none";
