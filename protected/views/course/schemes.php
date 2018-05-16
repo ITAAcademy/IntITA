@@ -33,7 +33,7 @@
             </div>
             <div class="courseShortInfoTable" style="width:45%;float:left; max-width:inherit">
                 <div ng-if="onlineSchemeData" style="text-align: center">
-                    <h3><?php echo 'Online' ?></h3>
+                    <h3><?php echo 'Онлайн' ?></h3>
                 </div>
                 <payments-scheme-by-template
                     data-content-id="<?php echo $model->course_ID ?>"
@@ -46,7 +46,7 @@
             </div>
             <div class="courseShortInfoTable" style="width:45%;float:right;max-width:inherit">
                 <div ng-if="offlineSchemeData" style="text-align: center">
-                    <h3><?php echo 'Offline' ?></h3>
+                    <h3><?php echo 'Офлайн' ?></h3>
                 </div>
                 <payments-scheme-by-template
                     data-content-id="<?php echo $model->course_ID ?>"
