@@ -28,3 +28,12 @@ if(content != null){
     });
 }
 
+function changeColorOff (e) {
+    element= $(e).children();
+    element.css("color", e.getAttribute("data-link"));
+}
+
+function changeColorOn (e) {
+    element= $(e).children();
+    element.css("color",e.getAttribute("data-hover"));
+}
