@@ -10,311 +10,6 @@
     <link rel="stylesheet" href="<?=Config::getBaseUrl()?>/css/courseSchema.css"/>
     <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>">
 </head>
-<style>
-    @font-face {
-        font-family: MyriadPro; /* Имя шрифта */
-        src: url(../../../font/myriadpro/regular.otf); /* Путь к файлу со шрифтом */
-    }
-    body{
-        font-family: "MyriadPro";
-    }
-    .item-data-wrap{
-        cursor: pointer;
-        color: white;
-        position: absolute;
-        top: 60%;
-        left: 36%;
-    }
-    .logo-course-wrap{
-        float: left;
-    }
-    .title-course{
-        display: inline-block;
-        margin-bottom: 0;
-    }
-    .courseLevelIndex{
-        display: inline-block;
-    }
-    .logo-module{
-        max-width: 52px;
-        margin-left: 24px;
-        margin-top: -4%;
-    }
-
-    .monthsCell{
-        background: #4b75a4;
-        color: white;
-        border: 1px solid grey;
-    }
-    /*#schema td{*/
-        /*border: none !important;*/
-    /*}*/
-    .fullMonthsCell{
-        background: none;
-    }
-    .examCellE{
-        background: none;
-        position: relative;
-    }
-    .lastCell{
-        background: none;
-    }
-    .item{
-        background: url(../../images/module/5.png);
-        background-repeat: no-repeat;
-        background-position-y: 72%;
-        /*background-position-x: -6px;*/
-        background-position-x: -7px;
-        position: relative;
-    }
-    .first-item{
-        width: 45px;
-        background: url(../../images/module/2.png);
-        background-repeat: no-repeat;
-        background-position-y: 72%;
-        /*background-position-x: 0px;*/
-        background-position-x: -2px;
-        position: relative;
-    }
-    .last-item{
-        background: url(../../images/module/last-item.png);
-        background-repeat: no-repeat;
-        background-position-y: 72%;
-        background-position-x: -6px;
-        border-right: 1px solid #999999;
-        position: relative;
-    }
-    .first-item-without{
-        background: url(../../images/module/first-item-without.png);
-        background-repeat: no-repeat;
-        background-position-y: 72%;
-        /*background-position-x: 0px;*/
-            background-position-x: -2px;
-    }
-    .wrap-info{
-        margin-left: 124px;
-        margin-top: -9px;
-        margin-bottom: 9px;
-    }
-    .yellow-tooltip + .tooltip > .tooltip-inner {background-color: #fff59d;color: black;}
-  .tooltip-inner {
-    border: solid 1px #ccc;
-}
-
-    .border-right{
-        border-right: 1px solid #999999;
-    }
-    .border-right-exam{
-        border-right: 1px solid #999999;
-    }
-    .end{
-        width: 10px;
-        color: #273241;
-        font-size: 12px;
-        font-family: "MyriadPro";
-        padding-left: 10px;
-        position: absolute;
-        top: 60%;
-    }
-    .last-item-off-background{
-        background: none;
-    }
-    .trainee-item{
-        background: url(../../images/module/6.png);
-        background-repeat-y: no-repeat;
-        background-position-y: 72%;
-        background-position-x: -7px;
-        text-align: center;
-        color: white;
-        position: relative;
-    }
-    .trainee-first-item{
-        background: url(../../images/module/trainee-item.png);
-        background-repeat: no-repeat;
-        background-position-y: 72%;
-        text-align: center;
-        color: white;
-        position: relative;
-    }
-    .trainee-item div, .trainee-last-item-text, .trainee-first-item div{
-        /*position: absolute;*/
-        top: 59%;
-        left: 39%;
-    }
-    .trainee-last-item{
-        background: url(../../images/module/trainee-item-trainee.png);
-        background-repeat: no-repeat;
-        background-position-y: 72%;
-        background-position-x: -6px;
-        text-align: center;
-        color: white;
-        position: relative;
-    }
-    #schema .emptyMonthsCell {
-        background: url(../../images/module/red-line.png);
-        background-repeat-y: no-repeat;
-        background-position-y: 69%;
-    }
-    .examCellE ~ .emptyMonthsCell{
-        background: none !important;
-    }
-
-
-
-   /*{*/
-        /*background: url(../../images/module/yellow-line.png) !important;*/
-        /*background-repeat-y: no-repeat !important;*/
-        /*background-position-y: center !important;*/
-    /*}*/
-   #trainee-wrap .examCellE,  #trainee-wrap .emptyMonthsCell,#trainee-wrap .fullMonthsCell {
-        background: url(../../images/module/yellow-line.png) !important;
-        background-repeat-y: no-repeat !important;
-        background-position-y: 69% !important;
-    }
-    tr .hours{
-        background: url(../../images/module/red-line.png);
-        background-repeat-y: no-repeat;
-        background-position-y: center;
-        background-repeat: no-repeat;
-        background-position-y: 69%,65px;
-        background-position-x: 38px,24px;
-        padding-top: 26px;
-        padding-bottom: 16px;
-    }
-    #schema tr:not(:first-child):nth-child(odd){
-        background: #f5f5f5;
-    }
-    .coub{
-        background: url(../../images/module/coub.png);
-        height: 30px;
-        background-repeat: no-repeat;
-        position: relative;
-        cursor: pointer;
-        width: 30px;
-        left: 11px;
-    }
-    .coub-tooltip{
-        position: relative;
-        top: -94px;
-        left: 26px;
-    }
-    .trainee-last-item .coub-tooltip{
-        top: -100px;
-    }
-    .coub-exam{
-        background: url(../../images/module/exam.png);
-        height: 40px;
-        background-repeat: no-repeat;
-        position: relative;
-        left: 6px;
-        cursor: pointer;
-        width: 45px;
-    }
-    .trainee-last-item-text{
-        margin-bottom: -39px;
-    }
-    .logo-course-wrap img{
-        width: 109px;
-    }
-    examCellE-witout-background{
-        background: none;
-    }
-    .courseLevelBox{
-        color:  #4b75a4;
-        font-weight:  700;
-        font-family: "MyriadPro";
-        font-size: 18px;
-    }
-    .colorP{
-        color:  #4b75a4;
-        font-family: "MyriadPro";
-        font-size: 18px;
-    }
-    .grey{
-        color: #666666;
-        font-family: "MyriadPro";
-        font-size: 18px;
-    }
-    #schema .monthTitle{
-           background: url(../../images/module/begin_line.png);
-        background-repeat: no-repeat;
-        text-align: center;
-        background-position-x: 1px;
-        background-size: cover;
-        position: absolute;
-        top: 0;
-        width: 179px;
-        height: 31px;
-    }
-    .end-line{
-       width: 68px;
-        height: 30px;
-        background: url(../../images/module/end_line.png);
-        background-size: auto;
-        background-repeat: no-repeat;
-        background-position-x: -33px;
-        position: absolute;
-        top: 0;
-    }
-    .end-line-wrap{
-        border-bottom: 1px solid grey;
-        width: 60px;
-        position: relative;
-    }
-    .monthTitle-wrap{
-        position: relative;
-    }
-    .hours p{
-        font-size: 12px;
-        /*padding-bottom: 12px;*/
-        padding-left: 24px;
-        margin-bottom: 0;
-    }
-    .exam-wrap{
-        position: relative;
-    }
-    .trainee{
-        text-align: left;
-        padding-top: 26px;
-        padding-bottom: 16px;
-        background: url(../../images/module/yellow-line.png);
-        background-repeat-y: no-repeat;
-        background-position-y: center;
-        background-repeat: no-repeat;
-        background-position-y: 69%,65px;
-        background-position-x: 38px,24px;
-    }
-    .trainee p{
-        font-size: 12px;
-        /*padding-bottom: 12px;*/
-        padding-left: 24px;
-        margin-bottom: 0;
-    }
-    .tooltip.top .tooltip-arrow {
-        top: 92%;
-    }
-    .tooltip-inner{
-        min-width: 107px;
-    }
-    .title-line{
-           background: url(../../images/module/title_line.png);
-        background-repeat: no-repeat;
-        background-position-x: -7px;
-        background-position-y: 4px;
-        height: 22px;
-        width: 157px;
-        display: block;
-    }
-    .trainee-last-item:first-child .item-data-wrap{
-        top: -100px;
-    }
-    @media screen and (max-width: 1048px){
-        .coub{
-            left: 4px;
-        }
-    }
-</style>
-<?php //var_dump($courseForTemplate->level());?>
 <?php $tr_number=0;?>
 <div id="courseSchema">
     <br>
@@ -356,7 +51,6 @@
     </div>
     <br>
     <table id="schema">
-<!--        --><?php //$tr_number++;?>
         <tr>
             <td class="monthTitle-wrap"><div class="monthTitle">Навчальні <?php echo Course::getMessage($message, 'months') ?></div></td>
             <?php for ($i = 0; $i < $courseDuration; $i++) { ?>
@@ -364,13 +58,6 @@
             <?php } ?>
             <td class="end-line-wrap"><div class="end-line"></div></td>
         </tr>
-<!--        <tr>-->
-<!--            <td class="monthTitle">--><?php //echo Course::getMessage($message, 'module') ?><!--</td>-->
-<!--            <td class="monthTitle" colspan="--><?php //echo $courseDuration - 5; ?><!--"></td>-->
-<!--            <td colspan="5" id="courseName">-->
-<!--                --><?php //echo Course::getCourseName($idCourse); ?>
-<!--            </td>-->
-<!--        </tr>-->
         <?php
             $traineeCount = 0;
         ?>
@@ -417,29 +104,13 @@
                                   <?php echo $tableCells[$i][$j]; ?>
                                       </div>
                               </td>
-
-
                               <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
                                     <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
                                 </td>
-
-
-
-
-
-
                                   <?php } else{ ?>
-
                             <td class="fullMonthsCell first-item">
                                  <div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць"><?php echo $tableCells[$i][$j]; ?></div>
                             </td>
-
-
-
-
-
-
-
                             <?php
                               }
                         }
@@ -448,20 +119,10 @@
                             <td class="fullMonthsCell last-item first-item-without">
                                  <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць""><?php echo $tableCells[$i][$j]; ?></div>
                             </td>
-
-
-
-
-
-
                             <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>"'>
 
                                     <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
                                 </td>
-
-
-
-
                         <?php
                         }
                         else {
@@ -469,12 +130,6 @@
                                 <td class="fullMonthsCell last-item">
                                    <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць" style="padding-right: 10px;"> <?php echo $tableCells[$i][$j]; ?></div>
                                 </td>
-
-
-
-
-
-
                                  <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
                                     <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
                                 </td>
@@ -494,12 +149,6 @@
                 ?>
             </tr>
         <?php } ?>
-<!--        <tr>-->
-<!--            <td class="monthTitle">--><?php //echo Course::getMessage($message, 'months'); ?><!--</td>-->
-<!--            --><?php //for ($i = 0; $i < $courseDuration; $i++) { ?>
-<!--                <td class="monthsCell">--><?php //echo $i + 1; ?><!--</td>-->
-<!--            --><?php //} ?>
-<!--        </tr>-->
     </table>
     <?php if (!$save) { ?>
         <br>
@@ -519,8 +168,6 @@ $(document).ready(function(){
 </script>
 <script>
     $(".last-item").each(function (index) {
-
-
             for(var j=0; j<$(".last-item")[index].parentNode.id; j++){
 
                 if($('[id=' + j + ']').children()[$(".last-item")[index].cellIndex] !== undefined){
@@ -528,20 +175,12 @@ $(document).ready(function(){
                 }
             }
      })
-
     var traineeWrap = document.getElementById("trainee-wrap");
     var lastElement = 0;
     console.log($("#1").children());
     $("#1").children().each(function(index){
-        console.log('index');
-        console.log(index);
-
         if(this.className !== "hours" && this.className !== "examCellE"){
-            console.log("this: ");
-            console.log(this);
-
             traineeWrap.appendChild(this.cloneNode(false));
-
             var arrClass = this.className.split(" ");
             var count = 0;
             for(var i = 0; i < arrClass.length; i++){
@@ -551,46 +190,16 @@ $(document).ready(function(){
             }
         }
     });
-
-
-
-
-
-
-
-
-
-
-
-    console.log(traineeWrap);
-    console.log("traineeWrap: ");
-    console.log(traineeWrap);
-    console.log(traineeWrap.childNodes);
-    console.log(traineeWrap.childNodes.length);
-    console.log("lastElement: ");
-    console.log(lastElement);
-    console.log($(".last-item"));
     var lastElements = [];
     for(var i=0; i< $(".last-item").length; i++){
-        console.log("PUSH");
         lastElements.push($(".last-item")[i].cellIndex);
     }
     function compareNumeric(a, b) {
       if (a > b) return 1;
       if (a < b) return -1;
     }
-    console.log(console.log("lastElements.length"));
-    console.log(lastElements);
     lastElements.sort(compareNumeric);
-    console.log(console.log("lastElements.length"));
-    console.log(lastElements[length-1]);
-    console.log('month:');
-    console.log($(".monthsCell")[ $(".monthsCell").length-1].innerText);
-    console.log("last element:");
-    console.log(lastElements[lastElements.length-1]);
     var moduleClasses = 0;
-
-
         for (var i = 0; i < traineeWrap.childNodes.length; i++){
             console.log(traineeWrap.childNodes[i].className);
             if(traineeWrap.childNodes[i].className !== undefined){
@@ -603,25 +212,12 @@ $(document).ready(function(){
                 }
             }
         }
-
-
-
-
-
-        console.log("Module classes: ");
-        console.log(moduleClasses);
-        console.log($(".monthsCell")[ $(".monthsCell").length-1].innerText);
-        console.log($("#trainee-wrap").children());
-
         for(var j=$(".monthsCell")[ $(".monthsCell").length-1].innerText; j != lastElements[lastElements.length-1]; j--){
-            console.log("j:" + j);
             if($("#trainee-wrap").children()[j] != undefined){
                 $("#trainee-wrap").children()[j].remove();
             }
         }
-        console.log($(".monthsCell")[ $(".monthsCell").length-1].innerText);
      for(var i=0; i < ($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1]); i++){
-                console.log(i);
                 if(i==0){
                     $("#trainee-wrap").append("<td class='trainee-first-item'><div class='item-data-wrap yellow-tooltip' data-toggle='tooltip' data-placement='top' title='8 годин/місяць'> 8 </div></td>");
                 }
@@ -632,88 +228,34 @@ $(document).ready(function(){
                     $("#trainee-wrap").append("<td class='trainee-last-item border-right-exam'><div class='trainee-last-item-text item-data-wrap yellow-tooltip' data-toggle='tooltip' data-placement='top' title='8 годин/місяць'> 8 </div></td>");
                 }
             }
-            console.log($("#trainee-wrap > .border-right"));
             for(var j=0; j<$("#trainee-wrap > .border-right").length; j++){
                 $("#trainee-wrap > .border-right")[j].innerHTML += "<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"годин/місяць\"><div class='coub'></div></div>";
             }
             $("#trainee-wrap > .last-item")[0].innerHTML = "<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"годин/місяць\"><div class='coub'></div></div>";
-            // $("#trainee-wrap > .border-right").append(`<div class='coub' id=${i}></div>`);
-            console.log($(".monthsCell")[$(".monthsCell").length-1]);
-                // $(".monthsCell")[$(".monthsCell").length/2-1].innerHTML += ("<div class='coub-exam'></div>");
                 $(".trainee-last-item").append("<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Дипломний проект\"><div class='coub-exam'></div></div>");
-
-            // $("#trainee-wrap > .trainee-last-item").append("<div class='coub-exam'</div>");
-            //console.log($(".coub").parentNode.cellIndex);
             $(document).ready(function(){
                 var examWrap = document.createElement("td");
                 examWrap.classList.add("exam-wrap");
                 examWrap.style.setProperty("background","none","!important");
                 examWrap.innerHTML = "<p class='end'>Дипломний проект</p>";
                 traineeWrap.appendChild(examWrap);
-    })
-
-    console.log($(".coub").parentNode);
+    });
             k=$(".coub").length+1;
-    // for(var i=0; i<$("tr").length-1;i++){
-    //     // console.log($("tr")[i].children);
-    //     for(var j=1; j<$("tr")[i].children.length;j++){
-    //
-    //         if (isNaN(parseInt($("tr")[i].children[j].innerText)) && $("tr")[i].children[j].innerText!=""){
-    //
-    //
-    //                 var text = $("tr")[i].children[j].innerText;
-    //                     $(".coub")[k].innerHTML += text+"<br>";
-    //                     console.log("i: "+i);
-    //                     console.log("j: "+j);
-    //                     console.log("k: "+k);
-    //                 k--;
-    //         }
-    //         // console.log(typeof $("tr")[i].children[j].innerText);
-    //
-    //         //console.log($("tr")[i].children[$(".coub")[i].parentNode.parentNode.rowIndex+2].textContent);
-    //
-    // }
-    //
-    // }
-    // for (var i=0; i<$(".coub").length;i++){
-    //     console.log($(".coub")[i].parentNode);
-    //     console.log("____________");
-    //     for(var j=0; j<$("#schema > td").length; j++){
-    //         console.log($(".coub")[i].parentNode.parentNode.rowIndex);
-    //     }
-    // }
-    // console.log($(".coub"));
-    console.log("len: " + $("tr").length);
     var arrTooltip = [];
     for(var i = 0; i < $(".coub").length; i++){
         arrTooltip[i] = "";
         for(var j = 1; j <= $("tr").length-1; j++){
-            //console.log($(".coub")[i].parentElement.parentElement.cellIndex+1);
             if ($("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText != "" && isNaN($("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText)){
-                //console.log($("tr")[j].children[$(".coub")[i].parentElement.cellIndex+1]);
                 arrTooltip[i] += $("tr")[j].children[$(".coub")[i].parentElement.parentElement.cellIndex+1].innerText + " ";
             }
         }
-        //console.log($(".coub")[i].parentElement.cellIndex+1);
-
     }
-    console.log(arrTooltip);
     for(var i = 0; i < $(".coub").length; i++){
         var title = arrTooltip[i].split("\n\n");
-        console.log(title);
         title = title.join(" / ");
         title = title.slice(0,-1);
-        console.log(title);
-
             $(".coub")[i].parentElement.setAttribute("title",title);
-
-
     }
-
-
-
-
-
 </script>
 <div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="годин/місяць">
           <?php echo $tableCells[$i][$j]; ?>
