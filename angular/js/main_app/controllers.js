@@ -35,6 +35,8 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     $scope.modelsArr=[];
     $scope.progress = 1;
     $scope.avatar=avatar;
+    $scope.cityTitleUA = false;
+    $scope.cityTitleUARegexp = /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/;
     if (avatar == 'noname.png') {
         $scope.progress--;
     }
@@ -53,6 +55,19 @@ function editProfileController($scope, $http, countryCity, careerService, specia
 
     $('#progressBar').show();
     $('#gridBlock').show();
+
+    $scope.keyUpHandler = function (e) {
+        var value = e.target.value;
+        var isCityValid = Boolean(value.match($scope.cityTitleUARegexp));
+        var selectSearch = angular.element(document.querySelector('#citySelect .select-search'));
+        if (value !== '' && !isCityValid) { 
+            selectSearch.attr('style', 'border-color: #c72929; box-shadow: 0 0 4px #c72929;');
+            $scope.cityTitleUA = true;
+        } else if (value === '' || isCityValid) {
+            selectSearch.attr('style', 'border-color: #d9d9d9; box-shadow: unset;');
+            $scope.cityTitleUA = false;
+        }
+    }
 
     $scope.focusEmptyField=function (model) {
         var element = angular.element('[ng-model="'+model+'"]');
@@ -279,12 +294,20 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     }, true);
 
     $scope.$watch('form.selectedCity', function() {
-        if(typeof $scope.form.selectedCity!='undefined'){
-            $("#StudentReg_city").val($scope.form.selectedCity.id);
-            $('input[name=cityTitle]').val($scope.form.selectedCity.title);
-        }else{
+        var selectedCity = $scope.form.selectedCity;
+        var selectSearch = angular.element(document.querySelector('#citySelect .select-search'));
+        if (selectedCity !== undefined) {
+            var isCityValid = Boolean(selectedCity.title.match($scope.cityTitleUARegexp));
+            $scope.cityTitleUA = !isCityValid;
+            $("#StudentReg_city").val(selectedCity.id);
+            $('input[name=cityTitle]').val(selectedCity.title);
+            isCityValid ? selectSearch.attr('style', 'border-color: #d9d9d9; box-shadow: unset;') :
+            selectSearch.attr('style', 'border-color: #c72929; box-shadow: 0 0 4px #c72929;');
+        } else {
+            $scope.cityTitleUA = false;
             $("#StudentReg_city").val(null);
             $('input[name=cityTitle]').val(null);
+            selectSearch.attr('style', 'border-color: #d9d9d9; box-shadow: unset;');
         }
     }, true);
 
