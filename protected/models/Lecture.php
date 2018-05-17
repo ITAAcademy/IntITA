@@ -954,6 +954,7 @@ class Lecture extends CActiveRecord
     {
         $param=Yii::app()->session["lg"]?"title_".Yii::app()->session["lg"]:"title_ua";
         switch ($this->idType) {
+            case '1':
             case '2':
             case '3':
             case '4':

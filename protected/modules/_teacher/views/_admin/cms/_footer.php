@@ -55,13 +55,12 @@
                     <div><span ng-bind="settings.email"></span></div>
                 </div>
             </div>
-
             <div class="footer_menu col-md-6 col-sm-7 hidden-xs">
-                <a ng-style="{color:settings.footer_link_color}"  ng-repeat="section in listsItemMenu track by $index" href={{section.link}}><span>{{section.title}}</span></a>
+                <a data-hover="{{settings.footer_hover_color}}" data-link="{{settings.footer_link_color}}" onmouseenter="changeColorOn(this)" onmouseleave="changeColorOff(this)"
+                   ng-repeat="section in listsItemMenu track by $index" href={{section.link}}><span  ng-style="{color:settings.footer_link_color}">{{section.title}}</span></a>
             </div>
         </div>
     </div>
-
 
     <div class="right_footer col-lg-1 col-md-1 col-sm-1 col-xs-1" ng-style="{'border-left-color': settings.footer_border_color}" >
         <div class="right_footer_inside">
