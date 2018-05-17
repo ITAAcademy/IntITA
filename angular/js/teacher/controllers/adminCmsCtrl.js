@@ -364,3 +364,13 @@ angular
             }
         }
     ]);
+
+function changeColorOff (e) {
+    element= jQuery(e).children();
+    element.css("color", e.getAttribute("data-link"));
+}
+
+function changeColorOn (e) {
+    element= jQuery(e).children();
+    element.css("color",e.getAttribute("data-hover"));
+}

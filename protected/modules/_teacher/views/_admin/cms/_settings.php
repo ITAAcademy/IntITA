@@ -572,8 +572,7 @@ a#prev:hover, a#next:hover {
                     </div>
                 </div>
                 <div class="second_box">
-                    <!--<p class="quote-author">John Doe // Local Business Owner</p>-->
-<div class="row ">
+                <div class="row ">
                         <div class="col-md-6 col-sm-12"  >
                             <div class="row group" >
 
