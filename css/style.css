@@ -234,7 +234,7 @@ div.modal-dialog {
     max-width: 50%\0/;
     margin: 10px auto\0/;
 }
-#share42{top:110px}
+#share42{top:110px; left:0;}
 /*adaptive*/
 @media only screen and (max-width: 800px) {
     #sharing{display:none}
