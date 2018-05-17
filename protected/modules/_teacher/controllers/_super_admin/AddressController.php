@@ -65,15 +65,26 @@ class AddressController extends TeacherCabinetController
     }
 
     public function actionNewCity(){
-        $countryId = Yii::app()->request->getPost('country', '');
-        $titleUa = Yii::app()->request->getPost('titleUa', '');
-        $titleRu = Yii::app()->request->getPost('titleRu', '');
-        $titleEn = Yii::app()->request->getPost('titleEn', '');
+        $data = json_decode(file_get_contents('php://input'), true);
+        if ($data) {
+            $country = AddressCountry::model()->findByPk($data['country']);
+            if($country){
+                $response = AddressCity::newCity($country, $data);
+                echo $response;
+            } else {
+                echo "Неправильно введені дані.";
+            }
+        } else {
+            echo "Неправильно введені дані!!!.";
+        }
+    }
 
-        $country = AddressCountry::model()->findByPk($countryId);
-
-        if($country && $titleUa && $titleRu && $titleEn){
-            if (AddressCity::newCity($country, $titleUa, $titleRu, $titleEn)){
+    public function actionUpdateCity(){
+        $data = json_decode(file_get_contents('php://input'), true);
+        if($data){
+            $model=AddressCity::model()->findByPk($data['id']);
+            $model->attributes = $data;
+            if($model->save()){
                 echo "Операцію успішно виконано.";
             } else {
                 echo "Операцію не вдалося виконати.";
@@ -83,24 +94,29 @@ class AddressController extends TeacherCabinetController
         }
     }
 
-    public function actionUpdateCity(){
-        $modelId = Yii::app()->request->getPost('id', '');
-        $titleUa = Yii::app()->request->getPost('titleUa', '');
-        $titleRu = Yii::app()->request->getPost('titleRu', '');
-        $titleEn = Yii::app()->request->getPost('titleEn', '');
-        
-        if($titleUa && $titleRu && $titleEn){
-            $model=AddressCity::model()->findByPk($modelId);
-            $model->title_ua=$titleUa;
-            $model->title_ru=$titleRu;
-            $model->title_en=$titleEn;
-            if($model->save()){
+    public function actionRemoveCity() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $city = AddressCity::model()->findByPk($data['id']);
+
+        $isCES = CorporateEntity::model()->exists('actual_address_city_code = :id', [":id" => $data['id']]);
+
+        if ($isCES) {
+            echo "Операцію не вдалося виконати. Місто закріплено за компанією.";
+        } else {
+            $users = $city->users;
+            if ($users) {
+                foreach ($users as $user) {
+                    $user->city = '';
+                    $user->reg_time = null;
+                    $user->save();
+                }
+            }
+
+            if($city->delete()){
                 echo "Операцію успішно виконано.";
             } else {
                 echo "Операцію не вдалося виконати.";
             }
-        } else {
-            echo "Неправильно введені дані.";
         }
     }
 

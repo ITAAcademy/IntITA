@@ -1,5 +1,3 @@
-<script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
-
 <script type="text/javascript">
     domainPath='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/lists/"   ?>';
     domainPathNews='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/news/"   ?>';
@@ -11,6 +9,8 @@
         $this->renderPartial('_settings', array());
         ?>
     <div id="cms_content_generate">
+        <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'jquery.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
         <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular/angular.min.js'); ?>"></script>
         <div id="cms_content">
             <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'fontface.css'); ?>"/>

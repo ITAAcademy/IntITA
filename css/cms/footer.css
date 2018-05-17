@@ -1,3 +1,6 @@
+.footer_menu a:hover {
+    text-decoration: none;
+}
 #footer_main{
     display: block;
     /*border-bottom: 1px solid;*/

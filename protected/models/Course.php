@@ -574,7 +574,7 @@ class Course extends CActiveRecord implements IBillableObject, IServiceableWithE
     {
         $course = Course::model()->findByPk($idCourse);
         $chartSchema = Course::getMessage($messages, 'chart');
-        return $chartSchema . ' ' . $course->getTitle() . ", " . $course->level();
+        return $chartSchema . ': ' . $course->getTitle();
     }
 
     public static function generateModuleCoursesList($idModule, $messages = null)
@@ -1179,5 +1179,9 @@ class Course extends CActiveRecord implements IBillableObject, IServiceableWithE
     public function getId()
     {
         return $this->course_ID;
+    }
+    public function getLogo($idCourse){
+        $course = Course::model()->findByPk($idCourse);
+        return $course->course_img;
     }
 }

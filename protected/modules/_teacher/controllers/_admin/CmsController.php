@@ -204,7 +204,7 @@ class CmsController extends TeacherCabinetController
                   exit("Domain not active!");
                 };?>');
         file_put_contents($path, $_POST["data"], FILE_APPEND);
-        $address = 'protected/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
+        $address = Yii::app()->basePath . '/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
         if (file_exists($address)) {
             array_map('unlink', glob("$address/*.*"));
         }
@@ -272,18 +272,20 @@ class CmsController extends TeacherCabinetController
     $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
     $folderAddress = $path_domain . "/logo/";
     $imageAddress = $_POST["image"];
-    if (file_exists($folderAddress . $imageAddress)) {
-        unlink($folderAddress . $imageAddress);
+
+    if (file_exists($folderAddress.$imageAddress)) {  //видалення картинки з сервера(папки)
+        unlink($folderAddress.$imageAddress);
     }
     $result = ['message' => 'OK'];
     $statusCode = 201;
     try {
         $settings_logo = CmsGeneralSettings::model()->findByPk($_POST['id']);
-        if (file_exists($settings_logo["logo"])) {
-            unlink($settings_logo["logo"]);
-        }
-        $settings_logo->delete();
+        $settings_logo->logo = null;
 
+        if (!$settings_logo->save()) {
+
+            throw new \application\components\Exceptions\IntItaException(500, $settings_logo->getValidationErrors());
+        }
     } catch (Exception $error) {
         $statusCode = 500;
         $result = ['message' => 'error', 'reason' => $error->getMessage()];

@@ -80,7 +80,8 @@
                         <strong>Посилання на місце роботи</strong>
                     </label>
                     <input id="position" type="url" class="form-control" name="work_site"
-                           size="90" required ng-model="graduate.work_site">
+                           size="90" required ng-model="graduate.work_site" placeholder="Введіть в форматі: https://"
+                    maxlength="128">
                     <div class="error" ng-show="errors.work_site">{{errors.work_site[0]}}</div>
                 </div>
                 <div class="form-group">

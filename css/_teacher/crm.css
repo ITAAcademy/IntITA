@@ -400,3 +400,8 @@ ul.comments li{
 .comments ol{
     list-style-type: none;
 }
+.addCommentTasks{
+    margin-top: 10px;
+    display: block;
+    margin-bottom: 10px;
+}
