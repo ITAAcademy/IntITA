@@ -325,12 +325,12 @@ angular
             $scope.myInterval = 3000;   /*період зміни слайдів*/
             $scope.active = 1;   /*індекс першого слайду*/
 
-            cmsService.domainPath().$promise   //Відправка GET-запиту з допомогою сервіса "cmsService" для отримання адреси піддомену
-                .then(function successCallback(response) {
-                    $scope.domainPath = response.domainPath+'/carousel/';   //Отримання базової адреси потрібних мені файлів
-                }, function errorCallback() {
-                    bootbox.alert("Отримати піддомен не вдалося");   //Виведення повідомлення про невдачний запит
-                });
+            // cmsService.domainPath().$promise   //Відправка GET-запиту з допомогою сервіса "cmsService" для отримання адреси піддомену
+            //     .then(function successCallback(response) {
+            //         $scope.domainPath = response.domainPath+'/carousel/';   //Отримання базової адреси потрібних мені файлів
+            //     }, function errorCallback() {
+            //         bootbox.alert("Отримати піддомен не вдалося");   //Виведення повідомлення про невдачний запит
+            //     });
 
             cmsService.menuSlider().$promise   //Використання сервіса cmsService для отримання массиву данних слайдера
                 .then(function successCallback(response) {
@@ -338,18 +338,12 @@ angular
                         //Оримання з .json дефолтних значень
                         $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
                             $scope.slides = response;
-                            // for(var i=0; i<$scope.slides.length; i++){
-                            //     $scope.slides[i].position--;
-                            // }
-                            console.dir($scope.slides);
                         });
                     } else {
                         $scope.slides = response;
-                        // for(var i=0; i<$scope.slides.length; i++){
-                        //     $scope.slides[i].position--;
+                        // for(var i=0; i<$scope.slides.length; i++){   //спроба змінити назву файлів на повний шлях до них
                         //     $scope.slides[i].src = 'http://localhost/IntITA/domains/'+$scope.domainPath+'.intita/carousel/'+$scope.slides[i].src;
                         // }
-                        console.dir($scope.slides);
                     }
                 }, function errorCallback() {
                     bootbox.alert("Отримати дані списку меню не вдалося");   //введені данні а також .json недоступні

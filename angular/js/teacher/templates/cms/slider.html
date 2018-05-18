@@ -16,8 +16,8 @@
     <div ng-repeat="list in lists track by $index" class="row">
         <div class="col-md-4">
             <input id="slideUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control logoUpdate" placeholder="Логотип" name="slide">
-            <textarea class="form-control" placeholder="Оснивний підпис" ng-model="list.description" style="resize: none"></textarea>
-            <textarea class="form-control" placeholder="Додатковий підпис" ng-model="list.title" style="resize: none"></textarea>
+            <textarea class="form-control" placeholder="Оснивний підпис" ng-model="list.title" style="resize: none"></textarea>
+            <textarea class="form-control" placeholder="Додатковий підпис" ng-model="list.description" style="resize: none"></textarea>
         </div>
 
         <div class="col-md-5">
@@ -42,8 +42,8 @@
     <div class="row">
         <div class="col-md-4">
             <input id="slide" enctype="multipart/form-data" type="file" class="form-control" placeholder="Логотип" name="slide">
-            <textarea class="form-control" placeholder="Оснивний підпис" ng-model="newLink.description" style="resize: none"></textarea>
-            <textarea class="form-control" placeholder="Додатковий підпис" ng-model="newLink.title" style="resize: none"></textarea>
+            <textarea class="form-control" placeholder="Оснивний підпис" ng-model="newLink.title" style="resize: none"></textarea>
+            <textarea class="form-control" placeholder="Додатковий підпис" ng-model="newLink.description" style="resize: none"></textarea>
         </div>
 
         <!--<div class="col-md-5">-->
