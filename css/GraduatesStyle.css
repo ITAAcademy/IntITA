@@ -1,9 +1,8 @@
 .showMoreGraduate{
-    display: flex;
-    justify-content: center; /*Центрирование по горизонтали*/
-    margin-left: 25%;
-    font-size: 14pt;
-    font-family:sans-serif ;
+    font-size: 13pt;
+    font-family: sans-serif;
+    cursor: pointer;
+    color: #0e509e;
 }
 
 .graduateBlock{
@@ -201,6 +200,10 @@ input[type="search"]::-moz-placeholder {
 }
 #search_input:focus{
     border: 1px solid #999999;
+}
+
+#graduateBlock .two .empty {
+    margin-left: 20em;
 }
 
 @media only screen and (max-width: 800px) {
