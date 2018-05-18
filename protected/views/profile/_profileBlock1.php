@@ -147,7 +147,6 @@ if ($editMode){
                                 })
                             }
                             else if(saveButton == "saveSecondBlockEditProfileInfo"){
-                                console.log(document.getElementsByTagName("iframe")[1].contentDocument.getElementsByTagName("body")[0].innerHTML);
                                 $.ajax({
                                     url: "/profile/save",
                                     method: "POST",
@@ -168,9 +167,7 @@ if ($editMode){
             <?php } ?>
 
             <div id="secondTextProfileInfo">
-                <p>
                     <?php if($model->profile_text_last != '') { echo $model->profile_text_last; } ?>
-                </p>
             </div>
             <br>
             <?php if(Yii::app()->user->hasFlash('success')):?>
