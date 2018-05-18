@@ -1,0 +1,61 @@
+<style>
+    hr{
+        margin-top: 20px;
+    }
+    .slider-image{
+        width: 300px;
+        margin: 0 auto;
+        display: block;
+    }
+</style>
+
+<div class="form-group form-link" ng-controller="cmsMenuSliderCtrl">
+    <p>Повернутися до <a class="text-right" href="#/admin/intita_cms">Конструктора сайту</a></p>
+    <span>Список меню</span>
+
+    <div ng-repeat="list in lists track by $index" class="row">
+        <div class="col-md-4">
+            <input id="slideUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control logoUpdate" placeholder="Логотип" name="slide">
+            <textarea class="form-control" placeholder="Оснивний підпис" ng-model="list.description" style="resize: none"></textarea>
+            <textarea class="form-control" placeholder="Додатковий підпис" ng-model="list.title" style="resize: none"></textarea>
+        </div>
+
+        <div class="col-md-5">
+            <img class="slider-image"  ng-src='{{list.id && domainPath + list.src || list.src}}'>
+        </div>
+
+        <div class="col-md-1">
+            <input type="text" class="form-control" placeholder="Поз." ng-model="list.position">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateSliderData(list, $index, list.src)"></i>
+            </a>
+            <a href="javascript:void(0)">
+                <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeCurrentSlide(list.id, list.src)"></i>
+            </a>
+        </div>
+
+        <div class="col-md-12">
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <input id="slide" enctype="multipart/form-data" type="file" class="form-control" placeholder="Логотип" name="slide">
+            <textarea class="form-control" placeholder="Оснивний підпис" ng-model="newLink.description" style="resize: none"></textarea>
+            <textarea class="form-control" placeholder="Додатковий підпис" ng-model="newLink.title" style="resize: none"></textarea>
+        </div>
+
+        <!--<div class="col-md-5">-->
+        <!--<img class="slider-image"  ng-src='{{list.id && domainPath + list.src || list.src}}'>-->
+        <!--</div>-->
+
+        <div class="col-md-1">
+            <input type="text" class="form-control" placeholder="Поз." ng-model="newLink.position">
+            <a href="javascript:void(0)">
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateSliderData(newLink)"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<link>

@@ -325,4 +325,77 @@ class CmsController extends TeacherCabinetController
         return $this->renderJSON(['domainPath' => $path_domain]);
     }
 
+    public function actionGetMenuSlider()   /* функція для отримання данних (альтернатива для .json) */
+    {
+        //Виведення данних, отриманих методом моделі CmsCarousel за поточним id_organization
+        echo  CJSON::encode( CmsCarousel::model()->findAllByAttributes(array('id_organization' => Yii::app()->user->model->getCurrentOrganizationId())) );
+    }
+    public function actionUpdateMenuSlider()   /* функція повинна додавати данні для слайду */
+    {
+        $result = ['message' => 'OK'];   //створення деякого массиву з значенням по замовчуванню
+        $statusCode = 201;  //створення змінної статусу по замовчуванню
+        try {
+            $addressForFile = "";
+            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;   //перевірка існування змінної
+            if (isset($_FILES) && !empty($_FILES)) {   //перевірка наявності файлу в формі
+                $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));   //встановлюємо піддомен за ідентифікатором організації
+                $path_domain = 'domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();   //куди зберігаються файли
+                $folderAddress = $path_domain . "/carousel/";
+                if (!file_exists($folderAddress)) {   //якщо директорія неіснує
+                    mkdir($folderAddress, '777', true);   //створення папки з правами 777
+                }
+                if ($previousImage && file_exists($folderAddress . $previousImage)) {   //перевірка існування попереднього зображення
+                    unlink($folderAddress . $previousImage);   //видалення
+                }
+                $end_file_name = $_FILES["slide"]["name"];   //актуальний файл з форми
+                $tmp_file_name = $_FILES["slide"]["tmp_name"];   //адреса ще не збереженого файла
+                if (getimagesize($tmp_file_name)) {   //взяти розміри
+                    $endAddress = date("jYgi") . basename($end_file_name);  // '21042018name.jpg'
+                    $addressForFile = $folderAddress . $endAddress;   // "domains/Madagascar1/lists/21042018name.jpg"
+                }
+                copy($tmp_file_name, $addressForFile);    //копіювання файлу за вказаною адресою
+            }
+            //розбираємось з параметрами окрім файла
+            $params = array_filter((array)json_decode($_POST['data']));
+            $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();   //перевіряємо чи був слайд з таким ід
+            $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();   //для нового об'єкта потрібен ід організації
+            $menuSlider->attributes = $params;   //Наповнення об'єкта моделі данними з форми
+            if(isset($endAddress)){   //якщо є файл
+                $menuSlider->src = $endAddress;   //записуємо адресу файлу
+            }
+            if (!$menuSlider->save()) {   //Спроба записати данні в атаблицю
+                throw new \application\components\Exceptions\IntItaException(500, $menuSlider->getValidationErrors());
+            }
+        } catch (Exception $error) {   //якщо щось пішло не так, генеруємо помилку
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        //Відображення вмісту файлу '//ajax/json' з поточними параметрами
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
+    public function actionRemoveMenuSlider()   /* видалення обраного запису */
+    {
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));   //отримання піддомена по ід організації
+        $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();   //
+        $folderAddress = $path_domain . "/carousel/";
+        $imageAddress = $_POST["image"];   //витягування з об'єкта POST адреси, переданої з в'юхи
+        if (file_exists($folderAddress . $imageAddress)) {   //Перевірка існування файлу за вказаною адресою
+            unlink($folderAddress . $imageAddress);   //видалення зображення за вказаною адресою
+        }
+        $result = ['message' => 'OK'];   //створення масиву з статусом по замовчуванню
+        $statusCode = 201;   //змінна з статусом по замовчуванню
+        try {
+            $menuSlider = CmsCarousel::model()->findByPk($_POST['id']);   //отримання з бази данних пов'язаних з заданим ід
+            if (file_exists($menuSlider["src"])) {   //Перевірка існування файлу
+                unlink($menuSlider["src"]);
+            }
+            $menuSlider->delete();   //по ходу видалення данних
+
+        } catch (Exception $error) {   //помилка
+            $statusCode = 500;   //зміна коду статусу
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];   //зміна масиву результату
+        }
+        //Відображення вмісту файлу '//ajax/json' з поточними параметрами
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
 }

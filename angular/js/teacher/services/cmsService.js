@@ -67,6 +67,16 @@ angular
                         url: url + '/getDomainPath',
                         method: 'GET',
                     },
-
+                    menuSlider: {
+                        url: url + '/getMenuSlider',
+                        method: 'GET',
+                        isArray: true
+                    },
+                    removeMenuSlider: {
+                        url: url + '/removeMenuSlider',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
+                    },
                 });
         }])
