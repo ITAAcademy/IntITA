@@ -40,7 +40,7 @@ if ($editMode){
         </div>
         <div>
             <div class="TeacherProfilename">
-                <?php echo $model->firstName()." ".$model->lastName();?>
+                <?php echo $model->firstName()." ".$model->lastName(); ?>
             </div>
             <div class="TeacherProfiletitles">
                 <?php echo Yii::t('teacher', '0065') ?>
@@ -83,10 +83,8 @@ if ($editMode){
                 </script>
             <?php } ?>
 
-            <div <?php if ($editMode){ ?>  id="firstTextProfileInfo" <?php } ?>>
-                <p>
+            <div id="firstTextProfileInfo">
                    <?php if($model->profile_text_first != '') { echo $model->profile_text_first; } ?>
-                </p>
             </div>
             <?php $this->renderPartial('_courses', array('model' => $model));?>
 
@@ -139,7 +137,7 @@ if ($editMode){
                                 $.ajax({
                                     url: "/profile/save",
                                     method: "POST",
-                                    data: {block: "t1", content: CKEDITOR.instances.editor1.getData(),id: <?php echo $model->user_id; ?>},
+                                    data: {block: "t1", content: document.getElementsByTagName("iframe")[0].contentDocument.getElementsByTagName("body")[0].innerHTML,id: <?php echo $model->user_id; ?>},
                                     success: function (data) {
                                         window.location.replace(data);
                                     },
@@ -149,10 +147,11 @@ if ($editMode){
                                 })
                             }
                             else if(saveButton == "saveSecondBlockEditProfileInfo"){
+                                console.log(document.getElementsByTagName("iframe")[1].contentDocument.getElementsByTagName("body")[0].innerHTML);
                                 $.ajax({
                                     url: "/profile/save",
                                     method: "POST",
-                                    data: {block: "t2", content: CKEDITOR.instances.editor2.getData(),id: <?php echo $model->user_id; ?>},
+                                    data: {block: "t2", content: document.getElementsByTagName("iframe")[1].contentDocument.getElementsByTagName("body")[0].innerHTML,id: <?php echo $model->user_id; ?>},
                                     success: function (data) {
                                         window.location.replace(data);
                                     },
@@ -168,7 +167,7 @@ if ($editMode){
                 </script>
             <?php } ?>
 
-            <div  <?php if ($editMode){ ?> id="secondTextProfileInfo" <?php } ?>>
+            <div id="secondTextProfileInfo">
                 <p>
                     <?php if($model->profile_text_last != '') { echo $model->profile_text_last; } ?>
                 </p>
