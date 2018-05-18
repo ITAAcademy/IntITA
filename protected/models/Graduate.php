@@ -159,6 +159,7 @@ class Graduate extends CActiveRecord
             $criteria->addSearchCondition('secondName', $string, true, "OR", "LIKE");
             $criteria->addSearchCondition('work_place', $string, true, "OR", "LIKE");
             $criteria->addSearchCondition('position', $string, true, "OR", "LIKE");
+            $criteria->addSearchCondition('email', $string, true, "OR", "LIKE");
         }
 
         if ($selector == 'az'){
