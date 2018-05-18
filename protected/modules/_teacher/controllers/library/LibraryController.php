@@ -22,13 +22,13 @@ class LibraryController extends TeacherCabinetController {
         $end_file_name = $_FILES["file"]["name"];
         $tmp_file_name = $_FILES["file"]["tmp_name"];
         if(getimagesize($tmp_file_name)){
-            $addressForFile = "images/library/".basename($end_file_name);
+            $addressForFile = Yii::getpathOfAlias('webroot') ."/files/library/".basename($end_file_name);
         }
         else{
-            $addressForFile = "files/library/".basename($end_file_name);
+            $addressForFile = Yii::getpathOfAlias('webroot') ."/images/library/".basename($end_file_name);
         }
         copy($tmp_file_name,$addressForFile);
-        echo $addressForFile;
+        echo basename($end_file_name);
     }
     public function actionGetLibraryData()
     {

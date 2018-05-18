@@ -6,6 +6,7 @@ angular
     .module('teacherApp')
     .controller('organizationTableCtrl', organizationTableCtrl)
     .controller('organizationCtrl', organizationCtrl)
+    .controller('liqpayCtrl', liqpayCtrl)
 
 function organizationTableCtrl ($scope, organizationService, NgTableParams){
     $scope.changePageHeader('Організації');
@@ -60,6 +61,31 @@ function organizationCtrl ($scope, organizationService, $state, $stateParams){
                 });
             } else {
                 bootbox.alert('Під час оновлення організації виникла помилка');
+            }
+        });
+    };
+}
+
+function liqpayCtrl ($scope, liqpayService){
+    $scope.changePageHeader('LiqPay');
+
+    $scope.loadLiqPayData=function(){
+        liqpayService.liqpayData().$promise.then(
+            function successCallback(response) {
+                $scope.liqpay = response.data;
+            }, function errorCallback() {
+                bootbox.alert("Отримати дані не вдалося");
+            });
+    };
+    $scope.loadLiqPayData();
+
+    $scope.sendLiqPay= function (data) {
+        liqpayService.create(data).$promise.then(function (data) {
+            if (data.message === 'OK') {
+                bootbox.alert('Операцію успішно виконано');
+                $scope.loadLiqPayData();
+            } else {
+                bootbox.alert('Виникла помилка');
             }
         });
     };

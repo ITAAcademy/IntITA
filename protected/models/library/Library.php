@@ -189,4 +189,63 @@ class Library extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    public function getPaymentButton()
+    {
+        $liqPayPayment = LiqpayPayment::model()->findByPk(1);
+        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
+        $order_id = sha1(Yii::app()->user->getId().$this->id);
+        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id));
+        if(!$model){
+            $html = $liqpay->cnb_form(array(
+                'version'=>'3',
+                'action'         => 'pay',
+                'amount'         => $this->price,
+                'currency'       => 'UAH',
+                /* перед этим мы ведь внесли заказ в  таблицу,
+                $insert_id = $wpdb->query( 'insert into table_orders' );
+                */
+                'description'    => 'Купівля книги '.$this->title,
+                'order_id'       => $order_id,
+                // если пользователь возжелает вернуться на сайт
+                'result_url'	=>	Config::getBaseUrl() . '/library/libraryPay/?id='.$this->id,
+                /*
+                    если не вернулся, то Webhook LiqPay скинет нам сюда информацию из формы,
+                    в частонсти все тот же order_id, чтобы заказ
+                     можно было обработать как оплаченый
+                */
+                'server_url'	=>	Config::getBaseUrl() . '/library/liqpayStatus/?id='.$this->id,
+                'language'		=>	'en', // uk, en
+                'sandbox'=>'1' // и куда же без песочницы,
+                // не на реальных же деньгах тестировать
+            ));
+        } else {
+            $html = '<a href="/library/getBook?id='.$this->id.'">Завантажити</a>';
+        }
+
+        return $html;
+    }
+
+    public function createPayment()
+    {
+        $liqPayPayment = LiqpayPayment::model()->findByPk(1);
+        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
+        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id));
+        $res = $liqpay->api("request", array(
+            'action'        => 'status',
+            'version'       => '3',
+            'order_id'      => sha1(Yii::app()->user->getId().$this->id)
+        ));
+        if(!$model && $res->result=='ok'){
+            $model = new LibraryPayments();
+            $model->library_id = $this->id;
+            $model->user_id = Yii::app()->user->getId();
+            $model->amount = $this->price;
+            $model->order_id = $res->order_id;
+            $model->date = new CDbExpression('NOW()');;
+            $model->status = 1;
+            $model->save();
+        }
+    }
+
 }

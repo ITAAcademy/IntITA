@@ -33,3 +33,6 @@ $this->widget('application.components.ColumnListView', array(
 </div>
 
 <?php ?>
+<script>
+    $('input[name=btn_text]').attr("src",'<?php echo StaticFilesHelper::fullPathTo('css', 'images/pay.png') ?>');
+</script>
