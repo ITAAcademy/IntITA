@@ -358,9 +358,11 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             .$promise
             .then(function () {
                     console.info('success, exchanged trainers');
+		            $scope.addUIHandlers('Операцію успішно виконано');
                 },
                 function (error) {
                     console.error(error);
+	                bootbox.alert("Операцію не вдалося виконати");
                 });
     };
 }
