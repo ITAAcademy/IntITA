@@ -322,53 +322,49 @@ angular
 
     .controller('sliderCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
-            $scope.myInterval = 3000;   /*період зміни слайдів*/
-            $scope.active = 1;   /*індекс першого слайду*/
+            $scope.myInterval = 3000;
+            $scope.active = 1;
 
-            // cmsService.domainPath().$promise   //Відправка GET-запиту з допомогою сервіса "cmsService" для отримання адреси піддомену
-            //     .then(function successCallback(response) {
-            //         $scope.domainPath = response.domainPath+'/carousel/';   //Отримання базової адреси потрібних мені файлів
-            //     }, function errorCallback() {
-            //         bootbox.alert("Отримати піддомен не вдалося");   //Виведення повідомлення про невдачний запит
-            //     });
-
-            cmsService.menuSlider().$promise   //Використання сервіса cmsService для отримання массиву данних слайдера
+            cmsService.domainPath().$promise
                 .then(function successCallback(response) {
-                    if (response.length == 0) {
-                        //Оримання з .json дефолтних значень
-                        $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
-                            $scope.slides = response;
+                    $scope.domainPath = response.domainPath+'/carousel/';
+
+                    cmsService.menuSlider().$promise
+                        .then(function successCallback(response) {
+                            if (response.length == 0) {
+                                $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
+                                    $scope.slides = response;
+                                });
+                            } else {
+                                $scope.slides = response;
+                                for(var i=0; i<$scope.slides.length; i++){
+                                    $scope.slides[i].src = $scope.domainPath+$scope.slides[i].src;
+                                }
+                            }
+                        }, function errorCallback() {
+                            bootbox.alert("Отримати дані списку меню не вдалося");
                         });
-                    } else {
-                        $scope.slides = response;
-                        // for(var i=0; i<$scope.slides.length; i++){   //спроба змінити назву файлів на повний шлях до них
-                        //     $scope.slides[i].src = 'http://localhost/IntITA/domains/'+$scope.domainPath+'.intita/carousel/'+$scope.slides[i].src;
-                        // }
-                    }
+
                 }, function errorCallback() {
-                    bootbox.alert("Отримати дані списку меню не вдалося");   //введені данні а також .json недоступні
+                    bootbox.alert("Отримати піддомен не вдалося");
                 });
         }
-
-
     ])
     .controller('cmsMenuSliderCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
-            $scope.changePageHeader('Menu slider');   //Заголовок сторінки
+            $scope.changePageHeader('Menu slider');
 
-            cmsService.domainPath().$promise   //Відправка GET-запиту з допомогою сервіса "cmsService" для отримання адреси піддомену
+            cmsService.domainPath().$promise
                 .then(function successCallback(response) {
-                    $scope.domainPath = response.domainPath+'/carousel/';   //Отримання базової адреси потрібних мені файлів
+                    $scope.domainPath = response.domainPath+'/carousel/';
                 }, function errorCallback() {
-                    bootbox.alert("Отримати піддомен не вдалося");   //Виведення повідомлення про невдачний запит
+                    bootbox.alert("Отримати піддомен не вдалося");
                 });
 
-            //Завантаження данних
             $scope.loadCmsSliderList = function () {
-                cmsService.menuSlider().$promise   //Використання сервіса cmsService для отримання массиву данних слайдера
+                cmsService.menuSlider().$promise
                     .then(function successCallback(response) {
                         if (response.length == 0) {
-                            //Оримання з .json дефолтних значень
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
                                 $scope.lists = response;
                             });
@@ -376,44 +372,42 @@ angular
                             $scope.lists = response;
                         }
                     }, function errorCallback() {
-                        bootbox.alert("Отримати дані списку меню не вдалося");   //введені данні а також .json недоступні
+                        bootbox.alert("Отримати дані списку меню не вдалося");
                     });
             };
             $scope.loadCmsSliderList();
 
-            //Оновлення данних для слайдера
             $scope.updateSliderData = function (link, index, previousImage) {
-                var uploadImage = new FormData();   //Формування об'єкта для зручного конструювання форм (з можливістю відправки на сервер)
-                uploadImage.append("data", angular.toJson(link));   //"data" - ім'я поля; все інше - це значення.
-                if (index !== undefined) {   //Перевірка існування данних для слайду з обраним індексом
-                    var imageUpdateBlock = '#slideUpdate' + index;   //Формування айдішки обраного слайда (нумерація з нуля)
-                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Отримання об'єкту завантаженого користувачем файла (якщо він був обраний)
-                    uploadImage.append("slide", imageUpdate);   //Додавання об'єкту зображення нового поля "slide"
-                    uploadImage.append("previousImage", previousImage);   //Додавання ще одного поля "previousImage"
+                var uploadImage = new FormData();
+                uploadImage.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#slideUpdate' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadImage.append("slide", imageUpdate);
+                    uploadImage.append("previousImage", previousImage);
                 }
                 else {
-                    var image = $jq('#slide').prop('files')[0];  //Отримання об'єкту завантаженого користувачем файла (якщо він був обраний)
-                    uploadImage.append("slide", image);   //Додавання об'єкту зображення нового поля "slide" (попередніх зображень немає)
+                    var image = $jq('#slide').prop('files')[0];
+                    uploadImage.append("slide", image);
                 }
-                //Сформованого об'єкту форми з допомогою конфігурованого post-запиту
                 $http.post(basePath + '/_teacher/_admin/cms/updateMenuSlider', uploadImage, {
-                    withCredentials: true,   /*відправка з запитом конфігураційних куків*/
-                    headers: {'Content-Type': undefined},   /*всстановлення заголовку*/
-                    transformRequest: angular.identity   /*функція обробки данних перед їх відправлення запитом*/
-                }).then(function successCallback() {   //Успішний запит
-                    $scope.loadCmsSliderList();   //Оновлення данних слайдів
-                    $scope.newLink = {id: null, description: null, link: null};   //Очистка запису "newLink"
-                }, function errorCallback(response) {   //Невдачна відправка данних на сервер
-                    bootbox.alert(response.data.reason);   //Виведення повідомлення про невдачу
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).then(function successCallback() {
+                    $scope.loadCmsSliderList();
+                    $scope.newLink = {id: null, description: null, link: null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
                 });
             };
             //Видалення данних про поточний слайд
             $scope.removeCurrentSlide = function (id, image) {
-                cmsService.removeMenuSlider({id: id, image: image}).$promise   //Відправлення запиту видалення данних про слайд
+                cmsService.removeMenuSlider({id: id, image: image}).$promise
                     .then(function successCallback() {
-                        $scope.loadCmsSliderList();   //Перезавантаження данних слайдера
+                        $scope.loadCmsSliderList();
                     }, function errorCallback(response) {
-                        bootbox.alert(response.data.reason);   //Виведення повідомлення про невдачу
+                        bootbox.alert(response.data.reason);
                     });
             };
 
