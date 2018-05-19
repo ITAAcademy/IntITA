@@ -44,7 +44,7 @@ class CmsController extends TeacherCabinetController
             $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
             if (isset($_FILES) && !empty($_FILES)) {
                 $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-                $path_domain = 'domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+                $path_domain = Yii::app()->basePath .'/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
                 $folderAddress = $path_domain . "/lists/";
                 if (!file_exists($folderAddress)) {
                     mkdir($folderAddress, '777', true);
@@ -118,7 +118,6 @@ class CmsController extends TeacherCabinetController
     {
         $result = ['message' => 'OK'];
         $statusCode = 201;
-
         $current_date = date("Y-m-d H:i:s");
         try {
             $addressForFile = "";

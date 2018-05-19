@@ -1,59 +1,52 @@
+
 <?php
-$local_config = require(dirname(__FILE__).'/local.php');
-$params_config = require(dirname(__FILE__) . '/params.php');
+/**
+ * Created by PhpStorm.
+ * User: Ivanna
+ * Date: 30.08.2015
+ * Time: 16:24
+ */
 
-// This is the configuration for yiic console application.
-// Any writable CConsoleApplication properties can be configured here.
+define('MAIL_DEBUG',true);
+
 return array(
-	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Console Application',
-
-	// preloading 'log' component
-	'preload'=>array('log','config'),
-	'import' => array(
-		'application.models.*',
-        'application.models.task.*',
-        'application.models.quiz.*',
-		'application.models.user.*',
-		'application.models.revision.*',
-		'application.models.revision.state.*',
-		'application.models.revision.state.course.*',
-		'application.models.revision.state.lecture.*',
-		'application.models.revision.state.module.*',
-        'application.components.*',
-        'application.components.WebSocket.*',
-        'application.helpers.*',
-        'application.helpers.ngtable.*',
-        'application.models.accountancy.*',
-        'application.models.message.*',
-        'application.models.accountancy.services.serviceAccess.*',
-        'application.models.quiz.*',
-        'application.models.crm.*',
-        'application.models.crm.tasksState.*',
-        'application.vendor.*',
-        'application.models.accountancy.services.*',
-
-	),
-	// application components
-	'components'=>array(
-
-		// database settings are configured in database.php
-		'db'=>$local_config['db'],
-        'dbForum'=>$local_config['dbForum'],
-        'config' => array(
-            'class' => 'DConfig',
+    'db' => array(
+        'class' => 'CDbConnection',
+        'connectionString' => 'mysql:host=localhost;dbname=intita',
+        'emulatePrepare' => true,
+        'username' => 'intita',
+        'password' => '1234567',
+        'charset' => 'utf8',
+        'enableProfiling' => true,
+        'enableParamLogging' => true,
+    ),
+    'dbForum' => array(
+        'class' => 'CDbConnection',
+        'connectionString' => 'mysql:host=localhost;dbname=forum',
+        'emulatePrepare' => true,
+        'username' => 'intita',
+        'password' => '1234567',
+        'charset' => 'utf8',
+        'enableProfiling' => true,
+    ),
+    'dbMail' => array(
+        'class' => 'CDbConnection',
+        'connectionString' => 'mysql:host=localhost;dbname=vmail',
+        'emulatePrepare' => true,
+        'username' => 'vmailadmin',
+        'password' => 'BGlUeh0LCVeIxaTRSWgloS0rqObhSj',
+        'charset' => 'utf8',
+        'enableProfiling' => true,
+    ),
+    'debug' => array(
+        'class' => 'ext.yii2-debug.Yii2Debug',
+        'panels' => array(
+            'db' => array(
+                // Disable code highlighting.
+                'highlightCode' => false,
+                // Disable substitution of placeholders with values in SQL queries.
+                'insertParamValues' => false,
+            ),
         ),
-		'log'=>array(
-			'class'=>'CLogRouter',
-			'routes'=>array(
-				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
-				),
-			),
-		),
-
-	),
-    'params' => $params_config['params'],
-
+    ),
 );
