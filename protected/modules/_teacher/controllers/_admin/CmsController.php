@@ -295,7 +295,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionSubdomain()
     {
-        return $this->renderPartial('subdomain');
+        $this->renderPartial('subdomain');
     }
 
     public function actionOrganizationSubdomain()
