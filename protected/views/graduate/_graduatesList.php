@@ -12,14 +12,34 @@ $this->widget('application.components.ColumnListView', array(
         'lastPageLabel' => '&#187;&#187;',
         'prevPageLabel' => '&#171;',
         'nextPageLabel' => '&#187;',
-        'header' => '',
+        'header' => '<div
+            class="showMoreGraduate"
+            align="right"
+            onclick="showMoreGraduate()"
+        >Показати ще ...</div>',
         'cssFile' => Config::getBaseUrl() . '/css/pager.css'
     ),
     'id'=>'ajaxListView',
 ));
 ?>
-<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'SpoilerContent.js'); ?>"></script>
-<div class="showMoreGraduate" ng-hide="currentGraduateCount=='<?php echo $dataProvider->totalItemCount?>'" align="right"
-     style="horiz-align: right;" ng-controller="showMoreGraduateCtrl">
-    <a href="" ng-click="showMoreGraduate()" class="" style="">Показати ще ... </a>
-</div>
+<script>
+    var sizeGraduate = 2;
+    function showMoreGraduate() {
+        $.fn.yiiListView.update(
+            // this is the id of the CListView
+            'ajaxListView',
+            {
+                url: 'graduate/ShowMoreGraduateAjaxFilter',
+                data: {
+                    size: sizeGraduate
+                },
+                complete: function () {
+                    $scope.currentGraduateCount = $('.GraduatesBlock').length;
+                    $scope.$apply();
+                }
+            }
+        );
+        sizeGraduate++;
+    };
+</script>
+
