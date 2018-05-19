@@ -21,12 +21,12 @@ class LibraryController extends TeacherCabinetController {
     public function actionGetBookFile(){
         $end_file_name = $_FILES["file"]["name"];
         $tmp_file_name = $_FILES["file"]["tmp_name"];
-        if(getimagesize($tmp_file_name)){
+      //  if(getimagesize($tmp_file_name)){
             $addressForFile = Yii::app()->basePath . "/../files/library/".basename($end_file_name);
-        }
-        else{
-            $addressForFile = Yii::app()->basePath . "/../images/library/".basename($end_file_name);
-        }
+//        }
+//        else{
+//            $addressForFile = Yii::app()->basePath . "/../images/library/".basename($end_file_name);
+//        }
         copy($tmp_file_name,$addressForFile);
         echo basename($end_file_name);
     }
