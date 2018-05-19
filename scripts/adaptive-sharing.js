@@ -12,8 +12,6 @@ function defineSizeIcons() {
 
     if(height_page < height_el || width_page < 800){
         big_icon.style.display = 'none';
-//            less_icon.style.display = 'none';
-        var less_icon = document.getElementsByClassName('less_icon')[0];
         var little_icon = less_icon.getElementsByClassName('share42-item');
 
         for(var i = 0; i < little_icon.length; i++) {
