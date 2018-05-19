@@ -1,5 +1,5 @@
 <?php
-include (dirname(__FILE__) . '/../extensions/liqPay/liqPay.php');
+include (Yii::app()->basePath . '/extensions/liqPay/liqPay.php');
 /**
  * This is the model class for table "liqpay".
  *
