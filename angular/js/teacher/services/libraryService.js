@@ -97,10 +97,10 @@ angular
                     })
                         .then(function (response) {
                             if (data.fileType == "link") {
-                                data.formData.link = basePath + "/" + response.data;
+                                data.formData.link = response.data;
                             }
                             else {
-                                data.formData.logo = basePath + "/" + response.data;
+                                data.formData.logo = response.data;
                             }
                         })
                 });

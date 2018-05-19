@@ -98,21 +98,19 @@ angular
             fileType: 'link',
             formData: $scope.formData
         });
-        libraryService.sendFile({
-            fileType: 'logo',
-            formData: $scope.formData
-        });
+        // libraryService.sendFile({
+        //     fileType: 'logo',
+        //     formData: $scope.formData
+        // });
 
         $scope.submitFormAddBook = function () {
             if ($scope.formData.title) {
                 libraryService.addBook({
                     'data': $scope.formData
                 });
-            }
-            else {
+            } else {
                 bootbox.alert("Введіть назву книжки");
             }
-
         };
     }])
     .controller('editBookCtrl', ['$scope', 'libraryService', '$http', 'NgTableParams', '$stateParams', function ($scope, libraryService, $http, NgTableParams, $stateParams) {

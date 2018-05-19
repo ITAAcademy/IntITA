@@ -40,4 +40,9 @@ angular
                 return basePath + "/_teacher/_director/organization/updateOrganizationForm?id=" + $stateParams.id
             }
         })
+        .state('liqpay', {
+            url: "/liqpay",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_director/liqpay/index",
+        })
 });

@@ -28,7 +28,7 @@ class LibraryController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','libraryPay','getBook','liqpayStatus'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -179,4 +179,36 @@ class LibraryController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+    function actionLibraryPay($id){
+        $library = Library::model()->findByPk($id);
+        $library->createPayment();
+        $this->redirect(Yii::app()->createUrl('/library/index'));
+    }
+
+    function actionLiqpayStatus($id){
+        $library = Library::model()->findByPk($id);
+        $library->createPayment();
+    }
+
+    public function actionGetBook($id){
+        $book = Library::model()->findByPk($id);
+        $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>1));
+        if ($book && $payment){
+            $file = "/files/library/{$book->link}";
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].$file)){
+                return   Yii::app()->request->xSendFile($file,[
+                    'forceDownload'=>true,
+                    'xHeader'=>'X-Accel-Redirect',
+                    'terminate'=>false
+                ]);
+            }
+            else{
+                throw new CHttpException(404,'Документ не знайдено');
+            }
+        }
+        else {
+            throw new CHttpException(404,'Документ не знайдено');
+        }
+    }
 }

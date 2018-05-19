@@ -3,16 +3,17 @@
 /* @var $data Library */
 ?>
 <?php
-$category ="";
-for ($i=0;$i<count($data->libraryDependsBookCategories);$i++){
+$category = "";
+for ($i = 0; $i < count($data->libraryDependsBookCategories); $i++) {
 
-    $category .=  $data->libraryDependsBookCategories[$i]->idCategory->title_ua.", ";
+    $category .= $data->libraryDependsBookCategories[$i]->idCategory->title_ua . ", ";
 }
-if (CHtml::encode($data->status) == Library::ACTIVE){
-?>
+if (CHtml::encode($data->status) == Library::ACTIVE) {
+    ?>
     <div class="view">
         <div class="logoBookWrap">
-            <img class="logoBook" src="<?php echo CHtml::encode($data->logo); ?>">
+            <img class="logoBook" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/books.png') ?>">
+<!--            <img class="logoBook" src="--><?php //echo StaticFilesHelper::createPath('image', 'library', $data->logo); ?><!--">-->
             <div class="starLevelIndex libraryStar">
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'starFull.png'); ?>"/>
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'starFull.png'); ?>"/>
@@ -21,25 +22,27 @@ if (CHtml::encode($data->status) == Library::ACTIVE){
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'star-half.png'); ?>"/>
             </div>
         </div>
-        <br />
-        <a class="titleBook" href="<?php echo CHtml::encode($data->link); ?>"><?php echo CHtml::encode($data->title); ?></a>
-        <br />
+        <br/>
+        <a class="titleBook"
+           href="<?php echo CHtml::encode($data->link); ?>"><?php echo CHtml::encode($data->title); ?></a>
+        <br/>
         Опис:
         <?php echo CHtml::encode($data->description); ?>
-        <br />
+        <br/>
         Ціна:
-        <b><?php echo CHtml::encode($data->price); ?>$</b>
-        <br />
+        <b><?php echo CHtml::encode($data->price); ?>грн.</b>
+        <br/>
         Автор:
         <?php echo CHtml::encode($data->author); ?>
-        <br />
+        <br/>
         Мова:
         <?php echo CHtml::encode($data->language); ?>
-        <br />
+        <br/>
         Категорія:
         <?php
-            echo mb_substr($category,0,-2,'UTF-8');
+        echo mb_substr($category, 0, -2, 'UTF-8');
         ?>
-        <br />
+        <br/>
+        <?php echo $data->getPaymentButton() ?>
     </div>
-<?php }?>
+<?php } ?>
