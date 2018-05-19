@@ -98,10 +98,10 @@ angular
             fileType: 'link',
             formData: $scope.formData
         });
-        libraryService.sendFile({
-            fileType: 'logo',
-            formData: $scope.formData
-        });
+        // libraryService.sendFile({
+        //     fileType: 'logo',
+        //     formData: $scope.formData
+        // });
 
         $scope.submitFormAddBook = function () {
             if ($scope.formData.title) {

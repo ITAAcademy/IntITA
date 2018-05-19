@@ -12,7 +12,8 @@ if (CHtml::encode($data->status) == Library::ACTIVE) {
     ?>
     <div class="view">
         <div class="logoBookWrap">
-            <img class="logoBook" src="<?php echo StaticFilesHelper::createPath('image', 'library', $data->logo); ?>">
+            <img class="logoBook" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/books.png') ?>">
+<!--            <img class="logoBook" src="--><?php //echo StaticFilesHelper::createPath('image', 'library', $data->logo); ?><!--">-->
             <div class="starLevelIndex libraryStar">
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'starFull.png'); ?>"/>
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'starFull.png'); ?>"/>

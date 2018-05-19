@@ -215,7 +215,7 @@ class Library extends CActiveRecord
                      можно было обработать как оплаченый
                 */
                 'server_url'	=>	Config::getBaseUrl() . '/library/liqpayStatus/?id='.$this->id,
-                'language'		=>	'en', // uk, en
+                'language'		=>	'uk', // uk, en
                 'sandbox'=>'1' // и куда же без песочницы,
                 // не на реальных же деньгах тестировать
             ));
