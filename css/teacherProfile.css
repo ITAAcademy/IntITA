@@ -314,3 +314,8 @@ img.lessonBut  {
     }
     .TeacherProfilename{display:none}
 }
+#firstTextProfileInfo, #secondTextProfileInfo{
+    max-width: 480px;
+     word-wrap: break-word;
+     word-break: break-word;
+}
