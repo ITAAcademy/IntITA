@@ -2,7 +2,6 @@
 /* @var $this Controller */
 $header = new Header();
 ?>
-1
 <!DOCTYPE html>
 <html id="ng-app" ng-app="mainApp" xmlns:ng="https://angularjs.org">
 <head>

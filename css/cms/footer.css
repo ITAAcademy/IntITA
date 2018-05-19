@@ -3,15 +3,12 @@
 }
 #footer_main{
     display: block;
-    /*border-bottom: 1px solid;*/
     border-bottom-width: 1px;
     border-bottom-style: solid;
     margin: 0 auto;
     margin-bottom: 5px;
-    /*border-right: 1px solid ;*/
     border-right-width: 1px;
     border-right-style: solid;
-    /*border-left: 1px solid ;*/
     border-left-width: 1px;
     border-left-style: solid;
 
@@ -20,7 +17,6 @@
     padding-top: 11px;
     display: table-cell;
     vertical-align: top;
-    /*border-right: 1px solid ;*/
     border-right-width: 1px;
     border-right-style:solid;
     padding-bottom: 8px;
@@ -70,7 +66,6 @@
 .right_footer {
     padding-top: 15px;
     padding-bottom: 21px;
-    /*border-left: 1px solid ;*/
     border-left-width: 1px;
     border-left-style:solid;
 }
