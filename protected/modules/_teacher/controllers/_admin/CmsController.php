@@ -47,7 +47,7 @@ class CmsController extends TeacherCabinetController
                 $path_domain = Yii::app()->basePath .'/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
                 $folderAddress = $path_domain . "/lists/";
                 if (!file_exists($folderAddress)) {
-                    mkdir($folderAddress, '777', true);
+                    mkdir($folderAddress, 0777, true);
                 }
                 if ($previousImage && file_exists($folderAddress . $previousImage)) {
                     unlink($folderAddress . $previousImage);
@@ -127,7 +127,7 @@ class CmsController extends TeacherCabinetController
                 $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
                 $folderAddress = $path_domain . "/news/";
                 if (!file_exists($folderAddress)) {
-                    mkdir($folderAddress, '777', true);
+                    mkdir($folderAddress, 0777, true);
                 }
                 if ($previousImage && file_exists($folderAddress . $previousImage)) {
                     unlink($folderAddress . $previousImage);
@@ -208,7 +208,7 @@ class CmsController extends TeacherCabinetController
             array_map('unlink', glob("$address/*.*"));
         }
         if (!file_exists($address)) {
-            mkdir($address, 777, true);
+            mkdir($address, 0777, true);
         }
         $path = $address . '/index.php';
         file_put_contents($path, $_POST["data"], FILE_APPEND);
@@ -233,7 +233,7 @@ class CmsController extends TeacherCabinetController
                 $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
                 $folderAddress = $path_domain . "/logo/"; // прописуєм шлях
                 if (!file_exists($folderAddress)) {
-                    mkdir($folderAddress, 777, true);   //створення каталога
+                    mkdir($folderAddress, 0777, true);   //створення каталога
                 }
                 $end_file_name = $_FILES["photo"]["name"]; //Оригинальное имя файла на компьютере клиента.
                 $tmp_file_name = $_FILES["photo"]["tmp_name"]; // Временное имя, с которым принятый файл был сохранен на сервере.
