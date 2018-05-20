@@ -208,7 +208,7 @@ class CmsController extends TeacherCabinetController
             array_map('unlink', glob("$address/*.*"));
         }
         if (!file_exists($address)) {
-            mkdir($address, '777', true);
+            mkdir($address, 777, true);
         }
         $path = $address . '/index.php';
         file_put_contents($path, $_POST["data"], FILE_APPEND);
@@ -233,7 +233,7 @@ class CmsController extends TeacherCabinetController
                 $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
                 $folderAddress = $path_domain . "/logo/"; // прописуєм шлях
                 if (!file_exists($folderAddress)) {
-                    mkdir($folderAddress, '777', true);   //створення каталога
+                    mkdir($folderAddress, 777, true);   //створення каталога
                 }
                 $end_file_name = $_FILES["photo"]["name"]; //Оригинальное имя файла на компьютере клиента.
                 $tmp_file_name = $_FILES["photo"]["tmp_name"]; // Временное имя, с которым принятый файл был сохранен на сервере.
@@ -245,6 +245,7 @@ class CmsController extends TeacherCabinetController
                         $endAddress = date("jYgi") . basename($end_file_name);  // '21042018name.jpg'   //basename -- Возвращает имя файла из указанного пути
                         $addressForFile = $folderAddress . $endAddress;
                     }
+
                     copy($tmp_file_name, $addressForFile);  //copy($file, $newfile) Копирует файл
                     echo $addressForFile;
                     $settings->logo = $addressForFile;
