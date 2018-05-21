@@ -16,7 +16,7 @@
                         </div>
                     </div>
 
-                    <div class=" col-md-8 col-sm-7 text_out">
+                    <div class=" col-md-8 col-sm-7 text_out_left">
                         <div   class="box_new">
                             <div><h3 class="text-left text" ng-style="{color:settings.title_color}">{{list.title}}</h3></div>
 
@@ -41,7 +41,7 @@
 
 
             <div class="box_out" ng-if="$index%2!=0">
-                <div class="row box_inside" ng-style="{color:settings.text_color}"  style="box-shadow: 0 0 5px {{settings.news_text_border_color}}" >
+                <div class="row box_inside_right" ng-style="{color:settings.text_color}"  style="box-shadow: 0 0 5px {{settings.news_text_border_color}}" >
                     <div class="col-md-8 col-sm-7 text_out" >
                         <div   class="box_new">
                             <div><h3 class="text-right text" ng-style="{color:settings.title_color}">{{list.title}}</h3></div>

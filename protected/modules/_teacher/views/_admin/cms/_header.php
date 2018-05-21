@@ -8,7 +8,7 @@
                     <img ng-if="settings.logo" id="logo" ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
                 </a>
             </div>
-            <div class="col-md-7" >
+            <div class="col-md-7 menu_blok" >
                 <ul class="nav navbar-nav">
                     <li class="menu_hover" data-hover="{{settings.header_hover_color}}" data-link="{{settings.header_link_color}}"
                         onmouseenter="changeColorOn(this)" onmouseleave="changeColorOff(this)" ng-repeat="list in listsItemMenu track by $index"  >

@@ -18,11 +18,18 @@
 }
 
 #logo {
+    padding-top: 10px;
+    padding-bottom: 12px;
     max-width: 500px;
     max-height: 100px;
-    padding-bottom: 5px;
 }
 .navbar .header_box{
     margin-left: 0px;
     margin-right: 0px;
+    display: flex;
+
 }
+.menu_blok{
+    margin: auto
+}
+.

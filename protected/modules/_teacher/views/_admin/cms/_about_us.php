@@ -1,9 +1,10 @@
 <div class="mainAboutBlock"  ng-style="{'background-color':settings.about_us_background_color}">
 
 
-    <div class="hed text-center">
-        <h1 class="header_about"  ng-bind="settings.title" ng-style="{color:settings.title_color}"></h1>
-        <h3 class="info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}">{{settings.subtitle}}</h3>
+    <div class="hed text-center row">
+            <h1 class="header_about"  ng-bind="settings.title" ng-style="{color:settings.title_color}"></h1>
+            <h3 class="info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}">{{settings.subtitle}}</h3>
+
     </div>
 
     <div class="items_about row">
