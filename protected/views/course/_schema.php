@@ -42,7 +42,7 @@
                 <?php if ($lessonsCount != 0) {?>
                     <span class="colorP"><?php echo Yii::t('course', '0209'); ?></span>
                     -<b class="grey">
-                        <?php echo $courseForTemplate->getApproximatelyDurationInMonths(); ?><?php echo Yii::t('course', '0664'); ?>
+                        <?php echo $courseDuration; ?><?php echo Yii::t('course', '0664'); ?>
                     </b>
                     <?php
                 } ?>
