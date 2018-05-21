@@ -1,13 +1,13 @@
 <div class="mainAboutBlock"  ng-style="{'background-color':settings.about_us_background_color}">
 
 
-    <div class="hed text-center row">
+    <div class="hed text-center">
             <h1 class="header_about"  ng-bind="settings.title" ng-style="{color:settings.title_color}"></h1>
             <h3 class="info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}">{{settings.subtitle}}</h3>
 
     </div>
 
-    <div class="items_about row">
+    <div class="items_about">
         <div>
             <div class="col-md-2 col-xs-3"></div>
             <div class="col-md-8 col-xs-6">

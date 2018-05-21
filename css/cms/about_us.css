@@ -13,6 +13,7 @@
 .items_about {
     margin-right: 10px;
     margin-left: 10px;
+    overflow: hidden;
 }
 .block_about{
     vertical-align: top;

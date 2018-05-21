@@ -53,8 +53,8 @@ html{font-family:"MyriadPro";}
     /*margin-top: 1px;*/
 }
 .box_inside .img_out_left{
-    padding-left: 1px;
-    padding-right: 1px;
+    padding-left: 0px;
+    padding-right: 0px;
 
 }
 .box_inside_right .img_out_rigth{
