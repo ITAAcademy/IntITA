@@ -41,11 +41,11 @@
                                 var slides = $scope.slides = [];   /*масив об'єктів з властивостями слайдів*/
                                 var currIndex = 0;   /*поточна кількість доданих слайдів*/
                                 var sliders_src = [
-                                    'https://intita.com/images/mainpage/5acb3f77a8ea7.jpg',
-                                    'https://intita.com/images/mainpage/5acb3f1e920d6.jpg',
-                                    'https://intita.com/images/mainpage/5ac254f8e1d60.jpg',
-                                    'https://intita.com/images/mainpage/5acb3f4195982.jpg',
-                                    'https://intita.com/images/mainpage/5ac2558437b4b.jpg'
+                                    'https://intita.com//css/images/temp/s1.jpg',
+                                    'https://intita.com//css/images/temp/s2.jpg',
+                                    'https://intita.com//css/images/temp/s3.jpeg',
+                                    'https://intita.com//css/images/temp/s4.jpg',
+                                    'https://intita.com//css/images/temp/s5.jpg'
                                 ];
                                 var slide_text = [
                                     "Ми гарантуємо Тобі отримання пропозиції працевлаштування\
