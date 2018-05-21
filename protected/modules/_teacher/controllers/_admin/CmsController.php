@@ -325,4 +325,73 @@ class CmsController extends TeacherCabinetController
         return $this->renderJSON(['domainPath' => $path_domain]);
     }
 
+    public function actionGetMenuSlider()
+    {
+        echo  CJSON::encode( CmsCarousel::model()->findAllByAttributes(array('id_organization' => Yii::app()->user->model->getCurrentOrganizationId())) );
+    }
+    public function actionUpdateMenuSlider()
+    {
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            $addressForFile = "";
+            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
+            if (isset($_FILES) && !empty($_FILES)) {
+                $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+                $path_domain = 'domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+                $folderAddress = $path_domain . "/carousel/";
+                if (!file_exists($folderAddress)) {
+                    mkdir($folderAddress, '777', true);
+                }
+                if ($previousImage && file_exists($folderAddress . $previousImage)) {
+                    unlink($folderAddress . $previousImage);
+                }
+                $end_file_name = $_FILES["slide"]["name"];
+                $tmp_file_name = $_FILES["slide"]["tmp_name"];
+                if (getimagesize($tmp_file_name)) {   //взяти розміри
+                    $endAddress = date("jYgi") . basename($end_file_name);
+                    $addressForFile = $folderAddress . $endAddress;
+                }
+                copy($tmp_file_name, $addressForFile);
+            }
+            $params = array_filter((array)json_decode($_POST['data']));
+            $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();
+            $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $menuSlider->attributes = $params;
+            if(isset($endAddress)){
+                $menuSlider->src = $endAddress;
+            }
+            if (!$menuSlider->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $menuSlider->getValidationErrors());
+            }
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
+    public function actionRemoveMenuSlider()
+    {
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
+        $folderAddress = $path_domain . "/carousel/";
+        $imageAddress = $_POST["image"];
+        if (file_exists($folderAddress . $imageAddress)) {
+            unlink($folderAddress . $imageAddress);
+        }
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            $menuSlider = CmsCarousel::model()->findByPk($_POST['id']);
+            if (file_exists($menuSlider["src"])) {
+                unlink($menuSlider["src"]);
+            }
+            $menuSlider->delete();
+
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
 }

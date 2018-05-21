@@ -78,6 +78,7 @@
                     <li><a ng-href="#/admin/intita_cms">Конструктор сайту</a></li>
                     <li><a ng-href="#/admin/cms_list">Меню ліст</a></li>
                     <li><a ng-href="#/admin/cms_news">Меню новини</a></li>
+                    <li><a ng-href="#/admin/cms_slider">Меню слайдер</a></li>
                     <li><a ng-href="#/admin/cms_main_settings">Головні налаштування</a></li>
                 </ul>
             </div>
