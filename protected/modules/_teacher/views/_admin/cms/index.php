@@ -32,49 +32,65 @@
             <script>
                  angular
                         .module('cmsAppNew',['ui.bootstrap'])
-                          .controller('sliderGeneratedCtrl', ['$scope',
-                            function ($scope) {
+                          .controller('sliderGeneratedCtrl', ['$scope','$http',
+                            function ($scope,$http) {
+                                var domain = "",
+                                sliders_src = [],
+                                slide_title = [],
+                                slide_description = [],
+                                currIndex = 0,   /*поточна кількість доданих слайдів*/
+                                slides = $scope.slides = [];   /*масив об'єктів з властивостями слайдів*/
+                                $http({
+                                    method: 'GET',
+                                    url: '/_teacher/_admin/cms/getDomainPath'
+                                }).then(function (response) {
+                                    domain = response.data.domainPath;
+                                }).then(function () {
+                                    $http({
+                                        method: 'GET',
+                                        url: '/_teacher/_admin/cms/getMenuSlider'
+                                    }).then(function (response) {
+                                        if (response.data.length == 0) {
+                                            $http.get('/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
+                                                addSlideWithInfo(response,false);
+                                            });
+                                        }
+                                        else{
+                                            addSlideWithInfo(response,true);
+                                        }
+                                        function addSlideWithInfo(response,status){
+                                            if (status == true){
+                                                var data = response.data;
+                                                var img_address = domain + '/carousel/';
+                                            }
+                                            else{
+                                                var data = response;
+                                                var img_address = "";
+                                            }
+                                            for(var i = 0; i < data.length; i++) {
+                                                sliders_src.push(img_address +data[i].src);
+                                                slide_title.push(data[i].title);
+                                                slide_description.push(data[i].description);
+                                            };
+                                            for (var i = 0; i < sliders_src.length; i++) {   /*формування початкового набору слайдів*/
+                                                $scope.addSlide();
+                                                currIndex++;
+                                            };
+                                        }
+                                    });
+                                })
                                 $scope.test = 5;
                                 $scope.myInterval = 3000;   /*період зміни слайдів*/
                                 $scope.noWrapSlides = false;   /*???*/
-                                $scope.active = 3;   /*індекс першого слайду*/
-                                var slides = $scope.slides = [];   /*масив об'єктів з властивостями слайдів*/
-                                var currIndex = 0;   /*поточна кількість доданих слайдів*/
-                                var sliders_src = [
-                                    'https://intita.com/images/mainpage/5acb3f77a8ea7.jpg',
-                                    'https://intita.com/images/mainpage/5acb3f1e920d6.jpg',
-                                    'https://intita.com/images/mainpage/5ac254f8e1d60.jpg',
-                                    'https://intita.com/images/mainpage/5acb3f4195982.jpg',
-                                    'https://intita.com/images/mainpage/5ac2558437b4b.jpg'
-                                ];
-                                var slide_text = [
-                                    "Ми гарантуємо Тобі отримання пропозиції працевлаштування\
-                                    після успішного завершення навчання!",
-                                    "Хочеш стати висококласним спеціалістом? Приймай правильне рішення - навчайся з нами!\
-                                    Ми працюємо на результат!",
-                                    "Не втрать свій шанс змінити світ - отримай якісну та сучасну освіту\
-                                    і стань класним спеціалістом!",
-                                    "Не втрачай шансу на творчу, цікаву та перспективну працю –\
-                                    плануй своє професійне майбутнє вже сьогодні!",
-                                    "Один рік цікавого навчання - і ти станеш гарним програмістом,\
-                                    готовим працювати в індустрії інформаційних технологій!",
-                                    "Мрієш заробляти улюбленою справою і отримувати задоволення від професії?\
-                                    Скористайся можливістю потрапити у світ інформаційних технологій!",
-                                    "В майбутньому буде два типи робіт: ті, де Ти будеш керувати комп'ютером - програмувати,\
-                                    і ті, де машини вказуватимуть, що робити Тобі!"
-                                ];
-
+                                $scope.active = 0;   /*індекс першого слайду*/
                                 $scope.addSlide = function() {   /*функція для додавання нового слайду*/
                                     slides.push({
-                                        image: sliders_src[currIndex],   /*адреса зображення*/
-                                        text: slide_text[currIndex],   /*стрічка тексту*/
-                                        id: currIndex++   /*індекс поточного слайду*/
+                                        src: sliders_src[currIndex],   /*адреса зображення*/
+                                        title: slide_title[currIndex],   /*стрічка тексту*/
+                                        description: slide_description[currIndex],
+                                        id: currIndex   /*індекс поточного слайду*/
                                     });
                                 };
-
-                                for (var i = 0; i < sliders_src.length; i++) {   /*формування початкового набору слайдів*/
-                                    $scope.addSlide();
-                                }
                             }
                         ]);
 
