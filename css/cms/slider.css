@@ -1,4 +1,5 @@
-#sliderBlock {margin-top: 3px}
+#sliderBlock {margin-top: 3px;
+    height: fit-content;}
 
 #slider{z-index:0;}
 .slide{height:100%;}
