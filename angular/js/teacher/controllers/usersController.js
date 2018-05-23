@@ -341,6 +341,17 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
         $jq('#apply-btn').prop('disabled', true);
     };
 
+    $scope.getAllTrainers = function() {
+        usersService
+            .allActualTrainers()
+            .$promise
+            .then(function (data) {
+                $scope.allTrainers = data;
+            });
+        $jq('#apply-btn').prop('disabled', true);
+    };
+    $scope.getAllTrainers();
+
     $jq('#selectNewTrainer, #selectOldTrainer').on('change', function(){
         setTimeout(function(){
             if( $scope.id_oldTrainer != $scope.id_newTrainer && $scope.id_oldTrainer != undefined
@@ -358,9 +369,11 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             .$promise
             .then(function () {
                     console.info('success, exchanged trainers');
+		            $scope.addUIHandlers('Операцію успішно виконано');
                 },
                 function (error) {
                     console.error(error);
+	                bootbox.alert("Операцію не вдалося виконати");
                 });
     };
 }
