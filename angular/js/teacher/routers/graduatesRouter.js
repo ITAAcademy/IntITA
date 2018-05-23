@@ -28,6 +28,9 @@ config(function ($stateProvider) {
         .state('graduate/edit/:graduateId', {
             url: "/graduate/edit/:graduateId",
             cache: false,
+            controller: function($templateCache, $stateParams){
+                $templateCache.remove(basePath+'/_teacher/graduate/view/id/'+$stateParams.graduateId);
+             },
             templateUrl: function ($stateParams) {
                 return basePath+'/_teacher/graduate/update/id/'+$stateParams.graduateId
             }
