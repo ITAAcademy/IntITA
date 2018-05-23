@@ -658,7 +658,7 @@ div.loader > div {
 }
 .scroll-table{
     height: 500px;
-    overflow: scroll
+    /*overflow: scroll*/
 }
 .scroll-table table{
     table-layout: inherit;
@@ -673,9 +673,9 @@ div.form-group.row.ng-scope > label{
     .panel-body{
         overflow: scroll;
     }
-    #pageContainer{
-        overflow: hidden;
-    }
+    /*#pageContainer{*/
+        /*overflow: hidden;*/
+    /*}*/
 }
 .supervisorStudent{
     height: inherit !important;
