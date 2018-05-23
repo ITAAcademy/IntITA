@@ -323,7 +323,7 @@ angular
     .controller('sliderCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
             $scope.myInterval = 3000;
-            $scope.active = 1;
+            $scope.active = 0;
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
