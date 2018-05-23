@@ -436,12 +436,8 @@ class UsersController extends TeacherCabinetController
         $criteria->addCondition('id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         $criteria->select = 'id_user';
         $trainers = UserTrainer::model()->findAll($criteria);
-//        echo "<pre>";var_dump($trainers);die;
         $result = array();
         foreach($trainers as $item){
-            //var_dump($item->trainerModel->fullName);die;
-//            var_dump($item);die;
-//            array_push($result, ['id'=>$item->idUser, 'fullName'=>$item->trainerModel->fullName]);
             array_push($result, ['id'=>$item->id_user, 'fullName'=>$item->idUser->fullName]);
         }
         echo json_encode($result);
