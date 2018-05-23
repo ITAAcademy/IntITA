@@ -671,7 +671,7 @@ div.form-group.row.ng-scope > label{
         table-layout: auto;
     }
     .panel-body{
-        overflow: scroll;
+        overflow-x: scroll;
     }
     /*#pageContainer{*/
         /*overflow: hidden;*/
