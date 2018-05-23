@@ -340,6 +340,18 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             });
         $jq('#apply-btn').prop('disabled', true);
     };
+    // $scope.getTrainers();
+
+    $scope.getAllTrainers = function() {
+        usersService
+            .allActualTrainers()
+            .$promise
+            .then(function (data) {
+                $scope.allTrainers = data;
+            });
+        $jq('#apply-btn').prop('disabled', true);
+    };
+    $scope.getAllTrainers();
 
     $jq('#selectNewTrainer, #selectOldTrainer').on('change', function(){
         setTimeout(function(){
