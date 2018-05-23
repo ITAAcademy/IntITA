@@ -340,7 +340,6 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             });
         $jq('#apply-btn').prop('disabled', true);
     };
-    // $scope.getTrainers();
 
     $scope.getAllTrainers = function() {
         usersService
