@@ -30,6 +30,13 @@
             $this->renderPartial('_footer', array());
             ?>
             <script>
+                    $(".owl-carousel img").height($(window).width()/2);
+                    $(window).resize(function () {
+                        $(".owl-carousel img").height($(window).width()/2);
+                    });
+                    $(window).on("orientationchange",function(){
+                        $(".owl-carousel img").height($(window).width()/2);
+                    });
                  angular
                         .module('cmsAppNew',['ui.bootstrap'])
                           .controller('sliderGeneratedCtrl', ['$scope','$http',

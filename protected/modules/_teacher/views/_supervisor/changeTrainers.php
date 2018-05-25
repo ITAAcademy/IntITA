@@ -11,7 +11,7 @@
         <br>
         <label>Виберіть тренера, на якого замінюємо:</label><br>
         <select class="form-control" id="selectNewTrainer" name="objectSelector" ng-model="id_newTrainer"
-                 ng-options="trainer.id as trainer.fullName for trainer in trainers" >
+                 ng-options="trainer.id as trainer.fullName for trainer in allTrainers" >
             <option value="" ng-if="!id_newTrainer">--Виберіть нового тренера--</option>
         </select>
         <br>
