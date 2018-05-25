@@ -622,7 +622,22 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
             if (day.length < 2) day = '0' + day;
             return [year, month, day].join('-');
         }
-        dateInSubgroup = formatDate(dateInSubgroup);
+        function currentDate() {
+            var d = new Date();
+            var curr_date = d.getDate();
+            var curr_month = d.getMonth() + 1;
+            var curr_year = d.getFullYear();
+            if (curr_month < 10){
+                curr_month = "0" + curr_month;
+            }
+            return curr_year + "-" + curr_month + "-" + curr_date;
+        }
+        if (dateInSubgroup == undefined){
+               dateInSubgroup = currentDate();
+        }
+        else{
+            dateInSubgroup = formatDate(dateInSubgroup);
+        }
         $http({
             method: 'POST',
             url: basePath+'/_teacher/_supervisor/superVisor/addStudentToSubgroup',

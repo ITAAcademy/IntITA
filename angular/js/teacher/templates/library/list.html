@@ -23,10 +23,10 @@
                 <span ng-repeat="category in book.libraryDependsBookCategories">{{category.idCategory.title_ua}}<br></span>
             </td>
             <td title="'Фото'">
-                <img class="bookPreview" src="{{book.logo}}">
+                <img class="bookPreview" src="/images/library/{{book.logo}}">
             </td>
             <td title="'Посилання'">
-                <a href="{{book.link}}">Книга</a>
+                <a href="/files/library/{{book.link}}">Книга</a>
             </td>
             <td>
                 <a ng-href="#/library/editBook/{{book.id}}"><i class="fa fa-edit"></i></a><br>

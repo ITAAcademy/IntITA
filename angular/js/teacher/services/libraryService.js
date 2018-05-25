@@ -50,6 +50,22 @@ angular
                 return promise;
             };
             this.editBook = function (data) {
+                var link = document.getElementById('link').files[0];
+                var logo = document.getElementById('logo').files[0];
+                var filesBook = new FormData();
+                filesBook.append("link", link);
+                filesBook.append("logo", logo);
+                if (link != undefined){
+                    data.data.link = link.name;
+                }
+                if (logo != undefined){
+                    data.data.logo = logo.name;
+                }
+                $http.post(url+'/getBookFile', filesBook, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                });
                 var promise = $http({
                     url: url + '/updateLibraryData',
                     method: 'POST',
@@ -84,10 +100,8 @@ angular
                 return promise;
             };
             this.sendFile = function (data) {
-                var inputFile = document.getElementById(data.fileType);
-                inputFile.addEventListener('change', function (ev) {
-                    var localLink;
-                    localLink = ev.target.files[0];
+                    var localLink = document.getElementById('link').files[0];
+                    data.formData.link = localLink.name;
                     var fileBook = new FormData();
                     fileBook.append("file", localLink);
                     $http.post(basePath + '/_teacher/library/library/getBookFile', fileBook, {
@@ -95,14 +109,16 @@ angular
                         headers: {'Content-Type': undefined},
                         transformRequest: angular.identity
                     })
-                        .then(function (response) {
-                            if (data.fileType == "link") {
-                                data.formData.link = response.data;
-                            }
-                            else {
-                                data.formData.logo = response.data;
-                            }
-                        })
-                });
+            };
+            this.sendLogo = function (data) {
+                var localLink = document.getElementById('logo').files[0];
+                data.formData.logo = localLink.name;
+                var fileBook = new FormData();
+                fileBook.append("file", localLink);
+                $http.post(basePath + '/_teacher/library/library/getBookFile', fileBook, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                })
             };
         }]);
