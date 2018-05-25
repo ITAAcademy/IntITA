@@ -60,18 +60,30 @@ abstract class TaskState {
     }
 
     protected function _executed($user) {
-        $lastHistoryTask=CrmTaskStateHistory::model()->find(
+        $lastHistoryTask = null;
+        $lastUserHistoryTask=CrmTaskStateHistory::model()->find(
             array(
-                'condition'=>'id_user=:id and id_state=:state',
+                'condition'=>'id_state=:state',
                 'params'=>array(
-                    ':id'=>$user->getId(),
                     ':state'=>CrmTaskStatus::EXECUTED,
                 ),
                 'order' => 'id desc',
             ));
-        if($lastHistoryTask && $lastHistoryTask->id_task!=$this->idTask){
-            if($lastHistoryTask->idTask->state->canChange('Paused'))
-                $lastHistoryTask->idTask->state->changeTo('Paused', Yii::app()->user);
+
+        if($lastUserHistoryTask){
+            $lastHistoryTask = CrmTaskStateHistory::model()->find(
+                array(
+                    'condition'=>'id_task=:id',
+                    'params'=>array(
+                        ':id'=>$lastUserHistoryTask->id_task,
+                    ),
+                    'order' => 'id desc',
+                ));
+        }
+
+        if(($lastHistoryTask && $lastHistoryTask->id==$lastUserHistoryTask->id && $lastUserHistoryTask->id_task!=$this->idTask)){
+            if($lastUserHistoryTask->idTask->state->canChange('Paused'))
+                $lastUserHistoryTask->idTask->state->changeTo('Paused', Yii::app()->user);
         }
 
         $this->_changeState($this->idTask, self::Executed, $user->getId());
