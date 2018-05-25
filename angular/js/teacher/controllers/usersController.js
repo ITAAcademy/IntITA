@@ -342,17 +342,6 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
     };
     $scope.getTrainers();
 
-    $scope.getAllActualTrainers = function() {
-        usersService
-            .allActualTrainers()
-            .$promise
-            .then(function (data) {
-                $scope.allTrainers = data;
-            });
-        $jq('#apply-btn').prop('disabled', true);
-    };
-    $scope.getAllTrainers();
-
     $scope.getAllTrainers = function() {
         usersService
             .allActualTrainers()
