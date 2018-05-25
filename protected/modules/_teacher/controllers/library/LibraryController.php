@@ -19,16 +19,28 @@ class LibraryController extends TeacherCabinetController {
         Library::addBook($_POST["data"]["data"]);
     }
     public function actionGetBookFile(){
-        $end_file_name = $_FILES["file"]["name"];
-        $tmp_file_name = $_FILES["file"]["tmp_name"];
-      //  if(getimagesize($tmp_file_name)){
-            $addressForFile = Yii::app()->basePath . "/../files/library/".basename($end_file_name);
-//        }
-//        else{
-//            $addressForFile = Yii::app()->basePath . "/../images/library/".basename($end_file_name);
-//        }
-        copy($tmp_file_name,$addressForFile);
-        echo basename($end_file_name);
+        foreach ($_FILES as $filesBook){
+            $end_file_name = $filesBook["name"];
+            $tmp_file_name = $filesBook["tmp_name"];
+            $fileExtension = strtolower(pathinfo($end_file_name,PATHINFO_EXTENSION));
+            switch ($fileExtension) {
+                case "jpg":
+                case "png":
+                case "bmp":
+                case "jpeg":
+                case "tif":
+                case "tiff":
+                case "gif":
+                case "dib":
+                    $addressForFile = Yii::app()->basePath . "/../images/library/" . basename($end_file_name);
+                    break;
+                default:
+                    $addressForFile = Yii::app()->basePath . "/../files/library/" . basename($end_file_name);
+                    break;
+            }
+            copy($tmp_file_name,$addressForFile);
+            echo basename($end_file_name);
+        }
     }
     public function actionGetLibraryData()
     {
