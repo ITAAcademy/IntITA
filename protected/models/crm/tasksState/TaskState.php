@@ -63,8 +63,9 @@ abstract class TaskState {
         $lastHistoryTask = null;
         $lastUserHistoryTask=CrmTaskStateHistory::model()->find(
             array(
-                'condition'=>'id_state=:state',
+                'condition'=>'id_user=:id and id_state=:state',
                 'params'=>array(
+                    ':id'=>$user->getId(),
                     ':state'=>CrmTaskStatus::EXECUTED,
                 ),
                 'order' => 'id desc',
