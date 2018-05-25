@@ -819,7 +819,7 @@ function offlineStudentSubgroupCtrl ($scope, $http, superVisorService, $statePar
                     );
                     $jq('.apply-btn').prop('disabled', true);
 
-                    $jq('#selected_reason').on('change', function () {
+                    $jq('#selected_reason' && '#datepicker').on('change', function () {
                         $jq('.apply-btn').prop('disabled', false);
                     });
 

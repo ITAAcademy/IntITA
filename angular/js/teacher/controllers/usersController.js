@@ -340,6 +340,18 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             });
         $jq('#apply-btn').prop('disabled', true);
     };
+    $scope.getTrainers();
+
+    $scope.getAllActualTrainers = function() {
+        usersService
+            .allActualTrainers()
+            .$promise
+            .then(function (data) {
+                $scope.allTrainers = data;
+            });
+        $jq('#apply-btn').prop('disabled', true);
+    };
+    $scope.getAllTrainers();
 
     $scope.getAllTrainers = function() {
         usersService
@@ -701,7 +713,7 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
                     );
                     $jq('.apply-btn').prop('disabled', true);
 
-                    $jq('#selected_reason').on('change', function () {
+                    $jq('#selected_reason' && '#datepicker').on('change', function () {
                         $jq('.apply-btn').prop('disabled', false);
                     });
 
