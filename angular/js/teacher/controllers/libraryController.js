@@ -53,7 +53,7 @@ angular
                             .then(
                                 function successCallback() {
                                     if(bootbox.alert("Книгу видалено.")){
-                                        location.reload();
+                                        $scope.booksTable.reload();
                                     }
                                 },
                                 function errorCallback() {
@@ -94,17 +94,14 @@ angular
         };
         $scope.allCategory();
 
-        libraryService.sendFile({
-            fileType: 'link',
-            formData: $scope.formData
-        });
-        // libraryService.sendFile({
-        //     fileType: 'logo',
-        //     formData: $scope.formData
-        // });
-
         $scope.submitFormAddBook = function () {
             if ($scope.formData.title) {
+                libraryService.sendFile({
+                    formData: $scope.formData
+                });
+                libraryService.sendLogo({
+                    formData: $scope.formData
+                });
                 libraryService.addBook({
                     'data': $scope.formData
                 });
@@ -138,14 +135,6 @@ angular
                 headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
             }).then(function successCallback(response) {
                 $scope.formData = response.data;
-                libraryService.sendFile({
-                    fileType: 'link',
-                    formData: $scope.formData
-                });
-                libraryService.sendFile({
-                    fileType: 'logo',
-                    formData: $scope.formData
-                });
             }, function errorCallback() {
                 bootbox.alert("Отримати дані про книгу не вдалося");
             });

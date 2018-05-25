@@ -12,8 +12,8 @@ if (CHtml::encode($data->status) == Library::ACTIVE) {
     ?>
     <div class="view">
         <div class="logoBookWrap">
-            <img class="logoBook" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/books.png') ?>">
-<!--            <img class="logoBook" src="--><?php //echo StaticFilesHelper::createPath('image', 'library', $data->logo); ?><!--">-->
+<!--            <img class="logoBook" src="--><?php //echo StaticFilesHelper::fullPathTo('css', 'images/books.png') ?><!--">-->
+            <img class="logoBook" src="<?php echo StaticFilesHelper::createPath('image', 'library', $data->logo); ?>">
             <div class="starLevelIndex libraryStar">
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'starFull.png'); ?>"/>
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'starFull.png'); ?>"/>
@@ -24,7 +24,7 @@ if (CHtml::encode($data->status) == Library::ACTIVE) {
         </div>
         <br/>
         <a class="titleBook"
-           href="<?php echo CHtml::encode($data->link); ?>"><?php echo CHtml::encode($data->title); ?></a>
+           href="/files/library/<?php echo CHtml::encode($data->link); ?>"><?php echo CHtml::encode($data->title); ?></a>
         <br/>
         Опис:
         <?php echo CHtml::encode($data->description); ?>
