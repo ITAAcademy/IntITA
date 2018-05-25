@@ -390,6 +390,15 @@ div.aboutMore{
     #minTeacherForm{
         display: block !important;
     }
+    .graduatesFilter {
+        margin-right: 12px;
+    }
+    .graduatesFilter td {
+        padding: 0 2% 0 1%;
+    }
+    #search_input {
+        width: 132px;
+    }
 }
 @media screen and (min-width: 800px){
     #joinTeamMinButton{
