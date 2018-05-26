@@ -476,3 +476,12 @@ ul[rn-carousel] {
         width: 301px;
     }
 }
+#main-wrapper{
+    position: relative;
+    padding-bottom: 90px;
+    height: fit-content;
+}
+#mainfooter{
+    position: absolute;
+    bottom: 0;
+}
