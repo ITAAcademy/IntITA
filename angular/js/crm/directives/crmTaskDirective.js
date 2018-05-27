@@ -464,6 +464,8 @@ angular
                     cloneTask:function () {
                         if (self.isModelValid()){
                             delete self.data.id;
+                            delete self.data.cancelled_by;
+                            delete self.data.cancelled_date;
                             crmTaskServices.sendCrmTask({crmTask: angular.toJson(self.data)}).$promise
                                 .then(function (data) {
                                     if (data.message === 'OK') {

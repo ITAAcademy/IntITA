@@ -1,5 +1,5 @@
 <div ng-controller="changeTrainersCtrl">
-    <div ng-init="getTrainers()">
+    <div>
         <h4>Заміна тренера призведе до переходу всіх студентів від старого тренера до нового.</h4>
         <br>
         <label>Виберіть тренера, якого замінюємо:</label><br>

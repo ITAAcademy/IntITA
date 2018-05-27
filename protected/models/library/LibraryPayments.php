@@ -14,7 +14,7 @@
  *
  * The followings are the available model relations:
  * @property Library $library
- * @property User $user
+ * @property StudentReg $user
  */
 class LibraryPayments extends CActiveRecord
 {
@@ -53,7 +53,7 @@ class LibraryPayments extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'library' => array(self::BELONGS_TO, 'Library', 'library_id'),
-			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+			'user' => array(self::BELONGS_TO, 'StudentReg', 'user_id'),
 		);
 	}
 

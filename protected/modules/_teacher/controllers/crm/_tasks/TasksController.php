@@ -285,6 +285,11 @@ class TasksController extends TeacherCabinetController
 
     public function actionGetCrmTask($id)
     {
+        $criteria = new CDbCriteria();
+        $criteria->alias = 't';
+        $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId());
+        if(!in_array($id, $ids)) throw new CException("У тебе немає доступу до завдання");
+
         $data = [];
         $collaborator = [];
         $observer = [];

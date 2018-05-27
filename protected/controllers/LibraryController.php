@@ -183,11 +183,13 @@ class LibraryController extends Controller
     function actionLibraryPay($id){
         $library = Library::model()->findByPk($id);
         $library->createPayment();
+        $library->sendTicket();
         $this->redirect(Yii::app()->createUrl('/library/index'));
     }
 
     function actionLiqpayStatus($id){
         $library = Library::model()->findByPk($id);
+        $library->sendTicket();
         $library->createPayment();
     }
 

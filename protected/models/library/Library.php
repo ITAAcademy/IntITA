@@ -248,4 +248,18 @@ class Library extends CActiveRecord
         }
     }
 
+    public function sendTicket()
+    {
+        $liqPayPayment = LiqpayPayment::model()->findByPk(1);
+        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
+        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id));
+        $res = $liqpay->api("request", array(
+            'action'    => 'ticket',
+            'version'   => '3',
+            'order_id' => sha1(Yii::app()->user->getId().$this->id),
+            'email'   => $model->user->email,
+            'language'		=>	'uk',
+        ));
+    }
+
 }
