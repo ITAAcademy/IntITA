@@ -408,7 +408,7 @@ class CrmTasks extends CTaskUnitActiveRecord
         $notifyMessage->related_model_id = $task;
         $schedulerTask->type = TaskFactory::NEWSLETTER;
         date_default_timezone_set(Config::getServerTimezone());
-        if ($notificationParams['oneTimeNotification']){
+        if (isset($notificationParams['oneTimeNotification']) && $notificationParams['oneTimeNotification']){
             $schedulerTask->repeat_type = SchedulerTasks::ONCETASK;
             $schedulerTask->parameters = null;
             $dayOffset = 0;
