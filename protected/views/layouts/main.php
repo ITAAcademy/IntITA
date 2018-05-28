@@ -205,114 +205,114 @@ $header = new Header();
         ?>
         <!--forgot pass modal-->
     </div>
-</div>
-<div id="mainfooter">
+    <div id="mainfooter">
 
-    <div class="footercontent">
-        <div class="leftfooter">
-            <table>
-                <tr>
-                    <td>
-                        <a href="https://twitter.com/INTITA_EDU" target="_blank" title="Twitter">
-                            <img
-                                    src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'twitter.png'); ?>"/>
+        <div class="footercontent">
+            <div class="leftfooter">
+                <table>
+                    <tr>
+                        <td>
+                            <a href="https://twitter.com/INTITA_EDU" target="_blank" title="Twitter">
+                                <img
+                                        src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'twitter.png'); ?>"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="https://www.youtube.com/channel/UC2EMqcr4pEBuTGEJBaFgOzw" target="_blank" title="Youtube">
+                                <img src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'youtube.png'); ?>"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="https://plus.google.com/u/0/116490432477798418410/posts" target="_blank"
+                               title="Google+">
+                                <img
+                                        src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'googlePlus.png'); ?>"/>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="https://www.facebook.com/pages/INTITA/320360351410183" target="_blank"
+                               title="Facebook">
+                                <img
+                                        src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'facebook.png'); ?>"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="https://www.linkedin.com/company/intita?trk=biz-companies-cym" target="_blank"
+                               title="Linkedin">
+                                <img
+                                        src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'inl.png'); ?>"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="https://www.instagram.com/intitaedu/" target="_blank" title="Instagram">
+                                <img
+                                        src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'instagram.png'); ?>"/>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="centerfooter">
+                <div class="leftpart">
+                    <div class="footerlogo">
+                        <a href="<?php echo Yii::app()->createUrl('site/index'); ?>">
+                            <img id="footerLogo" src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_small.png'); ?>">
+                            <img id="footerLogo800" src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_small800.png'); ?>">
                         </a>
-                    </td>
-                    <td>
-                        <a href="https://www.youtube.com/channel/UC2EMqcr4pEBuTGEJBaFgOzw" target="_blank" title="Youtube">
-                            <img src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'youtube.png'); ?>"/>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="https://plus.google.com/u/0/116490432477798418410/posts" target="_blank"
-                           title="Google+">
-                            <img
-                                    src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'googlePlus.png'); ?>"/>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="https://www.facebook.com/pages/INTITA/320360351410183" target="_blank"
-                           title="Facebook">
-                            <img
-                                    src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'facebook.png'); ?>"/>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="https://www.linkedin.com/company/intita?trk=biz-companies-cym" target="_blank"
-                           title="Linkedin">
-                            <img
-                                    src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'inl.png'); ?>"/>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="https://www.instagram.com/intitaedu/" target="_blank" title="Instagram">
-                            <img
-                                    src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'instagram.png'); ?>"/>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="centerfooter">
-            <div class="leftpart">
-                <div class="footerlogo">
-                    <a href="<?php echo Yii::app()->createUrl('site/index'); ?>">
-                        <img id="footerLogo" src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_small.png'); ?>">
-                        <img id="footerLogo800" src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_small800.png'); ?>">
-                    </a>
+                    </div>
+                    <div class="footercontact">
+                        <p> <?php $footer = new Footer(); ?>
+                            <span><?php echo $footer->getMobile(); ?></span><br/>
+                            <span><?php echo $footer->getEmail(); ?></span><br/>
+                            <!--                        <span>--><?php //echo $footer->getSkype(); ?><!--</span><br/>-->
+                        </p>
+                    </div>
                 </div>
-                <div class="footercontact">
-                    <p> <?php $footer = new Footer(); ?>
-                        <span><?php echo $footer->getMobile(); ?></span><br/>
-                        <span><?php echo $footer->getEmail(); ?></span><br/>
-                        <!--                        <span>--><?php //echo $footer->getSkype(); ?><!--</span><br/>-->
-                    </p>
+
+                <div class="footermenu">
+                    <ul>
+                        <li class = <?php echo ($switch_navigation == Header::COURSES_ACTIVE)? 'current_page_active': ''?> >
+                            <a href="<?php echo Config::getBaseUrl() . '/courses'; ?>"><?php echo Yii::t('header', '0016'); ?></a>
+                        </li>
+                        <li class = <?php echo ($switch_navigation == Header::TEACHERS_ACTIVE)? 'current_page_active': ''?> >
+                            <a href="<?php echo Config::getBaseUrl() . '/teachers'; ?>"><?php echo Yii::t('header', '0021'); ?></a>
+                        </li>
+                        <li class = <?php echo ($switch_navigation == Header::GRADUATES_ACTIVE)? 'current_page_active': ''?> >
+                            <a href="<?php echo Config::getBaseUrl() . '/graduate'; ?>"><?php echo Yii::t('header', '0137'); ?></a>
+                        </li>
+                        <!--                    <li><a href="--><?php //echo Config::getBaseUrl() . '/crmForum'; ?><!--"-->
+                        <!--                           target="_blank">--><?php //echo Yii::t('header', '0017'); ?><!--</a></li>-->
+                        <li class = <?php echo ($switch_navigation == Header::ABOUTUS_ACTIVE)? 'current_page_active': ''?>>
+                            <a href="<?php echo Config::getBaseUrl() . '/aboutus'; ?>"><?php echo Yii::t('header', '0018'); ?></a>
+                        </li>
+                        <?php if (!Yii::app()->user->isGuest) { ?>
+                            <li>
+                                <a href="<?php echo Yii::app()->createUrl('/_teacher/cabinet/index'); ?>"><?php echo Yii::t('profile', '0815'); ?></a>
+                            </li>
+                        <?php } ?>
+                        <?php if (!Yii::app()->user->isGuest){ ?>
+                            <li>
+                                <a href="<?php echo Yii::app()->createUrl('/studentreg/profile', array('idUser' => Yii::app()->user->id)); ?>"><?php echo Yii::t('breadcrumbs', '0054')?></a>
+                            </li>
+                        <?php } ?>
+                        <li>
+                            <a href="http://robotamolodi.org/" target="_blank"><?php echo Yii::t('header', '0902'); ?></a>
+                        </li>
+                        <li>
+                            <a href="http://profitday.info/upcomingevents" target="_blank"><?php echo Yii::t('header', '0912'); ?></a>
+                        </li>
+                        <li>
+                            <a href="<?php echo Config::getBaseUrl() . '/forPartners' ?>"><?php echo Yii::t('header', '0981'); ?></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
-            <div class="footermenu">
-                <ul>
-                    <li class = <?php echo ($switch_navigation == Header::COURSES_ACTIVE)? 'current_page_active': ''?> >
-                        <a href="<?php echo Config::getBaseUrl() . '/courses'; ?>"><?php echo Yii::t('header', '0016'); ?></a>
-                    </li>
-                    <li class = <?php echo ($switch_navigation == Header::TEACHERS_ACTIVE)? 'current_page_active': ''?> >
-                        <a href="<?php echo Config::getBaseUrl() . '/teachers'; ?>"><?php echo Yii::t('header', '0021'); ?></a>
-                    </li>
-                    <li class = <?php echo ($switch_navigation == Header::GRADUATES_ACTIVE)? 'current_page_active': ''?> >
-                        <a href="<?php echo Config::getBaseUrl() . '/graduate'; ?>"><?php echo Yii::t('header', '0137'); ?></a>
-                    </li>
-                    <!--                    <li><a href="--><?php //echo Config::getBaseUrl() . '/crmForum'; ?><!--"-->
-                    <!--                           target="_blank">--><?php //echo Yii::t('header', '0017'); ?><!--</a></li>-->
-                    <li class = <?php echo ($switch_navigation == Header::ABOUTUS_ACTIVE)? 'current_page_active': ''?>>
-                        <a href="<?php echo Config::getBaseUrl() . '/aboutus'; ?>"><?php echo Yii::t('header', '0018'); ?></a>
-                    </li>
-                    <?php if (!Yii::app()->user->isGuest) { ?>
-                        <li>
-                            <a href="<?php echo Yii::app()->createUrl('/_teacher/cabinet/index'); ?>"><?php echo Yii::t('profile', '0815'); ?></a>
-                        </li>
-                    <?php } ?>
-                    <?php if (!Yii::app()->user->isGuest){ ?>
-                        <li>
-                            <a href="<?php echo Yii::app()->createUrl('/studentreg/profile', array('idUser' => Yii::app()->user->id)); ?>"><?php echo Yii::t('breadcrumbs', '0054')?></a>
-                        </li>
-                    <?php } ?>
-                    <li>
-                        <a href="http://robotamolodi.org/" target="_blank"><?php echo Yii::t('header', '0902'); ?></a>
-                    </li>
-                    <li>
-                        <a href="http://profitday.info/upcomingevents" target="_blank"><?php echo Yii::t('header', '0912'); ?></a>
-                    </li>
-                    <li>
-                        <a href="<?php echo Config::getBaseUrl() . '/forPartners' ?>"><?php echo Yii::t('header', '0981'); ?></a>
-                    </li>
-                </ul>
+            <div class="rightfooter">
+                <a href="javascript:void(0)"><img
+                            src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'go_up.png'); ?>"></a>
             </div>
-        </div>
-        <div class="rightfooter">
-            <a href="javascript:void(0)"><img
-                        src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'go_up.png'); ?>"></a>
         </div>
     </div>
 </div>
