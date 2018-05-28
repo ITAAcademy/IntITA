@@ -219,13 +219,12 @@ body{
     background-position-y: 69% !important;
 }
 tr .hours{
-    background: url(../../images/module/red-line.png);
     background-repeat-y: no-repeat;
     background-position-y: center;
     background-repeat: no-repeat;
     background-position-y: 69%,65px;
     background-position-x: 38px,24px;
-    padding-top: 26px;
+    padding-top: 16px;
     padding-bottom: 16px;
 }
 #schema tr:not(:first-child):nth-child(odd){
