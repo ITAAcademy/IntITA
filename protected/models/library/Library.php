@@ -194,7 +194,7 @@ class Library extends CActiveRecord
     {
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
         $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
-        $order_id = sha1(Yii::app()->user->getId().$this->id);
+        $order_id = LiqpayPayment::cryptic('user_id='.Yii::app()->user->getId().'&library_id='.$this->id);
         $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id));
         if(!$model){
             $html = $liqpay->cnb_form(array(
@@ -208,13 +208,13 @@ class Library extends CActiveRecord
                 'description'    => 'Купівля книги '.$this->title,
                 'order_id'       => $order_id,
                 // если пользователь возжелает вернуться на сайт
-                'result_url'	=>	Config::getBaseUrl() . '/library/libraryPay/?id='.$this->id,
+                'result_url'	=>	Config::getBaseUrl() . '/library/libraryPay/?id='.$this->id.'&order_id='.$order_id,
                 /*
                     если не вернулся, то Webhook LiqPay скинет нам сюда информацию из формы,
                     в частонсти все тот же order_id, чтобы заказ
                      можно было обработать как оплаченый
                 */
-                'server_url'	=>	Config::getBaseUrl() . '/library/liqpayStatus/?id='.$this->id,
+                'server_url'	=>	Config::getBaseUrl() . '/library/liqpayStatus/?id='.$this->id.'&order_id='.$order_id,
                 'language'		=>	'uk', // uk, en
                 'sandbox'=>'1' // и куда же без песочницы,
                 // не на реальных же деньгах тестировать
@@ -226,20 +226,22 @@ class Library extends CActiveRecord
         return $html;
     }
 
-    public function createPayment()
+    public function createPayment($order_id)
     {
+
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
+        $orderParams = self::getOrderParams($order_id);
         $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
-        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id));
+        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>$orderParams['user_id'], 'library_id'=>$orderParams['library_id']));
         $res = $liqpay->api("request", array(
             'action'        => 'status',
             'version'       => '3',
-            'order_id'      => sha1(Yii::app()->user->getId().$this->id)
+            'order_id'      => $order_id
         ));
         if(!$model && $res->result=='ok'){
             $model = new LibraryPayments();
             $model->library_id = $this->id;
-            $model->user_id = Yii::app()->user->getId();
+            $model->user_id = $orderParams['user_id'];
             $model->amount = $this->price;
             $model->order_id = $res->order_id;
             $model->date = new CDbExpression('NOW()');;
@@ -248,18 +250,27 @@ class Library extends CActiveRecord
         }
     }
 
-    public function sendTicket()
+    public function sendTicket($order_id)
     {
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
+        $orderParams = self::getOrderParams($order_id);
         $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
-        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id));
+        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>$orderParams['user_id'], 'library_id'=>$orderParams['library_id']));
         $res = $liqpay->api("request", array(
             'action'    => 'ticket',
             'version'   => '3',
-            'order_id' => sha1(Yii::app()->user->getId().$this->id),
+            'order_id' => $order_id,
             'email'   => $model->user->email,
             'language'		=>	'uk',
         ));
+    }
+
+    public function getOrderParams($order_id)
+    {
+        $url = 'https://example.com/?' . LiqpayPayment::encryptic($order_id);
+        $query_str = parse_url($url, PHP_URL_QUERY);
+        parse_str($query_str, $query_params);
+        return $query_params;
     }
 
 }
