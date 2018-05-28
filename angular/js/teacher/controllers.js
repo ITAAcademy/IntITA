@@ -498,16 +498,18 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
 
     $scope.sendMessage = function (url) {
         receiver = $jq("#receiverId").val();
-        if (receiver == "0") {
-            bootbox.alert('Виберіть отримувача повідомлення.');
+        var subject = $jq("input[name=subject]").val();
+        var textField =  $jq("#text").val();
+        if (receiver == "0" || subject.length <= 0 || textField.length <= 0) {
+            bootbox.alert('Everyone field ought to be filled.');
         } else {
             $http({
                 method: "POST",
                 url: url,
                 data: $jq.param({
                     receiver: receiver,
-                    subject: $jq("input[name=subject]").val(),
-                    text: $jq("#text").val(),
+                    subject: subject,
+                    text: textField,
                     scenario: "new"
                 }),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
