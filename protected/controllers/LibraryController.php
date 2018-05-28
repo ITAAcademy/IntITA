@@ -189,8 +189,8 @@ class LibraryController extends Controller
 
     function actionLiqpayStatus($id){
         $library = Library::model()->findByPk($id);
-        $library->sendTicket();
         $library->createPayment();
+        $library->sendTicket();
     }
 
     public function actionGetBook($id){
