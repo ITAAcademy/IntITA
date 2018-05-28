@@ -496,6 +496,13 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
         });
     };
 
+    $scope.onBlurHandler = function () {
+        var typeahead = $jq("#typeahead").val();
+        if (typeahead.length <= 0) {
+            $jq("#receiverId").val('0');
+        }
+    }
+
     $scope.sendMessage = function (url) {
         receiver = $jq("#receiverId").val();
         if (receiver == "0") {
