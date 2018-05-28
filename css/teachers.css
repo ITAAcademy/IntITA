@@ -315,8 +315,13 @@ div.aboutMore{
     .teacherBlock {
         width: 98%;
     }
-    #joinTeamMaxButton {
-        display:none;
+    #maxTeacherForm{
+        position: absolute;
+        top: -10px;
+    }
+    #ajaxListTeacher{
+        position: relative;
+        padding-top: 54px;
     }
     .one.column #minTeacherForm:first-child {
         display: none;
