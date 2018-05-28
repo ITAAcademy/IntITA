@@ -29,4 +29,9 @@
     'description'=>Yii::t('sharing','0645'),
 ));
 ?>
-
+<script>
+    $("#maxTeacherForm").css("left",($(window).width()/2)-$("#joinTeamMaxButton").width()/2);
+    $(window).resize(function () {
+            $("#maxTeacherForm").css("left",($(window).width()/2)-$("#joinTeamMaxButton").width()/2);
+    });
+</script>
