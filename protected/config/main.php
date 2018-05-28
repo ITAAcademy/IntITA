@@ -206,6 +206,12 @@ return array(
                     'categories' => 'application.crm.*',
                     'logFile' => 'crm.log',
                 ),
+                array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'error, warning, trace, info, profile',
+                    'categories' => 'liqpay',
+                    'logFile' => 'liqpay.log',
+                ),
             ),
         ),
 

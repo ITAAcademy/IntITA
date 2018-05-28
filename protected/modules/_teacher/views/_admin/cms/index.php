@@ -4,6 +4,9 @@
     domainPathLogo='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/logo/"   ?>';
 
 </script>
+<style>
+    .slide img{width:100%;height:500px !important;z-index:0;}
+</style>
 <div ng-controller="cmsCtrl">
         <?php
         $this->renderPartial('_settings', array());

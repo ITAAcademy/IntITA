@@ -188,6 +188,7 @@ class LibraryController extends Controller
     }
 
     function actionLiqpayStatus($id){
+        Yii::log('Liqpay id-'.$id,CLogger::LEVEL_INFO,'liqpay');
         $library = Library::model()->findByPk($id);
         $library->createPayment();
         $library->sendTicket();
@@ -206,7 +207,8 @@ class LibraryController extends Controller
                 ]);
             }
             else{
-                throw new CHttpException(404,'Документ не знайдено');
+
+             throw new CHttpException(404,'Документ не знайдено');
             }
         }
         else {
