@@ -143,7 +143,7 @@ class SiteController extends Controller {
         $model = $this->getTokenAcc($token);
         $modelemail = StudentReg::model()->findByAttributes(array('email' => $email));
         if (!$modelemail)
-            throw new \application\components\Exceptions\IntItaException('404', 'Посилання не є дійсним');
+            throw new \application\components\Exceptions\IntItaException(404, 'Посилання не є дійсним');
         if ($model->getToken() == $modelemail->getToken()) {
             $model->updateByPk($model->id, array('token' => null));
             $model->updateByPk($model->id, array('status' => 1));
@@ -333,7 +333,7 @@ class SiteController extends Controller {
             $hashModel = new StudentReg('resetemail');
             $hashModel->email = $mailDeHash;
             if (!$hashModel->validate())
-                throw new \application\components\Exceptions\IntItaException('403', 'Змінити email не вдалося. Некоректний email');
+                throw new \application\components\Exceptions\IntItaException(403, 'Змінити email не вдалося. Некоректний email');
 
             $model->updateByPk($model->id, array('email' => $mailDeHash));
             $model->updateByPk($model->id, array('token' => null));
@@ -519,7 +519,7 @@ class SiteController extends Controller {
         $hashModel = new StudentReg('linkingemail');
         $hashModel->email = $mailDeHash;
         if (!$hashModel->validate())
-            throw new \application\components\Exceptions\IntItaException('403', 'Змінити email не вдалося. Некоректний email');
+            throw new \application\components\Exceptions\IntItaException(403, 'Змінити email не вдалося. Некоректний email');
 
         $modelEmail = StudentReg::model()->findByAttributes(array('email' => $mailDeHash));
         if ($model->getToken() == $modelEmail->getToken() && $model->network == $network) {
@@ -544,7 +544,7 @@ class SiteController extends Controller {
 
         $modelEmail = StudentReg::model()->findByAttributes(array('email' => $email));
         if (!$modelEmail)
-            throw new \application\components\Exceptions\IntItaException('404', 'Посилання не є дійсним');
+            throw new \application\components\Exceptions\IntItaException(404, 'Посилання не є дійсним');
         if ($model->getToken() == $modelEmail->getToken()) {
             $model->updateByPk($model->id, array('token' => null));
             $model->updateByPk($model->id, array('status' => 1));

@@ -18,7 +18,7 @@ class IntItaException extends \Exception {
     {
         $this->statusCode=$status;
 
-        parent::__construct($status,$message);
+        parent::__construct($message,$status);
     }
 
 

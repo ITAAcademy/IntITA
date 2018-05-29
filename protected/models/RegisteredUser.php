@@ -36,7 +36,7 @@ class RegisteredUser
         if (($id !== null) && (($registrationData = StudentReg::model()->findByPk($id)) !== null)) {
             return new RegisteredUser($registrationData);
         }
-        throw new \application\components\Exceptions\IntItaException('404', 'Такого користувача немає');
+        throw new \application\components\Exceptions\IntItaException(404, 'Такого користувача немає');
     }
 
     //Model Methods
