@@ -28,9 +28,9 @@ class LessonController extends Controller
     {
         $lecture = Lecture::model()->findByPk($id);
         if(!$lecture)
-            throw new \application\components\Exceptions\IntItaException('404', Yii::t('lecture', '0810'));
+            throw new \application\components\Exceptions\IntItaException(404, Yii::t('lecture', '0810'));
         if(!Yii::app()->user->model->hasLectureAccess($lecture, $idCourse))
-            throw new \application\components\Exceptions\IntItaException('403', Yii::app()->user->model->lectureAccessErrorMessage);
+            throw new \application\components\Exceptions\IntItaException(403, Yii::app()->user->model->lectureAccessErrorMessage);
         return true;
     }
 
@@ -66,7 +66,7 @@ class LessonController extends Controller
         }
 
         if(!isset($lecture->pages[$page-1])){
-            throw new \application\components\Exceptions\IntItaException('404', Yii::t('lecture', '0812'));
+            throw new \application\components\Exceptions\IntItaException(404, Yii::t('lecture', '0812'));
         }
         $pageModel=$lecture->pages[$page-1];
 
