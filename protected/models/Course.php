@@ -1160,7 +1160,10 @@ class Course extends CActiveRecord implements IBillableObject, IServiceableWithE
             $courseRating->id_course = $this->course_ID;
             $courseRevision=RevisionCourse::model()->with(['properties'])->find('id_course=:course AND id_state=:activeState',
                 [':course'=>$this->course_ID,':activeState'=>RevisionState::ReleasedState]);
-            $courseRating->course_revision = $courseRevision?$courseRevision->id_course_revision:1;
+            if(!$courseRevision){
+                $courseRevision =  RevisionCourse::createNewRevisionFromCourse($this, Yii::app()->user)->cloneCourse(Yii::app()->user);
+            }
+            $courseRating->course_revision = $courseRevision->id_course_revision;
             $courseRating->course_done = (int)false;
 
             $criteria = new CDbCriteria();
