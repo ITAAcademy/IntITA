@@ -508,7 +508,7 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
         var subject = $jq("input[name=subject]").val();
         var textField =  $jq("#text").val();
         if (receiver == "0" || subject.length <= 0 || textField.length <= 0) {
-            bootbox.alert('Everyone field ought to be filled.');
+            bootbox.alert('Всі поля повинні бути заповнені.');
         } else {
             $http({
                 method: "POST",
