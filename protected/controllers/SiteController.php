@@ -73,7 +73,7 @@ class SiteController extends Controller {
                 break;
             case '404':
                 $breadcrumbs = Yii::t('breadcrumbs', '0782');
-                if ($isGotMessage)
+                if (!$isGotMessage)
                     $error["message"] = Yii::t('breadcrumbs', '0782');
                 break;
             case '410':
