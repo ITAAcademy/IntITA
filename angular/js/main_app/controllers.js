@@ -711,7 +711,8 @@ function sendTeacherLetter($scope, $http) {
             bootbox.alert(response.data,function () {
                 location.reload();
             });
-        },function errorCallback() {
+        },function errorCallback(error) {
+            console.log(error);
             bootbox.alert("Виникла помилка при відпправлені листа. Зв\'яжіться з адміністрацією.");
         });
     }
