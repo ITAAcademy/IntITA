@@ -2,7 +2,7 @@
 a, div#button_border, a#enter_button{-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box;}
 body{margin:0 auto;}
 img{border-style:none;}
-html, body{margin:0;padding:0;height:100%;font-family:"MyriadPro";box-sizing:border-box;font-size:inherit!important;}
+html, body{margin:0;padding:0;height:100%;font-family:"MyriadPro";box-sizing:border-box;font-size:inherit!important;min-height:100%;position:relative;}
 a, button, input[type="submit"]{outline:none;}
 a:hover{color:#666666;}
 #main-wrapper{box-sizing:border-box;min-height:100%;}
@@ -445,7 +445,7 @@ ul[rn-carousel] {
     margin-top: 45px;
     padding-top: 4px;
     margin: 0 auto;
-    margin-bottom: 32px;
+    margin-bottom: 50px;
 }
 .buttonBeginInTeachers:hover,.buttonBeginInTeachers:focus{
     border-top-color: #454545;
@@ -478,11 +478,18 @@ ul[rn-carousel] {
 }
 #main-wrapper{
     position: relative;
-    padding-bottom: 90px;
     height: fit-content;
 }
 #mainfooter{
     position: absolute;
     bottom: 0;
     background: white;
+}
+#contentBoxMain{
+    padding-bottom: 86px;
+}
+.clearfix::after {
+    content: " ";
+    display: table;
+    clear: both;
 }
