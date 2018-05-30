@@ -147,15 +147,31 @@ angular
             });
         };
     }])
-    .controller('addCategoryCtrl', ['$scope', 'libraryService', function ($scope, libraryService) {
-        $scope.newCategory = {
-            title_ua: '',
-            title_ru: '',
-            title_en: '',
+    .controller('addCategoryCtrl', ['$scope', 'libraryService','ngToast', function ($scope, libraryService,ngToast) {
+        $scope.changePageHeader('Категорії бібліотеки');
+        $scope.newCategoryInit = function () {
+            $scope.newCategory = {
+                title_ua: '',
+                title_ru: '',
+                title_en: '',
+            };
         };
+        $scope.newCategoryInit();
+
         $scope.submitCategory = function () {
-            libraryService.addCategory({
-                'data': $scope.newCategory
-            });
+            libraryService
+                .addCategory($scope.newCategory)
+                .$promise
+                .then(function successCallback() {
+                    ngToast.create({
+                        dismissOnTimeout: false,
+                        dismissButton: true,
+                        className: 'success',
+                        content: 'Категорію створено'
+                    });
+                    $scope.newCategoryInit();
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
         };
     }]);
