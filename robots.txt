@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /cabinet
+Disallow: /crmChat
+Disallow: /forum
+Disallow: /assets
+Disallow: /angular
+Disallow: /protected
+Disallow: /files
+Disallow: /runtime
+Disallow: /scripts
+Disallow: /test
+Disallow: /private
+Disallow: /themes
+Disallow: /*.md

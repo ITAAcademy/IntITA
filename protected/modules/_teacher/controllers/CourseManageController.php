@@ -311,7 +311,7 @@ class CourseManageController extends TeacherCabinetController
             $modules = Module::modulesNotInDefinedCourse($query, $course);
             echo $modules;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -332,7 +332,7 @@ class CourseManageController extends TeacherCabinetController
         if ($query && $lang && $currentCourseLang) {
             echo Course::coursesByQueryAndLang($query, $lang, $currentCourseLang);
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 

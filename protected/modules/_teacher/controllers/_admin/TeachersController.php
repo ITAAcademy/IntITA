@@ -252,7 +252,7 @@ class TeachersController extends TeacherCabinetController{
             $users = StudentReg::usersByQuery($query);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -262,7 +262,7 @@ class TeachersController extends TeacherCabinetController{
             $users = StudentReg::usersWithoutAssignedTrainers($query);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
     

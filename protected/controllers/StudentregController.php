@@ -157,10 +157,10 @@ class StudentRegController extends Controller
             die();
         }
         if (Yii::app()->user->isGuest || $idUser == 0)
-            throw new \application\components\Exceptions\IntItaException('403', 'Гість не може проглядати профіль користувача');
+            throw new \application\components\Exceptions\IntItaException(403, 'Гість не може проглядати профіль користувача');
         $user = RegisteredUser::userById($idUser);
         if (!$user)
-            throw new \application\components\Exceptions\IntItaException('404', 'Такого користувача немає');
+            throw new \application\components\Exceptions\IntItaException(404, 'Такого користувача немає');
         $model = $user->registrationData;
         $addressString = $model->addressString();
 

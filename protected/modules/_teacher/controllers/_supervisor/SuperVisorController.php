@@ -492,7 +492,7 @@ class SuperVisorController extends TeacherCabinetController
             $groups = OfflineGroups::groupsByQuery($query);
             echo $groups;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -699,7 +699,7 @@ class SuperVisorController extends TeacherCabinetController
         $groupAccess = GroupAccess::model()->findByPk(array('group_id' => $idGroup, 'service_id' => $idService));
         $groupAccess->end_date = date('Y-m-d');
         if ($groupAccess->save()) return true;
-        else  throw new \application\components\Exceptions\IntItaException('500');
+        else  throw new \application\components\Exceptions\IntItaException(500);
     }
 
     public function actionAddTrainer($id)
