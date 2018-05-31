@@ -37,6 +37,8 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     $scope.avatar=avatar;
     $scope.cityTitleUA = false;
     $scope.cityTitleUARegexp = /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/;
+    $scope.innRegexp = /^\d{10}$/;
+    $scope.isInnValid = true;
     if (avatar == 'noname.png') {
         $scope.progress--;
     }
@@ -67,6 +69,11 @@ function editProfileController($scope, $http, countryCity, careerService, specia
             selectSearch.attr('style', 'border-color: #d9d9d9; box-shadow: unset;');
             $scope.cityTitleUA = false;
         }
+    }
+
+    $scope.innKeyupHandler = function (e) {
+        var value = e.target.value;
+        $scope.isInnValid = (value.length > 0) ? false : true;
     }
 
     $scope.focusEmptyField=function (model) {
