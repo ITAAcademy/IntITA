@@ -9,8 +9,20 @@ class LibraryController extends TeacherCabinetController {
     public function hasRole() {
             return Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin());
     }
-    public function actionIndex() {
+    public function actionDashboard() {
         $this->renderPartial('/library/_dashboard', array(), false, true);
+    }
+    public function actionIndex() {
+        $this->renderPartial('/library/list', array(), false, true);
+    }
+    public function actionCreate() {
+        $this->renderPartial('/library/addBook', array(), false, true);
+    }
+    public function actionUpdate() {
+        $this->renderPartial('/library/editBook', array(), false, true);
+    }
+    public function actionCreateCategory() {
+        $this->renderPartial('/library/addCategory', array(), false, true);
     }
     public function actionGetLibraryList(){
         echo Library::getLibraryList();

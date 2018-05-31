@@ -82,23 +82,6 @@ angular
                 });
                 return promise;
             };
-            this.addCategory = function (data) {
-                var promise = $http({
-                    url: basePath + '/_teacher/library/libraryCategory/addCategory',
-                    method: 'POST',
-                    data: $jq.param({
-                        data: data,
-                    }),
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
-                }).then(function successCallback(response) {
-                    bootbox.alert('Ви успішно додали категорію');
-                    return response.data.rows;
-                }, function errorCallback() {
-                    bootbox.alert("Помилка сервера. Спробуйте ще раз або зв'яжіться з адміністратором сайту.");
-                    return false;
-                });
-                return promise;
-            };
             this.sendFile = function (data) {
                     var localLink = document.getElementById('link').files[0];
                     data.formData.link = localLink.name;
@@ -121,4 +104,16 @@ angular
                     transformRequest: angular.identity
                 })
             };
+
+            return $resource(
+                '',
+                {},
+                {
+                    addCategory : {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        url: basePath + '/_teacher/library/libraryCategory/addCategory',
+                        transformRequest : transformRequest.bind(null)
+                    },
+                });
         }]);
