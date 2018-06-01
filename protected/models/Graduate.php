@@ -276,9 +276,6 @@ class Graduate extends CActiveRecord
         $name = trim($data->first_name_en.' '.$data->last_name_en);
         if (empty($name)) {
             $name = trim($data->user['firstName'].' '.$data->user['secondName']);
-            if (empty($name)) {
-                $name = trim($data->first_name_ru.' '.$data->last_name_ru);    
-            }
         }
         return empty($name) ? $data->user['email'] : $name;
     }
@@ -287,9 +284,6 @@ class Graduate extends CActiveRecord
         $name = trim($data->first_name_ru.' '.$data->last_name_ru);
         if (empty($name)) {
             $name = trim($data->first_name_en.' '.$data->last_name_en);
-            if (empty($name)) {
-                $name = trim($data->user['firstName'].' '.$data->user['secondName']);
-            }
         }
         return empty($name) ? $data->user['email'] : $name;
     }
@@ -298,9 +292,6 @@ class Graduate extends CActiveRecord
         $name = trim($data->user['firstName'].' '.$data->user['secondName']);
         if (empty($name)) {
             $name = trim($data->first_name_en.' '.$data->last_name_en);
-            if (empty($name)) {
-                $name = trim($data->first_name_ru.' '.$data->last_name_ru);
-            }
         }
         return empty($name) ? $data->user['email'] : $name;
     }
