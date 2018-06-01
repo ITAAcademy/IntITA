@@ -262,14 +262,45 @@ class Graduate extends CActiveRecord
     }
 
     public function graduateName(){
+        $graduate = new Graduate;
         if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'en'){
-            $name = trim($this->first_name_en.' '.$this->last_name_en);
+            $name = $graduate->prioritizingNameEn($this);
         }else if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'ru'){
-            $name = trim($this->first_name_ru.' '.$this->last_name_ru);
+            $name = $graduate->prioritizingNameRu($this);
         }else{
-            $name=trim($this->user['firstName'].' '.$this->user['secondName']);
+            $name = $graduate->prioritizingNameUa($this);
         }
         echo $name? $name : $this->user['email'];
+    }
+
+    protected function prioritizingNameEn($data) {
+        $name = trim($data->first_name_en.' '.$data->last_name_en);
+        if (empty($name)) {
+            $name = trim($data->user['firstName'].' '.$data->user['secondName']);
+        } else {
+            $name = trim($data->first_name_ru.' '.$data->last_name_ru);
+        }
+        return $name;
+    }
+
+    protected function prioritizingNameRu($data) {
+        $name = trim($data->first_name_ru.' '.$data->last_name_ru);
+        if (empty($name)) {
+            $name = trim($data->first_name_en.' '.$data->last_name_en);
+        } else {
+            $name = trim($data->user['firstName'].' '.$data->user['secondName']);
+        }
+        return $name;
+    }
+
+    protected function prioritizingNameUa($data) {
+        $name = trim($data->user['firstName'].' '.$data->user['secondName']);
+        if (empty($name)) {
+            $name = trim($data->first_name_en.' '.$data->last_name_en);
+        } else {
+            $name = trim($data->first_name_ru.' '.$data->last_name_ru);
+        }
+        return $name;
     }
 
     public static function addGraduate($request){
