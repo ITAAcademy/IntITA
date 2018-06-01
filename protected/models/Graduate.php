@@ -264,43 +264,45 @@ class Graduate extends CActiveRecord
     public function graduateName(){
         $graduate = new Graduate;
         if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'en'){
-            $name = $graduate->prioritizingNameEn($this);
+            echo $graduate->prioritizingNameEn($this);
         }else if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'ru'){
-            $name = $graduate->prioritizingNameRu($this);
+            echo $graduate->prioritizingNameRu($this);
         }else{
-            $name = $graduate->prioritizingNameUa($this);
+            echo $graduate->prioritizingNameUa($this);
         }
-        echo $name? $name : $this->user['email'];
     }
 
     protected function prioritizingNameEn($data) {
         $name = trim($data->first_name_en.' '.$data->last_name_en);
         if (empty($name)) {
             $name = trim($data->user['firstName'].' '.$data->user['secondName']);
-        } else {
-            $name = trim($data->first_name_ru.' '.$data->last_name_ru);
+            if (empty($name)) {
+                $name = trim($data->first_name_ru.' '.$data->last_name_ru);    
+            }
         }
-        return $name;
+        return empty($name) ? $data->user['email'] : $name;
     }
 
     protected function prioritizingNameRu($data) {
         $name = trim($data->first_name_ru.' '.$data->last_name_ru);
         if (empty($name)) {
             $name = trim($data->first_name_en.' '.$data->last_name_en);
-        } else {
-            $name = trim($data->user['firstName'].' '.$data->user['secondName']);
+            if (empty($name)) {
+                $name = trim($data->user['firstName'].' '.$data->user['secondName']);
+            }
         }
-        return $name;
+        return empty($name) ? $data->user['email'] : $name;
     }
 
     protected function prioritizingNameUa($data) {
         $name = trim($data->user['firstName'].' '.$data->user['secondName']);
         if (empty($name)) {
             $name = trim($data->first_name_en.' '.$data->last_name_en);
-        } else {
-            $name = trim($data->first_name_ru.' '.$data->last_name_ru);
+            if (empty($name)) {
+                $name = trim($data->first_name_ru.' '.$data->last_name_ru);
+            }
         }
-        return $name;
+        return empty($name) ? $data->user['email'] : $name;
     }
 
     public static function addGraduate($request){
