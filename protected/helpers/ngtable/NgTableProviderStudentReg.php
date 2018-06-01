@@ -38,8 +38,8 @@ class NgTableProviderStudentReg extends NgTableProviderDefault implements INgTab
         if ($fieldName == 'fullName') {
             return [
                 "$alias.firstName $direction",
-                "$alias.middleName $direction",
-                "$alias.secondName $direction"
+                "$alias.secondName $direction",
+                "$alias.email $direction"
             ];
         } else {
             return parent::getOrderStatement($fieldName, $direction, $alias);
