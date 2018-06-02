@@ -103,10 +103,7 @@ class LibraryCategory extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-    public function getCategory(){
-        $allCategory = LibraryCategory::model()->findAll();
-        return CJSON::encode($allCategory);
-    }
+
     public function getCategoriesName($id_category){
         return CJSON::encode(LibraryCategory::model()->findByPk($id_category));
     }

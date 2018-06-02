@@ -16,54 +16,86 @@ class LibraryController extends TeacherCabinetController {
         $this->renderPartial('/library/list', array(), false, true);
     }
     public function actionCreate() {
-        $this->renderPartial('/library/addBook', array(), false, true);
+        $this->renderPartial('/library/create', array(), false, true);
     }
     public function actionUpdate() {
-        $this->renderPartial('/library/editBook', array(), false, true);
-    }
-    public function actionCreateCategory() {
-        $this->renderPartial('/library/addCategory', array(), false, true);
+        $this->renderPartial('/library/update', array(), false, true);
     }
     public function actionGetLibraryList(){
-        echo Library::getLibraryList();
+        $requestParam = $_GET;
+        $criteria=new CDbCriteria;
+        $criteria->with = ['libraryDependsBookCategories','libraryDependsBookCategories.idCategory'];
+        $criteria->join = 'left join library_depends_book_category as bc ON bc.id_book = t.id';
+        if (isset($requestParam['filter']['libraryDependsBookCategories.id'])){
+            $criteria->addCondition('bc.id_category='.$requestParam['filter']['libraryDependsBookCategories.id']);
+            unset($requestParam['filter']['libraryDependsBookCategories.id']);
+        }
+        $criteria->order = 't.id desc';
+        $adapter = new NgTableAdapter('Library',$requestParam);
+        $adapter->mergeCriteriaWith($criteria);
+        echo json_encode($adapter->getData());
     }
     public function actionAddBook(){
-        Library::addBook($_POST["data"]["data"]);
-    }
-    public function actionGetBookFile(){
-        foreach ($_FILES as $filesBook){
-            $end_file_name = $filesBook["name"];
-            $tmp_file_name = $filesBook["tmp_name"];
-            $fileExtension = strtolower(pathinfo($end_file_name,PATHINFO_EXTENSION));
-            switch ($fileExtension) {
-                case "jpg":
-                case "png":
-                case "bmp":
-                case "jpeg":
-                case "tif":
-                case "tiff":
-                case "gif":
-                case "dib":
-                    $addressForFile = Yii::app()->basePath . "/../images/library/" . basename($end_file_name);
-                    break;
-                default:
-                    $addressForFile = Yii::app()->basePath . "/../files/library/" . basename($end_file_name);
-                    break;
+        $statusCode = 201;
+        $id = null;
+        try {
+            $data = $_POST;
+            $book = isset($data['id'])?Library::model()->findByPk($data['id']):new Library();
+            $book->attributes = $data;
+            $categories = [];
+            if (isset($data['category'])) {
+                foreach ($data['category'] as $category){
+                    array_push($categories, $category['id']);
+                }
             }
-            copy($tmp_file_name,$addressForFile);
-            echo basename($end_file_name);
+            if($book->save()){
+                $result = ['message' => 'OK', 'id' => $book->id];
+                LibraryDependsBookCategory::model()->editLibraryCategory($categories, $book);
+            }else{
+                throw new Exception(json_encode(ValidationMessages::getValidationErrors($book)));
+            }
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
-    }
-    public function actionGetLibraryData()
-    {
-        echo json_encode(ActiveRecordToJSON::toAssocArrayWithRelations(Library::model()->with('category')->findByPk(Yii::app()->request->getParam('id'))));
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
-    public function actionUpdateLibraryData()
+    public function actionGetLibraryData()
     {
-        Library::updateBook($_POST["data"]["data"]);
+        $result = [];
+        $result['data'] = ActiveRecordToJSON::toAssocArrayWithRelations(Library::model()->with('category')->findByPk(Yii::app()->request->getParam('id')));
+        echo json_encode($result);
     }
+
+
     public function actionRemoveBook(){
         Library::removeBook();
+    }
+
+    public function actionUploadBookFiles($id, $type)
+    {
+        Library::model()->uploadBookFile($id, $type);
+    }
+
+    public function actionGetBook($id){
+        $book = Library::model()->findByPk($id);
+        if ($book){
+            $file = "/files/library/{$book->id}/link/{$book->link}";
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].$file)){
+                return   Yii::app()->request->xSendFile($file,[
+                    'forceDownload'=>true,
+                    'xHeader'=>'X-Accel-Redirect',
+                    'terminate'=>false
+                ]);
+            }
+            else{
+
+                throw new CHttpException(404,'Документ не знайдено');
+            }
+        }
+        else {
+            throw new CHttpException(404,'Документ не знайдено');
+        }
     }
 }

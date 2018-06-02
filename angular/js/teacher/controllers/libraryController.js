@@ -16,24 +16,37 @@ angular
     .controller('booksCtrl',
         ['$scope', '$http', 'NgTableParams', '$resource', 'libraryService', function ($scope, $http, NgTableParams, $resource, libraryService) {
             $scope.changePageHeader('Список книг');
-            $scope.allCategoryArrForList = [];
-            $scope.allCategoryForList = function () {
+
+            // $scope.allCategoryArrForList = [];
+            // $scope.allCategoryForList = function () {
+            //     return libraryService
+            //         .getCategory()
+            //         .then(function (data) {
+            //             for (var key in data) {
+            //                 if (data[key].title_ua !== undefined) {
+            //                     $scope.allCategoryArrForList.push({id: data[key].id, title: data[key].title_ua});
+            //                 }
+            //             }
+            //             return $scope.allCategoryArrForList;
+            //         });
+            // };
+            // $scope.allCategoryForList();
+
+            $scope.allCategory = function () {
                 return libraryService
-                    .getCategory()
+                    .getCategories()
+                    .$promise
                     .then(function (data) {
-                        for (var key in data) {
-                            if (data[key].title_ua !== undefined) {
-                                $scope.allCategoryArrForList.push({id: data[key].id, title: data[key].title_ua});
-                            }
-                        }
-                        return $scope.allCategoryArrForList;
+                        $scope.allCategoryArrForList = data.rows;
                     });
             };
-            $scope.allCategoryForList();
+            $scope.allCategory();
+
             $scope.booksTable = new NgTableParams({}, {
                 getData: function (params) {
                     return libraryService
-                        .booksList(params.url())
+                        .list(params.url())
+                        .$promise
                         .then(function (data) {
                             params.total(data.count);
                             return data.rows;
@@ -67,88 +80,131 @@ angular
                 });
             };
         }])
-    .controller('libraryFormCtrl', ['$scope', 'libraryService', function ($scope, libraryService) {
-        $scope.changePageHeader('Додання книги');
-        $scope.formData = {
-            title: '',
-            description: '',
-            price: '',
-            language: '',
-            category: '',
-            status: '',
-            link: '',
-            logo: ''
+    .controller('libraryFormCtrl', ['$scope', 'libraryService', 'FileUploader','$state','$stateParams', function ($scope, libraryService, FileUploader, $state, $stateParams) {
+        $scope.changePageHeader('Rybuf');
+        $scope.newBookInit = function(){
+            $scope.formData = {
+                title: '',
+                description: '',
+                price: '',
+                language: '',
+                category: '',
+                status: '',
+                link: '',
+                logo: ''
+            };
         };
-        $scope.allCategoryArr = [];
-        $scope.allCategory = function () {
-            return libraryService
-                .getCategory()
-                .then(function (data) {
-                    for (var key in data) {
-                        if (data[key].title_ua !== undefined) {
-                            $scope.allCategoryArr.push(data[key]);
-                        }
-                    }
-                    return $scope.allCategoryArr;
-                });
-        };
-        $scope.allCategory();
-
-        $scope.submitFormAddBook = function () {
-            if ($scope.formData.title) {
-                libraryService.sendFile({
-                    formData: $scope.formData
-                });
-                libraryService.sendLogo({
-                    formData: $scope.formData
-                });
-                libraryService.addBook({
-                    'data': $scope.formData
-                });
-            } else {
-                bootbox.alert("Введіть назву книжки");
-            }
-        };
-    }])
-    .controller('editBookCtrl', ['$scope', 'libraryService', '$http', 'NgTableParams', '$stateParams', function ($scope, libraryService, $http, NgTableParams, $stateParams) {
-        $scope.changePageHeader('Редагування книги');
-        $scope.allCategoryArr = [];
-        $scope.allCategory = function () {
-            return libraryService
-                .getCategory()
-                .then(function (data) {
-                    for (var key in data) {
-                        if (data[key].title_ua !== undefined) {
-                            $scope.allCategoryArr.push(data[key]);
-                        }
-                    }
-                    return $scope.allCategoryArr;
-                });
-        };
-        $scope.allCategory();
-        var url = basePath + '/_teacher/library/library';
-        $scope.loadBookData = function () {
-            $http({
-                url: url + '/getLibraryData',
-                method: "POST",
-                data: $jq.param({id: $stateParams.id}),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
-            }).then(function successCallback(response) {
+        $scope.getLibrary = function () {
+            libraryService.getLibrary({'id':$stateParams.id}).$promise
+            .then(function successCallback(response) {
+                response.data.price =  Number(response.data.price);
                 $scope.formData = response.data;
             }, function errorCallback() {
-                bootbox.alert("Отримати дані про книгу не вдалося");
+                bootbox.alert("Отримати дані категорії не вдалося");
             });
         };
-        $scope.loadBookData();
 
-        $scope.updateForm = function () {
-            libraryService.editBook({
-                'data': $scope.formData
-            });
+        if($stateParams.id){
+            $scope.getLibrary();
+        }else{
+            $scope.newBookInit();
+        }
+
+        $scope.allCategory = function () {
+            return libraryService
+                .getCategories()
+                .$promise
+                .then(function (data) {
+                    return data.rows;
+                });
+        };
+
+        //files
+        $scope.libraryId = null;
+        var bookUploader = $scope.bookUploader = new FileUploader({
+            url: basePath+'/_teacher/library/library/uploadBookFiles',
+            removeAfterUpload: true
+        });
+        bookUploader.onBeforeUploadItem = function(item) {
+            item.url = basePath+'/_teacher/library/library/uploadBookFiles?id=' + $scope.libraryId + '&type=link';
+        };
+        bookUploader.onCompleteAll = function() {
+            if($stateParams.id){
+                location.reload();
+            }else{
+                $state.go('library/list',{},{reload: true});
+            }
+        };
+        bookUploader.onErrorItem = function(item, response, status, headers) {
+            if(status==500)
+                bootbox.alert("Виникла помилка при завантажені книги.");
+        };
+        bookUploader.filters.push({
+            name: 'imageFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                return true;
+            }
+        });
+
+        var logoUploader = $scope.logoUploader = new FileUploader({
+            url: basePath+'/_teacher/library/library/uploadBookFiles',
+            removeAfterUpload: true
+        });
+        logoUploader.onBeforeUploadItem = function(item) {
+            item.url = basePath+'/_teacher/library/library/uploadBookFiles?id=' + $scope.libraryId + '&type=logo';
+        };
+        logoUploader.onCompleteAll = function() {
+            if($stateParams.id){
+                location.reload();
+            }else{
+                $state.go('library/list',{},{reload: true});
+            }
+        };
+        logoUploader.onErrorItem = function(item, response, status, headers) {
+            if(status==500)
+                bootbox.alert("Виникла помилка при завантажені книги.");
+        };
+        logoUploader.filters.push({
+            name: 'imageFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+                return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            }
+        });
+
+        logoUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        //files
+
+        $scope.submitFormAddBook = function () {
+            libraryService
+                .create($scope.formData)
+                .$promise
+                .then(function (data) {
+                    if (data.message === 'OK') {
+                        if(bookUploader.queue.length){
+                            $scope.libraryId = data.id;
+                            bookUploader.uploadAll();
+                        }
+                        if(logoUploader.queue.length){
+                            $scope.libraryId = data.id;
+                            logoUploader.uploadAll();
+                        }
+                        if(!$stateParams.id){
+                            $state.go('library/list',{},{reload: true});
+                        }
+                    } else {
+                        bootbox.alert('Виникла помилка:'+'<br>'+data.reason);
+                    }
+                })
+                .catch(function (error) {
+                    bootbox.alert(error.data.reason);
+                });
         };
     }])
     .controller('addCategoryCtrl', ['$scope', 'libraryService','ngToast', function ($scope, libraryService,ngToast) {
-        $scope.changePageHeader('Категорії бібліотеки');
+        $scope.changePageHeader('Категорія бібліотеки');
         $scope.newCategoryInit = function () {
             $scope.newCategory = {
                 title_ua: '',
@@ -167,11 +223,54 @@ angular
                         dismissOnTimeout: false,
                         dismissButton: true,
                         className: 'success',
-                        content: 'Категорію створено'
+                        content: 'Категорію створено',
+                        timeout: 3000
                     });
                     $scope.newCategoryInit();
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
         };
+    }])
+    .controller('updateCategoryCtrl', ['$scope', 'libraryService','ngToast', '$stateParams', function ($scope, libraryService,ngToast,$stateParams) {
+        $scope.changePageHeader('Категорія бібліотеки');
+
+        libraryService.getCategory({'id':$stateParams.id}).$promise
+            .then(function successCallback(response) {
+                $scope.newCategory = response.data;
+            }, function errorCallback() {
+                bootbox.alert("Отримати дані категорії не вдалося");
+            });
+
+        $scope.submitCategory = function () {
+            libraryService
+                .addCategory($scope.newCategory)
+                .$promise
+                .then(function successCallback() {
+                    ngToast.create({
+                        dismissOnTimeout: false,
+                        dismissButton: true,
+                        className: 'success',
+                        content: 'Категорію оновлено',
+                        timeout: 3000
+                    });
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+        };
+    }])
+    .controller('categoryBooksCtrl', ['$scope', 'libraryService', 'NgTableParams', function ($scope, libraryService, NgTableParams) {
+        $scope.changePageHeader('Категорії бібліотеки');
+
+        $scope.categoryBooksTable = new NgTableParams({}, {
+            getData: function (params) {
+                return libraryService
+                    .getCategories(params.url())
+                    .$promise
+                    .then(function (data) {
+                        params.total(data.count);
+                        return data.rows;
+                    });
+            }
+        });
     }]);

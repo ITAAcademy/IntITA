@@ -12,7 +12,7 @@ if (CHtml::encode($data->status) == Library::ACTIVE) {
     ?>
     <div class="view">
         <div class="logoBookWrap">
-            <img class="logoBook" src="<?php echo StaticFilesHelper::createPath('image', 'library', $data->logo); ?>">
+            <img class="logoBook" src="/files/library/<?php echo $data->id ?>/logo/<?php echo $data->logo ?>">
             <div class="starLevelIndex libraryStar">
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'starFull.png'); ?>"/>
                 <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'starFull.png'); ?>"/>
@@ -41,6 +41,12 @@ if (CHtml::encode($data->status) == Library::ACTIVE) {
         echo mb_substr($category, 0, -2, 'UTF-8');
         ?>
         <br/>
-        <?php echo $data->getPaymentButton() ?>
+        <?php
+            if (Yii::app()->user->isGuest){
+                echo '<em>Для купівлі авторизуйся</em>';
+            }else{
+                echo $data->getPaymentButton();
+            }
+        ?>
     </div>
 <?php } ?>

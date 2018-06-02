@@ -7,6 +7,7 @@
  * @property integer $id
  * @property string $title
  * @property string $description
+ * @property string $status
  * @property string $price
  * @property string $language
  * @property string $link
@@ -35,13 +36,13 @@ class Library extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title', 'required'),
+			array('title, description, price, language, status, author, status', 'required'),
 			array('title, language', 'length', 'max'=>50),
 			array('description, link, logo,author', 'length', 'max'=>256),
 			array('price', 'length', 'max'=>8),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, description, price, language, status, link, logo,author', 'safe', 'on'=>'search'),
+			array('id, title, description, price, language, status, link, logo, author, status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -120,63 +121,39 @@ class Library extends CActiveRecord
 
         $adapter = new NgTableAdapter('Library',$requestParam);
         $adapter->mergeCriteriaWith($criteria);
-        echo json_encode($adapter->getData());
+        return json_encode($adapter->getData());
     }
-    public static function addBook($data){
-	    $book = new Library();
-	    $book->attributes = $data;
-	    $book->status = $data["status"];
-        if($book->save()&&$data["category"]!==""){
-            $depends = ["id_book"=>$book["id"],"id_category"=>$data["category"]];
-            LibraryDependsBookCategory::addInfo($depends);
-        }
-    }
-    public static function updateBook($data){
-        $id = $data['id'];
-        $book = Library::model()->findByPk($id);
-        if(file_exists(Yii::getPathOfAlias('webroot')."/images/library/".basename($book["logo"]))&&$data["logo"] !== $book["logo"]&&$data["logo"]!==""&&$book["logo"]!==""){
-            unlink(Yii::getPathOfAlias('webroot')."/images/library/".basename($book["logo"]));
-        };
-        if(file_exists(Yii::getPathOfAlias('webroot')."/files/library/".basename($book["link"]))&&$data["link"] !== $book["link"]&&$data["link"]!==""&&$book["link"]){
-            unlink(Yii::getPathOfAlias('webroot')."/files/library/".basename($book["link"]));
-        };
-        $book->attributes=$data;
-        $book->status = $data["status"];
-        if($book->update()){
-            $depends = ["id_book"=>$book["id"],"id_category"=>$data["category"]];
-            LibraryDependsBookCategory::updateInfo($depends);
-        }
-    }
+
     public static function removeBook(){
+        $id = $_POST['id'];
         if(!is_null(LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$_POST['id']]))){
-            LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$_POST['id']])->deleteAll();
-                $deletedBook = Library::model()->findByPk($_POST['id']);
+            LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$id])->deleteAll();
+                $deletedBook = Library::model()->findByPk($id);
                 if ($deletedBook["logo"]!==""){
-                    if (file_exists(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]))){
-                        unlink(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]));
+                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"])){
+                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"]);
                     }
                 };
                 if ($deletedBook["link"]!==""){
-                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]))){
-                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]));
+                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"])){
+                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
                     }
                 }
-                Library::model()->deleteByPk($_POST['id']);
-        }
-        else{
-                $deletedBook = Library::model()->findByPk($_POST['id']);
-                if ($deletedBook["logo"]!==""){
-                    if (file_exists(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]))){
-                        unlink(Yii::getPathOfAlias('webroot')."/images/library/".basename($deletedBook["logo"]));
-                    };
-                };
-                if ($deletedBook["link"]!==""){
-                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]))){
-                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".basename($deletedBook["link"]));
-                    }
+                Library::model()->deleteByPk($id);
+        } else {
+            $deletedBook = Library::model()->findByPk($id);
+            if ($deletedBook["logo"]!==""){
+                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"])){
+                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"]);
                 }
-                Library::model()->deleteByPk($_POST['id']);
+            };
+            if ($deletedBook["link"]!==""){
+                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"])){
+                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
+                }
             }
+            Library::model()->deleteByPk($id);
+        }
     }
 
 	/**
@@ -273,4 +250,31 @@ class Library extends CActiveRecord
         return $query_params;
     }
 
+    public function uploadBookFile($id, $type){
+        $model = Library::model()->findByPk($id);
+        if (!file_exists(Yii::app()->basePath . "/../files/library/".$id)) {
+            mkdir(Yii::app()->basePath . "/../files/library/".$id);
+        }
+        if (!file_exists(Yii::app()->basePath . "/../files/library/".$id."/".$type)) {
+            mkdir(Yii::app()->basePath . "/../files/library/".$id."/".$type);
+        }
+
+        if(!empty($_FILES['file'])){
+            $ext = pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION);
+            $image = uniqid().'.'.$ext;
+
+            $file=Yii::getpathOfAlias('webroot').'/files/library/'.$id.'/'.$type.'/'.$model->$type;
+            if (is_file($file))
+                unlink($file);
+
+            move_uploaded_file(
+                $_FILES['file']["tmp_name"],
+                Yii::getpathOfAlias('webroot').'/files/library/'.$id.'/'.$type.'/'.$image
+            );
+            $model->$type = $image;
+            $model->save();
+        }else{
+            throw new \application\components\Exceptions\IntItaException(500, 'Завантажити файл не вдалося');
+        }
+    }
 }
