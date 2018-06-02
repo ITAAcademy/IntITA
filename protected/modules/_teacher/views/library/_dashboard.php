@@ -14,13 +14,16 @@
                 <div class="panel-body">
                     <ul>
                         <li>
-                            <a href="#/library/addBook">Додати книгу</a>
+                            <a href="#/library/create">Додати книгу</a>
                         </li>
                         <li>
                             <a href="#/library/list">Список книг</a>
                         </li>
                         <li>
                             <a href="#/library/addCategory">Додати категорію</a>
+                        </li>
+                        <li>
+                            <a href="#/library/categoryList">Список категорій</a>
                         </li>
                     </ul>
                     <br>

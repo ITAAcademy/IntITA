@@ -198,7 +198,7 @@ class LibraryController extends Controller
         $book = Library::model()->findByPk($id);
         $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>1));
         if ($book && $payment){
-            $file = "/files/library/{$book->link}";
+            $file = "/files/library/{$book->id}/link/{$book->link}";
             if (file_exists($_SERVER['DOCUMENT_ROOT'].$file)){
                 return   Yii::app()->request->xSendFile($file,[
                     'forceDownload'=>true,
