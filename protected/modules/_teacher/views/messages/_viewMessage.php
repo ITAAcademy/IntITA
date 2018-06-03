@@ -39,9 +39,11 @@ $url = Yii::app()->createUrl('/_teacher/messages/form');
                             Переслати</a>
                     </li>
                     <?php }?>
+                        <?php $receiver = Yii::app()->db->createCommand()->select("id_receiver")->from("message_receiver")->where("id_message=:id_message",array(":id_message"=>$message->id_message))->queryAll();
+                        ?>
                         <li>
                             <a href="" ng-click="deleteMessage('<?= $message->id_message; ?>',
-                                            '<?=Yii::app()->createUrl("/_teacher/messages/delete");?>','<?=Yii::app()->user->model->id;?>')">
+                                            '<?=Yii::app()->createUrl("/_teacher/messages/delete");?>','<?= $receiver[0]["id_receiver"]; ?>')">
                                 Видалити це повідомлення
                             </a>
                         </li>
