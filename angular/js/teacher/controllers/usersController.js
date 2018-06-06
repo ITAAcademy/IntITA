@@ -678,7 +678,8 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
                             title: "Вибери, будь ласка, причину виключення:",
                             message: '<div class="panel-body"><div class="row"><form role="form" name="rejectMessage"><div class="form-group col-md-12">'+
                             '<select class="form-control" id="selected_reason">'+$scope.option_str+'</select>'+
-                            '<input type="text" id="datepicker" class="form-control" placeholder="Виберіть дату" style="margin-top: 25px;">'+
+                            '<div style="margin-top: 25px;"><div id="simple_box" style="display: none; color: green; margin-left: 6px;" >Виберіть дату!</div></div>'+
+                            '<input type="text" id="datepicker" class="form-control" placeholder="Виберіть дату *" >'+
                             '<textarea class="form-control custom-control" id="comment" rows="7" cols="45" name="text" placeholder="Ваш коментар ..." style="margin-top: 25px;"></textarea>'+
                             '</div></form></div></div>',
                             buttons: {
@@ -719,9 +720,21 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
                     );
                     $jq('.apply-btn').prop('disabled', true);
 
-                    $jq('#selected_reason' && '#datepicker').on('change', function () {
+                    $jq('#selected_reason').on('change', function () {
+                        if ($jq('#datepicker').val()  === '') {
+                            var box = '#simple_box';
+	                        $jq(box).show(400);
+	                        $jq(box).delay(2000);
+	                        $jq(box).hide(400);
+                            return ;
+                        }
                         $jq('.apply-btn').prop('disabled', false);
                     });
+
+		            $jq('#datepicker').on('change', function () {
+			            if ($jq('#selected_reason').val()  === null) { return ; }
+			            $jq('.apply-btn').prop('disabled', false);
+		            });
 
                     $jq(function () {
                         var firstday = new Date();
