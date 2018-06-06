@@ -72,6 +72,6 @@
                 </div>
             </div>
         </div>
-        <input type="submit" class="btn btn-default" ng-disabled="myForm.$invalid" value="Додати книгу">
+        <input type="submit" class="btn btn-default" ng-disabled="myForm.$invalid" value="Зберегти книгу">
     </form>
 </div>

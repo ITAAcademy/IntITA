@@ -124,38 +124,6 @@ class Library extends CActiveRecord
         return json_encode($adapter->getData());
     }
 
-    public static function removeBook(){
-        $id = $_POST['id'];
-        if(!is_null(LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$_POST['id']]))){
-            LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$id])->deleteAll();
-                $deletedBook = Library::model()->findByPk($id);
-                if ($deletedBook["logo"]!==""){
-                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"])){
-                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"]);
-                    }
-                };
-                if ($deletedBook["link"]!==""){
-                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"])){
-                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
-                    }
-                }
-                Library::model()->deleteByPk($id);
-        } else {
-            $deletedBook = Library::model()->findByPk($id);
-            if ($deletedBook["logo"]!==""){
-                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"])){
-                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"]);
-                }
-            };
-            if ($deletedBook["link"]!==""){
-                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"])){
-                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
-                }
-            }
-            Library::model()->deleteByPk($id);
-        }
-    }
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

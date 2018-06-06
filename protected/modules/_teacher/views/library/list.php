@@ -26,8 +26,7 @@
             <td title="'Мова'" sortable="'language'">
                 {{book.language}}
             </td>
-<!--            filter="{'libraryDependsBookCategories.id': 'select'}" filter-data="allCategoryArrForList"-->
-            <td title="'Категорія'"  >
+            <td title="'Категорія'">
                 <span ng-repeat="category in book.libraryDependsBookCategories">{{category.idCategory.title_ua}}<br></span>
             </td>
             <td title="'Фото'">
@@ -38,7 +37,7 @@
             </td>
             <td>
                 <a ng-href="#/library/update/{{book.id}}"><i class="fa fa-edit"></i></a><br>
-<!--                <a ng-click="removeBook(book.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>-->
+                <a ng-click="removeBook(book.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
             </td>
         </tr>
     </table>

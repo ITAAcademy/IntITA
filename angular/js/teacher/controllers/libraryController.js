@@ -17,32 +17,11 @@ angular
         ['$scope', '$http', 'NgTableParams', '$resource', 'libraryService', function ($scope, $http, NgTableParams, $resource, libraryService) {
             $scope.changePageHeader('Список книг');
 
-            // $scope.allCategoryArrForList = [];
-            // $scope.allCategoryForList = function () {
-            //     return libraryService
-            //         .getCategory()
-            //         .then(function (data) {
-            //             for (var key in data) {
-            //                 if (data[key].title_ua !== undefined) {
-            //                     $scope.allCategoryArrForList.push({id: data[key].id, title: data[key].title_ua});
-            //                 }
-            //             }
-            //             return $scope.allCategoryArrForList;
-            //         });
-            // };
-            // $scope.allCategoryForList();
-
-            $scope.allCategory = function () {
-                return libraryService
-                    .getCategories()
-                    .$promise
-                    .then(function (data) {
-                        $scope.allCategoryArrForList = data.rows;
-                    });
-            };
-            $scope.allCategory();
-
-            $scope.booksTable = new NgTableParams({}, {
+            $scope.booksTable = new NgTableParams({
+                sorting: {
+                    'id': 'desc',
+                },
+            }, {
                 getData: function (params) {
                     return libraryService
                         .list(params.url())
@@ -55,7 +34,7 @@ angular
             });
             $scope.removeBook = function (id) {
                 var url = basePath + '/_teacher/library/library';
-                bootbox.confirm('Видалити книгу?', function (result) {
+                bootbox.confirm('Ви впевнені, що бажаєте видалити книгу?', function (result) {
                     if (result) {
                         $http({
                             method: 'POST',
@@ -69,18 +48,15 @@ angular
                                         $scope.booksTable.reload();
                                     }
                                 },
-                                function errorCallback() {
-                                    bootbox.alert("Операцію не вдалося виконати.");
+                                function errorCallback(response) {
+                                    bootbox.alert(response.data.reason);
                                 }
                             );
-                    }
-                    else {
-                        bootbox.alert("Операцію відмінено.");
                     }
                 });
             };
         }])
-    .controller('libraryFormCtrl', ['$scope', 'libraryService', 'FileUploader','$state','$stateParams', function ($scope, libraryService, FileUploader, $state, $stateParams) {
+    .controller('libraryFormCtrl', ['$scope', 'libraryService', 'FileUploader','$state','$stateParams','ngToast', function ($scope, libraryService, FileUploader, $state, $stateParams, ngToast) {
         $scope.changePageHeader('Rybuf');
         $scope.newBookInit = function(){
             $scope.formData = {
@@ -191,6 +167,12 @@ angular
                             $scope.libraryId = data.id;
                             logoUploader.uploadAll();
                         }
+                        ngToast.create({
+                            dismissButton: true,
+                            className: 'success',
+                            content: 'Операцію успішно виконано',
+                            timeout: 3000
+                        });
                         if(!$stateParams.id){
                             $state.go('library/list',{},{reload: true});
                         }
@@ -220,7 +202,6 @@ angular
                 .$promise
                 .then(function successCallback() {
                     ngToast.create({
-                        dismissOnTimeout: false,
                         dismissButton: true,
                         className: 'success',
                         content: 'Категорію створено',
@@ -248,7 +229,6 @@ angular
                 .$promise
                 .then(function successCallback() {
                     ngToast.create({
-                        dismissOnTimeout: false,
                         dismissButton: true,
                         className: 'success',
                         content: 'Категорію оновлено',
