@@ -10,6 +10,14 @@ angular
     .controller('promotionSchemesCtrl',promotionSchemesCtrl)
     .controller('studentProjectsCtrl',studentProjectsCtrl)
     .controller('bannersSliderCtrl',bannersSliderCtrl)
+    .controller('bannersSliderForGraduatesCtrl',bannersSliderForGraduatesCtrl)
+    .directive('drctv', ["$interval",function($interval){
+        return {
+            link: function ($scope, $element, $attribute, $interval) {
+                $scope.beginVertScroll();
+            }
+        };
+    }]);
 
 /* Controllers */
 function editProfileController($scope, $http, countryCity, careerService, specializations, $q, $timeout, FileUploader, documentsServices) {
@@ -984,4 +992,36 @@ function bannersSliderCtrl($scope, $http) {
         $scope.slides = response.data.banners;
     });
 
+}
+function bannersSliderForGraduatesCtrl($scope,$http, $interval) {
+    $scope.slides = [];
+    $http({
+        method:'get',
+        url:"/site/getBannersForGraduates/location"+window.location.pathname
+    }).then(function (response) {
+        $scope.slides = response.data.banners;
+    });
+    $scope.beginVertScroll = function(){
+        $interval(
+            function(){
+                var firstElement = $('ul.container li:first');
+                var hgt = firstElement.height() +
+
+                    parseInt(firstElement.css("paddingTop"), 10) + parseInt(firstElement.css("paddingBottom"), 10)+
+                    parseInt(firstElement.css("marginTop"), 10) + parseInt(firstElement.css("marginBottom"), 10);
+
+                var cntnt = firstElement.html();
+
+                $("ul.container").append("<li>" + cntnt + "</li>");
+                cntnt = "";
+                firstElement.animate({
+                    "marginTop" : -hgt
+                }, 600, function(){
+                    $scope.itemToremove = $(this);
+                    $(this).remove();
+                });
+            },
+            5000
+        );
+    };
 }
