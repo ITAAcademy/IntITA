@@ -37,12 +37,14 @@ class LibraryController extends TeacherCabinetController {
     public function actionAddBook(){
         $statusCode = 201;
         $id = null;
+        $connection = Yii::app()->db;
+        $transaction = $connection->beginTransaction();
         try {
             $data = $_POST;
             $book = isset($data['id'])?Library::model()->findByPk($data['id']):new Library();
             $book->attributes = $data;
             $categories = [];
-            if (isset($data['category'])) {
+            if (isset($data['category']) && !empty($data['category'])) {
                 foreach ($data['category'] as $category){
                     array_push($categories, $category['id']);
                 }
@@ -53,7 +55,9 @@ class LibraryController extends TeacherCabinetController {
             }else{
                 throw new Exception(json_encode(ValidationMessages::getValidationErrors($book)));
             }
+            $transaction->commit();
         } catch (Exception $error) {
+            $transaction->rollback();
             $statusCode = 500;
             $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
@@ -92,6 +96,11 @@ class LibraryController extends TeacherCabinetController {
                     unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
                 }
             }
+            if ($deletedBook["demo_link"]!==""){
+                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/demo_link/".$deletedBook["demo_link"])){
+                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/demo_link/".$deletedBook["demo_link"]);
+                }
+            }
             Library::model()->deleteByPk($id);
 
             $transaction->commit();
@@ -126,6 +135,16 @@ class LibraryController extends TeacherCabinetController {
         }
         else {
             throw new CHttpException(404,'Документ не знайдено');
+        }
+    }
+
+    public function actionLibraryByQuery($query)
+    {
+        if ($query) {
+            $library = Library::libraryByQuery($query);
+            echo $library;
+        } else {
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 }

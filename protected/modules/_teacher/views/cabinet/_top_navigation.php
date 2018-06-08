@@ -59,12 +59,6 @@
                     <i class="fa fa-user fa-fw"></i> Мій профіль</a>
             </li>
             <li class="divider"></li>
-            <li class="lang">
-                <a ng-repeat="lang in languages track by $index" href="" ng-click="changeLang(lang)"
-                   ng-class="{selectedLang: currentLanguage==lang}">
-                    {{lang}}
-                </a>
-            </li>
             <li><a href="<?php echo Config::getBaseUrl() . '/courses'; ?>"><i
                         class="fa fa-user fa-fw"></i><?php echo Yii::t('header', '0016'); ?></a></li>
             <li><a href="<?php echo Config::getBaseUrl() . '/teachers'; ?>"><i

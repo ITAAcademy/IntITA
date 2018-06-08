@@ -342,6 +342,7 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
     var studentsWithoutTrainerTypeaheadUrl = basePath + '/_teacher/cabinet/studentsWithoutTrainerByQuery';
     var teacherConsultantsByQueryAndModuleTypeaheadUrl = basePath + '/_teacher/cabinet/teacherConsultantsByQueryAndModule';
     var groupTypeaheadUrl = basePath + '/_teacher/_supervisor/superVisor/groupsByQuery';
+    var libraryTypeaheadUrl = basePath + '/_teacher/library/library/libraryByQuery';
 
     $scope.getActiveUsers = function (value) {
         return typeAhead.getData(activeUsersTypeaheadUrl, {query: value});
@@ -390,6 +391,9 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
     };
     $scope.getStudentsWithoutTrainer = function (value) {
         return typeAhead.getData(studentsWithoutTrainerTypeaheadUrl, {query: value});
+    };
+    $scope.getLibraryList = function (value) {
+        return typeAhead.getData(libraryTypeaheadUrl, {query: value});
     };
 
     $scope.updateRolesChat = function () {

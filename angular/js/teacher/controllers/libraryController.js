@@ -57,7 +57,7 @@ angular
             };
         }])
     .controller('libraryFormCtrl', ['$scope', 'libraryService', 'FileUploader','$state','$stateParams','ngToast', function ($scope, libraryService, FileUploader, $state, $stateParams, ngToast) {
-        $scope.changePageHeader('Rybuf');
+        $scope.changePageHeader('Книга');
         $scope.newBookInit = function(){
             $scope.formData = {
                 title: '',
@@ -122,6 +122,24 @@ angular
             }
         });
 
+        var demoBookUploader = $scope.demoBookUploader = new FileUploader({
+            url: basePath+'/_teacher/library/library/uploadBookFiles',
+            removeAfterUpload: true
+        });
+        demoBookUploader.onBeforeUploadItem = function(item) {
+            item.url = basePath+'/_teacher/library/library/uploadBookFiles?id=' + $scope.libraryId + '&type=demo_link';
+        };
+        demoBookUploader.onErrorItem = function(item, response, status, headers) {
+            if(status==500)
+                bootbox.alert("Виникла помилка при завантажені книги.");
+        };
+        demoBookUploader.filters.push({
+            name: 'imageFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                return true;
+            }
+        });
+
         var logoUploader = $scope.logoUploader = new FileUploader({
             url: basePath+'/_teacher/library/library/uploadBookFiles',
             removeAfterUpload: true
@@ -166,6 +184,10 @@ angular
                         if(logoUploader.queue.length){
                             $scope.libraryId = data.id;
                             logoUploader.uploadAll();
+                        }
+                        if(demoBookUploader.queue.length){
+                            $scope.libraryId = data.id;
+                            demoBookUploader.uploadAll();
                         }
                         ngToast.create({
                             dismissButton: true,

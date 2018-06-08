@@ -11,6 +11,9 @@
  * @property string $amount
  * @property integer $status
  * @property string $date
+ * @property integer $payment_id
+ * @property string $sender_phone
+ * @property string $sender_card_mask2
  *
  * The followings are the available model relations:
  * @property Library $library
@@ -40,7 +43,7 @@ class LibraryPayments extends CActiveRecord
 			array('amount', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, order_id, library_id, user_id, amount, status, date', 'safe', 'on'=>'search'),
+			array('id, order_id, library_id, user_id, amount, status, date, payment_id, sender_phone, sender_card_mask2', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +73,9 @@ class LibraryPayments extends CActiveRecord
 			'amount' => 'Amount',
 			'status' => 'Status',
 			'date' => 'Date',
+            'payment_id' => 'Payment id',
+            'sender_phone' => 'Sender phone',
+            'sender_card_mask2' => 'Sender card mask2',
 		);
 	}
 
@@ -98,7 +104,9 @@ class LibraryPayments extends CActiveRecord
 		$criteria->compare('amount',$this->amount,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('date',$this->date,true);
-
+        $criteria->compare('payment_id',$this->payment_id,true);
+        $criteria->compare('sender_phone',$this->sender_phone);
+        $criteria->compare('sender_card_mask2',$this->sender_card_mask2,true);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

@@ -101,6 +101,7 @@
             <div class="panel-body">
                 <ul>
                     <li><a ui-sref="liqpay">LiqPay</a></li>
+                    <li><a ui-sref="liqpay_payments">Проплати</a></li>
                 </ul>
             </div>
             <div class="panel-footer">
