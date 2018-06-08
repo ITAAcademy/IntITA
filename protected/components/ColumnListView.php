@@ -26,7 +26,10 @@ class ColumnListView extends CListView {
                             $data['data']=$item;
                             $data['widget']=$this;
                             $owner->$render($this->itemView, $data);
-                        } } echo CHtml::closeTag('div');} else $this->renderEmptyText();
+                        } } echo CHtml::closeTag('div');} else {
+                            $this->renderEmptyText();
+                            echo CHtml::closeTag('div');
+                        };
                 $y++;
             }
     }
