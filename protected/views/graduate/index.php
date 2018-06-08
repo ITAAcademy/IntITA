@@ -34,7 +34,9 @@
             <ul class="container" ng-controller="bannersSliderForGraduatesCtrl" drctv >
                 <li class="graduatesBannerContent" ng-repeat="slide in slides | orderBy:'slide_position'"  >
                     <p class="bannerForGraduatesTitleText">{{slide.text}}</p>
-                    <img class="bannerForGraduatesImg" src="{{slide.file_path}}">
+                    <a href="{{slide.url}}">
+                        <img class="bannerForGraduatesImg" src="{{slide.file_path}}">
+                    </a>
                 </li>
             </ul>
         </div>
