@@ -42,7 +42,7 @@ class Library extends CActiveRecord
 			array('title, description, price, language, status, author, status', 'required'),
 			array('title, language', 'length', 'max'=>50),
 			array('description, link, logo,author', 'length', 'max'=>256),
-			array('price', 'length', 'max'=>8),
+			array('price, paper_price', 'length', 'max'=>8),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, description, price, language, status, link, logo, author, status, paper_price, demo_link', 'safe', 'on'=>'search'),

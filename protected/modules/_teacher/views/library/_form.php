@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
             <label for="price">Ціна за паперовий примірник:</label>
-            <input type="number" class="form-control" id="price" placeholder="Ціна за паперовий примірник" name="paper_price" ng-model="formData.paper_price">
+            <input type="number" class="form-control" id="paper_price" placeholder="Ціна за паперовий примірник" name="paper_price" ng-model="formData.paper_price">
         </div>
         <div class="form-group">
             <label for="description">Автор:</label>
