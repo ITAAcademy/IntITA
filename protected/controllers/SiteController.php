@@ -764,4 +764,8 @@ class SiteController extends Controller {
         $banners = Banners::model()->findAll('visible = 1');
         echo CJSON::encode(['slideTime'=>Config::getBannerSliderTime(), 'banners'=>$banners]);
     }
+    public function actionGetBannersForGraduates($location){
+        $bannersForGraduates = BannersForGraduates::model()->findAll('visible = 1');
+        echo CJSON::encode(['banners'=>$bannersForGraduates]);
+    }
 }
