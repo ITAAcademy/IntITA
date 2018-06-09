@@ -12,13 +12,13 @@
                 </colgroup>
                 <tr ng-repeat="row in $data track by $index">
                     <td style="word-wrap:break-word" data-title="'Автор'" filter="{'user.fullName': 'text'}" sortable="'user.fullName'">
-                        <a ng-href="#/users/profile/{{row.who}}">{{row.user.fullName}}</a>
+                        <a ng-href="#/users/profile/{{row.who}}" target="_blank">{{row.user.fullName}}</a>
                     </td>
                     <td style="word-wrap:break-word" data-title="'Про кого'" filter="{'teacher.fullName': 'text'}" sortable="'teacher.fullName'">
-                        <a ng-href="#/users/profile/{{row.teacher.id}}">{{row.teacher.fullName}}</a>
+                        <a ng-href="#/users/profile/{{row.teacher.id}}" target="_blank">{{row.teacher.fullName}}</a>
                     </td>
                     <td data-title="'Відгук'" filter="{'text': 'text'}">
-                        <a ng-href="#/response/detail/{{row.id}}">{{row.text | htmlToPlaintext}}</a>
+                        <a ng-href="#/response/detail/{{row.id}}" target="_blank">{{row.text | htmlToPlaintext}}</a>
                     </td>
                     <td data-title="'Дата відгуку'" filter="{'date': 'text'}" sortable="'date'">
                         {{row.date}}

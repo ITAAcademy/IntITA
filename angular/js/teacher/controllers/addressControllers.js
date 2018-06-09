@@ -81,7 +81,7 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
         $http.post(fullUrl, {id: city.id})
         .then(function successCallback(response) {
             bootbox.alert(response.data, function () {
-                $state.go("address", {}, {reload: true});
+                $scope.citiesTable.reload();
             });
         }, function errorCallback() {
             bootbox.alert("Операцію не вдалося виконати.");

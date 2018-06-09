@@ -8,7 +8,7 @@
                     </colgroup>
                     <tr ng-repeat="row in $data">
                         <td data-title="'ID'" style="width: ">{{row.id}}</td>
-                        <td data-title="'Параметр'" ><a href="#/configuration/siteconfig/view/{{row.id}}">{{row.param}}</a></td>
+                        <td data-title="'Параметр'" ><a href="#/configuration/siteconfig/view/{{row.id}}" target="_blank">{{row.param}}</a></td>
                         <td data-title="'Значення'">{{row.value}}</td>
                         <td data-title="'Опис'">{{row.label}}</td>
                     </tr>

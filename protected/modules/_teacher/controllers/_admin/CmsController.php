@@ -17,12 +17,13 @@ class CmsController extends TeacherCabinetController
     public function actionIndex()
     {
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-        if (isset($subdomain)) {
-            $this->renderPartial('index', array(), false, true);
-        } else {
-            echo '<p style="color:red">*Конструктор сайту буде доступний після створення субдомену</p>';
-            return $this->renderPartial('subdomain');
-        }
+        $this->renderPartial('index', array('subdomain'=>isset($subdomain)), false, true);
+    }
+
+    public function actionGetSubdomain()
+    {
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        return $subdomain;
     }
 
     public function actionMenuLists()
@@ -50,7 +51,27 @@ class CmsController extends TeacherCabinetController
         }
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
-
+    public function actionUpdateSocialNetworks()
+    {
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
+            //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
+//            var_dump($params);die();
+            $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
+            $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $settings->attributes = $params;
+//            var_dump($settings); die();
+            if (!$settings->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
+            }
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
     public function actionRemoveMenuLink()
     {
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
@@ -131,16 +152,24 @@ class CmsController extends TeacherCabinetController
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
+    public function actionSettings()
+    { $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        if (isset($subdomain)) {
+            $this->renderPartial('settings');
+        } else{
+            echo '<p style="color:red">*Конструктор сайту буде доступний після створення субдомену</p>';
+            return $this->renderPartial('index');
+        }
+    }
+
     public function actionGetSettings()
-    {
-        $id_org = Yii::app()->user->model->getCurrentOrganizationId();
+{       $id_org = Yii::app()->user->model->getCurrentOrganizationId();
         $model = CJSON::encode(CmsGeneralSettings::model()->findByAttributes(['id_organization' => $id_org]));
         echo $model;
     }
 
     public function actionGeneratePage()
-    {
-        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+    {   $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
         $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
         $subdomain->createSubdomainDirectory($path_domain);
         $path = $path_domain . '/index.php';

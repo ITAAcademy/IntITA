@@ -7,10 +7,18 @@
 <style>
     .slide img{width:100%;height:500px !important;z-index:0;}
 </style>
-<div ng-controller="cmsCtrl">
-        <?php
-        $this->renderPartial('_settings', array());
-        ?>
+
+<div  ng-controller="cmsCtrl" ng-controller="settingsCtrl" ng-controller="cmsMenuListCtrl" >
+
+
+    <?php if(!$subdomain) {
+        $this->renderPartial('subdomain', array());
+    }?>
+
+
+
+
+<?php if($subdomain) {?>
     <div id="cms_content_generate">
         <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'jquery.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
@@ -107,9 +115,11 @@
 
             </script>
         </div>
+        <input id="save_cms" name="save" value="Згенерувати сторінку" type="submit"  onclick="bootbox.alert('Сторінку згенеровано!')" class="btn btn-primary" >
     </div>
+<?php } ?>
 </div>
-<input id="save_cms" name="save" value="Згенерувати сторінку" type="submit"  onclick="bootbox.alert('Сторінку згенеровано!')" class="btn btn-primary" >
+
 
 
 

@@ -29,7 +29,7 @@
                                 <tr  ng-repeat="lecture in lectures">
                                     <td>{{lecture.module}}</td>
                                     <td>{{lecture.order}}</td>
-                                    <td><a href="{{lecture.lesson_url}}">{{lecture.title}}</a></td>
+                                    <td><a href="{{lecture.lesson_url}}" target="_blank">{{lecture.title}}</a></td>
                                     <td>{{lecture.type}}</td>
                                 </tr>
                                 </tbody>

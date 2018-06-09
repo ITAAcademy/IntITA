@@ -20,6 +20,10 @@
             <input type="number" class="form-control" id="price" placeholder="Ціна" name="price" ng-model="formData.price">
         </div>
         <div class="form-group">
+            <label for="price">Ціна за паперовий примірник:</label>
+            <input type="number" class="form-control" id="paper_price" placeholder="Ціна за паперовий примірник" name="paper_price" ng-model="formData.paper_price">
+        </div>
+        <div class="form-group">
             <label for="description">Автор:</label>
             <input class="form-control" id="author" name="author" ng-model="formData.author" placeholder="Автор книги">
         </div>
@@ -61,6 +65,18 @@
             </div>
         </div>
         <div class="form-group">
+            <a ng-if="formData.demo_link" ng-href="/_teacher/library/library/getBook?id={{formData.id}}">Демо книги</a>
+            <br>
+            <label for="link">Виберіть демо файл книги:</label>
+            <input type="file" nv-file-select="" uploader="demoBookUploader">
+            <div ng-if="demoBookUploader.getNotUploadedItems().length">
+                <div class="progress" style="margin-bottom:0">
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': demoBookUploader.progress + '%' }"
+                         style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <img style="width: 100px" ng-if="formData.logo" src="/files/library/{{formData.id}}/logo/{{formData.logo}}">
             <br>
             <label for="link">Виберіть фото книги:</label>
@@ -72,6 +88,6 @@
                 </div>
             </div>
         </div>
-        <input type="submit" class="btn btn-default" ng-disabled="myForm.$invalid" value="Додати книгу">
+        <input type="submit" class="btn btn-default" ng-disabled="myForm.$invalid" value="Зберегти книгу">
     </form>
 </div>

@@ -28,7 +28,7 @@ class LibraryController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','libraryPay','getBook','liqpayStatus'),
+				'actions'=>array('index','view','libraryPay','getBook','liqpayStatus','getDemoBook'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -122,10 +122,10 @@ class LibraryController extends Controller
 	 */
 	public function actionIndex()
 	{
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('status=' . Library::ACTIVE);
 	    $dataProvider=new CActiveDataProvider('Library',array(
-	        'criteria'=>array(
-	            'with'=>array('libraryDependsBookCategories')
-            ),
+            'criteria' => $criteria,
         ));
 
         if (!Yii::app()->session['lg'] || Yii::app()->session['lg']=='ua')
@@ -209,6 +209,28 @@ class LibraryController extends Controller
             else{
 
              throw new CHttpException(404,'Документ не знайдено');
+            }
+        }
+        else {
+            throw new CHttpException(404,'Документ не знайдено');
+        }
+    }
+
+    public function actionGetDemoBook($id){
+        $book = Library::model()->findByPk($id);
+
+        if ($book){
+            $file = "/files/library/{$book->id}/demo_link/{$book->demo_link}";
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].$file)){
+                return   Yii::app()->request->xSendFile($file,[
+                    'forceDownload'=>false,
+                    'xHeader'=>'X-Accel-Redirect',
+                    'terminate'=>false
+                ]);
+            }
+            else{
+
+                throw new CHttpException(404,'Документ не знайдено');
             }
         }
         else {
