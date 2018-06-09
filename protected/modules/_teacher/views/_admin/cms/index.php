@@ -4,6 +4,10 @@
     domainPathLogo='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/logo/"   ?>';
 
 </script>
+<style>
+    .slide img{width:100%;height:500px !important;z-index:0;}
+</style>
+
 <div  ng-controller="cmsCtrl" ng-controller="settingsCtrl" ng-controller="cmsMenuListCtrl" >
 
 
@@ -16,11 +20,10 @@
 
 <?php if($subdomain) {?>
     <div id="cms_content_generate">
-
         <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'jquery.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
         <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular/angular.min.js'); ?>"></script>
-        <div id="cms_content">
+        <div id="cms_content" class="clearfix">
             <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'fontface.css'); ?>"/>
             <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/main.css'); ?>"/>
             <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/header.css'); ?>"/>
@@ -28,8 +31,6 @@
             <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/about_us.css'); ?>"/>
             <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/news.css'); ?>"/>
             <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/footer.css'); ?>"/>
-
-
             <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>">
             <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'); ?>"></script>
             <?php
@@ -40,6 +41,13 @@
             $this->renderPartial('_footer', array());
             ?>
             <script>
+                    $(".owl-carousel img").height($(window).width()/2);
+                    $(window).resize(function () {
+                        $(".owl-carousel img").height($(window).width()/2);
+                    });
+                    $(window).on("orientationchange",function(){
+                        $(".owl-carousel img").height($(window).width()/2);
+                    });
                  angular
                         .module('cmsAppNew',['ui.bootstrap'])
                           .controller('sliderGeneratedCtrl', ['$scope','$http',

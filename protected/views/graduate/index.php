@@ -20,8 +20,25 @@
         <h1><?php echo Yii::t('graduates', '0297')?></h1>
         <?php echo $this->renderPartial('_graduateFilter'); ?>
     </div>
-    <div id="graduateBlock">
-
+    <div id="graduateBlock" class="clearfix">
         <?php echo $this->renderPartial('_graduatesList', array('dataProvider'=>$dataProvider,'lang'=>$lang)); ?>
+        <div class="bannerForGraduatesWrapper clearfix">
+            <div class="bannerForGraduatesTitle clearfix">
+                <div class="col-md-3 col-sm-2">
+                    <img src="<?php echo StaticFilesHelper::createPath('image', 'graduates', 'forma_1.png'); ?>">
+                </div>
+                <div class="col-md-9 col-sm-10 title-without-padding-banners-graduates">
+                    <p>Компанії, де працюють наші випускники</p>
+                </div>
+            </div>
+            <ul class="container" ng-controller="bannersSliderForGraduatesCtrl" drctv >
+                <li class="graduatesBannerContent" ng-repeat="slide in slides | orderBy:'slide_position'"  >
+                    <p class="bannerForGraduatesTitleText">{{slide.text}}</p>
+                    <a href="{{slide.url}}">
+                        <img class="bannerForGraduatesImg" src="{{slide.file_path}}">
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

@@ -37,12 +37,12 @@ angular
             $scope.changePageHeader('Завдання');
             var initializing = true;
             var isMobile = {
-                Android: () => navigator.userAgent.match(/Android/i),
-                BlackBerry: () => navigator.userAgent.match(/BlackBerry/i),
-                iOS: () => navigator.userAgent.match(/iPhone|iPad|iPod/i),
-                Opera: () => navigator.userAgent.match(/Opera Mini/i),
-                Windows: () => navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i),
-                any: () => (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()),
+                Android: function () { return navigator.userAgent.match(/Android/i); },
+                BlackBerry: function () {return navigator.userAgent.match(/BlackBerry/i); },
+                iOS: function () {return navigator.userAgent.match(/iPhone|iPad|iPod/i); },
+                Opera: function () {return navigator.userAgent.match(/Opera Mini/i); },
+                Windows: function () {return navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i); },
+                any: function () {return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); },
             };
             // deny drag&drop for mobile devices
             $scope.canDrag = isMobile.any() ? false : true;

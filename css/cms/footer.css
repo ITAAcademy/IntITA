@@ -11,7 +11,9 @@
     border-right-style: solid;
     border-left-width: 1px;
     border-left-style: solid;
-
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 .left_footer {
     padding-top: 11px;
@@ -275,4 +277,10 @@
     height: 29px;
     padding-left: 0px;
     padding-right: 0px;
+}
+
+#cms_content{
+    position: relative;
+    padding-bottom: 69px;
+    min-height: 100%;
 }

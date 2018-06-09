@@ -32,6 +32,7 @@ $(window).scroll(function() {
     }else{
         $("#hambNav").css({display: "none"});
         $("#hambMenu").hide();
+        $("#sharingMain.big_icon").css({display: "block"});
     }
 });
 $(document).click(function () {

@@ -8,12 +8,6 @@ angular
 
 function graduateCtrl ($scope, $rootScope, $filter, $http, NgTableDataService,  NgTableParams, translitService, typeAhead, $httpParamSerializerJQLike, $state, $stateParams, $ngBootbox, $timeout){
 
-    $scope.$on('$stateChangeStart', function(event, next, current) {
-        if (typeof(current) !== 'undefined'){
-            $templateCache.remove(next.templateUrl);
-        }
-    });
-
     $scope.courseCollapsed = true;
     $scope.modulesCollapsed = true;
     $scope.publishStatus = [{id:'0', title:'Не опубліковано'},{id:'1', title:'Опубліковано'}];
@@ -179,7 +173,7 @@ function graduateCtrl ($scope, $rootScope, $filter, $http, NgTableDataService,  
     };
 
     $scope.updateGraduate = function () {
-        
+
         $http({
             method:'POST',
             url: basePath+'/_teacher/graduate/updateGraduate',

@@ -189,6 +189,11 @@ span.spoilerTriangle {
     color: #777;
     font-size: 0.9em;
 }
+
+#graduateBlock .empty {
+    margin: 40px 0 0 15px;
+}
+
 input[type="search"]::-webkit-input-placeholder {
     color: #ccc;
 }

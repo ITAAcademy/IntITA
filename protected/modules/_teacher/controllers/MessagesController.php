@@ -209,7 +209,7 @@ class MessagesController extends TeacherCabinetController
             $users = StudentReg::allUsers($query, $id);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 

@@ -124,6 +124,11 @@ angular
                         method: 'GET',
                         isArray: true
                     },
+                    allActualTrainers: {
+                        url: url + '/getAllActualTrainers',
+                        method: 'GET',
+                        isArray: true
+                    },
                     exchangeTrainers: {
                         url: url + '/exchangeTrainers',
                         method: 'GET'
