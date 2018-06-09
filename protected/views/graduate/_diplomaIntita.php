@@ -16,8 +16,12 @@
         <div class="sign">
             <ul>
                 <li>CEO: Roman Melnyk</li>
-                <li>Date: <?=CLocale::getInstance('en_US')->dateFormatter->formatDateTime((isset($model->date_done)?$model->date_done:$model->end_module),'long',null)?></li>
-                </ul>
+                <?php if($type == 'course'){ ?>
+                <li>Date: <?=CLocale::getInstance('en_US')->dateFormatter->formatDateTime(($model->date_done),'long',null)?></li>
+                <?php } elseif($type == 'module'){ ?>
+                <li>Date: <?=CLocale::getInstance('en_US')->dateFormatter->formatDateTime(($model->end_module),'long',null)?></li>
+                <?php } ?>
+            </ul>
             <img class="img-diploma" src="/images/diploma/sing_intita.png" alt="director_sign">
             <p class="diplom-number"><?=ucfirst($type[0])?> № 0000-<?="{$model->{'id_'.$type}}-{$model->id_user} "?></p>
             </div>

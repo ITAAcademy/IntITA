@@ -607,4 +607,13 @@ class RegisteredUser
        return $this->isTeacher() || $this->isDirector() || $this->isSuperAdmin() || $this->isAuditor() || $this->isAdmin();
     }
 
+    public function hasLibrary()
+    {
+        if (LibraryPayments::model()->exists('user_id=:id and status=:status', array(':id' => $this->registrationData->id, 'status' => Library::ACTIVE))){
+            return true;
+        }
+
+        return false;
+    }
+
 }
