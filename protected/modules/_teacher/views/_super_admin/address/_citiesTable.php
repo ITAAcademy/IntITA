@@ -52,6 +52,7 @@
                             type="button"
                             class="btn btn-outline btn-danger btn-sm"
                             ng-click="removeCity(row)"
+                            <!--target="_blank" не помагає-->
                         >видалити</a>
                     </td>
                 </tr>

@@ -17,7 +17,7 @@
         <tr ng-repeat="row in $data track by row.id">
             <td data-title="'ID'">{{row.id}}</td>
             <td style="word-wrap:break-word" data-title="'Користувач'" sortable="'fullName'" filter="{'fullName': 'text'}" >
-                <a ng-href="#/users/profile/{{row.id}}">{{row.fullName}}</a>
+                <a ng-href="#/users/profile/{{row.id}}" target="_blank">{{row.fullName}}</a>
             </td>
             <td data-title="'Профіль'" align="center">
                 <a ng-href="/profile/{{row.id}}" target="_blank">Профіль</a>

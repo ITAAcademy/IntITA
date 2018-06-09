@@ -22,7 +22,7 @@
                         <td data-title="'ID'" filter="{'id': 'text'}" style="width: ">{{row.id}}</td>
                         <td data-title="'Мова'" filter="{'language': 'text'}">{{row.language}}</td>
                         <td data-title="'Категорія'"filter="{'source.category': 'text'}" >{{row.source.category}}</td>
-                        <td data-title="'Переклад'" filter="{'translation': 'text'}" ><a href="#/interfacemessages/view/{{row.id_record}}">{{row.translation}}</a></td>
+                        <td data-title="'Переклад'" filter="{'translation': 'text'}" ><a href="#/interfacemessages/view/{{row.id_record}}" target="_blank">{{row.translation}}</a></td>
                         <td data-title="'Коментар'" filter="{'comment.comment': 'text'}">{{row.comment.comment}}</td>
                     </tr>
                 </table>

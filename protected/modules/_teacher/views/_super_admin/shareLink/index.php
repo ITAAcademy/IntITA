@@ -13,7 +13,7 @@
                     <tbody>
                     <tr ng-repeat="sharedLink in sharedLinksList">
                         <td>{{sharedLink.name}}</td>
-                        <td><a ng-href="#/sharedlinks/detail/{{sharedLink.id}}">{{sharedLink.link["title"]}}</a></td>
+                        <td><a ng-href="#/sharedlinks/detail/{{sharedLink.id}}" target="_blank">{{sharedLink.link["title"]}}</a></td>
                         <td>{{sharedLink.organization}}</td>
                     </tr>
                     </tbody>
