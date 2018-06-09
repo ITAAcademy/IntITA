@@ -21,5 +21,15 @@ angular
                         method: 'GET',
                         url: url + '/getLiqpay',
                     },
+                    getPayments: {
+                        method: 'GET',
+                        url: url + '/getPayments',
+                    },
+                    getStatus: {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        url: url + '/getStatus',
+                        transformRequest : transformRequest.bind(null)
+                    },
                 });
         }])

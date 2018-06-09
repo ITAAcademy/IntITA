@@ -7,6 +7,7 @@ angular
     .controller('organizationTableCtrl', organizationTableCtrl)
     .controller('organizationCtrl', organizationCtrl)
     .controller('liqpayCtrl', liqpayCtrl)
+    .controller('liqpayPaymentsCtrl', liqpayPaymentsCtrl)
 
 function organizationTableCtrl ($scope, organizationService, NgTableParams){
     $scope.changePageHeader('Організації');
@@ -88,5 +89,63 @@ function liqpayCtrl ($scope, liqpayService){
                 bootbox.alert('Виникла помилка');
             }
         });
+    };
+}
+
+function liqpayPaymentsCtrl ($scope, NgTableParams, liqpayService, ngToast){
+    $scope.changePageHeader('Бібліотечні проплати');
+
+    $scope.libraryPaymentsTableParams = new NgTableParams({}, {
+        getData: function (params) {
+            return liqpayService
+                .getPayments(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    return data.rows;
+                });
+        }
+    });
+
+    $scope.onSelectUser = function ($item) {
+        $scope.selectedUser = $item;
+    };
+    $scope.reloadUser = function(){
+        $scope.selectedUser=null;
+    };
+    $scope.onSelectLibrary = function ($item) {
+        $scope.selectedLibrary = $item;
+    };
+    $scope.reloadLibrary = function(){
+        $scope.selectedLibrary=null;
+    };
+    $scope.liqPayStatusRequest = function(){
+        if($scope.selectedUser && $scope.selectedLibrary){
+            liqpayService.getStatus({'user_id':$scope.selectedUser.id, 'library_id':$scope.selectedLibrary.id}).$promise.then(function (data) {
+                if (data.message === 'OK') {
+                    if (data.status === 'ok') {
+                        ngToast.create({
+                            dismissButton: true,
+                            className: 'success',
+                            content: 'Проплату знайдено та оновлено',
+                            timeout: 3000
+                        });
+                    }else if(data.status === 'error'){
+                        ngToast.create({
+                            dismissButton: true,
+                            className: 'danger',
+                            content: 'Проплату не знайдено',
+                            timeout: 3000
+                        });
+                    }
+
+                    $scope.libraryPaymentsTableParams.reload();
+                } else {
+                    bootbox.alert('Виникла помилка');
+                }
+            });
+        }else{
+            bootbox.alert('Оберіть користувача та книгу');
+        }
     };
 }

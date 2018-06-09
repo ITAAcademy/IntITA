@@ -10,6 +10,7 @@ angular
     .controller('promotionSchemesCtrl',promotionSchemesCtrl)
     .controller('studentProjectsCtrl',studentProjectsCtrl)
     .controller('bannersSliderCtrl',bannersSliderCtrl)
+    .controller('libraryCtrl',libraryCtrl)
 
 /* Controllers */
 function editProfileController($scope, $http, countryCity, careerService, specializations, $q, $timeout, FileUploader, documentsServices) {
@@ -984,4 +985,14 @@ function bannersSliderCtrl($scope, $http) {
         $scope.slides = response.data.banners;
     });
 
+}
+
+function libraryCtrl($scope) {
+    $scope.getDocument = function (fileID) {
+        bootbox.alert({
+            message: "<embed width='100%' src='" + basePath + '/library/getDemoBook?id=' + fileID + "' >",
+            size: 'large'
+        })
+
+    }
 }

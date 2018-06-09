@@ -12,6 +12,9 @@
  * @property string $language
  * @property string $link
  * @property string $logo
+ * @property string $paper_price
+ * @property string $demo_link
+ * @property string $author
  *
  * The followings are the available model relations:
  * @property LibraryDependsBookCategory[] $libraryDependsBookCategories
@@ -42,7 +45,7 @@ class Library extends CActiveRecord
 			array('price', 'length', 'max'=>8),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, description, price, language, status, link, logo, author, status', 'safe', 'on'=>'search'),
+			array('id, title, description, price, language, status, link, logo, author, status, paper_price, demo_link', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,7 +76,9 @@ class Library extends CActiveRecord
 			'status'=>'Status',
 			'link' => 'Link',
 			'logo' => 'Logo',
-            'author' => 'Author'
+            'author' => 'Author',
+            'paper_price' => 'Paper Price',
+            'demo_link' => 'Demo Link',
 		);
 	}
 
@@ -104,6 +109,8 @@ class Library extends CActiveRecord
 		$criteria->compare('link',$this->link,true);
 		$criteria->compare('logo',$this->logo,true);
         $criteria->compare('author',$this->author,true);
+        $criteria->compare('paper_price',$this->paper_price,true);
+        $criteria->compare('demo_link',$this->demo_link,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -124,38 +131,6 @@ class Library extends CActiveRecord
         return json_encode($adapter->getData());
     }
 
-    public static function removeBook(){
-        $id = $_POST['id'];
-        if(!is_null(LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$_POST['id']]))){
-            LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$id])->deleteAll();
-                $deletedBook = Library::model()->findByPk($id);
-                if ($deletedBook["logo"]!==""){
-                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"])){
-                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"]);
-                    }
-                };
-                if ($deletedBook["link"]!==""){
-                    if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"])){
-                        unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
-                    }
-                }
-                Library::model()->deleteByPk($id);
-        } else {
-            $deletedBook = Library::model()->findByPk($id);
-            if ($deletedBook["logo"]!==""){
-                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"])){
-                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"]);
-                }
-            };
-            if ($deletedBook["link"]!==""){
-                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"])){
-                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
-                }
-            }
-            Library::model()->deleteByPk($id);
-        }
-    }
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -170,9 +145,9 @@ class Library extends CActiveRecord
     public function getPaymentButton()
     {
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
-        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
-        $order_id = LiqpayPayment::cryptic('user_id='.Yii::app()->user->getId().'&library_id='.$this->id);
-        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id));
+        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
+        $order_id = LiqpayPayment::dsCrypt('user_id='.Yii::app()->user->getId().'&library_id='.$this->id);
+        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id, 'status'=>1));
         if(!$model){
             $html = $liqpay->cnb_form(array(
                 'version'=>'3',
@@ -208,7 +183,7 @@ class Library extends CActiveRecord
 
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
         $orderParams = self::getOrderParams($order_id);
-        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
+        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
         $model = LibraryPayments::model()->findByAttributes(array('user_id'=>$orderParams['user_id'], 'library_id'=>$orderParams['library_id']));
         $res = $liqpay->api("request", array(
             'action'        => 'status',
@@ -218,8 +193,11 @@ class Library extends CActiveRecord
         if(!$model && $res->result=='ok'){
             $model = new LibraryPayments();
             $model->library_id = $this->id;
+            $model->payment_id = $res->payment_id;
+            $model->sender_phone = $res->sender_phone;
+            $model->sender_card_mask2 = $res->sender_card_mask2;
             $model->user_id = $orderParams['user_id'];
-            $model->amount = $this->price;
+            $model->amount = $res->amount;
             $model->order_id = $res->order_id;
             $model->date = new CDbExpression('NOW()');;
             $model->status = 1;
@@ -227,11 +205,40 @@ class Library extends CActiveRecord
         }
     }
 
+    public function getStatus($order_id)
+    {
+        $liqPayPayment = LiqpayPayment::model()->findByPk(1);
+        $orderParams = self::getOrderParams($order_id);
+        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
+        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>$orderParams['user_id'], 'library_id'=>$orderParams['library_id']));
+        if(!$model){
+            $model = new LibraryPayments();
+        }
+        $res = $liqpay->api("request", array(
+            'action'        => 'status',
+            'version'       => '3',
+            'order_id'      => $order_id
+        ));
+        if($res->result=='ok'){
+            $model->library_id = $this->id;
+            $model->payment_id = $res->payment_id;
+            $model->sender_phone = $res->sender_phone;
+            $model->sender_card_mask2 = $res->sender_card_mask2;
+            $model->user_id = $orderParams['user_id'];
+            $model->amount = $res->amount;
+            $model->order_id = $res->order_id;
+            $model->date = new CDbExpression('NOW()');;
+            $model->status = 1;
+            $model->save();
+        }
+        return $res->result;
+    }
+
     public function sendTicket($order_id)
     {
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
         $orderParams = self::getOrderParams($order_id);
-        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::encryptic($liqPayPayment->private_key));
+        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
         $model = LibraryPayments::model()->findByAttributes(array('user_id'=>$orderParams['user_id'], 'library_id'=>$orderParams['library_id']));
         $res = $liqpay->api("request", array(
             'action'    => 'ticket',
@@ -244,7 +251,7 @@ class Library extends CActiveRecord
 
     public function getOrderParams($order_id)
     {
-        $url = 'https://example.com/?' . LiqpayPayment::encryptic($order_id);
+        $url = 'https://example.com/?' . LiqpayPayment::dsCrypt($order_id, 1);
         $query_str = parse_url($url, PHP_URL_QUERY);
         parse_str($query_str, $query_params);
         return $query_params;
@@ -277,4 +284,19 @@ class Library extends CActiveRecord
             throw new \application\components\Exceptions\IntItaException(500, 'Завантажити файл не вдалося');
         }
     }
+    public static function libraryByQuery($query) {
+        $criteria = new CDbCriteria();
+        $criteria->select = "t.id, title";
+        $criteria->alias = "t";
+        $criteria->addSearchCondition('title', $query, true, "OR", "LIKE");
+        $criteria->addCondition('t.status=' . self::ACTIVE);
+        $data = Library::model()->findAll($criteria);
+        $result = array();
+        foreach ($data as $key => $model) {
+            $result["results"][$key]["id"] = $model->id;
+            $result["results"][$key]["title"] = $model->title;
+        }
+        return json_encode($result);
+    }
+
 }
