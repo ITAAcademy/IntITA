@@ -11,6 +11,10 @@ class LiqpayController extends TeacherCabinetController {
         $this->renderPartial('/_director/liqpay/liqpayForm', array('model'=>$model), false, true);
     }
 
+    public function actionPayments() {
+        $this->renderPartial('/_director/liqpay/payments', array(), false, true);
+    }
+
     public function actionCreateLiqPay() {
         $result = ['message' => 'OK'];
         $statusCode = 201;
@@ -22,7 +26,7 @@ class LiqpayController extends TeacherCabinetController {
                 $liqpay = LiqpayPayment::model()->findByPk(1);
             }
 
-            $params['private_key'] = LiqpayPayment::cryptic($params['private_key']);
+            $params['private_key'] = LiqpayPayment::dsCrypt($params['private_key']);
             $liqpay->setAttributes($params);
             $liqpay->save();
 
@@ -41,9 +45,32 @@ class LiqpayController extends TeacherCabinetController {
         $result = array();
         $result['data'] = LiqpayPayment::model()->findByPk(1);
         if($result['data']){
-            $result['data']['private_key'] = LiqpayPayment::encryptic($result['data']['private_key']);
+            $result['data']['private_key'] = LiqpayPayment::dsCrypt($result['data']['private_key'], 1);
         }
 
         echo CJSON::encode($result);
+    }
+
+    public function actionGetPayments() {
+        $requestParam = $_GET;
+        $criteria=new CDbCriteria;
+        $adapter = new NgTableAdapter('LibraryPayments',$requestParam);
+        $adapter->mergeCriteriaWith($criteria);
+        echo json_encode($adapter->getData());
+    }
+
+    public function actionGetStatus() {
+        $statusCode = 201;
+        try {
+            $params = array_filter($_POST);
+            $model = Library::model()->findByPk($params['library_id']);
+            $order_id = LiqpayPayment::dsCrypt('user_id='.$params['user_id'].'&library_id='.$params['library_id']);
+            $status = $model->getStatus($order_id);
+            $result = ['message' => 'OK', 'status' => $status];
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 }

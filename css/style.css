@@ -591,3 +591,9 @@ ul::-webkit-scrollbar-thumb:hover {
         display: block;
     }
 }
+@media screen and (max-width: 424px){
+    .ng-table-counts{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}

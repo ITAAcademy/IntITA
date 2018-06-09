@@ -20,7 +20,7 @@
             <div class="form-group col-md-8" id="receiver">
                 <label>Кому</label>
                 <br>
-                <input id="typeahead" ng-blur="onBlurHandler()" type="text" class="form-control" name="receiver" placeholder="Отримувач" size="135" required autofocus>
+                <input id="typeahead" ng-blur="onBlurHandler()" type="text" class="form-control" name="receiver" placeholder="Отримувач" size="135" autofocus>
             </div>
 
             <div class="form-group col-md-8">
@@ -30,7 +30,7 @@
 
             <div class="form-group col-md-8">
                 <label>Лист</label>
-                <textarea class="form-control" rows="6" id="text" placeholder="Лист" required></textarea>
+                <textarea class="form-control" rows="6" id="text" placeholder="Лист"></textarea>
             </div>
             <div class="col-md-8">
                 <button type="submit" class="btn btn-primary"

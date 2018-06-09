@@ -1,5 +1,6 @@
 <?php
-include (Yii::app()->basePath . '/extensions/liqPay/LiqPay.php');
+include(Yii::app()->basePath . '/extensions/liqPay/LiqPay.php');
+
 /**
  * This is the model class for table "liqpay".
  *
@@ -10,6 +11,17 @@ include (Yii::app()->basePath . '/extensions/liqPay/LiqPay.php');
  */
 class LiqpayPayment extends CActiveRecord
 {
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return LiqpayPayment the static model class
+     */
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
+
     /**
      * @return string the associated database table name
      */
@@ -80,75 +92,50 @@ class LiqpayPayment extends CActiveRecord
         ));
     }
 
-    /**
-     * Returns the static model of the specified AR class.
-     * Please note that you should have this exact method in all your CActiveRecord descendants!
-     * @param string $className active record class name.
-     * @return LiqpayPayment the static model class
-     */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    static function cryptic($data)
-    {
-//        $key = self::model()->findByPk(1)->key;
-        $key = 'adisabeba';
-        return self::strToHex(self::__encode($data, $key));
-    }
-
-    static function encryptic($data)
-    {
-//        $key = self::model()->findByPk(1)->key;
-        $key = 'adisabeba';
-        return self::__decode(self::hexToStr($data), $key);
-    }
-
-    static function __encode($text, $key)
-    {
-        $td = mcrypt_module_open ("tripledes", '', 'cfb', '');
-        $iv = mcrypt_create_iv (mcrypt_enc_get_iv_size ($td), MCRYPT_RAND);
-        if (mcrypt_generic_init ($td, $key, $iv) != -1)
-        {
-            $enc_text=base64_encode(mcrypt_generic ($td,$iv.$text));
-            mcrypt_generic_deinit ($td);
-            mcrypt_module_close ($td);
-            return $enc_text;
+    static function dsCrypt($input,$decrypt=false) {
+        $o = $s1 = $s2 = array(); // Arrays for: Output, Square1, Square2
+        // формируем базовый массив с набором символов
+        $basea = array('?','(','@',';','$','#',"]","&",'*'); // base symbol set
+        $basea = array_merge($basea, range('a','z'), range('A','Z'), range(0,9) );
+        $basea = array_merge($basea, array('!',')','_','+','|','%','/','[','.',' ') );
+        $dimension=9; // of squares
+        for($i=0;$i<$dimension;$i++) { // create Squares
+            for($j=0;$j<$dimension;$j++) {
+                $s1[$i][$j] = $basea[$i*$dimension+$j];
+                $s2[$i][$j] = str_rot13($basea[($dimension*$dimension-1) - ($i*$dimension+$j)]);
+            }
         }
-    }
-
-    static function strToHex($string)
-    {
-        $hex='';
-        for ($i=0; $i < strlen($string); $i++)
-        {
-            $hex .= dechex(ord($string[$i]));
+        unset($basea);
+        $m = floor(strlen($input)/2)*2; // !strlen%2
+        $symbl = $m==strlen($input) ? '':$input[strlen($input)-1]; // last symbol (unpaired)
+        $al = array();
+        // crypt/uncrypt pairs of symbols
+        for ($ii=0; $ii<$m; $ii+=2) {
+            $symb1 = $symbn1 = strval($input[$ii]);
+            $symb2 = $symbn2 = strval($input[$ii+1]);
+            $a1 = $a2 = array();
+            for($i=0;$i<$dimension;$i++) { // search symbols in Squares
+                for($j=0;$j<$dimension;$j++) {
+                    if ($decrypt) {
+                        if ($symb1===strval($s2[$i][$j]) ) $a1=array($i,$j);
+                        if ($symb2===strval($s1[$i][$j]) ) $a2=array($i,$j);
+                        if (!empty($symbl) && $symbl===strval($s2[$i][$j])) $al=array($i,$j);
+                    }
+                    else {
+                        if ($symb1===strval($s1[$i][$j]) ) $a1=array($i,$j);
+                        if ($symb2===strval($s2[$i][$j]) ) $a2=array($i,$j);
+                        if (!empty($symbl) && $symbl===strval($s1[$i][$j])) $al=array($i,$j);
+                    }
+                }
+            }
+            if (sizeof($a1) && sizeof($a2)) {
+                $symbn1 = $decrypt ? $s1[$a1[0]][$a2[1]] : $s2[$a1[0]][$a2[1]];
+                $symbn2 = $decrypt ? $s2[$a2[0]][$a1[1]] : $s1[$a2[0]][$a1[1]];
+            }
+            $o[] = $symbn1.$symbn2;
         }
-
-        return $hex;
-    }
-
-    static function __decode($text, $key)
-    {
-        $td = mcrypt_module_open ("tripledes", '', 'cfb', '');
-        $iv_size = mcrypt_enc_get_iv_size ($td);
-        $iv = mcrypt_create_iv (mcrypt_enc_get_iv_size ($td), MCRYPT_RAND);
-        if (mcrypt_generic_init ($td, $key, $iv) != -1) {
-            $decode_text = substr(mdecrypt_generic ($td, base64_decode($text)),$iv_size);
-            mcrypt_generic_deinit ($td);
-            mcrypt_module_close ($td);
-            return $decode_text;
-        }
-    }
-
-    static function hexToStr($hex)
-    {
-        $string='';
-        for ($i=0; $i < strlen($hex)-1; $i+=2)
-        {
-            $string .= chr(hexdec($hex[$i].$hex[$i+1]));
-        }
-        return $string;
+        if (!empty($symbl) && sizeof($al)) // last symbol
+            $o[] = $decrypt ? $s1[$al[1]][$al[0]] : $s2[$al[1]][$al[0]];
+        return implode('',$o);
     }
 }

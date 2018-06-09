@@ -30,7 +30,6 @@ class LibraryController extends TeacherCabinetController {
             $criteria->addCondition('bc.id_category='.$requestParam['filter']['libraryDependsBookCategories.id']);
             unset($requestParam['filter']['libraryDependsBookCategories.id']);
         }
-        $criteria->order = 't.id desc';
         $adapter = new NgTableAdapter('Library',$requestParam);
         $adapter->mergeCriteriaWith($criteria);
         echo json_encode($adapter->getData());
@@ -38,12 +37,14 @@ class LibraryController extends TeacherCabinetController {
     public function actionAddBook(){
         $statusCode = 201;
         $id = null;
+        $connection = Yii::app()->db;
+        $transaction = $connection->beginTransaction();
         try {
             $data = $_POST;
             $book = isset($data['id'])?Library::model()->findByPk($data['id']):new Library();
             $book->attributes = $data;
             $categories = [];
-            if (isset($data['category'])) {
+            if (isset($data['category']) && !empty($data['category'])) {
                 foreach ($data['category'] as $category){
                     array_push($categories, $category['id']);
                 }
@@ -54,7 +55,9 @@ class LibraryController extends TeacherCabinetController {
             }else{
                 throw new Exception(json_encode(ValidationMessages::getValidationErrors($book)));
             }
+            $transaction->commit();
         } catch (Exception $error) {
+            $transaction->rollback();
             $statusCode = 500;
             $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
@@ -70,7 +73,43 @@ class LibraryController extends TeacherCabinetController {
 
 
     public function actionRemoveBook(){
-        Library::removeBook();
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $id = $_POST['id'];
+        $connection = Yii::app()->db;
+        $transaction = $connection->beginTransaction();
+        try {
+            if(LibraryPayments::model()->findByAttributes(array('library_id'=>$id))){
+                throw new Exception('Видалити книгу неможливо, оскільки її було куплено як мінімум одним користувачем');
+            }
+            if(!is_null(LibraryDependsBookCategory::model()->findByAttributes(['id_book'=>$id]))) {
+                LibraryDependsBookCategory::model()->findByAttributes(['id_book' => $id])->deleteAll();
+            }
+            $deletedBook = Library::model()->findByPk($id);
+            if ($deletedBook["logo"]!==""){
+                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"])){
+                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"]);
+                }
+            };
+            if ($deletedBook["link"]!==""){
+                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"])){
+                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
+                }
+            }
+            if ($deletedBook["demo_link"]!==""){
+                if (file_exists(Yii::getPathOfAlias('webroot')."/files/library/".$id."/demo_link/".$deletedBook["demo_link"])){
+                    unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/demo_link/".$deletedBook["demo_link"]);
+                }
+            }
+            Library::model()->deleteByPk($id);
+
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
     public function actionUploadBookFiles($id, $type)
@@ -96,6 +135,16 @@ class LibraryController extends TeacherCabinetController {
         }
         else {
             throw new CHttpException(404,'Документ не знайдено');
+        }
+    }
+
+    public function actionLibraryByQuery($query)
+    {
+        if ($query) {
+            $library = Library::libraryByQuery($query);
+            echo $library;
+        } else {
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 }
