@@ -37,44 +37,17 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateMenuLink()
     {
-        $result = ['message' => 'OK'];
-        $statusCode = 201;
-        try {
-            $addressForFile = "";
-            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
-            if (isset($_FILES) && !empty($_FILES)) {
-                $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-                $path_domain = Yii::app()->basePath .'/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
-                $folderAddress = $path_domain . "/lists/";
-                if (!file_exists($folderAddress)) {
-                    mkdir($folderAddress, 0777, true);
-                }
-                if ($previousImage && file_exists($folderAddress . $previousImage)) {
-                    unlink($folderAddress . $previousImage);
-                }
-                $end_file_name = $_FILES["logo"]["name"];
-                $tmp_file_name = $_FILES["logo"]["tmp_name"];
-                if (getimagesize($tmp_file_name)) {
-                    $endAddress = date("jYgi") . basename($end_file_name);  // '21042018name.jpg'
-                    $addressForFile = $folderAddress . $endAddress;   // "domains/Madagascar1/lists/21042018name.jpg"
-                }
-                copy($tmp_file_name, $addressForFile);
-            }
-            $params = array_filter((array)json_decode($_POST['data']));
-            $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
-            $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-            $menuLink->attributes = $params;
-            if(isset($endAddress)){
-                $menuLink->image = $endAddress;
-            }
-            if (!$menuLink->save()) {
-                throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
-            }
-        } catch (Exception $error) {
-            $statusCode = 500;
-            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"lists",key($_FILES));
+        $params = array_filter((array)json_decode($_POST['data']));
+        $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
+        $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+        $menuLink->attributes = $params;
+        if(isset($uploadedFile)){
+            $menuLink->image = $uploadedFile;
         }
-
+        if (!$menuLink->save()) {
+            throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
+        }
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
@@ -116,44 +89,18 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateNews()
     {
-        $result = ['message' => 'OK'];
-        $statusCode = 201;
+        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"news",key($_FILES));
         $current_date = date("Y-m-d H:i:s");
-        try {
-            $addressForFile = "";
-            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
-            if (isset($_FILES) && !empty($_FILES)) {
-                $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-                $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
-                $folderAddress = $path_domain . "/news/";
-                if (!file_exists($folderAddress)) {
-                    mkdir($folderAddress, 0777, true);
-                }
-                if ($previousImage && file_exists($folderAddress . $previousImage)) {
-                    unlink($folderAddress . $previousImage);
-                }
-                $end_file_name = $_FILES["photo"]["name"];
-                $tmp_file_name = $_FILES["photo"]["tmp_name"];
-                if (getimagesize($tmp_file_name)) {
-                    $endAddress = date("jYgi") . basename($end_file_name);  // '21042018name.jpg'
-                    $addressForFile = $folderAddress . $endAddress;
-                }
-                copy($tmp_file_name, $addressForFile);
-            }
-            $params = array_filter((array)json_decode($_POST['data']));
-            $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
-            $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-            $new->date = $current_date;
-            $new->attributes = $params;
-            if(isset($endAddress)){
-                $new->img = $endAddress;
-            }
-            if (!$new->save()) {
-                throw new \application\components\Exceptions\IntItaException(500, $new->getValidationErrors());
-            }
-        } catch (Exception $error) {
-            $statusCode = 500;
-            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        $params = array_filter((array)json_decode($_POST['data']));
+        $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
+        $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+        $new->date = $current_date;
+        $new->attributes = $params;
+        if(isset($uploadedFile)){
+            $new->img = $uploadedFile;
+        }
+        if (!$new->save()) {
+            throw new \application\components\Exceptions\IntItaException(500, $new->getValidationErrors());
         }
 
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
@@ -216,51 +163,18 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateSettings()
     {
-        $result = ['message' => 'OK'];
-        $statusCode = 201;
-        try {
-            $addressForFile = "";
-            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
+        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"logo",key($_FILES));
+        $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
+        //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
+        $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
+        $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+        $settings->attributes = $params;
+        if(isset($uploadedFile)){
+            $settings->logo = $uploadedFile;
+        }
+        if (!$settings->save()) {
 
-            $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
-            //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
-            $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
-            $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-            $settings->attributes = $params;
-
-            if (isset($_FILES) && !empty($_FILES)) {    //$_FILES Переменные файлов, загруженных по HTTP // прилітає картінка
-                $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-                $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
-                $folderAddress = $path_domain . "/logo/"; // прописуєм шлях
-                if (!file_exists($folderAddress)) {
-                    mkdir($folderAddress, 0777, true);   //створення каталога
-                }
-                $end_file_name = $_FILES["photo"]["name"]; //Оригинальное имя файла на компьютере клиента.
-                $tmp_file_name = $_FILES["photo"]["tmp_name"]; // Временное имя, с которым принятый файл был сохранен на сервере.
-                if(isset($end_file_name) && !empty($end_file_name)){
-                    if ($previousImage && file_exists($folderAddress . $previousImage  )) {
-                        unlink($folderAddress.$previousImage); //удаляє файл
-                    }
-                    if (getimagesize($tmp_file_name)) {  //Получение размера изображения
-                        $endAddress = date("jYgi") . basename($end_file_name);  // '21042018name.jpg'   //basename -- Возвращает имя файла из указанного пути
-                        $addressForFile = $folderAddress . $endAddress;
-                    }
-
-                    copy($tmp_file_name, $addressForFile);  //copy($file, $newfile) Копирует файл
-                    echo $addressForFile;
-                    $settings->logo = $addressForFile;
-                    if(isset($endAddress)){
-                        $settings->logo = $endAddress;
-                    }
-                }
-            }
-            if (!$settings->save()) {
-
-                throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
-            }
-        } catch (Exception $error) {
-            $statusCode = 500;
-            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+            throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
         }
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
@@ -331,43 +245,18 @@ class CmsController extends TeacherCabinetController
     }
     public function actionUpdateMenuSlider()
     {
-        $result = ['message' => 'OK'];
-        $statusCode = 201;
-        try {
-            $addressForFile = "";
-            $previousImage = isset($_POST["previousImage"]) ? $_POST["previousImage"] : null;
-            if (isset($_FILES) && !empty($_FILES)) {
-                $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-                $path_domain = 'domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
-                $folderAddress = $path_domain . "/carousel/";
-                if (!file_exists($folderAddress)) {
-                    mkdir($folderAddress, '777', true);
-                }
-                if ($previousImage && file_exists($folderAddress . $previousImage)) {
-                    unlink($folderAddress . $previousImage);
-                }
-                $end_file_name = $_FILES["slide"]["name"];
-                $tmp_file_name = $_FILES["slide"]["tmp_name"];
-                if (getimagesize($tmp_file_name)) {   //взяти розміри
-                    $endAddress = date("jYgi") . basename($end_file_name);
-                    $addressForFile = $folderAddress . $endAddress;
-                }
-                copy($tmp_file_name, $addressForFile);
-            }
-            $params = array_filter((array)json_decode($_POST['data']));
-            $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();
-            $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-            $menuSlider->attributes = $params;
-            if(isset($endAddress)){
-                $menuSlider->src = $endAddress;
-            }
-            if (!$menuSlider->save()) {
-                throw new \application\components\Exceptions\IntItaException(500, $menuSlider->getValidationErrors());
-            }
-        } catch (Exception $error) {
-            $statusCode = 500;
-            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"carousel",key($_FILES));
+        $params = array_filter((array)json_decode($_POST['data']));
+        $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();
+        $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+        $menuSlider->attributes = $params;
+        if(isset($uploadedFile)){
+            $menuSlider->src = $uploadedFile;
         }
+        if (!$menuSlider->save()) {
+            throw new \application\components\Exceptions\IntItaException(500, $menuSlider->getValidationErrors());
+        }
+
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
     public function actionRemoveMenuSlider()
