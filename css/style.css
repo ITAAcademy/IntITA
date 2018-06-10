@@ -480,14 +480,6 @@ ul[rn-carousel] {
     position: relative;
     height: fit-content;
 }
-#mainfooter{
-    position: absolute;
-    bottom: 0;
-    background: white;
-}
-#contentBoxMain{
-    padding-bottom: 86px;
-}
 .clearfix::after {
     content: " ";
     display: table;
