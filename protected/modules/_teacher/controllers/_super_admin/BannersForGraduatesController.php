@@ -27,10 +27,10 @@ class BannersForGraduatesController extends TeacherCabinetController
         $bannerModel = $this->loadModel($bannerId);
         if (!$bannerModel){
             $bannerModel = new BannersForGraduates();
-            $sql = "SELECT * FROM banners_for_graduates ORDER BY banners_for_graduates.id DESC LIMIT 1";
-            $lastElement = Yii::app()->db->createCommand($sql)->queryAll();
-
-            $bannerModel->slide_position = $lastElement[0]["slide_position"] + 1;
+//            $sql = "SELECT * FROM banners_for_graduates ORDER BY banners_for_graduates.id DESC LIMIT 1";
+//            $lastElement = Yii::app()->db->createCommand($sql)->queryAll();
+//
+//            $bannerModel->slide_position = $lastElement[0]["slide_position"] + 1;
         }
         else{
             $bannerModel->deleteImageFile();
