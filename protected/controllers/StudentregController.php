@@ -168,8 +168,10 @@ class StudentRegController extends Controller
         $markProvider = $model->getMarkProviderData();
         
         $owner = false;
+        $library = [];
         if ($idUser == Yii::app()->user->getId()) {
             $owner = true;
+            $library = LibraryPayments::model()->findAllByAttributes(array('user_id' => Yii::app()->user->getId(), 'status' => Library::ACTIVE));
         }
 
         $this->render("profile", array(
@@ -178,7 +180,8 @@ class StudentRegController extends Controller
             'user' => $user,
             'markProvider' => $markProvider,
             'addressString' => $addressString,
-            'owner' => $owner
+            'owner' => $owner,
+            'library' => $library
         ));
     }
 

@@ -997,9 +997,10 @@ function bannersSliderCtrl($scope, $http) {
 
 function libraryCtrl($scope) {
     $scope.getDocument = function (fileID) {
-        bootbox.alert({
-            message: "<embed width='100%' src='" + basePath + '/library/getDemoBook?id=' + fileID + "' >",
-            size: 'large'
+        bootbox.dialog({
+            message: "<embed width='100%' height='500px' src='" + basePath + '/library/getDemoBook?id=' + fileID + "' >",
+            size:'large',
+            onEscape:true
         })
 
     }

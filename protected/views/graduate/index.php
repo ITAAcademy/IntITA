@@ -1,7 +1,8 @@
 <? $css_version = 1; ?>
 <link type="text/css" rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'GraduatesStyle.css') ?>"/>
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/controllers/filterGraduateCtrl.js'); ?>"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'SpoilerContent.js'); ?>"></script>
 <div class="subNavBlockGraduates">
     <?php
     $this->breadcrumbs=array(

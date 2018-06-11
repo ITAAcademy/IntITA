@@ -1,7 +1,6 @@
 <? $css_version = 1; ?>
 <link type="text/css" rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'profile.css'); ?>"/>
-<script
-    src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/controllers/profileCtrl.js'); ?>"></script>
+<script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/controllers/profileCtrl.js'); ?>"></script>
 <?php
 /* @var $this StudentregController
  * @var $post StudentReg
@@ -23,15 +22,15 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
         <table class="titleProfile">
             <tr>
                 <td>
-                <?php if ($owner AND $user->isTeacher()) { ?>
-                <span class="teachersProfileLink">
-                    <a href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId()));?>">
+                    <?php if ($owner AND $user->isTeacher()) { ?>
+                        <span class="teachersProfileLink">
+                    <a href="<?php echo Yii::app()->createUrl('profile/index', array('idTeacher' => Yii::app()->user->getId())); ?>">
                         <?php $post->getProfileRole(); ?> <i class="fas fa-pencil-alt fa-xs"></i>
                     </a>
                 </span>
-                <?php }else{ ?>
-                    <h2><?php $post->getProfileRole(); ?></h2>
-                <?php } ?>
+                    <?php } else { ?>
+                        <h2><?php $post->getProfileRole(); ?></h2>
+                    <?php } ?>
                 </td>
                 <?php if ($owner) { ?>
                     <td>
@@ -40,7 +39,8 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                         </a>
                     </td>
                     <td>
-                        <a class="editLink" href="<?php echo Yii::app()->createUrl('studentreg/edit'); ?>"><?php echo Yii::t('profile', '0096'); ?></a>
+                        <a class="editLink"
+                           href="<?php echo Yii::app()->createUrl('studentreg/edit'); ?>"><?php echo Yii::t('profile', '0096'); ?></a>
                     </td>
                 <?php } ?>
             </tr>
@@ -78,30 +78,34 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                         </div>
                         <div class="aboutInfo">
                             <p ng-if="profileData.aboutMy"><span
-                                    class="colorP"><?php echo Yii::t('profile', '0100') ?></span>{{profileData.aboutMy}}</p>
+                                        class="colorP"><?php echo Yii::t('profile', '0100') ?></span>{{profileData.aboutMy}}
+                            </p>
                         </div>
                         <div class="aboutInfo">
-                            <p ng-if="profileData.email"><span class="colorP"><?php echo Yii::t('profile', '0101') ?></span>{{profileData.email}}
+                            <p ng-if="profileData.email"><span
+                                        class="colorP"><?php echo Yii::t('profile', '0101') ?></span>{{profileData.email}}
                             </p>
                         </div>
                         <?php if ($owner) { ?>
-                        <div class="aboutInfo">
-                            <p ng-if="profileData.corporate_mail"><span class="colorP"><?php echo Yii::t('profile', '0101') ?>(корпоративна)</span>{{profileData.corporate_mail}}
-                                <button type="button" class="btn btn-outline btn-primary btn-xs"
-                                        onclick="window.location.href='/profile/activateMail'"
-                                        ng-show="profileData.mailActive==0">
-                                    Активувати
-                                </button>
-                            </p>
-                        </div>
-                        <?php }?>
+                            <div class="aboutInfo">
+                                <p ng-if="profileData.corporate_mail"><span
+                                            class="colorP"><?php echo Yii::t('profile', '0101') ?>(корпоративна)</span>{{profileData.corporate_mail}}
+                                    <button type="button" class="btn btn-outline btn-primary btn-xs"
+                                            onclick="window.location.href='/profile/activateMail'"
+                                            ng-show="profileData.mailActive==0">
+                                        Активувати
+                                    </button>
+                                </p>
+                            </div>
+                        <?php } ?>
                         <div class="spoiler" ng-click="spoiler('spoilerContent','middle')">
                             {{spoilerTitle}}
                             <span id='trg2'>&#9660;</span>
                         </div>
                         <div id="spoilerContent">
                             <div class="aboutInfo">
-                                <p ng-if="profileData.phone"><span class="colorP"><?php echo Yii::t('profile', '0102') ?></span>{{profileData.phone}}
+                                <p ng-if="profileData.phone"><span
+                                            class="colorP"><?php echo Yii::t('profile', '0102') ?></span>{{profileData.phone}}
                                 </p>
                             </div>
                             <div class="aboutInfo">
@@ -110,20 +114,21 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                             </div>
                             <div class="aboutInfo">
                                 <p ng-if="profileData.education"><span
-                                        class="colorP"><?php echo Yii::t('profile', '0103') ?></span>{{profileData.education}}
+                                            class="colorP"><?php echo Yii::t('profile', '0103') ?></span>{{profileData.education}}
                                 </p>
                             </div>
                             <div class="aboutInfo">
                                 <p ng-if="profileData.interests">
                                     <span class="colorP"><?php echo Yii::t('profile', '0104') ?></span>
-                                <span class="interestBG" ng-repeat="interest in interests track by $index">
+                                    <span class="interestBG" ng-repeat="interest in interests track by $index">
                                     {{interest}}
                                 </span>
                                 </p>
                             </div>
                             <div class="aboutInfo">
                                 <p ng-if="profileData.aboutUs"><span
-                                        class="colorP"><?php echo Yii::t('profile', '0105') ?></span>{{profileData.aboutUs}}</p>
+                                            class="colorP"><?php echo Yii::t('profile', '0105') ?></span>{{profileData.aboutUs}}
+                                </p>
                             </div>
                             <div class="aboutInfo">
                                 <p ng-if="profileData.educform && !profileData.teacher">
@@ -132,7 +137,8 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                                 </p>
                             </div>
                             <div class="aboutInfo">
-                                <span ng-if="networks.length" class="colorP"><?php echo Yii::t('user', '0779') ?>:</span>
+                                <span ng-if="networks.length" class="colorP"><?php echo Yii::t('user', '0779') ?>
+                                    :</span>
                             </div>
                             <div class="aboutInfo" ng-repeat="network in networks track by $index">
                                 <span class='networkLink'><a href="{{networks[$index][0]}}" target='_blank'>{{networks[$index][1]}}</a></span>
@@ -141,12 +147,12 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                             <div class="aboutInfo">
                                 <p ng-if="profileData.trainer">
                                     <span class="colorP"><?php echo Yii::t('profile', '0901') ?>:</span>
-                                    <ul>
-                                        <li ng-repeat="trn in profileData.trainer track by $index">
-                                            {{trn.organization}}:
-                                            <a ng-href={{trn.link}} target="_blank">{{trn.name}}</a>
-                                        </li>
-                                    </ul>
+                                <ul>
+                                    <li ng-repeat="trn in profileData.trainer track by $index">
+                                        {{trn.organization}}:
+                                        <a ng-href={{trn.link}} target="_blank">{{trn.name}}</a>
+                                    </li>
+                                </ul>
                                 </p>
                             </div>
                         </div>
@@ -174,10 +180,15 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                     <?= Yii::t('profile', '0973'); ?>
                 </li>
                 <?php if ($owner) { ?>
-                    <?php if (Yii::app()->user->model->isGraduate()){ ?>
-                    <li>
-                        <?= Yii::t('teacher', '0187'); ?>
-                    </li>
+                    <?php if (Yii::app()->user->model->isGraduate()) { ?>
+                        <li>
+                            <?php echo Yii::t('teacher', '0187'); ?>
+                        </li>
+                    <?php } ?>
+                    <?php if (Yii::app()->user->model->hasLibrary()) { ?>
+                        <li>
+                            <?php echo 'Бібліотека' ?>
+                        </li>
                     <?php } ?>
                 <?php } ?>
             </ul>
@@ -185,11 +196,11 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
             <div class="tabsContent">
                 <div id="myCourse">
                     <?php
-                    if($user->isStudent()) $this->renderPartial('_mycourse', array('user' => $user, 'owner'=>$owner));
+                    if ($user->isStudent()) $this->renderPartial('_mycourse', array('user' => $user, 'owner' => $owner));
                     ?>
                 </div>
                 <div id="myRatting">
-                    <?php $this->renderPartial('_myRatting', array('user' => $user,'owner'=>$owner)); ?>
+                    <?php $this->renderPartial('_myRatting', array('user' => $user, 'owner' => $owner)); ?>
                 </div>
                 <div id="myMark">
                     <p class="tabHeader"><?php echo ($owner) ? Yii::t('profile', '0116') : Yii::t('profile', '0824'); ?></p>
@@ -211,26 +222,34 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                 </div>
                 <div id="myProjects" ng-controller="studentProjectsCtrl">
                     <?php
-                    $this->renderPartial('_projects',['owner'=>$owner]);
+                    $this->renderPartial('_projects', ['owner' => $owner]);
                     ?>
                 </div>
                 <?php if ($owner) { ?>
                     <div id="myCareer">
                         <a href="http://robotamolodi.org/auth/intita" target="_blank">Резюме</a>
                     </div>
-                    <?php if (Yii::app()->user->model->isGraduate()){ ?>
-                    <div id="myReview">
-                        <?php
-                        $this->renderPartial('_review');
-                        ?>
-                    </div>
+                    <?php if (Yii::app()->user->model->isGraduate()) { ?>
+                        <div id="myReview">
+                            <?php
+                                $this->renderPartial('_review');
+                            ?>
+                        </div>
+                    <?php } ?>
+                    <?php if (count($library)) { ?>
+                        <div id="library">
+                            <?php
+                            $this->renderPartial('_library', array('library' => $library));
+                            ?>
+                        </div>
                     <?php } ?>
                 <?php } ?>
             </div>
         </div>
     </div>
     <div class="profileActivity filling_profile">
-        <div class="percentOfProgress"><?php echo Yii::t('edit', '0618') . ' '; ?><span id="percentProgress"></span> %</div>
+        <div class="percentOfProgress"><?php echo Yii::t('edit', '0618') . ' '; ?><span id="percentProgress"></span> %
+        </div>
         <div id="lineProgress"></div>
         <span class="corona"></span>
     </div>
@@ -244,10 +263,10 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
     lang = '<?php if (CommonHelper::getLanguage() == 'ua') echo 'uk'; else echo CommonHelper::getLanguage();?>';
 </script>
 <script
-    src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
+        src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/bootbox/bootbox.js'); ?>"></script>
 <link
-    href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>"
-    rel="stylesheet">
+        href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>"
+        rel="stylesheet">
 <link rel="stylesheet" type="text/css"
       href="<?php echo StaticFilesHelper::fullPathTo('css', 'bootstrapRewrite.css') ?>"/>

@@ -36,8 +36,9 @@
     margin-bottom: 17px;
     margin-top: 27px;
 }
-.logoBookWrap{
-    float: left;
+.bookColumn{
+    display: inline-block;
+    vertical-align: top;
 }
 .titleBook{
     color: #4682B4;
