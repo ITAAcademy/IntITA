@@ -547,7 +547,7 @@ ul.container li
     margin-left: -10px;
 }
 ul::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
 }
 
 /* Track */
