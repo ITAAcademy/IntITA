@@ -173,7 +173,6 @@ angular
                     .activeCrmTasksCount()
                     .$promise
                     .then(function (data) {
-                        console.log($scope.tabs);
                         $scope.rolesCount = data;
                         $scope.tabs.forEach(function (item, i) {
                             if (lodash.find($scope.rolesCount, ['role', item.route])) {
@@ -201,12 +200,10 @@ angular
             $rootScope.loadTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
                 if ($scope.board == 1) {
                     return $scope.loadKanbanTasks(idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName).then(function (data) {
-                        console.log("1");
                         $rootScope.getTasksCount();
                         $scope.setKanbanHeight();
                     });
                 } else {
-                    console.log("2");
                     return $scope.loadTableTasks(idRole);
                 }
             };
@@ -224,7 +221,6 @@ angular
                         $scope.filter.groupsNames
                     );
                 }
-                $rootScope.getTasksCount();
             },
 
             $scope.clearFilter = function () {
@@ -263,15 +259,6 @@ angular
             };
 
             $scope.loadKanbanTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
-                console.log("idRole: ", idRole);
-                console.log("filterName: ", filterName);
-                console.log("fullName: ", fullName);
-                console.log("filterId: ", filterId);
-                console.log("filterPriority: ", filterPriority);
-                console.log("filterType: ", filterType);
-                console.log("filterParentType: ", filterParentType);
-                console.log("groupsName: ", groupsName);
-
                 var promise = $scope.crmCanbanTasksList =
                     crmTaskServices
                         .getTasks({
@@ -316,6 +303,7 @@ angular
                             });
 
                             $scope.initCrmKanban($scope.crmCards);
+
                             $timeout(function () {
                                 $scope.setKanbanHeight()
                             }, 3000);
