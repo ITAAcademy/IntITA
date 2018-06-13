@@ -572,7 +572,7 @@ class SiteController extends Controller {
                 ),
             );
             $filesName = uniqid() . '.jpg';
-            file_put_contents(Yii::getpathOfAlias('webroot') . "/images/avatars/" . $filesName, file_get_contents($user['photo_big'], false, stream_context_create($arrContextOptions)));
+            file_put_contents(Yii::app()->basePath . "/../images/avatars/" . $filesName, file_get_contents($user['photo_big'], false, stream_context_create($arrContextOptions)));
             $model->avatar = $filesName;
         }
         if (isset($user['city'])) $model->address = $user['city'];
