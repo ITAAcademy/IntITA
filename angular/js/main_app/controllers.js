@@ -10,6 +10,15 @@ angular
     .controller('promotionSchemesCtrl',promotionSchemesCtrl)
     .controller('studentProjectsCtrl',studentProjectsCtrl)
     .controller('bannersSliderCtrl',bannersSliderCtrl)
+    .controller('libraryCtrl',libraryCtrl)
+    .controller('bannersSliderForGraduatesCtrl',bannersSliderForGraduatesCtrl)
+    .directive('drctv', ["$interval",function($interval){
+        return {
+            link: function ($scope, $element, $attribute, $interval) {
+                $scope.beginVertScroll();
+            }
+        };
+    }]);
 
 /* Controllers */
 function editProfileController($scope, $http, countryCity, careerService, specializations, $q, $timeout, FileUploader, documentsServices) {
@@ -35,6 +44,10 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     $scope.modelsArr=[];
     $scope.progress = 1;
     $scope.avatar=avatar;
+    $scope.cityTitleUA = false;
+    $scope.cityTitleUARegexp = /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/;
+    $scope.innRegexp = /^\d{10}$/;
+    $scope.isInnValid = true;
     if (avatar == 'noname.png') {
         $scope.progress--;
     }
@@ -53,6 +66,24 @@ function editProfileController($scope, $http, countryCity, careerService, specia
 
     $('#progressBar').show();
     $('#gridBlock').show();
+
+    $scope.keyUpHandler = function (e) {
+        var value = e.target.value;
+        var isCityValid = Boolean(value.match($scope.cityTitleUARegexp));
+        var selectSearch = angular.element(document.querySelector('#citySelect .select-search'));
+        if (value !== '' && !isCityValid) { 
+            selectSearch.attr('style', 'border-color: #c72929; box-shadow: 0 0 4px #c72929;');
+            $scope.cityTitleUA = true;
+        } else if (value === '' || isCityValid) {
+            selectSearch.attr('style', 'border-color: #d9d9d9; box-shadow: unset;');
+            $scope.cityTitleUA = false;
+        }
+    }
+
+    $scope.innKeyupHandler = function (e) {
+        var value = e.target.value;
+        $scope.isInnValid = (value.length > 0) ? false : true;
+    }
 
     $scope.focusEmptyField=function (model) {
         var element = angular.element('[ng-model="'+model+'"]');
@@ -279,12 +310,20 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     }, true);
 
     $scope.$watch('form.selectedCity', function() {
-        if(typeof $scope.form.selectedCity!='undefined'){
-            $("#StudentReg_city").val($scope.form.selectedCity.id);
-            $('input[name=cityTitle]').val($scope.form.selectedCity.title);
-        }else{
+        var selectedCity = $scope.form.selectedCity;
+        var selectSearch = angular.element(document.querySelector('#citySelect .select-search'));
+        if (selectedCity !== undefined) {
+            var isCityValid = Boolean(selectedCity.title.match($scope.cityTitleUARegexp));
+            $scope.cityTitleUA = !isCityValid;
+            $("#StudentReg_city").val(selectedCity.id);
+            $('input[name=cityTitle]').val(selectedCity.title);
+            isCityValid ? selectSearch.attr('style', 'border-color: #d9d9d9; box-shadow: unset;') :
+            selectSearch.attr('style', 'border-color: #c72929; box-shadow: 0 0 4px #c72929;');
+        } else {
+            $scope.cityTitleUA = false;
             $("#StudentReg_city").val(null);
             $('input[name=cityTitle]').val(null);
+            selectSearch.attr('style', 'border-color: #d9d9d9; box-shadow: unset;');
         }
     }, true);
 
@@ -688,7 +727,8 @@ function sendTeacherLetter($scope, $http) {
             bootbox.alert(response.data,function () {
                 location.reload();
             });
-        },function errorCallback() {
+        },function errorCallback(error) {
+            console.log(error);
             bootbox.alert("Виникла помилка при відпправлені листа. Зв\'яжіться з адміністрацією.");
         });
     }
@@ -953,4 +993,47 @@ function bannersSliderCtrl($scope, $http) {
         $scope.slides = response.data.banners;
     });
 
+}
+
+function libraryCtrl($scope) {
+    $scope.getDocument = function (fileID) {
+        bootbox.dialog({
+            message: "<embed width='100%' height='500px' src='" + basePath + '/library/getDemoBook?id=' + fileID + "' >",
+            size:'large',
+            onEscape:true
+        })
+
+    }
+}
+function bannersSliderForGraduatesCtrl($scope,$http, $interval) {
+    $scope.slides = [];
+    $http({
+        method:'get',
+        url:"/site/getBannersForGraduates/location"+window.location.pathname
+    }).then(function (response) {
+        $scope.slides = response.data.banners;
+    });
+    $scope.beginVertScroll = function(){
+        $interval(
+            function(){
+                var firstElement = $('ul.container li:first');
+                var hgt = firstElement.height() +
+
+                    parseInt(firstElement.css("paddingTop"), 10) + parseInt(firstElement.css("paddingBottom"), 10)+
+                    parseInt(firstElement.css("marginTop"), 10) + parseInt(firstElement.css("marginBottom"), 10);
+
+                var cntnt = firstElement.html();
+
+                $("ul.container").append("<li>" + cntnt + "</li>");
+                cntnt = "";
+                firstElement.animate({
+                    "marginTop" : -hgt
+                }, 600, function(){
+                    $scope.itemToremove = $(this);
+                    $(this).remove();
+                });
+            },
+            5000
+        );
+    };
 }

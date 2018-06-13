@@ -37,12 +37,12 @@ angular
             $scope.changePageHeader('Завдання');
             var initializing = true;
             var isMobile = {
-                Android: () => navigator.userAgent.match(/Android/i),
-                BlackBerry: () => navigator.userAgent.match(/BlackBerry/i),
-                iOS: () => navigator.userAgent.match(/iPhone|iPad|iPod/i),
-                Opera: () => navigator.userAgent.match(/Opera Mini/i),
-                Windows: () => navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i),
-                any: () => (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()),
+                Android: function () { return navigator.userAgent.match(/Android/i); },
+                BlackBerry: function () {return navigator.userAgent.match(/BlackBerry/i); },
+                iOS: function () {return navigator.userAgent.match(/iPhone|iPad|iPod/i); },
+                Opera: function () {return navigator.userAgent.match(/Opera Mini/i); },
+                Windows: function () {return navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i); },
+                any: function () {return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); },
             };
             // deny drag&drop for mobile devices
             $scope.canDrag = isMobile.any() ? false : true;
@@ -57,38 +57,32 @@ angular
                     case 'tasks.executant':
                         $scope.changePageHeader('Мої завдання');
                         $rootScope.roleId = 1;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.collaborator':
                         $scope.changePageHeader('Завдання в яких допомагаю');
                         $rootScope.roleId = 3;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.producer':
                         $scope.changePageHeader('Завдання які доручив');
                         $rootScope.roleId = 2;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.observer':
                         $scope.changePageHeader('Завдання в яких спостерігаю');
                         $rootScope.roleId = 4;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.all':
                         $scope.changePageHeader('Усі завдання зі мною');
                         $rootScope.roleId = 0;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     default:
                         $scope.changePageHeader('Мої завдання');
                         $rootScope.roleId = 1;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                 }
             }

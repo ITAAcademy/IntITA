@@ -5,31 +5,45 @@ $startOfDay = date('Y-m-d H:i:s', strtotime(date('Y-m-d')));
 ?>
 <div ng-controller="studentsTableCtrl">
     <br>
-    <button class="btn btn-primary"
+    <button class="btn btn-primary resetInput"
             ng-click="updateStudentList(organization)">
         Всі студенти
     </button>
 
-    <button class="btn btn-primary"
+    <button class="btn btn-primary resetInput"
             ng-click="updateStudentList(organization,'<?=$startOfDay?>', '<?=$currentTime?>')">
         За сьогодні
     </button>
 
-    <button class="btn btn-primary"
+    <button class="btn btn-primary resetInput"
             ng-click="updateStudentList(organization,'<?=$last_24h?>', '<?=$currentTime?>')">
         За добу
     </button>
 
-    <button class="btn btn-primary"
-            ng-click="updateStudentList(organization,from+ ' 00:00:00', to+' 23:59:59')">
-        За період:
-    </button>
+    <div class="students-table-datepicker ">
+        <button class="btn btn-primary"
+                ng-click="updateStudentList(organization,from+ ' 00:00:00', to+' 23:59:59')">
+            За період:
+        </button>
 
-    з : <input type="text" ng-model='from' id="from" name="from">
-    по: <input type="text" ng-model='to' id="to" name = "to">
+        з : <input type="text" ng-model='from' id="from" name="from">
+        по: <input type="text" ng-model='to' id="to" name = "to">
+    </div>
 
     <script>
-     
+        $jq('.resetInput').on('click', function(e){
+            e.preventDefault();
+
+            var val_from = $jq('#from').val();
+            var val_to = $jq('#to').val();
+
+            if(val_from.length >= 1){
+                $jq('#from').val('');
+            }
+            if(val_to.length >= 1){
+                $jq('#to').val('');
+            }
+        });
     </script>
     <a title="Експорт" class="glyphicon glyphicon-floppy-disk btn btn-primary pull-right" style="margin: 5px;"
        href="/_teacher/users/export/type/students">

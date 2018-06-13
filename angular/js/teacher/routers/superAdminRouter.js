@@ -102,4 +102,9 @@ angular
          cache: false,
          templateUrl: url+"/subdomains/index",
         })
+        .state('banners_for_graduates',{
+            url: '/banners_for_graduates',
+            cache: false,
+            templateUrl: url+"/bannersForGraduates/index",
+        })
 });

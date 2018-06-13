@@ -682,6 +682,7 @@ class Teacher extends CActiveRecord
             $criteria->addSearchCondition('user.firstName', $string, true, "OR", "LIKE");
             $criteria->addSearchCondition('user.secondName', $string, true, "OR", "LIKE");
             $criteria->addSearchCondition('user.middleName', $string, true, "OR", "LIKE");
+            $criteria->addSearchCondition('user.email', $string, true, "OR", "LIKE");
         }
 
         if ($selector == 'az'){

@@ -1,5 +1,12 @@
-<div class="container addBookWrap">
-    <form enctype="multipart/form-data" novalidate ng-submit="submitCategory();" name="myForm" ng-controller="addCategoryCtrl">
+<ul class="list-inline">
+    <li>
+        <a type="button" class="btn btn-primary" ng-href="#/library/categoryList">
+            Категорії
+        </a>
+    </li>
+</ul>
+<div class="addBookWrap">
+    <form enctype="multipart/form-data" novalidate ng-submit="submitCategory();" name="myForm">
         <div class="form-group">
             <label for="title_ua">Назва українською мовою:</label>
             <input type="text" class="form-control" id="title_ua" placeholder="Введіть назву категорії" name="name" ng-model="newCategory.title_ua"><br>

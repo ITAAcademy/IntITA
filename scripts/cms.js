@@ -5,15 +5,16 @@ if(content != null){
         var slider='<div ng-controller="sliderGeneratedCtrl" id="sliderBlock" ng-app="cmsAppNew">\n' +
             '    <div  id="slider" class="owl-carousel" style="opacity: 1; display: block;">\n' +
             '        <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">\n' +
-            '            <div uib-slide class="slide" ng-repeat="slide in slides track by slide.id" index="slide.id">\n' +
+            '            <div uib-slide class="slide" ng-repeat="slide in slides track by $index" index="$index">\n' +
             '                <div>\n' +
-            '                    <img ng-src="{{slide.image}}">\n' +
-            '                    <p>{{slide.text}}</p>\n' +
+            '                    <img ng-src="{{slide.src}}">\n' +
+            '                    <p class="title">{{slide.title}}</p>\n' +
+            '                    <p class="description">{{slide.description}}</p>'+
             '                </div>\n' +
             '            </div>\n' +
             '        </div>\n' +
             '    </div>\n' +
-            '</div>'
+            '</div>';
         $jq("#headerCms").after(slider);
         $jq.ajax({
             method: "POST",
@@ -28,3 +29,12 @@ if(content != null){
     });
 }
 
+function changeColorOff (e) {
+    element= $(e).children();
+    element.css("color", e.getAttribute("data-link"));
+}
+
+function changeColorOn (e) {
+    element= $(e).children();
+    element.css("color",e.getAttribute("data-hover"));
+}

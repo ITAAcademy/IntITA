@@ -3,6 +3,7 @@
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 Yii::setPathOfAlias('editable', dirname(__FILE__) . '/../extensions/x-editable');
+
 $local_config = require(dirname(__FILE__) . '/local.php');
 $params_config = require(dirname(__FILE__) . '/params.php');
 // This is the main Web application configuration. Any writable
@@ -204,6 +205,12 @@ return array(
                     'levels' => 'error, warning, trace, info, profile',
                     'categories' => 'application.crm.*',
                     'logFile' => 'crm.log',
+                ),
+                array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'error, warning, trace, info, profile',
+                    'categories' => 'liqpay',
+                    'logFile' => 'liqpay.log',
                 ),
             ),
         ),

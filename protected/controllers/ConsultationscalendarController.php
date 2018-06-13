@@ -40,9 +40,9 @@ class ConsultationscalendarController extends Controller
 	{
 		$lecture = Lecture::model()->findByPk($id);
 		if(!$lecture)
-			throw new \application\components\Exceptions\IntItaException('404', Yii::t('lecture', '0810'));
+			throw new \application\components\Exceptions\IntItaException(404, Yii::t('lecture', '0810'));
 		if(!Yii::app()->user->model->hasLectureAccess($lecture, $idCourse))
-			throw new \application\components\Exceptions\IntItaException('403', Yii::app()->user->model->lectureAccessErrorMessage);
+			throw new \application\components\Exceptions\IntItaException(403, Yii::app()->user->model->lectureAccessErrorMessage);
 	}
 
 	/**

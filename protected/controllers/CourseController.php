@@ -98,8 +98,10 @@ class CourseController extends Controller
 
     public function actionSchema($id)
     {
+        $courseForTemplate = Course::model()->findByPk($id);
         $lg = Yii::app()->session['lg'];
         $filename = StaticFilesHelper::pathToCourseSchema('schema_course_' . $id . '_' . $lg . '.html');
+        $lessonsCount = Course::getLessonsCount($id);
 
         if (!file_exists($filename)) {
             $modules = Course::getCourseModulesSchema($id);
@@ -118,6 +120,8 @@ class CourseController extends Controller
                     'tableCells' => $tableCells,
                     'courseDuration' => $courseDurationInMonths,
                     'messages' => $messages,
+                    'courseForTemplate' => $courseForTemplate,
+                    'lessonsCount' => $lessonsCount,
                     'save' => true
                 ), true);
                 $name = 'schema_course_'.$id.'_'.$lg[$i].'.html';

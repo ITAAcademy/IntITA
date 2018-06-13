@@ -24,6 +24,9 @@
                     <li><a href="#/banners">
                             Банери на головній сторінці</a>
                     </li>
+                    <li><a href="#/banners_for_graduates">
+                            Банери на сторінці випускників</a>
+                    </li>
                     <li><a href="#/address">
                             Адреса (країни, міста)</a>
                     </li>

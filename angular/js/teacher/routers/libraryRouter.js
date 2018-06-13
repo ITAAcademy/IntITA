@@ -1,45 +1,48 @@
 angular
-    .module('libraryRouter',['ui.router'])
+    .module('libraryRouter', ['ui.router'])
     .config(function ($stateProvider) {
-    $stateProvider
-        .state('library', {
-            url: "/library",
-            cache: false,
-            abstract: true,
-            template: '<ui-view></ui-view>'
-        })
-        .state('library.dashboard', {
-            url: "",
-            cache: false,
-            controller: function ($scope) {
-                $scope.changePageHeader('Бібліотека');
-            },
-            templateUrl: basePath + "/angular/js/teacher/templates/library/dashboard.html"
-        })
-        .state('library.list', {
-            url: "/list",
-            cache: false,
-            controller: 'booksCtrl',
-            templateUrl: basePath + "/angular/js/teacher/templates/library/list.html"
-        })
-        .state('library.addBook',{
-            url: "/addBook",
-            cache: false,
-            templateUrl: basePath + "/angular/js/teacher/templates/library/addBook.html"
-        })
-        .state('library.editBook:id', {
-            url: "/editBook/:id",
-            cache: false,
-            templateUrl: function ($stateParams) {
-                return basePath + "/angular/js/teacher/templates/library/editBook.html?id="+$stateParams.id;
-            }
-        })
-        .state('library.addCategory',{
-            url:"/addCategory",
-            cache: false,
-            controller: function ($scope) {
-                $scope.changePageHeader('Додання категорії');
-            },
-            templateUrl: basePath + "/angular/js/teacher/templates/library/addCategory.html"
-        })
-});
+        var url = basePath + "/_teacher/library"
+        $stateProvider
+            .state('library', {
+                url: "/library",
+                cache: false,
+                controller: function ($scope) {
+                    $scope.changePageHeader('Бібліотека');
+                },
+                templateUrl: url + "/library/dashboard",
+            })
+            .state('library/list', {
+                url: "/library/list",
+                cache: false,
+                templateUrl: url + "/library/index",
+            })
+            .state('library/create', {
+                url: "/library/create",
+                cache: false,
+                templateUrl: url + "/library/create",
+            })
+            .state('library/update/:id', {
+                url: "/library/update/:id",
+                cache: false,
+                templateUrl: function ($stateParams) {
+                    return url + "/library/update/id/" + $stateParams.id
+                }
+            })
+            .state('library/addCategory', {
+                url: "/library/addCategory",
+                cache: false,
+                templateUrl: url + "/libraryCategory/create"
+            })
+            .state('library/categoryList', {
+                url: "/library/categoryList",
+                cache: false,
+                templateUrl: url + "/libraryCategory/index"
+            })
+            .state('library/category/:id', {
+                url: "/library/category/:id",
+                cache: false,
+                templateUrl: function ($stateParams) {
+                    return url + "/libraryCategory/update/id/" + $stateParams.id
+                }
+            })
+    });

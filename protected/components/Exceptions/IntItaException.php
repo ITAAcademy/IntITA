@@ -14,11 +14,11 @@ class IntItaException extends \Exception {
     protected $view = '/site/error';
     public $statusCode;
 
-    public function __construct($status,$message=null,$code=0)
+    public function __construct($code=500,$message=null)
     {
-        $this->statusCode=$status;
+        $this->statusCode=$code;
 
-        parent::__construct($message,$status);
+        parent::__construct($message,$code);
     }
 
 

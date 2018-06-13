@@ -2,17 +2,13 @@
 
 class MailTransport implements IMailSender{
 
+    use mailSender;
     public $viewPath = 'application.views.mail';
     private $template = '';
 
-    public function send($mailto, $nameFrom, $subject, $text)
+
+  public function send($mailto, $nameFrom, $subject, $text)
     {
-        $mailPath = Config::getNotifyEmail();
-        $headers = "From: IntITA <{$mailPath}>". "\r\n"
-            . "MIME-Version: 1.0". "\r\n"
-            . "Reply-To: {$mailPath}" . "\r\n"
-            . "Return-Path: {$mailPath}". "\r\n"
-            . "Content-type: text/html;charset=utf-8" . "\r\n";
 
         if ($this->template != '') {
             $text = $this->template;
@@ -23,8 +19,7 @@ class MailTransport implements IMailSender{
             'userEmail' => $mailto
         ), true);
         $message = $message . "\n";
-
-        return mail($mailto, mb_encode_mimeheader($subject,"UTF-8"), $message, $headers, "-f {$mailPath}");
+        return $this->sendmail(Config::getNotifyEmail(),$nameFrom,$mailto,$subject,$message);
     }
 
     public function renderBodyTemplate($template, $params){

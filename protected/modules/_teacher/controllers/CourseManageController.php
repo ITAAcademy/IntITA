@@ -208,6 +208,7 @@ class CourseManageController extends TeacherCabinetController
 
     public function actionSchema($idCourse)
     {
+        $lessonsCount = Course::getLessonsCount($idCourse);
         $course=Course::model()->findByPk($idCourse);
         Yii::app()->user->model->hasAccessToOrganizationModel($course);
         $modules = Course::getCourseModulesSchema($idCourse);
@@ -222,12 +223,16 @@ class CourseManageController extends TeacherCabinetController
             'idCourse' => $idCourse,
             'tableCells' => $tableCells,
             'courseDuration' => $courseDurationInMonths,
-            'save' => false,
+            'courseForTemplate' => $course,
+            'lessonsCount' => $lessonsCount,
+            'save' => false
         ), false, true);
     }
 
     public function actionSaveSchema($idCourse)
     {
+        var_dump($_POST);die;
+        $lessonsCount = Course::getLessonsCount($idCourse);
         $course=Course::model()->findByPk($idCourse);
         Yii::app()->user->model->hasAccessToOrganizationModel($course);
         $modules = Course::getCourseModulesSchema($idCourse);
@@ -245,6 +250,8 @@ class CourseManageController extends TeacherCabinetController
                 'tableCells' => $tableCells,
                 'courseDuration' => $courseDurationInMonths,
                 'messages' => $messages,
+                'courseForTemplate' => $course,
+                'lessonsCount' => $lessonsCount,
                 'save' => true
             ), true);
             $name = 'schema_course_' . $idCourse . '_' . $lg[$i] . '.html';
@@ -304,7 +311,7 @@ class CourseManageController extends TeacherCabinetController
             $modules = Module::modulesNotInDefinedCourse($query, $course);
             echo $modules;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -325,7 +332,7 @@ class CourseManageController extends TeacherCabinetController
         if ($query && $lang && $currentCourseLang) {
             echo Course::coursesByQueryAndLang($query, $lang, $currentCourseLang);
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 

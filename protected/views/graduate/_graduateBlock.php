@@ -63,7 +63,7 @@
                                         <?php echo Yii::t('graduates', '0319')?>
                                         <?php echo CommonHelper::getRating(((double)$course->rating*Config::getRatingScale())); ?>
                                     </div>
-                                    <a href="/graduate" onclick="renderDiploma('<?= $course->id?>','1'); return false">Диплом</a>
+                                    <a href="" onclick="renderDiploma('<?= $course->id?>','1'); return false">Диплом</a>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -81,7 +81,7 @@
                                     <?php echo Yii::t('graduates', '0319')?>
                                     <?php echo CommonHelper::getRating(((double)$module->rating*Config::getRatingScale())); ?>
                                 </div>
-                                <a href="/graduate" onclick="renderDiploma('<?= $module->id?>','2'); return false">Диплом</a>
+                                <a href="" onclick="renderDiploma('<?= $module->id?>','2'); return false">Диплом</a>
                             </li>
                         <?php } ?>
                         </ul>
@@ -91,4 +91,3 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>

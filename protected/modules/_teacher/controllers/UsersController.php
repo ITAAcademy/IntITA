@@ -428,6 +428,21 @@ class UsersController extends TeacherCabinetController
         echo json_encode($result);
     }
 
+    public function actionGetAllActualTrainers()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->distinct = true;
+        $criteria->addCondition('end_date IS NULL');
+        $criteria->addCondition('id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        $criteria->select = 'id_user';
+        $trainers = UserTrainer::model()->findAll($criteria);
+        $result = array();
+        foreach($trainers as $item){
+            array_push($result, ['id'=>$item->id_user, 'fullName'=>$item->idUser->fullName]);
+        }
+        echo json_encode($result);
+    }
+
     public function actionExchangeTrainers()
     {
         $id_old_trainer = $_GET['id_old'];

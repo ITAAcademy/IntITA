@@ -79,7 +79,7 @@ $header = new Header();
 
 <body itemscope itemtype="https://schema.org/Product">
 <?php $switch_navigation = Header::model()->currentPage(); ?>
-<div id="main-wrapper" >
+<div id="main-wrapper" class="clearfix">
     <div id="mainheader">
         <?php $this->renderPartial('/site/_hamburgermenu'); ?>
         <div id='headerUnderline'>
@@ -126,9 +126,9 @@ $header = new Header();
                             <li>
                                 <a href="<?php echo Config::getBaseUrl() . '/forPartners' ?>"><?php echo Yii::t('header', '0981'); ?></a>
                             </li>
-<!--                            <li>-->
-<!--                                <a href="--><?php //echo Config::getBaseUrl() . '/library'; ?><!--">Бібліотека</a>-->
-<!--                            </li>-->
+                            <li>
+                                <a href="<?php echo Config::getBaseUrl() . '/library'; ?>">Бібліотека</a>
+                            </li>
                         </ul>
                     </td>
                     <td class="emptyTd"></td>

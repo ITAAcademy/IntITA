@@ -1,6 +1,10 @@
 <?php
 /* @var $model Course */
-$lessonsCount = Course::getLessonsCount($model->course_ID); ?>
+$lessonsCount = Course::getLessonsCount($model->course_ID);
+$modules = Course::getCourseModulesSchema($model->course_ID);
+$courseDurationInMonths = Course::getCourseDuration(Course::getTableCells($modules, $model->course_ID)) + 5;
+?>
+
 <script>
     course = "<?php echo $model->course_ID;?>";
 </script>
@@ -56,7 +60,7 @@ $lessonsCount = Course::getLessonsCount($model->course_ID); ?>
             <?php if ($lessonsCount != 0) {
                 echo ', ' . Yii::t('course', '0209'); ?>
                 -<b>
-                    <?php echo $model->getApproximatelyDurationInMonths(); ?><?php echo Yii::t('course', '0664'); ?>
+                    <?php echo $courseDurationInMonths; ?><?php echo Yii::t('course', '0664'); ?>
                 </b>
                 <?php
             } ?>

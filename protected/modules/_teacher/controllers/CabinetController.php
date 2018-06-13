@@ -213,7 +213,7 @@ class CabinetController extends TeacherCabinetController
             $users = StudentReg::allUsers($query);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
     public function actionActiveUsersByQuery($query)
@@ -222,7 +222,7 @@ class CabinetController extends TeacherCabinetController
             $users = StudentReg::usersByQuery($query);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
     public function actionAuthorsByQuery($query, $organization=null)
@@ -232,7 +232,7 @@ class CabinetController extends TeacherCabinetController
             $authors = UserAuthor::authorsList($query, $organization);
             echo $authors;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -243,7 +243,7 @@ class CabinetController extends TeacherCabinetController
             $modules = Module::allModules($query, $organization);
             echo $modules;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -254,7 +254,7 @@ class CabinetController extends TeacherCabinetController
             $services = Service::allServices($query, $organization);
             echo $services;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -264,7 +264,7 @@ class CabinetController extends TeacherCabinetController
             $users = UserStudent::studentByQuery($query);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -274,7 +274,7 @@ class CabinetController extends TeacherCabinetController
             $users = UserStudent::studentWithoutTrainerByQuery($query);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
     
@@ -318,7 +318,7 @@ class CabinetController extends TeacherCabinetController
             $users = StudentReg::usersNotTeacherByQuery($query);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -331,7 +331,7 @@ class CabinetController extends TeacherCabinetController
         if ($query && $roleModel) {
             echo $roleModel->addRoleFormList($query, $organization);
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -341,7 +341,7 @@ class CabinetController extends TeacherCabinetController
             $users = Trainer::trainersByQuery($query);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
     public function actionTeacherConsultantsByQueryAndModule($query,$module)
@@ -350,7 +350,7 @@ class CabinetController extends TeacherCabinetController
             $users = Teacher::teacherConsultantsByQueryAndModule($query,$module);
             echo $users;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
     

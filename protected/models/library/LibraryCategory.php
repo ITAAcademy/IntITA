@@ -59,9 +59,9 @@ class LibraryCategory extends CActiveRecord
 	{
 		return array(
             'id' => 'ID',
-            'title_ua' => 'title_ua',
-            'title_ru' => 'title_ru',
-            'title_en' => 'title_en',
+            'title_ua' => 'Title ua',
+            'title_ru' => 'Title ru',
+            'title_en' => 'Title en',
 		);
 	}
 
@@ -103,15 +103,7 @@ class LibraryCategory extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-    public function addCategory($data){
-        $category = new LibraryCategory();
-        $category->attributes = $data;
-        $category->save();
-    }
-    public function getCategory(){
-        $allCategory = LibraryCategory::model()->findAll();
-        return CJSON::encode($allCategory);
-    }
+
     public function getCategoriesName($id_category){
         return CJSON::encode(LibraryCategory::model()->findByPk($id_category));
     }

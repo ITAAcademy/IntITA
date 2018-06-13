@@ -53,9 +53,10 @@ class TeachersController extends Controller
             $title = "Teacher_Work " . $obj->firstname . " " . $obj->lastname;
             $mess = "Ім'я: " . $obj->firstname . " " . $obj->lastname . "\r\n" . "Телефон: " . $obj->phone . "\r\n" . "Курси які готовий викладати: " . $obj->courses;
             $to = Config::getAdminEmail();
-            if(mail($to, $title, $mess, "Content-type: text/plain; charset=utf-8 \r\n" . "From:" . $obj->email . "\r\n")){
+            $sender = new MailTransport();
+            $sender->renderBodyTemplate('_teacherRequest', array('mess'=>$mess));
+            if ($sender->send($to,  $obj->email, $title, $mess))
                 echo Yii::t('letter', '0914');
-            }
             else {
                 echo Yii::t('letter', '0915');
             }
@@ -63,7 +64,7 @@ class TeachersController extends Controller
             foreach($directors as $director){
                 $email = $director->email;
                 if(isset($email)){
-                    mail($email, $title, $mess, "Content-type: text/plain; charset=utf-8 \r\n" . "From:" . $obj->email . "\r\n");
+                    $sender->send($email,  $obj->email, $title, $mess);
                 }
             }
     }
