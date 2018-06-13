@@ -1245,7 +1245,10 @@ class Module extends CActiveRecord implements IBillableObject, IServiceableWithE
             $moduleRating->id_module = $this->module_ID;
             $revisionModule=RevisionModule::model()->with(['properties'])->find('id_module=:module AND id_state=:activeState',
                 [':module'=>$this->module_ID,':activeState'=>RevisionState::ReleasedState]);
-            $moduleRating->module_revision = $revisionModule?$revisionModule->id_module_revision:1;
+            if(!$revisionModule){
+                $revisionModule =  RevisionModule::createNewRevisionFromModule($this, Yii::app()->user)->cloneModule(Yii::app()->user);
+            }
+            $moduleRating->module_revision = $revisionModule->id_module_revision;
             $moduleRating->module_done = (int)false;
             $moduleStartDate=$this->getModuleStartTime();
             $moduleRating->start_module = $moduleStartDate?date("Y-m-d H:i:s",$moduleStartDate):new CDbExpression('NOW()');

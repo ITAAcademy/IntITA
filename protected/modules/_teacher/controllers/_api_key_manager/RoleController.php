@@ -14,13 +14,13 @@ class RoleController extends TeacherCabinetController
         }
 
         $title=mb_strtolower(Role::getGlobalInstance($role)->title());
-        $this->renderPartial('/_apiKeyManager/_addRole', array('role'=>$role,'title'=>$title), false, true);
+        $this->renderPartial('/_api_key_manager/_addRole', array('role'=>$role,'title'=>$title), false, true);
     }
 
     public function actionRenderAddAdminForm()
     {
         $title=mb_strtolower(Role::getInstance('admin')->title());
-        $this->renderPartial('/_apiKeyManager/_addApiKeyManager', array('role'=>'admin','title'=>$title), false, true);
+        $this->renderPartial('/_api_key_manager/_addApiKeyManager', array('role'=>'admin','title'=>$title), false, true);
     }
 
     public function actionAssignRole($userId, $role, $organizationId=null){
