@@ -39,12 +39,13 @@ class Avatar {
 
     public static function saveStudentAvatar($model, $data, $fileName, $x_resolution=200, $y_resolution=200, $quality=75)
     {
-        $im = new Imagick();
-        $im->readimageblob($data);
-        $im->setImageFormat( "jpg" );
-        $im->thumbnailImage($x_resolution, $y_resolution,true);
-        $output = $im->getimageblob();
-//        $im->setCompressionQuality($quality);
+        $image = imagecreatefromstring($data);
+        $image_p = imagecreatetruecolor($x_resolution, $y_resolution);
+        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $x_resolution, $y_resolution, $x_resolution, $y_resolution);;
+        ob_start();
+        imagepng($image_p);
+        $output = ob_get_contents();
+        ob_end_clean();
         file_put_contents(Yii::getpathOfAlias('webroot') . "/images/avatars/" . $fileName, $output);
         if(isset(Yii::app()->user->id)){
             $model->updateByPk(Yii::app()->user->id, array('avatar' => $fileName));
