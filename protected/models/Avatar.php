@@ -47,6 +47,7 @@ class Avatar {
         $output = ob_get_contents();
         ob_end_clean();
         file_put_contents(Yii::getpathOfAlias('webroot') . "/images/avatars/" . $fileName, $output);
+        chmod(Yii::getpathOfAlias('webroot') . "/images/avatars/" . $fileName,0777);
         if(isset(Yii::app()->user->id)){
             $model->updateByPk(Yii::app()->user->id, array('avatar' => $fileName));
             $model->changeGraduateStatus();
