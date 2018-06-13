@@ -36,6 +36,10 @@
                 <td><?=date("d.m.Y", strtotime($model->tax_certificate_issue_date));?></td>
             </tr>
             <tr>
+                <td>КВЕД: </td>
+                <td><?=$model->kved; ?></td>
+            </tr>
+            <tr>
                 <td>Юридична адреса: </td>
                 <td><?=$model->legalCity->title_ua.", ".$model->legal_address;?></td>
             </tr>

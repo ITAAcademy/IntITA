@@ -199,6 +199,11 @@ angular
             template: '{{writtenAgreement.agreement.corporateEntity.contacts}}'
         };
     })
+    .directive('cKved', function() {
+        return {
+            template: '{{writtenAgreement.agreement.corporateEntity.kved}}'
+        };
+    })
     .directive('cLicense', function() {
         return {
             template: '{{writtenAgreement.agreement.corporateEntity.license_number}}'
