@@ -200,7 +200,6 @@ angular
             $rootScope.loadTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
                 if ($scope.board == 1) {
                     return $scope.loadKanbanTasks(idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName).then(function (data) {
-                        $rootScope.getTasksCount();
                         $scope.setKanbanHeight();
                     });
                 } else {
