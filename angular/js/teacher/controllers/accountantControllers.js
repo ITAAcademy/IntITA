@@ -2079,7 +2079,6 @@ angular
 
             $http.get(basePath + '/angular/js/teacher/templates/accountancy/agreementExample.json').success(function (response) {
                 $scope.writtenAgreement = response;
-                console.log($scope.writtenAgreement);
             });
 
             $scope.saveAgreementTemplate = function (agreement, action) {
