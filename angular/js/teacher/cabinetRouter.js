@@ -114,7 +114,6 @@ angular
                     url: '/organization',
                     templateUrl: basePath+"/_teacher/users/organizationUsers",
                 })
-                
                 .state('users.registeredUsers', {
                     url: '/registeredUsers',
                     views: {

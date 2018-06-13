@@ -60,9 +60,26 @@ class SuperVisorController extends TeacherCabinetController
         $this->renderPartial('/_supervisor/forms/_subgroupForm', array('scenario' => 'update'), false, true);
     }
 
+    public function actionOfflineSubgrups()
+    {
+        $this->renderPartial('/_supervisor/tables/_offlineGroupSubgroups', array(), false, true);
+    }
+
     public function actionOfflineStudents()
     {
         $this->renderPartial('/_supervisor/tables/_offlineStudents', array(), false, true);
+    }
+    public function actionCoursesAccess()
+    {
+        $this->renderPartial('/_supervisor/tables/_coursesAccess', array(), false, true);
+    }
+    public function actionModulesAccess()
+    {
+        $this->renderPartial('/_supervisor/tables/_modulesAccess', array(), false, true);
+    }
+    public function actionModulesTeachers()
+    {
+        $this->renderPartial('/_supervisor/tables/_modulesTeachers', array(), false, true);
     }
 
     public function actionStudentsWithoutGroup()

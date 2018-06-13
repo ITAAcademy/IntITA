@@ -173,4 +173,61 @@ config(function ($stateProvider) {
             cache: false,
             templateUrl: basePath + "/_teacher/_supervisor/superVisor/modulesRating",
         })
+        .state('supervisorGroup', {
+            url: "/supervisorGroup/:id",
+            cache: false,
+            templateUrl: function ($stateParams) {
+                return basePath + "/_teacher/_supervisor/superVisor/offlineGroup/?id=" + $stateParams.id
+            },
+        })
+        .state('supervisorGroup.offlineSubgrups', {
+            url: "/offlineSubgrups",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/offlineSubgrups"
+                    },
+                }
+            }
+        })
+        .state('supervisorGroup.offlineStudents', {
+            url: "/offlineStudents",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/offlineStudents/?id=" + $stateParams.id
+                    },
+                }
+            }
+        })
+        .state('supervisorGroup.coursesAccess', {
+            url: "/coursesAccess",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/coursesAccess"
+                    },
+                }
+            }
+        })
+        .state('supervisorGroup.modulesAccess', {
+            url: "/modulesAccess",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/modulesAccess"
+                    },
+                }
+            }
+        })
+        .state('supervisorGroup.modulesTeachers', {
+            url: "/modulesTeachers",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/modulesTeachers"
+                    },
+                }
+            }
+        })
 });
