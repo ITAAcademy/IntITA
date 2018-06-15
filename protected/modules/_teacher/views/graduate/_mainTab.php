@@ -7,10 +7,8 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="col-md-2">
-                <a href="<?= Yii::app()->createUrl('graduates/index'); ?>" target="_blank">
-                    <img src="<?php echo StaticFilesHelper::createPath('image', 'graduates', $model->user->avatar); ?>"
-                         class="img-thumbnail" style="height:150px">
-                </a>
+                <img src="<?php echo StaticFilesHelper::createPath('image', 'graduates', $model->user->avatar); ?>"
+                     class="img-thumbnail" style="height:150px">
             </div>
             <div class="col-md-10">
                 <table class="table table-hover">

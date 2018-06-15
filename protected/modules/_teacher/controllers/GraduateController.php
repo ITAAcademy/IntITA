@@ -47,7 +47,7 @@ class GraduateController extends TeacherCabinetController
                     $path = Yii::getPathOfAlias('webroot') . '/images/graduates/' . $model->avatar->getName();
                     $model->avatar->saveAs($path);
                 } else {
-                    $model->updateByPk($model->id, array('avatar' => 'noname2.png'));
+                    $model->updateByPk($model->id, array('avatar' => 'noname.png'));
                 }
                 $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/') . '#/graduate');
             }
@@ -79,7 +79,7 @@ class GraduateController extends TeacherCabinetController
                     if ($avatarOld != null) {
                         $model->updateByPk($model->id, array('avatar' => $avatarOld));
                     } else {
-                        $model->updateByPk($model->id, array('avatar' => 'noname2.png'));
+                        $model->updateByPk($model->id, array('avatar' => 'noname.png'));
                     }
                 }
                 $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/') . '#/graduate');
@@ -131,7 +131,7 @@ class GraduateController extends TeacherCabinetController
     {
         $id = Yii::app()->request->getPost('id', '0');
         if ($id != 0) {
-            echo Graduate::model()->updateByPk($id, array('avatar' => 'noname2.png'));
+            echo Graduate::model()->updateByPk($id, array('avatar' => 'noname.png'));
         }
         //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : '/_admin/graduate/'.$id);
     }
