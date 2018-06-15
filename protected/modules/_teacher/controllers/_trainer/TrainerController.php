@@ -286,4 +286,9 @@ class TrainerController extends TeacherCabinetController
      }
     }
 
+    public function actionStudents()
+    {
+        $this->renderPartial('/_trainer/_students', array(), false, true);
+    }
+
 }
