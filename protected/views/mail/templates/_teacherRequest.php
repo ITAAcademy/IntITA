@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $mess
+ * @var $params array
  */
-echo  $mess;
+echo $params[0];
 ?>
