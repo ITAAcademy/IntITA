@@ -164,9 +164,9 @@ class Graduate extends CActiveRecord
 
         if ($selector == 'az'){
             if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'en') {
-                $criteria->order = 'last_name_en COLLATE utf8_unicode_ci ASC';
+                $criteria->order = 'last_name_en COLLATE utf8_unicode_ci ASC, user.email COLLATE utf8_unicode_ci ASC';
             }else{
-                $criteria->order = 'user.secondName COLLATE utf8_unicode_ci ASC';
+                $criteria->order = 'user.secondName COLLATE utf8_unicode_ci ASC, user.email COLLATE utf8_unicode_ci ASC';
             }
         }
         if ($selector == 'date') $criteria->order = 'graduate_date DESC';
