@@ -36,7 +36,7 @@
                 <td><?=date("d.m.Y", strtotime($model->tax_certificate_issue_date));?></td>
             </tr>
             <tr>
-                <td>КВЕД: </td>
+                <td>Призначення платежу: </td>
                 <td><?=$model->kved; ?></td>
             </tr>
             <tr>
