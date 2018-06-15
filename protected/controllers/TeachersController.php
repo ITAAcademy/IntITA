@@ -54,7 +54,7 @@ class TeachersController extends Controller
             $mess = "Ім'я: " . $obj->firstname . " " . $obj->lastname . "\r\n" . "Телефон: " . $obj->phone . "\r\n" . "Курси які готовий викладати: " . $obj->courses;
             $to = Config::getAdminEmail();
             $sender = new MailTransport();
-            $sender->renderBodyTemplate('_teacherRequest', array('mess'=>$mess));
+            $sender->renderBodyTemplate('_teacherRequest', array($mess));
             if ($sender->send($to,  $obj->email, $title, $mess))
                 echo Yii::t('letter', '0914');
             else {

@@ -91,7 +91,7 @@ class Avatar {
 
         if (copy($tmpName, Yii::getpathOfAlias('webroot') . "/images/teachers/" . $filename)) {
             $src = Yii::getPathOfAlias('webroot') . "/images/teachers/" . $oldAvatar;
-            if (is_file($src) && $oldAvatar!='noname2.png')
+            if (is_file($src) && $oldAvatar!='noname.png')
                 unlink($src);
         }
         Teacher::model()->updateByPk($id, array('foto_url' => $filename));

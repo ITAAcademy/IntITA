@@ -117,7 +117,7 @@ class CorporateEntity extends CActiveRecord {
             'license_number' => 'Номер ліцензії',
             'license_issued' => 'Ліцензія видана',
             'license_issued_date' => 'Дата видачі ліцензії',
-            'kved' => 'КВЕД',
+            'kved' => 'Призначення платежу',
         );
     }
 
