@@ -7,7 +7,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="col-md-2">
-                <img src="<?php echo StaticFilesHelper::createPath('image', 'graduates', $model->user->avatar); ?>"
+                <img src="<?php echo StaticFilesHelper::createPath('image', 'avatars', $model->user->avatar); ?>"
                      class="img-thumbnail" style="height:150px">
             </div>
             <div class="col-md-10">
