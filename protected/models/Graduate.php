@@ -164,9 +164,9 @@ class Graduate extends CActiveRecord
 
         if ($selector == 'az'){
             if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'en') {
-                $criteria->order = 'last_name_en COLLATE utf8_unicode_ci ASC';
+                $criteria->order = 'last_name_en COLLATE utf8_unicode_ci ASC, user.email COLLATE utf8_unicode_ci ASC';
             }else{
-                $criteria->order = 'user.secondName COLLATE utf8_unicode_ci ASC';
+                $criteria->order = 'user.secondName COLLATE utf8_unicode_ci ASC, user.email COLLATE utf8_unicode_ci ASC';
             }
         }
         if ($selector == 'date') $criteria->order = 'graduate_date DESC';
@@ -219,7 +219,7 @@ class Graduate extends CActiveRecord
             $row = array();
             $row["name"]["title"] = $record->first_name." ".$record->last_name;
 			$row["name"]["header"] = addslashes($record->first_name." ".$record->last_name);
-            $row["avatar"] = StaticFilesHelper::createPath('image', 'graduates', $record->avatar);
+            $row["avatar"] = StaticFilesHelper::createPath('image', 'avatars', $record->avatar);
             $row["position"] = CHtml::encode($record->position);
             $row["workPlace"] = CHtml::encode($record->work_place);
             $row["recall"] = mb_substr(CHtml::encode($record->recall),0,500,'UTF-8')."...";
