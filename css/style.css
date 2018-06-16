@@ -521,6 +521,7 @@ ul.container li
     height: 150px;
 }
 .bannerForGraduatesImg{
+    max-width: 100%;
     max-height: 100px;
 }
 .bannerForGraduatesWrapper {
