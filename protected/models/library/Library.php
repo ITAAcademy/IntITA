@@ -340,7 +340,7 @@
        $watermarkImage = $this->createWatermark($userId);
        if ($watermarkImage)
         {
-         if(!file_exists(Yii::app()->getBasePath() . "/../files/library/buy/{$userId}") || is_dir(Yii::app()->getBasePath() . "/../files/library/buy/{$userId}")){
+         if(!file_exists(Yii::app()->getBasePath() . "/../files/library/buy/{$userId}") || !is_dir(Yii::app()->getBasePath() . "/../files/library/buy/{$userId}")){
           mkdir(Yii::app()->getBasePath() . "/../files/library/buy/{$userId}",0777,true);
          }
          $watermark = new Watermark($bookFile);
