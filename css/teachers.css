@@ -113,6 +113,9 @@ div.titleTeachers {
     line-height: 100%;
 }
 /*Filter*/
+.graduatesFilter {
+    width: 35%;
+}
 .graduatesFilter td a.selectedFilter{
     color:#999999;
     text-decoration: none;
@@ -122,6 +125,7 @@ table.graduatesFilter{
     vertical-align: middle;
 }
 .graduatesFilter td{
+    width: 30%;
     padding: 0 2% 0 2%;
     border-left: 1px solid #4b75a4;
 }
@@ -352,6 +356,9 @@ div.aboutMore{
         width:50%;
         text-align: center;
     }
+    .graduatesFilter {
+        width: 100%;
+    }
 }
 /*celebre*/
 .downTeacherBlock{
@@ -397,6 +404,7 @@ div.aboutMore{
     }
     .graduatesFilter {
         margin-right: 12px;
+        width: 100%;
     }
     .graduatesFilter td {
         padding: 0 2% 0 1%;
