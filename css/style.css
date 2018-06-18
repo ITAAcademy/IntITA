@@ -591,3 +591,6 @@ ul::-webkit-scrollbar-thumb:hover {
         margin-bottom: 15px;
     }
 }
+.bannerForGraduatesWrapper .container{
+    max-width: 100%;
+}
