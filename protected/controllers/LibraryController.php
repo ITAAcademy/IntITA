@@ -200,14 +200,13 @@ class LibraryController extends Controller
         $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>1));
         if ($book && $payment){
          $bookFile = Yii::app()->getBasePath() . "/../files/library/buy/{$userId}/{$book->link}";
-         if(!file_exists($bookFile)){
-          $book->drawWatermark();
+         if(file_exists($bookFile) && is_file($bookFile)){
+          return   Yii::app()->request->xSendFile("/files/library/buy/{$userId}/{$book->link}",[
+              'forceDownload'=>true,
+              'xHeader'=>'X-Accel-Redirect',
+              'terminate'=>false
+          ]);
          }
-         return   Yii::app()->request->xSendFile("/files/library/buy/{$userId}/{$book->link}",[
-             'forceDownload'=>true,
-             'xHeader'=>'X-Accel-Redirect',
-             'terminate'=>false
-         ]);
         }
         else {
          throw new CHttpException(404,'Документ не знайдено');
