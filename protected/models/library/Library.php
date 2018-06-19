@@ -244,7 +244,9 @@
        $model->order_id = $res->order_id;
        $model->date = new CDbExpression('NOW()');;
        $model->status = 1;
-       $model->save();
+       if($model->save()){
+        $this->drawWatermark($model->user_id);
+       }
       }
 
      return $res->result;
@@ -325,10 +327,9 @@
      return json_encode($result);
     }
 
-   public function drawWatermark()
+   public function drawWatermark($userId)
     {
      $this->loadComposerClasses();
-     $userId = Yii::app()->user->getId();
      $bookFile =Yii::app()->getBasePath() . "/../files/library/{$this->id}/link/{$this->link}";
      $destFile = Yii::app()->getBasePath() . "/../files/library/buy/{$userId}/{$this->link}";
      if (file_exists($destFile))

@@ -5,8 +5,8 @@
     working_dir: /app
     hostname: app
     volumes:
-      - ./:/app
-      - ./docker_conf/php/php.ini:/usr/local/etc/php.ini
+      - ./:/appcd
+      - ./docker_conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
     links:
       - db
       - redis
