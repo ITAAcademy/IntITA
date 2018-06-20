@@ -49,11 +49,9 @@
             </tr>
             <tr>
                 <td>1</td>
-                <td style="text-align: left">Освітні послуги в науково-технічному напрямку - програмування та
-                    комп'ютерна грамотність (<?php echo CHtml::encode(Invoice::getProductTitle($model)); ?>, <?php echo AbstractIntITAService::getServiceById($model->agreement->service->service_id)->getEducationForm()->title_ua; ?>)
+                <td style="text-align: left"><?php echo $model->corporateEntity->kved; ?> (<?php echo CHtml::encode(Invoice::getProductTitle($model)); ?>, <?php echo AbstractIntITAService::getServiceById($model->agreement->service->service_id)->getEducationForm()->title_ua; ?>)
                 </td>
-                <td><span
-                        id="summa"><?php echo number_format($model->summa, 2, ",","&nbsp;"); ?></span>
+                <td><span id="summa"><?php echo number_format($model->summa, 2, ",","&nbsp;"); ?></span>
                 </td>
             </tr>
             <tr style="border: none;">

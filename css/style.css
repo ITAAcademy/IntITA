@@ -480,14 +480,6 @@ ul[rn-carousel] {
     position: relative;
     height: fit-content;
 }
-#mainfooter{
-    position: absolute;
-    bottom: 0;
-    background: white;
-}
-#contentBoxMain{
-    padding-bottom: 86px;
-}
 .clearfix::after {
     content: " ";
     display: table;
@@ -526,9 +518,11 @@ ul.container li
 }
 .graduatesBannerContent{
     direction: ltr;
+    height: 150px;
 }
 .bannerForGraduatesImg{
-    width: 166px;
+    max-width: 100%;
+    max-height: 100px;
 }
 .bannerForGraduatesWrapper {
     display: inherit;
@@ -555,7 +549,7 @@ ul.container li
     margin-left: -10px;
 }
 ul::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
 }
 
 /* Track */
@@ -596,4 +590,7 @@ ul::-webkit-scrollbar-thumb:hover {
         width: 100%;
         margin-bottom: 15px;
     }
+}
+.bannerForGraduatesWrapper .container{
+    max-width: 100%;
 }

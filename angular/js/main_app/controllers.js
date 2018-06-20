@@ -47,7 +47,6 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     $scope.cityTitleUA = false;
     $scope.cityTitleUARegexp = /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/;
     $scope.innRegexp = /^\d{10}$/;
-    $scope.isInnValid = true;
     if (avatar == 'noname.png') {
         $scope.progress--;
     }
@@ -78,11 +77,6 @@ function editProfileController($scope, $http, countryCity, careerService, specia
             selectSearch.attr('style', 'border-color: #d9d9d9; box-shadow: unset;');
             $scope.cityTitleUA = false;
         }
-    }
-
-    $scope.innKeyupHandler = function (e) {
-        var value = e.target.value;
-        $scope.isInnValid = (value.length > 0) ? false : true;
     }
 
     $scope.focusEmptyField=function (model) {
@@ -997,9 +991,10 @@ function bannersSliderCtrl($scope, $http) {
 
 function libraryCtrl($scope) {
     $scope.getDocument = function (fileID) {
-        bootbox.alert({
-            message: "<embed width='100%' src='" + basePath + '/library/getDemoBook?id=' + fileID + "' >",
-            size: 'large'
+        bootbox.dialog({
+            message: "<embed width='100%' height='500px' src='" + basePath + '/library/getDemoBook?id=' + fileID + "' >",
+            size:'large',
+            onEscape:true
         })
 
     }

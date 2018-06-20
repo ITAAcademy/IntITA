@@ -1,7 +1,8 @@
 <? $css_version = 1; ?>
 <link type="text/css" rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'GraduatesStyle.css') ?>"/>
 <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/controllers/filterGraduateCtrl.js'); ?>"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+<script src="<?php echo StaticFilesHelper::fullPathTo('js', 'SpoilerContent.js'); ?>"></script>
 <div class="subNavBlockGraduates">
     <?php
     $this->breadcrumbs=array(
@@ -20,21 +21,21 @@
         <h1><?php echo Yii::t('graduates', '0297')?></h1>
         <?php echo $this->renderPartial('_graduateFilter'); ?>
     </div>
-    <div id="graduateBlock" class="clearfix">
+    <div id="graduateBlock" class="clearfix" ng-cloak>
         <?php echo $this->renderPartial('_graduatesList', array('dataProvider'=>$dataProvider,'lang'=>$lang)); ?>
-        <div class="bannerForGraduatesWrapper clearfix">
-            <div class="bannerForGraduatesTitle clearfix">
+        <div class="bannerForGraduatesWrapper clearfix" ng-controller="bannersSliderForGraduatesCtrl">
+            <div class="bannerForGraduatesTitle clearfix" ng-show="slides.length!=0">
                 <div class="col-md-3 col-sm-2">
-                    <img src="<?php echo StaticFilesHelper::createPath('image', 'graduates', 'forma_1.png'); ?>">
+                    <img src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/graduates/forma_1.png'); ?>">
                 </div>
                 <div class="col-md-9 col-sm-10 title-without-padding-banners-graduates">
                     <p>Компанії, де працюють наші випускники</p>
                 </div>
             </div>
-            <ul class="container" ng-controller="bannersSliderForGraduatesCtrl" drctv >
+            <ul class="container" drctv ng-show="slides.length!=0">
                 <li class="graduatesBannerContent" ng-repeat="slide in slides | orderBy:'slide_position'"  >
                     <p class="bannerForGraduatesTitleText">{{slide.text}}</p>
-                    <a href="{{slide.url}}">
+                    <a href="{{slide.url}}" target="_blank">
                         <img class="bannerForGraduatesImg" src="{{slide.file_path}}">
                     </a>
                 </li>

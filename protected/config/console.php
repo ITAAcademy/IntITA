@@ -50,6 +50,12 @@ return array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
 				),
+    array(
+        'class' => 'CFileLogRoute',
+        'levels' => 'error, warning, trace, info, profile',
+        'categories' => 'system.db.*',
+        'logFile' => 'sql_console.log',
+    ),
 			),
 		),
 

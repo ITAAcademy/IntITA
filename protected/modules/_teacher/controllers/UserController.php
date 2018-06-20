@@ -4,7 +4,7 @@ class UserController extends TeacherCabinetController {
 
     public function hasRole(){
         $allowedUserDataActions=['loadJsonUserProfile','loadJsonUserOfflineEducation','loadUserName',
-            'loadJsonTeacherProfile','loadJsonUserRoles','loadJsonStudentAttributes','getRolesHistory','index','loadUserOrganizationTrainer'];
+            'loadJsonTeacherProfile','loadJsonUserRoles','loadJsonStudentAttributes','getRolesHistory','index','loadUserOrganizationTrainer' ];
         return Yii::app()->user->model->isAdmin() ||
         Yii::app()->user->model->isTrainer() ||
         Yii::app()->user->model->isDirector() ||

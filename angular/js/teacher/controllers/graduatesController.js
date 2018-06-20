@@ -186,7 +186,7 @@ function graduateCtrl ($scope, $rootScope, $filter, $http, NgTableDataService,  
                 return false;
             }
             else{
-                $state.go('graduate/view/:graduateId',{graduateId:$stateParams.graduateId});
+                $state.go('graduate/view/:graduateId',{graduateId:$stateParams.graduateId}, {reload: true});
             }
         })
     }
@@ -280,7 +280,7 @@ function editGraduateCtrl($scope, $http, $state, $httpParamSerializerJQLike, $st
             }
             else{
                 $ngBootbox.hideAll();
-                $state.go('graduate/edit/:graduateId',{graduateId:$stateParams.graduateId});
+                $state.go('graduate/edit/:graduateId',{graduateId:$stateParams.graduateId}, {reload: true});
             }
         })
     };
@@ -319,7 +319,7 @@ function editGraduateCtrl($scope, $http, $state, $httpParamSerializerJQLike, $st
             }
             else{
                 $ngBootbox.hideAll();
-                $state.go('graduate/edit/:graduateId',{graduateId:$stateParams.graduateId});
+                $state.go('graduate/edit/:graduateId',{graduateId:$stateParams.graduateId}, {reload: true});
             }
         })
     }

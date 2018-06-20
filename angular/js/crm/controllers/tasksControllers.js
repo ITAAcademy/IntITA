@@ -57,38 +57,32 @@ angular
                     case 'tasks.executant':
                         $scope.changePageHeader('Мої завдання');
                         $rootScope.roleId = 1;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.collaborator':
                         $scope.changePageHeader('Завдання в яких допомагаю');
                         $rootScope.roleId = 3;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.producer':
                         $scope.changePageHeader('Завдання які доручив');
                         $rootScope.roleId = 2;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.observer':
                         $scope.changePageHeader('Завдання в яких спостерігаю');
                         $rootScope.roleId = 4;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.all':
                         $scope.changePageHeader('Усі завдання зі мною');
                         $rootScope.roleId = 0;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     default:
                         $scope.changePageHeader('Мої завдання');
                         $rootScope.roleId = 1;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                 }
             }
@@ -283,7 +277,7 @@ angular
                                 return {
                                     id: item.idTask.id,
                                     title: item.idTask.name,
-                                    observers: item.idTask.observers,
+                                    observers: item.observers,
                                     producer: item.idTask.producerName.id,
                                     producerName: item.idTask.producerName.fullName,
                                     producerAvatar: basePath + '/images/avatars/' + item.idTask.producerName.avatar,
@@ -412,7 +406,7 @@ angular
             $scope.changeRouterState($state.$current.name);
 
             $scope.canComplete = function (task) {
-                if(task.producer==$scope.currentUser || task.executant==$scope.currentUser || _.isObject(_.find(task.observers, {id: String($scope.currentUser)}))){
+                if(task.producer==$scope.currentUser || task.executant==$scope.currentUser || _.isObject(_.find(task.observers, {id_user: $scope.currentUser}))){
                     return true;
                 }else{
                     return false;

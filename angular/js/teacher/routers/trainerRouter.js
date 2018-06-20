@@ -93,4 +93,9 @@ config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             cache         : false,
             templateUrl: basePath + "/_teacher/_trainer/trainer/renderTrainerUsersAgreements"
         })
+        .state('trainer/students', {
+            url: "/trainer/students",
+            cache         : false,
+            templateUrl: basePath + "/_teacher/_trainer/trainer/students"
+        })
 });

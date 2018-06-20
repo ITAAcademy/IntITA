@@ -8,7 +8,11 @@
 class ForPartnersController extends Controller
 {
     public function actionIndex(){
-        $this->render('index',array());
+        if (Yii::app()->session['lg'] == 'ua') {
+            $this->render('index_ua',array());
+        } else {
+            $this->render('index_en',array());
+        }
     }
 
     public function actionPartnerLetter(){
