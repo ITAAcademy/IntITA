@@ -6,9 +6,17 @@
 </script>
 <style>
     .slide img{width:100%;height:500px !important;z-index:0;}
+    #cms_content_generate{
+        margin-bottom: 40px;
+    }
+    #save_cms{
+        position: absolute;
+        margin-top: 75px;
+    }
+
 </style>
 
-<div  ng-controller="cmsCtrl" ng-controller="settingsCtrl" ng-controller="cmsMenuListCtrl" >
+<div  ng-controller="cmsCtrl" >
 
 
     <?php if(!$subdomain) {
@@ -115,7 +123,9 @@
 
             </script>
         </div>
-        <input id="save_cms" name="save" value="Згенерувати сторінку" type="submit"  onclick="bootbox.alert('Сторінку згенеровано!')" class="btn btn-primary" >
+        <div>
+            <input id="save_cms" name="save" value="Згенерувати сторінку" type="submit"  onclick="bootbox.alert('Сторінку згенеровано!')" class="btn btn-primary" >
+        </div>
     </div>
 <?php } ?>
 </div>

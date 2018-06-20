@@ -10,7 +10,7 @@
 
                     </a>
                      <div>
-                         <input class="edit" type="image" ng-click="removeLogo()" data-toggle="modal" data-target="#LogoModal" src="http://intita.com/images/editor/edt_20px.png">
+                         <input class="edit" type="image" data-toggle="modal" data-target="#LogoModal" src="http://intita.com/images/editor/edt_20px.png">
 
                          <div class="modal fade" id="LogoModal" role="dialog">
                              <div class="modal-dialog modal-sm">
@@ -38,7 +38,7 @@
                                              <div class="in_group3-1" >
                                                  <div class="intent">
                                                      <a href="javascript:void(0)">
-                                                         <i class="fa fa-trash" title="Видалити" aria-hidden="true"  ng-click="removeLogo(settings.id, settings.logo)"></i>
+                                                         <i class="fa fa-trash" title="Видалити" aria-hidden="true" id="logo_clear"  ng-click="removeLogo(settings.id, settings.logo)"></i>
                                                      </a>
                                                  </div>
 
@@ -75,10 +75,10 @@
             <div class="col-md-1 ">
 
                 <div>
-                    <input class="edit1" type="image" ng-click="" data-toggle="modal" data-target="#ListModal" src="http://intita.com/images/editor/edt_20px.png">
+                    <input class="edit1" type="image" data-toggle="modal" data-target="#ListModal" src="http://intita.com/images/editor/edt_20px.png">
 
                     <div class="modal fade" id="ListModal" role="dialog">
-                        <div class="modal-dialog modal-lg">
+                        <div class="modal-dialog modal-sm">
 
                             <!-- Modal content-->
                             <div class="modal-content">
@@ -90,7 +90,36 @@
 
                                 <div class="modal-body">
 
+                                    <div class="grid_group_menu_header" >
+                                        <div class="intent" >
+                                            <p class="in_intent_title " ng-style="{color:settings.header_link_color}" >Гіперпосилання в хідері</p>
+                                            <!--                                        <p class="in_intent"  ng-style="{color:settings.title_color}" >Title color</p>-->
+                                        </div>
+                                        <div  class="square" >
+                                            <input  class="in_square" type="color" ng-model="settings.header_link_color">
+                                        </div>
+                                        <div class="rectangle" >
+                                            <input class="in_rectangle"  ng-model="settings.header_link_color" color-picker color-picker-model="settings.header_link_color" type="text">
+                                        </div>
+                                    </div>
 
+                                    <div class="grid_group_menu_header" >
+                                        <div class="intent" >
+                                            <p class="in_intent_title " ng-style="{color:settings.header_hover_color}" >Ховер хідера</p>
+                                            <!--                                        <p class="in_intent"  ng-style="{color:settings.title_color}" >Title color</p>-->
+                                        </div>
+                                        <div  class="square" >
+                                            <input  class="in_square" type="color" ng-model="settings.header_hover_color">
+                                        </div>
+                                        <div class="rectangle" >
+                                            <input class="in_rectangle"  ng-model="settings.header_hover_color" color-picker color-picker-model="settings.header_hover_color" type="text">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateSettings(settings, settings.logo )" >Зберегти</button>
+                                </div>
 
                             </div>
 
@@ -101,6 +130,59 @@
             <div class="col-md-1"></div>
         </div>
         <div class="col-md-1 col-sm-0">
+
+            <div>
+                <input class="edit1" type="image" ng-click="" data-toggle="modal" data-target="#HeaderModal" src="http://intita.com/images/editor/edt_20px.png">
+
+                <div class="modal fade" id="HeaderModal" role="dialog">
+                    <div class="modal-dialog modal-sm">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Редактор хедера</h4>
+                            </div>
+
+
+                            <div class="modal-body">
+
+                                <div class="grid_group_menu_header" >
+                                    <div class="intent" >
+                                        <p class="in_intent_title " ng-style="{'background-color':settings.header_background_color}" >Фон хідера</p>
+                                        <!--                                        <p class="in_intent"  ng-style="{color:settings.title_color}" >Title color</p>-->
+                                    </div>
+                                    <div  class="square" >
+                                        <input  class="in_square" type="color" ng-model="settings.header_background_color">
+                                    </div>
+                                    <div class="rectangle" >
+                                        <input class="in_rectangle"  ng-model="settings.header_background_color" color-picker color-picker-model="settings.header_background_color" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="grid_group_menu_header" >
+                                    <div class="intent" >
+                                        <p class="in_intent_title " ng-style="{'border-color':settings.header_border_color, 'border-style': 'solid', 'border-width': 'thin'}" >Рамка в хідері</p>
+                                        <!--                                        <p class="in_intent"  ng-style="{color:settings.title_color}" >Title color</p>-->
+                                    </div>
+                                    <div  class="square" >
+                                        <input  class="in_square" type="color" ng-model="settings.header_border_color">
+                                    </div>
+                                    <div class="rectangle" >
+                                        <input class="in_rectangle"  ng-model="settings.header_border_color" color-picker color-picker-model="settings.header_border_color" type="text">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateSettings(settings, settings.logo )" >Зберегти</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 </div>

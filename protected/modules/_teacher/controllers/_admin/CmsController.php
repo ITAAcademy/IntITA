@@ -41,7 +41,9 @@ class CmsController extends TeacherCabinetController
         $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"lists",key($_FILES));
         $params = array_filter((array)json_decode($_POST['data']));
         $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
+
         $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+
         $menuLink->attributes = $params;
         if(isset($uploadedFile)){
             $menuLink->image = $uploadedFile;
@@ -215,6 +217,9 @@ class CmsController extends TeacherCabinetController
     $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
     $folderAddress = $path_domain . "/logo/";
     $imageAddress = $_POST["image"];
+//    var_dump($folderAddress);
+//    var_dump($imageAddress);
+//    die;
 
     if (file_exists($folderAddress.$imageAddress)) {  //видалення картинки з сервера(папки)
         unlink($folderAddress.$imageAddress);

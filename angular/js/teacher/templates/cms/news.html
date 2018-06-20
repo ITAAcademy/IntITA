@@ -20,26 +20,26 @@
     </div>
 
     <label>Список новин</label>
-    <div ng-repeat="list in lists track by $index" class="row">
+    <div ng-repeat="new in news track by $index" class="row">
         <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Заголовок" ng-model="list.title">
+            <input type="text" class="form-control" placeholder="Заголовок" ng-model="new.title">
         </div>
         <div class="col-md-2">
-            <img class="preview"  ng-src='{{list.id && domainPathNews+list.img || list.img}}'>
+            <img class="preview"  ng-src='{{new.id && domainPathNews+new.img || new.img}}'>
             <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
     </div>
         <div class="col-md-4">
-            <textarea class="form-control" placeholder="Текст новини" ng-model="list.text" style="resize: none"></textarea>
+            <textarea class="form-control" placeholder="Текст новини" ng-model="new.text" style="resize: none"></textarea>
         </div>
         <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Дата" ng-model="list.date">
+            <input type="text" class="form-control" placeholder="Дата" ng-model="new.date">
         </div>
         <div class="col-md-1">
             <a href="javascript:void(0)">
-                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(list,$index,list.img)"></i>
+                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(new,$index,new.img)"></i>
             </a>
             <a href="javascript:void(0)">
-                <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(list.id,list.img)"></i>
+                <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(new.id,new.img)"></i>
             </a>
         </div>
         <div class="col-md-12">

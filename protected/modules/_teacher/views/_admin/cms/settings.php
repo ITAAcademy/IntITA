@@ -139,13 +139,6 @@ p {
 </style>
 <div class="settings_conteiner"  ng-controller="settingsCtrl">
 
-
-
-
-
-
-
-
     <div class="settings_box">
         <div class="grid_main first_blok" >
             <div class="grid_group" >
@@ -463,10 +456,10 @@ p {
 
 
 
-    </br></br></br></br></br></br></br></br>
+    </br></br></br>
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-</br></br></br></br></br></br></br></br>
+</br></br></br>
 
 
     <ul>
@@ -487,56 +480,7 @@ p {
                     </div>
                 </div>
             </div>
-            <div class="second_box">
-                <div class="row ">
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
 
-                            <div class="col-md-6 col-xs-6 rectangle" >
-                                <input class="in_rectangle_soc" type="text" ng-model="settings.title">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" >
-                                <p class="in_intent" >Title</p></div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
-
-                            <div class="col-md-6 col-xs-6 rectangle" >
-                                <input class="in_rectangle_soc" type="text" ng-model="settings.subtitle">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" >
-                                <p class="in_intent" >Subtitle</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="third_box">
-                <div class="row ">
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
-
-                            <div class="col-md-6 col-xs-6 rectangle" >
-                                <input class="in_rectangle_soc" type="text" ng-model="settings.title_2">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" >
-                                <p class="in_intent" >Title 2</p></div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
-
-                            <div class="col-md-6 col-xs-6 rectangle" >
-                                <input class="in_rectangle_soc" type="text" ng-model="settings.subtitle_2">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" >
-                                <p class="in_intent" >Subtitle 2</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </li>
 
 
@@ -544,58 +488,3 @@ p {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 </div>
 
-
-<hr>
-
-
-<!---->
-<!---->
-<!---->
-<!---->
-<!--<script>-->
-<!--$jq(document).ready(function () {-->
-<!--    var slides = $jq('.slide_settings');-->
-<!--    var container = $jq('#slides_settings_1 ul');-->
-<!--    var elm = container.find(':first-child').prop("tagName");-->
-<!--    var item_width = container.width();-->
-<!--    var previous = 'prev'; //id of previous button-->
-<!--    var next = 'next'; //id of next button-->
-<!--    slides.width(item_width); //set the slides to the correct pixel width-->
-<!--    container.parent().width(item_width);-->
-<!--    container.width(slides.length * item_width); //set the slides container to the correct total width-->
-<!--    container.find(elm + ':first').before(container.find(elm + ':last'));-->
-<!--    resetSlides();-->
-<!--    //if user clicked on prev button-->
-<!--    $jq('#buttons a').click(function (e) {-->
-<!--        //slide the item-->
-<!--        if (container.is(':animated')) {-->
-<!--            return false;-->
-<!--        }-->
-<!--        if (e.target.id == previous) {-->
-<!--            container.stop().animate({-->
-<!--                    'left': 0-->
-<!--                }, 10, function () {-->
-<!--                container.find(elm + ':first').before(container.find(elm + ':last'));-->
-<!--                resetSlides();-->
-<!--            });-->
-<!--            }-->
-<!--        if (e.target.id == next) {-->
-<!--            container.stop().animate({-->
-<!--                    'left': item_width * -2-->
-<!--                }, 10, function () {-->
-<!--                container.find(elm + ':last').after(container.find(elm + ':first'));-->
-<!--                resetSlides();-->
-<!--            });-->
-<!--            }-->
-<!--        //cancel the link behavior-->
-<!--        return false;-->
-<!---->
-<!--    });-->
-<!--    function resetSlides() {-->
-<!--        //and adjust the container so current is in the frame-->
-<!--        container.css({-->
-<!--                'left': -1 * item_width-->
-<!--            });-->
-<!--        }-->
-<!--});-->
-<!--</script>-->

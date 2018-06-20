@@ -40,7 +40,7 @@
                 </td>
             </tr>
             </tbody></table>
-        <input class="edit1" type="image" ng-click="Modal_window()" data-toggle="modal" data-target="#SocialNetworksModal" src="http://intita.com/images/editor/edt_20px.png">
+        <input class="edit2" type="image" ng-click="Modal_window()" data-toggle="modal" data-target="#SocialNetworksModal" src="http://intita.com/images/editor/edt_20px.png">
 
         <div class="modal fade" id="SocialNetworksModal" role="dialog">
             <div class="modal-dialog ">
