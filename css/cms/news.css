@@ -74,3 +74,31 @@ html{font-family:"MyriadPro";}
 .text-muted{
     margin-bottom: 0px;
 }
+.grid-title2{
+      display: grid;
+      grid-template-columns: 8fr 1fr;
+  }
+.grid_group_title1{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+.grid_group_title2{
+    display: grid;
+    grid-template-columns: 3fr 1fr 2fr;
+}
+.edit3{
+    float: left;
+}
+.news_titles{
+    margin-left: 120px;
+}
+@media(max-width:767px) {
+    .news_titles{
+        margin-left: 59px;
+    }
+}
+@media(max-width:450px) {
+    .news_titles{
+        margin-left: 30px;
+    }
+}
