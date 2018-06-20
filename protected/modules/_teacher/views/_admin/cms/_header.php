@@ -10,7 +10,7 @@
 
                     </a>
                      <div>
-                         <input class="edit" type="image" ng-click="removeLogo()" data-toggle="modal" data-target="#LogoModal" src="http://intita.com/images/editor/edt_20px.png">
+                         <input class="edit" type="image" ng-click="removeLogo()" data-toggle="modal" data-target="#LogoModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
                          <div class="modal fade" id="LogoModal" role="dialog">
                              <div class="modal-dialog modal-sm">
@@ -75,7 +75,7 @@
             <div class="col-md-1 ">
 
                 <div>
-                    <input class="edit1" type="image" ng-click="" data-toggle="modal" data-target="#ListModal" src="http://intita.com/images/editor/edt_20px.png">
+                    <input class="edit1" type="image" ng-click="" data-toggle="modal" data-target="#ListModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
                     <div class="modal fade" id="ListModal" role="dialog">
                         <div class="modal-dialog modal-lg">

@@ -6,7 +6,7 @@
                 <h3 class="text-primary  info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}"   ng-bind="settings.subtitle_2"></h3>
             </div>
             <div>
-                <input class="edit3" type="image" ng-click="removeLogo()" data-toggle="modal" data-target="#Title2Modal" src="http://intita.com/images/editor/edt_20px.png">
+                <input class="edit3" type="image" ng-click="removeLogo()" data-toggle="modal" data-target="#Title2Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                 <div class="modal fade" id="Title2Modal" role="dialog">
                     <div class="modal-dialog ">
 
@@ -63,7 +63,7 @@
 
                     <div class="col-md-4 col-sm-5 img_out img_out_left" >
                         <div class="img_news_box1">
-                            <img src='{{list.id && domainPathNews+ list.img || list.img}}' class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': '2px'}">
+                            <img src='{{list.id && domainPathNews+list.img || list.img}}' class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': '2px'}">
                         </div>
                     </div>
 
