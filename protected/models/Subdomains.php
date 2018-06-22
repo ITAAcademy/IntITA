@@ -130,10 +130,9 @@
 
    private function makeDomainDirectory()
     {
-     if (!is_dir(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema()))
-      {
-       mkdir(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema(), 0777, true);
-      }
+        if (!is_dir(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema())) {
+            mkdir(Yii::app()->basePath . '/../domains/' . $this->domain_name.'.'.Config::getBaseUrlWithoutSchema(), 0777, true);
+        }
     }
 
    protected function generateTemplateFile(){

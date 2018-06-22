@@ -192,6 +192,93 @@
         width: 30px;
     }
 }
+
+.grid{
+    margin-bottom: inherit;
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.grid_group_color{
+    margin-bottom: inherit;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr 1fr;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+@media screen and (max-width: 360px) {
+    .grid{
+        grid-template-columns: 1fr 6fr;
+    }
+    .grid_group_color{
+        grid-template-columns: 2fr 1fr 3fr ;
+    }
+}
+
+
+
+.group{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 50px;
+    margin-bottom: 2px;
+}
+.group_color{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+.square{
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.in_square{
+    width:35px;
+    height:35px;
+}
+.rectangle{
+    margin-top:2px;
+    padding-right:2px;
+    padding-left:2px;
+
+}
+.in_rectangle{
+    padding-right:5px;
+    padding-left:5px;
+    width: 90px;
+}
+.intent{
+    margin-top:6px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.in_intent{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.col-xs-6 .intent {
+    padding-right: 40px;
+    padding-left: 10px;
+}
+.in_rectangle_soc{
+    padding-right:5px;
+    padding-left:5px;
+    width: 280px;
+    margin-left: 20px;
+}
+.intent-img {
+    width: 29px;
+    height: 29px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 #cms_content{
     position: relative;
     padding-bottom: 69px;
