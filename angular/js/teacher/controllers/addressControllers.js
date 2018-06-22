@@ -24,7 +24,11 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
             }
         });
 
-    $scope.citiesTable = new NgTableParams({},
+    $scope.citiesTable = new NgTableParams({
+        sorting: {
+            checked: 'asc'
+        }
+    },
         {
             getData: function (params) {
                 return $resource(url + "/getCitiesList").get(params.url()).$promise.then(function (data) {
@@ -64,7 +68,7 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
             bootbox.alert('Виберіть країну.');
         } else {
             $scope.cityForm['country'] = country;
-            $scope.cityForm['checked'] = true;
+            $scope.cityForm['checked'] = false;
             var fullUrl = url+"/newCity";
             $http.post(fullUrl, $scope.cityForm)
             .then(function successCallback(response) {

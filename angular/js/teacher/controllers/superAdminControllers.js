@@ -20,7 +20,6 @@ function mainSuperAdminCtrl($scope, $rootScope, $http) {
         }).success(function(response){;
             $rootScope.countOfNewResponses=response[0];
             $rootScope.countOfNewCities=response[1];
-            console.log(response);
         }).error(function(){
             console.log("Отримати дані про нові відгуки про викладачів не вдалося");
         })
