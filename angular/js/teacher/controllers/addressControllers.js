@@ -64,6 +64,7 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
             bootbox.alert('Виберіть країну.');
         } else {
             $scope.cityForm['country'] = country;
+            $scope.cityForm['checked'] = false;
             var fullUrl = url+"/newCity";
             $http.post(fullUrl, $scope.cityForm)
             .then(function successCallback(response) {
@@ -90,6 +91,19 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
 
     $scope.showEditModal = function (city) {
         $state.go('editcity/:id', {id: city.id});
+    }
+
+    $scope.checkedHandler = function (city) {
+        var fullUrl = url+"/checkCity";
+        $http.post(fullUrl, {id: city.id, checked: !city.checked})
+        .then(function successCallback(response) {
+            bootbox.alert(response.data, function () {
+                $scope.citiesTable.reload();
+            });
+        }, function errorCallback() {
+            bootbox.alert("Операцію не вдалося виконати.");
+        });
+
     }
 }
 

@@ -123,4 +123,19 @@ class AddressController extends TeacherCabinetController
     public function actionCountriesByQuery($query){
         echo AddressCountry::countriesByQuery($query);
     }
+
+    public function actionCheckCity() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if($data){
+            $model=AddressCity::model()->findByPk($data['id']);
+            $model->checked = $data['checked'];
+            if($model->save()){
+                echo "Операцію успішно виконано.";
+            } else {
+                echo "Операцію не вдалося виконати.";
+            }
+        } else {
+            echo "Неправильно введені дані.";
+        }
+    }
 }

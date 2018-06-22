@@ -15,6 +15,7 @@
                     <col width="20%" />
                     <col width="20%" />
                     <col width="10%" />
+                    <col width="10%" />
                 </colgroup>
                 <tr ng-repeat="row in $data">
                     <td
@@ -47,7 +48,10 @@
                         filter="{title_en:'text'}"
                         ng-click="showEditModal(row)"
                     >{{row.title_en}}</td>
-                    <td data-title="'Редагувати'">
+                    <td data-title="'Перевірено'" align="center">
+                        <input type="checkbox" name="verified" ng-checked="{{!row.checked}}" ng-click="checkedHandler(row)" />
+                    </td>
+                    <td data-title="'Видалити'">
                         <a
                             type="button"
                             class="btn btn-outline btn-danger btn-sm"
