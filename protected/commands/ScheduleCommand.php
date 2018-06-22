@@ -86,7 +86,8 @@ class ScheduleCommand extends CConsoleCommand
     }
 
     public function actionCheckBirthdays(){
-        $trainers = UserTrainer::model()->with('idUser')->findAll("idUser.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
+     date_default_timezone_set('Europe/Kiev');
+     $trainers = UserTrainer::model()->with('idUser')->findAll("idUser.cancelled=".StudentReg::ACTIVE." AND end_date IS NULL");
         foreach ($trainers as $trainer){
             $students = TrainerStudent::model()->with(['trainer0','trainerStudent'])->findAll('trainer0.user_id='.$trainer->id_user.' AND DATE_FORMAT(trainerStudent.birthday, "%d-%m")=DATE_FORMAT(NOW(),"%d-%m")');
             if(count($students)>0){
@@ -101,7 +102,7 @@ class ScheduleCommand extends CConsoleCommand
                     $text = "Сьогодні День народження у: \r\n" ;
                     foreach ($students as $student){
                         $model = StudentReg::model()->findByPk($student->student);
-                        $text .= "\r\n".$model->fullName.' ('.$model->email.');';
+                        $text .= "\r\n".$model->fullName.' ('.$model->email.') ('.$model->birthday.');';
                     }
                     $message->build($subject, $text, array($receiver), $user);
                     $msg = $message->create();

@@ -1,12 +1,12 @@
   app:
-    image: nickzorych/php:IntITA-dev
+    image: devopsintita/intita:php5-dev-latest
     user: ${USER_ID}:${USER_GID}
     container_name: "IntITA_app"
     working_dir: /app
     hostname: app
     volumes:
       - ./:/app
-      - ./docker_conf/php/php.ini:/usr/local/etc/php.ini
+      - ./docker_conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
     links:
       - db
       - redis
@@ -46,21 +46,3 @@
       MYSQL_PASSWORD: ${MYSQL_PASSWD}
   redis:
     image: redis:latest
-
-  bower:
-       container_name: "IntITA_bower"
-       user: ${USER_ID}:${USER_GID}
-       image: digitallyseamless/nodejs-bower-grunt:latest
-       working_dir: /data
-       volumes:
-        - ./angular:/data
-       command: bower install
-
-  composer:
-      container_name: "IntITA_composer"
-      user: ${USER_ID}:${USER_GID}
-      image: composer:latest
-      working_dir: /app
-      volumes:
-        - ./protected:/app
-      command: composer install --ignore-platform-reqs
