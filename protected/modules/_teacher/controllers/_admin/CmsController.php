@@ -109,6 +109,10 @@ class CmsController extends TeacherCabinetController
         echo CJSON::encode(CmsNews::model()->findAll());
     }
 
+    public function actionGetOneNews()
+    {
+        echo CJSON::encode(CmsNews::model()->findByPk( $_POST['id'])) ;
+    }
 
     public function actionUpdateNews()
     {

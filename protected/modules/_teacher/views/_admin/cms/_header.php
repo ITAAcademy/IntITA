@@ -150,7 +150,6 @@
                                 <div class="grid_group_menu_header" >
                                     <div class="intent" >
                                         <p class="in_intent_title " ng-style="{'background-color':settings.header_background_color}" >Фон хідера</p>
-                                        <!--                                        <p class="in_intent"  ng-style="{color:settings.title_color}" >Title color</p>-->
                                     </div>
                                     <div  class="square" >
                                         <input  class="in_square" type="color" ng-model="settings.header_background_color">
@@ -163,7 +162,7 @@
                                 <div class="grid_group_menu_header" >
                                     <div class="intent" >
                                         <p class="in_intent_title " ng-style="{'border-color':settings.header_border_color, 'border-style': 'solid', 'border-width': 'thin'}" >Рамка в хідері</p>
-                                        <!--                                        <p class="in_intent"  ng-style="{color:settings.title_color}" >Title color</p>-->
+
                                     </div>
                                     <div  class="square" >
                                         <input  class="in_square" type="color" ng-model="settings.header_border_color">

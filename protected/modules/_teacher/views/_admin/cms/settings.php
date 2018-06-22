@@ -181,7 +181,7 @@ p {
             </div>
             <div class="grid_group" >
                 <div class="intent" style="font-size: 16px;">
-                    <p class="in_intent" ng-style="{color:settings.text_color}" >Колір текста</p>
+                    <p class="in_intent" ng-style="{color:settings.text_color}" >Колір тексту</p>
                     <p class="in_intent" ng-style="{color:settings.text_color}" >Text color</p>
                 </div>
                 <div  class="square" >

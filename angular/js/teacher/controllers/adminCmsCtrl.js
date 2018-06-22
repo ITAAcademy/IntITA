@@ -33,18 +33,18 @@ angular
             $scope.getSubdomain();
 
             $scope.loadCmsMenuList = function () {
-                console.log("cmsCtrl loadCmsMenuList");
+                // console.log("cmsCtrl loadCmsMenuList");
 
                 cmsService.menuList().$promise
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
                                 $scope.listsItemMenu = response;
-                                console.log($scope.listsItemMenu);
+                                // console.log($scope.listsItemMenu);
                             });
                         } else {
                             $scope.listsItemMenu = response;
-                            console.log($scope.listsItemMenu);
+                            // console.log($scope.listsItemMenu);
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
@@ -180,7 +180,7 @@ angular
                     });
             };
 
-            $scope.loadCmsNews = function () {
+            $scope.loadCmsNews = function ( ) {
                 cmsService.newsList().$promise
                     .then(function successCallback(response) {
                         if (response.length == 0) {
@@ -198,7 +198,61 @@ angular
                             }
                         }
                     }, function errorCallback() {
-                        bootbox.alert("Отримати дані списку меню не вдалося");
+                        bootbox.alert("Отримати дані списку новин не вдалося");
+                    });
+            };
+
+
+            $scope.loadCmsOneNews = function ( id) {
+                console.log(id);
+                cmsService.newsOneNewsList({id : id}).$promise
+                    .then(function successCallback(response) {
+
+                        console.log(response);
+
+                            $scope.one_news = response;
+                            for (var i=0; i<$scope.one_news.length; i++){
+                                $scope.one_news[i].strLimit=500;
+                            }
+                    }, function errorCallback() {
+                        bootbox.alert("Отримати дані списку новин не вдалося");
+                    });
+            };
+
+            $scope.updateNews = function (link, index, previousImage) {
+                console.log(index);
+
+
+                var uploadImage = new FormData();
+                uploadImage.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#photoUpdate' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadImage.append("photo", imageUpdate);
+                    uploadImage.append("previousImage", previousImage);
+                }
+                else {
+                    var image = $jq('#photo').prop('files')[0];
+                    uploadImage.append("photo", image);
+                }
+                $http.post(basePath + '/_teacher/_admin/cms/updateNews', uploadImage, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.loadCmsNews();
+                    $scope.newNews = {id: null, description: null, link: null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+            };
+
+            $scope.removeNews = function (id, image) {
+                cmsService.removeNews({id: id, image: image}).$promise
+                    .then(function successCallback() {
+                        $scope.loadCmsNews();
+                    }, function errorCallback(response){
+                        bootbox.alert(response.data.reason);
                     });
             };
 
@@ -257,7 +311,6 @@ angular
             $scope.getSettings();
 
             $scope.updateSettings = function (link,  previousImage) {
-
 
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
@@ -509,7 +562,7 @@ angular
                             $scope.news = response;
                         }
                     }, function errorCallback() {
-                        bootbox.alert("Отримати дані списку меню не вдалося");
+                        bootbox.alert("Отримати дані списку новин не вдалося");
                     });
             };
             $scope.loadCmsNews();

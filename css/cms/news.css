@@ -16,12 +16,14 @@ html{font-family:"MyriadPro";}
     margin-left: -2px;
 }
 .box_out .box_inside, .box_out .box_inside_right{
+
     margin-bottom: 40px;
     padding-right: 0px;
     padding-left: 0px;
     background-color: #ffffff;
     margin-left: 0px;
     margin-right: 0px;
+    margin-top: 35px;
 }
 
 .container_n {
@@ -37,14 +39,24 @@ html{font-family:"MyriadPro";}
     margin-right: 0px;
     margin-left: 0px;
 }
-.text-date {
-    float: right;
+.text-date_left {
+    float: left;
     position: absolute;
-    bottom: 0px;
 }
-.text-date_left{
-    right: 65px;
+
+.text-date_rigth{
+    float: right;
+    /*position: absolute;*/
 }
+
+.text-date_p{
+    margin-bottom: 0px;
+}
+
+.text-left{
+    margin-bottom: 5px;
+}
+
 .info_bot{
     display: inline-table;
 }
@@ -130,12 +142,14 @@ margin-left: 0px;
 .in_intent_news{
     float: left;
 }
+
+
+
 @media(max-width:767px) {
     .news_titles{
         margin-left: 59px;
     }
     .grid_group_add_news{
-
         grid-template-columns: 1fr 2fr;
     }
 }
@@ -143,4 +157,22 @@ margin-left: 0px;
     .news_titles{
         margin-left: 30px;
     }
+}
+
+.edit4{
+    position: absolute;
+    right: 4px;
+    top: 5px;
+}
+
+.grid_news{
+    display: grid;
+    grid-template-columns:  1fr 3fr;
+}
+
+
+
+.grid_news_color{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
 }
