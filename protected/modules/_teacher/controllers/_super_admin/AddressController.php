@@ -106,9 +106,7 @@ class AddressController extends TeacherCabinetController
             $users = $city->users;
             if ($users) {
                 foreach ($users as $user) {
-                    $user->city = '';
-                    $user->reg_time = null;
-                    $user->save();
+                    StudentReg::model()->updateByPk($user->id, array('city' => null, 'reg_time' => null));
                 }
             }
 
