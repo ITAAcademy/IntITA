@@ -9,7 +9,7 @@
                 <h3 class="text-primary  info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}"   ng-bind="settings.subtitle_2"></h3>
             </div>
             <div>
-                <input class="edit3" type="image" ng-click="removeLogo()" data-toggle="modal" data-target="#Title2Modal" src="http://intita.com/images/editor/edt_20px.png">
+                <input class="edit3" type="image" ng-click="removeLogo()" data-toggle="modal" data-target="#Title2Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                 <div class="modal fade" id="Title2Modal" role="dialog">
                     <div class="modal-dialog  modal-sm">
 

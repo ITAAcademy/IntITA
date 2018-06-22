@@ -17,7 +17,11 @@ class CmsController extends TeacherCabinetController
     public function actionIndex()
     {
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-        $this->renderPartial('index', array('subdomain'=>isset($subdomain)), false, true);
+        if($subdomain){
+            $this->renderPartial('index', array(), false, true);
+        }else{
+            $this->renderPartial('subdomain', array('subdomain'=>$subdomain), false, true);
+        }
     }
 
     public function actionGetSubdomain()
@@ -106,7 +110,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionGetNews()
     {
-        echo CJSON::encode(CmsNews::model()->findAll());
+        echo CJSON::encode(CmsNews::model()->findAllByAttributes(['id_organization' =>  Yii::app()->user->model->getCurrentOrganizationId()]));
     }
 
     public function actionGetOneNews()
