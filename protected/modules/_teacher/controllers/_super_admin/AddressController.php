@@ -25,9 +25,10 @@ class AddressController extends TeacherCabinetController
         $criteria = new CDbCriteria();
         if (isset($_GET['sorting']['title_ua'])){
             $criteria->order = 't.title_ua  COLLATE utf8_unicode_ci ' .$_GET['sorting']['title_ua']  ;
-        }
-        if (isset($_GET['sorting']['country0.title_ua'])){
+        } else if (isset($_GET['sorting']['country0.title_ua'])){
             $criteria->order = 'country0.title_ua  COLLATE utf8_unicode_ci ' .$_GET['sorting']['country0.title_ua']  ;
+        } else {
+            $criteria->order = 't.checked ASC';
         }
         $adapter = new NgTableAdapter('AddressCity',$_GET);
         $adapter->mergeCriteriaWith($criteria);

@@ -49,7 +49,7 @@
                         ng-click="showEditModal(row)"
                     >{{row.title_en}}</td>
                     <td data-title="'Перевірено'" align="center">
-                        <input type="checkbox" name="verified" ng-checked="{{!row.checked}}" ng-click="checkedHandler(row)" />
+                        <input type="checkbox" name="verified" ng-checked="{{row.checked}}" ng-click="checkedHandler(row)" />
                     </td>
                     <td data-title="'Видалити'">
                         <a

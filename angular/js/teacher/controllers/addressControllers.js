@@ -64,7 +64,7 @@ function addressCtrl($scope, $http, $resource, NgTableParams, $state) {
             bootbox.alert('Виберіть країну.');
         } else {
             $scope.cityForm['country'] = country;
-            $scope.cityForm['checked'] = false;
+            $scope.cityForm['checked'] = true;
             var fullUrl = url+"/newCity";
             $http.post(fullUrl, $scope.cityForm)
             .then(function successCallback(response) {
