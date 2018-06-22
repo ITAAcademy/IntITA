@@ -154,22 +154,11 @@ class Library extends CActiveRecord
                 'action'         => 'pay',
                 'amount'         => $this->price,
                 'currency'       => 'UAH',
-                /* перед этим мы ведь внесли заказ в  таблицу,
-                $insert_id = $wpdb->query( 'insert into table_orders' );
-                */
                 'description'    => 'Купівля книги '.$this->title,
                 'order_id'       => $order_id,
-                // если пользователь возжелает вернуться на сайт
                 'result_url'	=>	Config::getBaseUrl() . '/library/libraryPay/?id='.$this->id.'&order_id='.$order_id,
-                /*
-                    если не вернулся, то Webhook LiqPay скинет нам сюда информацию из формы,
-                    в частонсти все тот же order_id, чтобы заказ
-                     можно было обработать как оплаченый
-                */
                 'server_url'	=>	Config::getBaseUrl() . '/library/liqpayStatus/?id='.$this->id.'&order_id='.$order_id,
                 'language'		=>	'uk', // uk, en
-                'sandbox'=>'1' // и куда же без песочницы,
-                // не на реальных же деньгах тестировать
             ));
         } else {
             $html = '<a href="/library/getBook?id='.$this->id.'">Завантажити</a>';
