@@ -11,6 +11,12 @@ angular
                 '',
                 {},
                 {
+                    updateSocialNetworks: {
+                        url: url + '/updateSocialNetworks',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
+                    },
                     menuList: {
                         url: url + '/getMenuList',
                         method: 'GET',
@@ -28,7 +34,6 @@ angular
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)
                     },
-
                     newsList: {
                         url: url + '/getNews',
                         method: 'GET',
@@ -77,6 +82,16 @@ angular
                         method: 'POST',
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)
+                    },
+                    IndexShow:{
+                        url: url + '/indexShow',
+                        method: 'GET',
+                        //isArray: true
+                    },
+                    Subdomain:{
+                        url: url + '/getSubdomain',
+                        method: 'GET',
+                        //isArray: true
                     },
                 });
         }])

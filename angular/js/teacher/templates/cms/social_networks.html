@@ -1,0 +1,187 @@
+<style>
+
+
+    .group{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 50px;
+        margin-bottom: 2px;
+    }
+    .group_color{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+    .square{
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    .in_square{
+        width:35px;
+        height:35px;
+    }
+    .rectangle{
+        margin-top:2px;
+        padding-right:2px;
+        padding-left:2px;
+
+    }
+    .in_rectangle{
+        padding-right:5px;
+        padding-left:5px;
+        width: 90px;
+    }
+    .intent{
+        margin-top:6px;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    .in_intent{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .col-xs-6 .intent {
+        padding-right: 40px;
+        padding-left: 10px;
+    }
+    .in_rectangle_soc{
+        padding-right:5px;
+        padding-left:5px;
+        width: 280px;
+        margin-left: 20px;
+    }
+    .intent-img {
+        width: 29px;
+        height: 29px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .main-box{
+        padding-top: 20px;
+    }
+    @media screen and (max-width: 410px) {
+        .in_rectangle_soc {
+            width: 180px;
+        }
+    }
+    @media screen and (max-width: 300px) {
+        .in_rectangle_soc {
+            width: 150px;
+        }
+    }
+</style>
+
+
+<div class="form-group form-link" ng-controller="cmsSocialNetworksCtrl">
+     <div class="row">
+        <div class="col-md-6 main-box">
+
+            <div class="row group_color" >
+                <div class="col-md-3 col-xs-4 intent">
+                    <p class="in_intent"  >Колір іконок:</p>
+                </div>
+                <div  class="col-md-2 col-xs-2 square" >
+                    <input  class="in_square" type="color" ng-model="settings.icon_shadow_color">
+                </div>
+                <div class="col-md-7 col-xs-6 rectangle" >
+                    <input class="in_rectangle form-control" ng-model="settings.icon_shadow_color" color-picker color-picker-model="settings.icon_shadow_color" type="text">
+                </div>
+            </div>
+            <div class="row group" >
+                <div class="col-md-2 col-xs-2 " >
+                    <div class="intent-img" ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.twitter}}" target="_blank" title="Twitter">
+                            <img src="http://intita.com//images/mainpage/twitter.png">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-md-10 col-xs-10 rectangle" >
+                    <input class="in_rectangle_soc form-control" type="text" placeholder="Введіть посилання на сторінку" ng-model="settings.twitter">
+                </div>
+            </div>
+            <div class="row group" >
+                <div class="col-md-2 col-xs-2 " >
+                    <div class="intent-img" ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.youtube}}" target="_blank" title="Youtube">
+                            <img src="http://intita.com//images/mainpage/youtube.png">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-md-10 col-xs-10 rectangle" >
+                    <input class="in_rectangle_soc form-control" placeholder="Введіть посилання на сторінку"  type="text" ng-model="settings.youtube">
+                </div>
+            </div>
+            <div class="row group" >
+                <div class="col-md-2 col-xs-2 " >
+                    <div class="intent-img" ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.google}}" target="_blank" title="Google+">
+                            <img src="http://intita.com//images/mainpage/googlePlus.png">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-md-10 col-xs-10 rectangle" >
+                    <input class="in_rectangle_soc form-control" placeholder="Введіть посилання на сторінку"  type="text" ng-model="settings.google">
+                </div>
+            </div>
+            <div class="row group" >
+                <div class="col-md-2 col-xs-2 " >
+                    <div class="intent-img" ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.facebook}}" target="_blank" title="Facebook">
+                            <img src="http://intita.com//images/mainpage/facebook.png">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-md-10 col-xs-10 rectangle" >
+                    <input class="in_rectangle_soc form-control" placeholder="Введіть посилання на сторінку"  type="text" ng-model="settings.facebook">
+                </div>
+            </div>
+            <div class="row group" >
+                <div class="col-md-2 col-xs-2 " >
+                    <div class="intent-img" ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.linkedin}}" target="_blank" title="Linkedin">
+                            <img src="http://intita.com//images/mainpage/inl.png">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-md-10 col-xs-10 rectangle" >
+                    <input class="in_rectangle_soc form-control" placeholder="Введіть посилання на сторінку"  type="text" ng-model="settings.linkedin">
+                </div>
+            </div>
+            <div class="row group" >
+                <div class="col-md-2 col-xs-2 " >
+                    <div class="intent-img" ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.instagram}}" target="_blank" title="Instagram">
+                            <img src="http://intita.com//images/mainpage/instagram.png">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-md-10 col-xs-10 rectangle" >
+                    <input class="in_rectangle_soc form-control" placeholder="Введіть посилання на сторінку"  type="text" ng-model="settings.instagram">
+                </div>
+            </div>
+            <div class="row group" >
+
+                <div class="col-md-3">
+                    <button class="save_SocialNetworks_button btn btn-primary" title="Зберегти" ng-click="updateSocialNetworks(settings )"><strong>Зберегти</strong></button>
+                </div>
+                <div class="col-md-9">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+        </div>
+    </div>
+</div>
+

@@ -94,10 +94,15 @@ angular
             cache: false,
             templateUrl: basePath+"/angular/js/teacher/templates/cms/news.html",
         })
-        .state('admin/cms_main_settings', {
-            url: "/admin/cms_main_settings",
+        .state('admin/cms_social_networks', {
+            url: "/admin/cms_social_networks",
             cache: false,
-            templateUrl: basePath+"/angular/js/teacher/templates/cms/main_settings.html",
+            templateUrl: basePath+"/angular/js/teacher/templates/cms/social_networks.html",
+        })
+        .state('admin/cms_settings', {
+            url: "/admin/cms_settings",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_admin/cms/settings",
         })
         .state('admin/subdomain', {
             url: "/admin/subdomain",

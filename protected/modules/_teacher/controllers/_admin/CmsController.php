@@ -17,13 +17,19 @@ class CmsController extends TeacherCabinetController
     public function actionIndex()
     {
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-        if (isset($subdomain)) {
+        if($subdomain){
             $this->renderPartial('index', array(), false, true);
-        } else {
-            echo '<p style="color:red">*Конструктор сайту буде доступний після створення субдомену</p>';
-            return $this->renderPartial('subdomain');
+        }else{
+            $this->renderPartial('subdomain', array('subdomain'=>$subdomain), false, true);
         }
     }
+
+    public function actionGetSubdomain()
+    {
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        return $subdomain;
+    }
+
 
     public function actionMenuLists()
     {
@@ -52,8 +58,8 @@ class CmsController extends TeacherCabinetController
                 if ($previousImage && file_exists($folderAddress . $previousImage)) {
                     unlink($folderAddress . $previousImage);
                 }
-                $end_file_name = $_FILES["logo"]["name"];
-                $tmp_file_name = $_FILES["logo"]["tmp_name"];
+                $end_file_name = $_FILES["img_menu_list"]["name"];
+                $tmp_file_name = $_FILES["img_menu_list"]["tmp_name"];
                 if (getimagesize($tmp_file_name)) {
                     $endAddress = date("jYgi") . basename($end_file_name);  // '21042018name.jpg'
                     $addressForFile = $folderAddress . $endAddress;   // "domains/Madagascar1/lists/21042018name.jpg"
@@ -75,6 +81,28 @@ class CmsController extends TeacherCabinetController
             $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
 
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
+
+    public function actionUpdateSocialNetworks()
+    {
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
+            //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
+//            var_dump($params);die();
+            $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
+            $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $settings->attributes = $params;
+//            var_dump($settings); die();
+            if (!$settings->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
+            }
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
@@ -110,7 +138,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionGetNews()
     {
-        echo CJSON::encode(CmsNews::model()->findAll());
+        echo CJSON::encode(CmsNews::model()->findAllByAttributes(['id_organization' =>  Yii::app()->user->model->getCurrentOrganizationId()]));
     }
 
 
@@ -184,16 +212,24 @@ class CmsController extends TeacherCabinetController
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
+    public function actionSettings()
+    { $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        if (isset($subdomain)) {
+            $this->renderPartial('settings');
+        } else{
+            echo '<p style="color:red">*Конструктор сайту буде доступний після створення субдомену</p>';
+            return $this->renderPartial('index');
+        }
+    }
+
     public function actionGetSettings()
-    {
-        $id_org = Yii::app()->user->model->getCurrentOrganizationId();
+{       $id_org = Yii::app()->user->model->getCurrentOrganizationId();
         $model = CJSON::encode(CmsGeneralSettings::model()->findByAttributes(['id_organization' => $id_org]));
         echo $model;
     }
 
     public function actionGeneratePage()
-    {
-        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+    {   $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
         $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
         $subdomain->createSubdomainDirectory($path_domain);
         $path = $path_domain . '/index.php';
@@ -225,6 +261,7 @@ class CmsController extends TeacherCabinetController
             $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
             //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
             $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
+//            var_dump($settings); die();
             $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $settings->attributes = $params;
 
@@ -308,6 +345,16 @@ class CmsController extends TeacherCabinetController
         return $this->renderJSON($adapter->getData());
     }
 
+//    public function actionAddSubdomain()
+//    {
+//        $model = new Subdomains();
+//        $model->domain_name = Yii::app()->request->getPost('subdomain');
+//        $model->active = 1;
+//        $model->organization = Yii::app()->user->model->getCurrentOrganizationId();
+//        $model->save();
+//        header("Refresh:0");
+//        return $this->renderJSON(['data' => true]);
+//    }
     public function actionAddSubdomain()
     {
         $model = new Subdomains();
@@ -317,6 +364,23 @@ class CmsController extends TeacherCabinetController
         $model->save();
         return $this->renderJSON(['data' => true]);
     }
+
+//    public function actionShowIndex()
+//    {
+//
+//        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+////        var_dump($subdomain); die();
+//
+//        if (isset($subdomain)) {
+//            return $this->renderPartial('index', array(), false, true);
+//        }
+//
+//
+//    }
+//
+
+
+
 
     public function actionGetDomainPath()
     {
