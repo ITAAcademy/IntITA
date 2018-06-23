@@ -12,10 +12,10 @@ class CourseManageController extends TeacherCabinetController
 
     public function hasRole()
     {
-        $allowedViewActions=['coursesList', 'view', 'getCoursesList'];
+        $allowedViewActions = ['coursesList', 'view', 'getCoursesList'];
         return Yii::app()->user->model->isContentManager()
-            ||(Yii::app()->user->model->isAdmin() && !in_array(Yii::app()->controller->action->id,['coursesList', 'getCoursesList'])) ||
-            (Yii::app()->user->model->isDirector() || Yii::app()->user->model->isSuperAdmin() && in_array(Yii::app()->controller->action->id,$allowedViewActions));
+            || (Yii::app()->user->model->isAdmin() && !in_array(Yii::app()->controller->action->id, ['coursesList', 'getCoursesList'])) ||
+            (Yii::app()->user->model->isDirector() || Yii::app()->user->model->isSuperAdmin() && in_array(Yii::app()->controller->action->id, $allowedViewActions));
     }
 
     protected function performAjaxValidation($model)
@@ -28,7 +28,7 @@ class CourseManageController extends TeacherCabinetController
 
     public function actionView($id)
     {
-        $modules = CourseModules::model()->with('moduleInCourse')->findAllByAttributes(array('id_course' => $id),array('order'=>'`order` ASC'));
+        $modules = CourseModules::model()->with('moduleInCourse')->findAllByAttributes(array('id_course' => $id), array('order' => '`order` ASC'));
         $model = $this->loadModel($id);
         $linkedCourses = $model->linkedCourses();
 
@@ -90,7 +90,7 @@ class CourseManageController extends TeacherCabinetController
      */
     public function actionUpdate($id)
     {
-        $modules = CourseModules::model()->with('moduleInCourse')->findAllByAttributes(array('id_course' => $id),array('order'=>'`order` ASC'));
+        $modules = CourseModules::model()->with('moduleInCourse')->findAllByAttributes(array('id_course' => $id), array('order' => '`order` ASC'));
 
         $model = $this->loadModel($id);
         Yii::app()->user->model->hasAccessToOrganizationModel($model);
@@ -121,7 +121,7 @@ class CourseManageController extends TeacherCabinetController
                     );
                 }
                 echo 'Курс успішно оновлено!';
-               Yii::app()->end();
+                Yii::app()->end();
             } else {
                 echo 'Інформацію про курс не вдалося оновити. Перевірте вхідні дані або зверніться до адміністратора.';
                 Yii::app()->end();
@@ -161,12 +161,12 @@ class CourseManageController extends TeacherCabinetController
 
     public function actionCoursesList()
     {
-        $this->renderPartial('index', array('organization'=>false), false, true);
+        $this->renderPartial('index', array('organization' => false), false, true);
     }
 
     public function actionOrganizationCoursesList()
     {
-        $this->renderPartial('index', array('organization'=>true), false, true);
+        $this->renderPartial('index', array('organization' => true), false, true);
     }
     /**
      * Returns the data model based on the primary key given in the GET variable.
@@ -209,7 +209,7 @@ class CourseManageController extends TeacherCabinetController
     public function actionSchema($idCourse)
     {
         $lessonsCount = Course::getLessonsCount($idCourse);
-        $course=Course::model()->findByPk($idCourse);
+        $course = Course::model()->findByPk($idCourse);
         Yii::app()->user->model->hasAccessToOrganizationModel($course);
         $modules = Course::getCourseModulesSchema($idCourse);
         if (count($modules) <= 0) {
@@ -231,9 +231,8 @@ class CourseManageController extends TeacherCabinetController
 
     public function actionSaveSchema($idCourse)
     {
-        var_dump($_POST);die;
         $lessonsCount = Course::getLessonsCount($idCourse);
-        $course=Course::model()->findByPk($idCourse);
+        $course = Course::model()->findByPk($idCourse);
         Yii::app()->user->model->hasAccessToOrganizationModel($course);
         $modules = Course::getCourseModulesSchema($idCourse);
         $tableCells = Course::getTableCells($modules, $idCourse);
@@ -292,19 +291,19 @@ class CourseManageController extends TeacherCabinetController
 
     public function actionGetCoursesList()
     {
-        $adapter = new NgTableAdapter('Course',$_GET);
+        $adapter = new NgTableAdapter('Course', $_GET);
         echo json_encode($adapter->getData());
     }
 
     public function actionGetOrganizationCoursesList()
     {
-        $adapter = new NgTableAdapter('Course',$_GET);
-        $criteria =  new CDbCriteria();
-        $criteria->condition = 't.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id;
+        $adapter = new NgTableAdapter('Course', $_GET);
+        $criteria = new CDbCriteria();
+        $criteria->condition = 't.id_organization=' . Yii::app()->user->model->getCurrentOrganization()->id;
         $adapter->mergeCriteriaWith($criteria);
         echo json_encode($adapter->getData());
     }
-    
+
     public function actionModulesByQuery($query, $course)
     {
         if ($query) {
@@ -317,13 +316,13 @@ class CourseManageController extends TeacherCabinetController
 
     public function actionAddLinkedCourse($course, $lang)
     {
-        $courseModel=Course::model()->findByPk($course);
+        $courseModel = Course::model()->findByPk($course);
         Yii::app()->user->model->hasAccessToOrganizationModel($courseModel);
         $currentCourseLang = $courseModel->language;
         $this->renderPartial('_addLinkedCourse', array(
             'course' => $course,
             'lang' => $lang,
-            'currentCourseLang'=>$currentCourseLang
+            'currentCourseLang' => $currentCourseLang
         ), false, true);
     }
 
@@ -347,19 +346,19 @@ class CourseManageController extends TeacherCabinetController
         Yii::app()->user->model->hasAccessToOrganizationModel($course);
         Yii::app()->user->model->hasAccessToOrganizationModel($linkedCourse);
 
-        $currentCourseLangModel = CourseLanguages::model()->findByAttributes(array('lang_'.$course->language => $course->course_ID));
-        $linkedCourseLangModel = CourseLanguages::model()->findByAttributes(array('lang_'.$linkedCourse->language => $linkedCourse->course_ID));
+        $currentCourseLangModel = CourseLanguages::model()->findByAttributes(array('lang_' . $course->language => $course->course_ID));
+        $linkedCourseLangModel = CourseLanguages::model()->findByAttributes(array('lang_' . $linkedCourse->language => $linkedCourse->course_ID));
 
         if ($course && $linkedCourse) {
             if ($currentCourseLangModel && !$linkedCourseLangModel) {
                 $langParam = "lang_" . $lang;
                 $model = $currentCourseLangModel;
                 $model->$langParam = $linkedCourse->course_ID;
-            } else if(!$currentCourseLangModel && $linkedCourseLangModel) {
+            } else if (!$currentCourseLangModel && $linkedCourseLangModel) {
                 $langParam = "lang_" . $course->language;
                 $model = $linkedCourseLangModel;
                 $model->$langParam = $course->course_ID;
-            } else if(!$currentCourseLangModel && !$linkedCourseLangModel){
+            } else if (!$currentCourseLangModel && !$linkedCourseLangModel) {
                 $model = new CourseLanguages();
                 $param = 'lang_' . $course->language;
                 $model->$param = $course->course_ID;
