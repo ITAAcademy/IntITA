@@ -26,12 +26,13 @@
     background-color:#cdffcc;
 }
 .emptyMonthsCell, .fullMonthsCell, .examCell, .examCellE, .examCellP, .trainee, .lastCell{
-    width: 50px;
     height: 58px;
     text-align: center;
 }
-.monthsCell{
+.monthsCell, .emptyMonthsCell, .fullMonthsCell, .examCell, .examCellE, .examCellP, .trainee, .lastCell{
     width: 50px;
+}
+.monthsCell{
     height: 30px;
     text-align: center;
 }
@@ -76,7 +77,7 @@
 }
 @font-face {
     font-family: MyriadPro; /* Имя шрифта */
-    src: url(../../../font/myriadpro/regular.otf); /* Путь к файлу со шрифтом */
+    src: url(../font/myriadpro/regular.otf); /* Путь к файлу со шрифтом */
 }
 body{
     font-family: "MyriadPro";
@@ -85,7 +86,7 @@ body{
     cursor: pointer;
     color: white;
     position: absolute;
-    top: 60%;
+    top: 59%;
     left: 36%;
 }
 .logo-course-wrap{
@@ -119,7 +120,7 @@ body{
     background: none;
 }
 .item{
-    background: url(../../images/module/5.png);
+    background: url(../images/module/5.png);
     background-repeat: no-repeat;
     background-position-y: 72%;
     background-position-x: -7px;
@@ -127,14 +128,14 @@ body{
 }
 .first-item{
     width: 45px;
-    background: url(../../images/module/2.png);
+    background: url(../images/module/2.png);
     background-repeat: no-repeat;
     background-position-y: 72%;
     background-position-x: -2px;
     position: relative;
 }
 .last-item{
-    background: url(../../images/module/last-item.png);
+    background: url(../images/module/last-item.png);
     background-repeat: no-repeat;
     background-position-y: 72%;
     background-position-x: -6px;
@@ -142,7 +143,7 @@ body{
     position: relative;
 }
 .first-item-without{
-    background: url(../../images/module/first-item-without.png);
+    background: url(../images/module/first-item-without.png);
     background-repeat: no-repeat;
     background-position-y: 72%;
     background-position-x: -2px;
@@ -176,7 +177,7 @@ body{
     background: none;
 }
 .trainee-item{
-    background: url(../../images/module/6.png);
+    background: url(../images/module/6.png);
     background-repeat-y: no-repeat;
     background-position-y: 72%;
     background-position-x: -7px;
@@ -185,7 +186,7 @@ body{
     position: relative;
 }
 .trainee-first-item{
-    background: url(../../images/module/trainee-item.png);
+    background: url(../images/module/trainee-item.png);
     background-repeat: no-repeat;
     background-position-y: 72%;
     text-align: center;
@@ -193,11 +194,11 @@ body{
     position: relative;
 }
 .trainee-item div, .trainee-last-item-text, .trainee-first-item div{
-    top: 59%;
+    top: 55%;
     left: 39%;
 }
 .trainee-last-item{
-    background: url(../../images/module/trainee-item-trainee.png);
+    background: url(../images/module/trainee-item-trainee.png);
     background-repeat: no-repeat;
     background-position-y: 72%;
     background-position-x: -6px;
@@ -206,7 +207,7 @@ body{
     position: relative;
 }
 #schema .emptyMonthsCell {
-    background: url(../../images/module/red-line.png);
+    background: url(../images/module/red-line.png);
     background-repeat-y: no-repeat;
     background-position-y: 69%;
 }
@@ -214,7 +215,7 @@ body{
     background: none !important;
 }
 #trainee-wrap .examCellE,  #trainee-wrap .emptyMonthsCell,#trainee-wrap .fullMonthsCell {
-    background: url(../../images/module/yellow-line.png) !important;
+    background: url(../images/module/yellow-line.png) !important;
     background-repeat-y: no-repeat !important;
     background-position-y: 69% !important;
 }
@@ -231,7 +232,7 @@ tr .hours{
     background: #f5f5f5;
 }
 .coub{
-    background: url(../../images/module/coub.png);
+    background: url(../images/module/coub.png);
     height: 30px;
     background-repeat: no-repeat;
     position: relative;
@@ -248,7 +249,7 @@ tr .hours{
     top: -100px;
 }
 .coub-exam{
-    background: url(../../images/module/exam.png);
+    background: url(../images/module/exam.png);
     height: 40px;
     background-repeat: no-repeat;
     position: relative;
@@ -282,7 +283,7 @@ examCellE-witout-background{
     font-size: 18px;
 }
 #schema .monthTitle{
-    background: url(../../images/module/begin_line.png);
+    background: url(../images/module/begin_line.png);
     background-repeat: no-repeat;
     text-align: center;
     background-position-x: 1px;
@@ -295,7 +296,7 @@ examCellE-witout-background{
 .end-line{
     width: 68px;
     height: 30px;
-    background: url(../../images/module/end_line.png);
+    background: url(../images/module/end_line.png);
     background-size: auto;
     background-repeat: no-repeat;
     background-position-x: -33px;
@@ -322,12 +323,9 @@ examCellE-witout-background{
     text-align: left;
     padding-top: 26px;
     padding-bottom: 16px;
-    background: url(../../images/module/yellow-line.png);
+    background: url(../images/module/yellow-line.png);
     background-repeat-y: no-repeat;
-    background-position-y: center;
-    background-repeat: no-repeat;
-    background-position-y: 69%,65px;
-    background-position-x: 38px,24px;
+    background-position-y: 69%;
 }
 .trainee p{
     font-size: 12px;
@@ -341,7 +339,7 @@ examCellE-witout-background{
     min-width: 107px;
 }
 .title-line{
-    background: url(../../images/module/title_line.png);
+    background: url(../images/module/title_line.png);
     background-repeat: no-repeat;
     background-position-x: -7px;
     background-position-y: 4px;
