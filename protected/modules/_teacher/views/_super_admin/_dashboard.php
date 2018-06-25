@@ -28,7 +28,9 @@
                             Банери на сторінці випускників</a>
                     </li>
                     <li><a href="#/address">
-                            Адреса (країни, міста)</a>
+                            Адреса (країни, міста)
+                            <span ng-cloak class="label label-success" ng-if="countOfNewCities > 0">{{countOfNewCities}}</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -50,7 +52,7 @@
                     </li>
                     <li>
                         <a href="#/response">Відгуки про викладачів
-                            <span ng-cloak class="label label-success" ng-if="countOfNewResponses > 0">{{countOfNewResponses}}</span>
+                            <span ng-cloak class="label label-warning" ng-if="countOfNewResponses > 0">{{countOfNewResponses}}</span>
                         </a>
                     </li>
                  <li>

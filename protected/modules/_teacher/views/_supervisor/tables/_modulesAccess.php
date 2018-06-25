@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-controller="modulesAccessCtrl">
     <div class="panel-body">
         <a type="button" class="btn btn-primary" ng-href="#/supervisor/groupAccess/module/group/{{groupId}}">
             Додати доступ до модуля
