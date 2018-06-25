@@ -25,10 +25,9 @@ class AddressController extends TeacherCabinetController
         $criteria = new CDbCriteria();
         if (isset($_GET['sorting']['title_ua'])){
             $criteria->order = 't.title_ua  COLLATE utf8_unicode_ci ' .$_GET['sorting']['title_ua']  ;
-        }
-        if (isset($_GET['sorting']['country0.title_ua'])){
+        } else if (isset($_GET['sorting']['country0.title_ua'])){
             $criteria->order = 'country0.title_ua  COLLATE utf8_unicode_ci ' .$_GET['sorting']['country0.title_ua']  ;
-        }
+        } 
         $adapter = new NgTableAdapter('AddressCity',$_GET);
         $adapter->mergeCriteriaWith($criteria);
         echo json_encode($adapter->getData());
@@ -120,5 +119,20 @@ class AddressController extends TeacherCabinetController
 
     public function actionCountriesByQuery($query){
         echo AddressCountry::countriesByQuery($query);
+    }
+
+    public function actionCheckCity() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if($data){
+            $model=AddressCity::model()->findByPk($data['id']);
+            $model->checked = $data['checked'];
+            if($model->save()){
+                echo "Операцію успішно виконано.";
+            } else {
+                echo "Операцію не вдалося виконати.";
+            }
+        } else {
+            echo "Неправильно введені дані.";
+        }
     }
 }
