@@ -371,6 +371,7 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             .then(function () {
                     $scope.id_oldTrainer = undefined;
 		            $scope.id_newTrainer = undefined;
+                    $scope.getTrainers();
                     console.info('success, exchanged trainers');
 		            $scope.addUIHandlers('Операцію успішно виконано');
                 },
