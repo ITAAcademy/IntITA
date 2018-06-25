@@ -38,7 +38,7 @@
                                              <div class="in_group3-1" >
                                                  <div class="intent">
                                                      <a href="javascript:void(0)">
-                                                         <i class="fa fa-trash" title="Видалити" aria-hidden="true" id="logo_clear"  ng-click="removeLogo(settings.id, settings.logo)"></i>
+                                                         <i class="fa fa-trash" title="Видалити" aria-hidden="true" id="logo_clear"  ng-click="removeLogoCms(settings.id, settings.logo)"></i>
                                                      </a>
                                                  </div>
 
@@ -132,7 +132,7 @@
         <div class="col-md-1 col-sm-0">
 
             <div>
-                <input class="edit1" type="image" ng-click="" data-toggle="modal" data-target="#HeaderModal" src="http://intita.com/images/editor/edt_20px.png">
+                <input class="edit1" type="image" ng-click="" data-toggle="modal" data-target="#HeaderModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
                 <div class="modal fade" id="HeaderModal" role="dialog">
                     <div class="modal-dialog modal-sm">

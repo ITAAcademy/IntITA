@@ -156,7 +156,10 @@ angular
             // };
 
 
-            $scope.removeLogo = function (id, image) {
+
+
+
+            $scope.removeLogoCms = function (id, image) {
                 console.log(image);
 
                 cmsService.removeLogo({image: image, id: id}).$promise
@@ -202,22 +205,6 @@ angular
                     });
             };
 
-
-            $scope.loadCmsOneNews = function ( id) {
-                console.log(id);
-                cmsService.newsOneNewsList({id : id}).$promise
-                    .then(function successCallback(response) {
-
-                        console.log(response);
-
-                            $scope.one_news = response;
-                            for (var i=0; i<$scope.one_news.length; i++){
-                                $scope.one_news[i].strLimit=500;
-                            }
-                    }, function errorCallback() {
-                        bootbox.alert("Отримати дані списку новин не вдалося");
-                    });
-            };
 
             $scope.updateNews = function (link, index, previousImage) {
                 console.log(index);

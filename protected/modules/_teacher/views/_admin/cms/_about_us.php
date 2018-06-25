@@ -8,7 +8,7 @@
 
             </div>
             <div>
-                <input class="edit3" type="image" ng-click="" data-toggle="modal" data-target="#Title1Modal" src="http://intita.com/images/editor/edt_20px.png">
+                <input class="edit3" type="image" ng-click="" data-toggle="modal" data-target="#Title1Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                 <div class="modal fade" id="Title1Modal" role="dialog">
                     <div class="modal-dialog  modal-sm">
 
