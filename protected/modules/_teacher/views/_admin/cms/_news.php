@@ -9,7 +9,7 @@
                 <h3 class="text-primary  info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}"   ng-bind="settings.subtitle_2"></h3>
             </div>
             <div>
-                <input class="edit3" type="image" ng-click="removeLogo()" data-toggle="modal" data-target="#Title2Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                <input class="position_left" type="image" ng-click="" data-toggle="modal" data-target="#Title2Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                 <div class="modal fade" id="Title2Modal" role="dialog">
                     <div class="modal-dialog  modal-sm">
 
@@ -26,7 +26,7 @@
 
                                 <div class="grid_group_title2" >
                                     <div class="intent" >
-                                        <p class="in_intent_title title_color_style" ng-style="{color:settings.title_color}" >Заголовок</p>
+                                        <p class="in_intent_title title_color_style position_left" ng-style="{color:settings.title_color}" >Заголовок</p>
 <!--                                        <p class="in_intent"  ng-style="{color:settings.title_color}" >Title color</p>-->
                                     </div>
                                     <div  class="square" >
@@ -159,16 +159,16 @@
                         </div>
 
                         <div>
-                            <input class="edit4" type="image" ng-click="loadCmsOneNews( new.id  )" data-toggle="modal" data-target="#NewsModal" src="http://intita.com/images/editor/edt_20px.png">
+                            <input class="edit4" id="OneNewsModalLeft" type="image"  data-toggle="modal" data-target="#NewsModalLeft{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
-                            <div  class="modal fade" id="NewsModal" role="dialog">
+                            <div  class="modal fade" id="NewsModalLeft{{$index}}" role="dialog">
                                 <div class="modal-dialog ">
 
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Редактор новин</h4>
+                                            <h4 class="modal-title" id="news_editLeft">Редактор новин</h4>
                                         </div>
 
 
@@ -177,52 +177,60 @@
 
 
 
-                                                <div  class="grid_news">
+                                                <div  class="grid_news box ">
                                                     <div class="">
-                                                        <p class="in_intent_news"  >Заголовок</p>
+                                                        <p class="position_left"  >Заголовок</p>
                                                     </div>
 
                                                     <div class="">
-                                                        <input type="text" class="form-control"  ng-model="one_news.title">
+                                                        <input type="text" class="form-control"  ng-model="new.title">
                                                     </div>
 
                                                 </div>
 
-                                                <div  class="grid_news">
+                                                <div  class="grid_news box ">
                                                     <div class=" ">
-                                                        <p class="in_intent_news" >Колір тексту</p>
+                                                        <p class="position_left" ng-style="{color:settings.text_color}" >Колір тексту</p>
                                                     </div>
+                                                    <div class="grid_news" >
 
+                                                        <div  class="square " >
+                                                            <input  class="in_square position_left" type="color" ng-model="settings.text_color">
+                                                        </div>
+                                                        <div class="rectangle" >
+                                                            <input class="in_rectangle position_left" ng-model="settings.text_color" color-picker color-picker-model="settings.text_color" type="text" >
+                                                        </div>
+                                                    </div>
 
 
                                                 </div>
 
-                                                <div  class="grid_news">
+                                                <div  class="grid_news box ">
                                                     <div class="  ">
-                                                        <p class="in_intent_news"  >Зображення</p>
+                                                        <p class="position_left"  >Зображення</p>
                                                     </div>
-                                                    <div class="">
-                                                        <img class="preview"  ng-src='{{one_news.id && domainPathNews+one_news.img || one_news.img}}'>
-                                                        <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
-                                                    </div>
-                                                </div>
-
-
-                                                <div  class="grid_news">
-                                                    <div class=" ">
-                                                        <p class="in_intent_news" >Текст новини</p>
-                                                    </div>
-                                                    <div class="">
-                                                        <textarea class="form-control"  ng-model="one_news.text" style="resize: none"></textarea>
+                                                    <div class="image_news">
+                                                        <img class="preview"  ng-src='{{new.id && domainPathNews + new.img || new.img}}'>
+                                                        <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control image_input photoUpdate" placeholder="Фото новин" name="photo">
                                                     </div>
                                                 </div>
 
-                                                <div  class="grid_news">
+
+                                                <div  class="grid_news box ">
                                                     <div class=" ">
-                                                        <p class="in_intent_news" >Дата</p>
+                                                        <p class="position_left" >Текст новини</p>
                                                     </div>
                                                     <div class="">
-                                                        <input type="text" class="form-control" placeholder="Дата" ng-model="one_news.date">
+                                                        <textarea class="form-control"  ng-model="new.text" style="resize: none"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div  class="grid_news box ">
+                                                    <div class=" ">
+                                                        <p class="position_left" >Дата</p>
+                                                    </div>
+                                                    <div class="">
+                                                        <input type="text" class="form-control" placeholder="Дата" ng-model="new.date">
                                                     </div>
 
                                                 </div>
@@ -230,8 +238,8 @@
                                             </div>
 
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="removeNews(one_news.id, one_news.img)" >Видалити</button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateNews(one_news, $index, one_news.img)" >Зберегти</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="removeNews(new.id, new.img)" >Видалити</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-click="updateSettings(settings, settings.logo); updateNews(new, $index, new.img)" >Зберегти</button>
                                             </div>
                                         </div>
 
@@ -294,6 +302,96 @@
                     <div class="col-md-4 col-sm-5 img_out img_out_rigth">
                         <div class="img_news_box2">
                             <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': '2px'}">
+
+                        </div>
+                        <div>
+                            <input class="edit4" id="OneNewsModalRight" type="image"  data-toggle="modal" data-target="#NewsModalRight{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+
+                            <div  class="modal fade" id="NewsModalRight{{$index}}" role="dialog">
+                                <div class="modal-dialog ">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title" id="news_editRight">Редактор новин</h4>
+                                        </div>
+
+
+                                        <div class="modal-body">
+                                            <div class="form-group form-link">
+
+
+
+                                                <div  class="grid_news box ">
+                                                    <div class="">
+                                                        <p class="position_left"  >Заголовок</p>
+                                                    </div>
+
+                                                    <div class="">
+                                                        <input type="text" class="form-control"  ng-model="new.title">
+                                                    </div>
+
+                                                </div>
+
+                                                <div  class="grid_news box ">
+                                                    <div class=" ">
+                                                        <p class="position_left" ng-style="{color:settings.text_color}" >Колір тексту</p>
+                                                    </div>
+                                                    <div class="grid_news" >
+
+                                                        <div  class="square " >
+                                                            <input  class="in_square position_left" type="color" ng-model="settings.text_color">
+                                                        </div>
+                                                        <div class="rectangle" >
+                                                            <input class="in_rectangle position_left" ng-model="settings.text_color" color-picker color-picker-model="settings.text_color" type="text" >
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div  class="grid_news box ">
+                                                    <div class="  ">
+                                                        <p class="position_left"  >Зображення</p>
+                                                    </div>
+                                                    <div class="image_news">
+                                                        <img class="preview"  ng-src='{{new.id && domainPathNews + new.img || new.img}}'>
+                                                        <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control image_input photoUpdate" placeholder="Фото новин" name="photo">
+                                                    </div>
+                                                </div>
+
+
+                                                <div  class="grid_news box ">
+                                                    <div class=" ">
+                                                        <p class="position_left" >Текст новини</p>
+                                                    </div>
+                                                    <div class="">
+                                                        <textarea class="form-control"  ng-model="new.text" style="resize: none"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div  class="grid_news box ">
+                                                    <div class=" ">
+                                                        <p class="position_left" >Дата</p>
+                                                    </div>
+                                                    <div class="">
+                                                        <input type="text" class="form-control" placeholder="Дата" ng-model="new.date">
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="removeNews(new.id, new.img)" >Видалити</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-click="updateSettings(settings, settings.logo); updateNews(new, $index, new.img)" >Зберегти</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
