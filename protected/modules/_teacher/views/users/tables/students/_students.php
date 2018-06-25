@@ -19,16 +19,19 @@ $startOfDay = date('Y-m-d H:i:s', strtotime(date('Y-m-d')));
             ng-click="updateStudentList(organization,'<?=$last_24h?>', '<?=$currentTime?>')">
         За добу
     </button>
-
     <div class="students-table-datepicker ">
         <button class="btn btn-primary"
-                ng-click="updateStudentList(organization,from+ ' 00:00:00', to+' 23:59:59')">
+                ng-click="updateStudentList(organization,from+ ' 00:00:00', to+' 23:59:59')"
+                ng-disabled="!from">
             За період:
         </button>
 
         з : <input type="text" ng-model='from' id="from" name="from">
         по: <input type="text" ng-model='to' id="to" name = "to">
     </div>
+
+    <input type="hidden" ng-model='startDate'>
+    <input type="hidden" ng-model='endDate'>
 
     <script>
         $jq('.resetInput').on('click', function(e){
@@ -45,9 +48,11 @@ $startOfDay = date('Y-m-d H:i:s', strtotime(date('Y-m-d')));
             }
         });
     </script>
-    <a title="Експорт" class="glyphicon glyphicon-floppy-disk btn btn-primary pull-right" style="margin: 5px;"
-       href="/_teacher/users/export/type/students">
-    </a>
+    <div style="display: inline" ng-if="studentsTableParams.total() > 0">
+        <a title="Експорт" class="glyphicon glyphicon-floppy-disk btn btn-primary pull-right" style="margin: 5px;"
+           href="/_teacher/users/export/type/students/start/{{startDate}}/end/{{endDate}}">
+        </a>
+    </div>
     <br>
     <br>
     <div class="panel panel-default">
