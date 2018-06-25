@@ -35,7 +35,7 @@
 <div class="form-group form-link" ng-controller="cmsMenuListCtrl">
     <p>Повернутися до <a class="text-right" href="#/admin/intita_cms">Конструктора сайту</a></p>
     <label>Список меню</label>
-    <div ng-repeat="list in lists track by $index" class="">
+    <div ng-repeat="list in listsItemMenu track by $index" class="">
         <div class=" first_line box row">
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Меню" ng-model="list.title">
@@ -72,7 +72,7 @@
             <hr>
         </div>
     </div>
-    <div class="" ng-if="lists.length<3">
+    <div class="" ng-if="listsItemMenu.length<3">
         <div class=" first_line box row">
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Меню" ng-model="newLink.title">

@@ -33,20 +33,61 @@ angular
             $scope.getSubdomain();
 
             $scope.loadCmsMenuList = function () {
+                // console.log("cmsCtrl loadCmsMenuList");
+
                 cmsService.menuList().$promise
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
                                 $scope.listsItemMenu = response;
+                                // console.log($scope.listsItemMenu);
                             });
                         } else {
                             $scope.listsItemMenu = response;
+                            // console.log($scope.listsItemMenu);
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
                     });
             };
             $scope.loadCmsMenuList();
+
+            $scope.updateMenuLink = function (link, index, previousImage) {
+                console.log("cmsCtrl");
+                var uploadImage = new FormData();
+                uploadImage.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#img_menu_list_Update' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadImage.append("img_menu_list", imageUpdate);
+                    uploadImage.append("previousImage", previousImage);
+                }
+                else {
+                    var image = $jq('#img_menu_list').prop('files')[0];
+                    uploadImage.append("img_menu_list", image);
+                }
+                $http.post(basePath + '/_teacher/_admin/cms/updateMenuLink', uploadImage, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.loadCmsMenuList();
+                    $scope.newLink = {id: null, description: null, link: null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+                $scope.loadCmsMenuList();
+            };
+
+            $scope.removeMenuLink = function (id, image) {
+                cmsService.removeMenuLink({id: id, image: image}).$promise
+                    .then(function successCallback() {
+                        $scope.loadCmsMenuList();
+                    }, function errorCallback(response) {
+                        bootbox.alert(response.data.reason);
+                    });
+            };
+
 
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
@@ -68,9 +109,13 @@ angular
             $scope.getSettings();
 
             $scope.updateSettings = function (link,  previousImage) {
+                console.log(previousImage);
+
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
                 var imageUpdateBlock = '#logoUpdate';
+                console.log(imageUpdateBlock);
+
                 var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
                 uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
                 uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
@@ -96,56 +141,126 @@ angular
                         $scope.settings = response2;
                     });
                     $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
-                        $scope.lists = response3;
-                        for (var i=0; i<$scope.lists.length; i++){
-                            $scope.lists[i].strLimit=500;
+                        $scope.news = response3;
+                        for (var i=0; i<$scope.news.length; i++){
+                            $scope.news[i].strLimit=500;
                         }
                     });
                 $scope.buttonShow=false;
             };
 
-            // $scope.mySettings=function (){
-            //     $scope.loadCmsMenuList();
-            //     $scope.getSettings();
-            //     $scope.loadCmsNews();
+            // $scope.reset_form_element = function (e) {
+            //     e.wrap('<form>').parent('form').trigger('reset');
+            //     e.unwrap();
+            //
             // };
 
+
             $scope.removeLogo = function (id, image) {
+                console.log(image);
+
                 cmsService.removeLogo({image: image, id: id}).$promise
                     .then(function successCallback() {
+                        // $scope.reset_form_element( $('#logoUpdate') );
+                        //
+                        function reset_form_element (e) {
+                            e.wrap('<form>').parent('form').trigger('reset');
+                            e.unwrap();
+                        }
+
+                        $('#logo_clear').on ('click', function (e) {
+                            reset_form_element( $('#logoUpdate') );
+                            e.preventDefault();
+                        });
+
+
                         $scope.getSettings();
                     }, function errorCallback(response) {
                         bootbox.alert(response.data.reason);
                     });
             };
 
-            $scope.loadCmsNews = function () {
+            $scope.loadCmsNews = function ( ) {
                 cmsService.newsList().$promise
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
-                                $scope.lists = response;
-                                for (var i=0; i<$scope.lists.length; i++){
-                                    $scope.lists[i].strLimit=500;
+                                $scope.news = response;
+                                for (var i=0; i<$scope.news.length; i++){
+                                    $scope.news[i].strLimit=500;
                                 }
                             });
                         }
                         else {
-                            $scope.lists = response;
-                            for (var i=0; i<$scope.lists.length; i++){
-                                $scope.lists[i].strLimit=500;
+                            $scope.news = response;
+                            for (var i=0; i<$scope.news.length; i++){
+                                $scope.news[i].strLimit=500;
                             }
                         }
                     }, function errorCallback() {
-                        bootbox.alert("Отримати дані списку меню не вдалося");
+                        bootbox.alert("Отримати дані списку новин не вдалося");
+                    });
+            };
+
+
+            $scope.loadCmsOneNews = function ( id) {
+                console.log(id);
+                cmsService.newsOneNewsList({id : id}).$promise
+                    .then(function successCallback(response) {
+
+                        console.log(response);
+
+                            $scope.one_news = response;
+                            for (var i=0; i<$scope.one_news.length; i++){
+                                $scope.one_news[i].strLimit=500;
+                            }
+                    }, function errorCallback() {
+                        bootbox.alert("Отримати дані списку новин не вдалося");
+                    });
+            };
+
+            $scope.updateNews = function (link, index, previousImage) {
+                console.log(index);
+
+
+                var uploadImage = new FormData();
+                uploadImage.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#photoUpdate' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadImage.append("photo", imageUpdate);
+                    uploadImage.append("previousImage", previousImage);
+                }
+                else {
+                    var image = $jq('#photo').prop('files')[0];
+                    uploadImage.append("photo", image);
+                }
+                $http.post(basePath + '/_teacher/_admin/cms/updateNews', uploadImage, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.loadCmsNews();
+                    $scope.newNews = {id: null, description: null, link: null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+            };
+
+            $scope.removeNews = function (id, image) {
+                cmsService.removeNews({id: id, image: image}).$promise
+                    .then(function successCallback() {
+                        $scope.loadCmsNews();
+                    }, function errorCallback(response){
+                        bootbox.alert(response.data.reason);
                     });
             };
 
             $scope.showMore = function(i) {
-                $scope.lists[i].strLimit = $scope.lists[i].text.length;
+                $scope.news[i].strLimit = $scope.news[i].text.length;
             };
             $scope.showLess = function(i) {
-                $scope.lists[i].strLimit = 500;
+                $scope.news[i].strLimit = 500;
             };
 
             $scope.loadCmsNews();
@@ -161,7 +276,6 @@ angular
     .controller('settingsCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
 
-        console.log("AAAAAAALLLLLLOOOO");
 
             $scope.data;
             $scope.buttonShow;
@@ -197,6 +311,7 @@ angular
             $scope.getSettings();
 
             $scope.updateSettings = function (link,  previousImage) {
+
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
                 var imageUpdateBlock = '#logoUpdate';
@@ -225,9 +340,9 @@ angular
                     $scope.settings = response2;
                 });
                 $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
-                    $scope.lists = response3;
-                    for (var i=0; i<$scope.lists.length; i++){
-                        $scope.lists[i].strLimit=500;
+                    $scope.news = response3;
+                    for (var i=0; i<$scope.news.length; i++){
+                        $scope.news[i].strLimit=500;
                     }
                 });
                 $scope.buttonShow=false;
@@ -249,10 +364,10 @@ angular
             };
 
             $scope.showMore = function(i) {
-                $scope.lists[i].strLimit = $scope.lists[i].text.length;
+                $scope.news[i].strLimit = $scope.news[i].text.length;
             };
             $scope.showLess = function(i) {
-                $scope.lists[i].strLimit = 500;
+                $scope.news[i].strLimit = 500;
             };
 
             // $scope.loadCmsNews();
@@ -307,11 +422,11 @@ angular
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
-                                $scope.lists = response;
+                                $scope.listsItemMenu = response;
                             });
                         }
                         else {
-                            $scope.lists = response;
+                            $scope.listsItemMenu = response;
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
@@ -320,6 +435,7 @@ angular
             $scope.loadCmsMenuList();
 
             $scope.updateMenuLink = function (link, index, previousImage) {
+                console.log("cmsMenuListCtrl");
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
                 if (index !== undefined) {
@@ -342,7 +458,11 @@ angular
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
+                $scope.loadCmsMenuList();
+
             };
+
+
             $scope.removeMenuLink = function (id, image) {
                 cmsService.removeMenuLink({id: id, image: image}).$promise
                     .then(function successCallback() {
@@ -351,6 +471,8 @@ angular
                         bootbox.alert(response.data.reason);
                     });
             };
+
+
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
                     .then(function successCallback(response) {
@@ -394,14 +516,11 @@ angular
 
 
             $scope.updateSocialNetworks = function (link) {
-                console.log( "link");
-                console.log( link);
 
-                console.log("yes3");
+
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
-                console.log( "uploadSettings");
-                console.log( uploadSettings);
+
 
                 $http.post(basePath + '/_teacher/_admin/cms/UpdateSocialNetworks', uploadSettings, {
                     withCredentials: true,
@@ -436,14 +555,14 @@ angular
                     .then(function successCallback(response){
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
-                                $scope.lists = response;
+                                $scope.news = response;
                             });
                         }
                         else {
-                            $scope.lists = response;
+                            $scope.news = response;
                         }
                     }, function errorCallback() {
-                        bootbox.alert("Отримати дані списку меню не вдалося");
+                        bootbox.alert("Отримати дані списку новин не вдалося");
                     });
             };
             $scope.loadCmsNews();
@@ -533,10 +652,10 @@ angular
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
-                                $scope.lists = response;
+                                $scope.slides = response;
                             });
                         } else {
-                            $scope.lists = response;
+                            $scope.slides = response;
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");

@@ -182,6 +182,10 @@
         padding-left: 255px;
         padding-top: 25px;
     }
+    #cms_content_generate {
+        margin-bottom: 0px;
+    }
+
 }
 @media screen and (max-width: 326px) {
     .right_footer {
@@ -283,4 +287,9 @@
     position: relative;
     padding-bottom: 69px;
     min-height: 100%;
+}
+.edit2{
+    position: absolute;
+    right: 0px;
+    top: 10px;
 }

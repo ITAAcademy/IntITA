@@ -44,7 +44,7 @@
 }
 .edit1{
     position: absolute;
-    right: 0;
+    right: 25px;
     top: 10px;
 }
 .grid_group3{
@@ -117,4 +117,8 @@ textarea.form-control {
     /*padding-bottom: 12px;*/
     /*max-width: 500px;*/
     /*max-height: 100px;*/
+}
+.grid_group_menu_header{
+    display: grid;
+    grid-template-columns: 3fr 1fr 2fr;
 }
