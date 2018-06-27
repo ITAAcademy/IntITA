@@ -25,15 +25,14 @@ html{font-family:"MyriadPro";}
     margin-right: 0px;
     margin-top: 35px;
 }
-
 .container_n {
     width: 100%;
     padding-right: 0px;
     padding-left: 0px;
 }
 .news_wrapper{
-    padding-bottom: 10px;
     padding-top: 60px;
+    padding-bottom: 55px;
 }
 .box_new .box_text{
     margin-right: 0px;
@@ -43,12 +42,10 @@ html{font-family:"MyriadPro";}
     float: left;
     position: absolute;
 }
-
 .text-date_rigth{
     float: right;
     /*position: absolute;*/
 }
-
 .text-date_p{
     margin-bottom: 0px;
 }
@@ -68,7 +65,6 @@ html{font-family:"MyriadPro";}
 .box_inside .img_out_left{
     padding-left: 1px;
     padding-right: 1px;
-
 }
 .box_inside_right .img_out_rigth{
     padding-right: 0px;
@@ -87,8 +83,6 @@ html{font-family:"MyriadPro";}
 .text-muted{
     margin-bottom: 0px;
 }
-
-
 .grid-title2{
       display: grid;
       grid-template-columns: 8fr 1fr;
@@ -110,11 +104,9 @@ html{font-family:"MyriadPro";}
 .in_intent_title{
 margin-left: 0px;
 }
-
 .news_titles{
     margin-left: 120px;
 }
-
 .add_news{
     margin-top: 20px;
     float: left;
@@ -124,9 +116,6 @@ margin-left: 0px;
     display: grid;
     grid-template-columns: 1fr 3fr;
 }
-/*.news_img{*/
-    /*margin-right: 300px;*/
-/*}*/
 .news_img .rectangle_news{
     padding-left: 0px;
     padding-top: 0px;
@@ -135,9 +124,6 @@ margin-left: 0px;
     height: 24px;
     width: 122px;
 }
-
-
-
 @media(max-width:767px) {
     .news_titles{
         margin-left: 59px;
@@ -151,16 +137,24 @@ margin-left: 0px;
         margin-left: 30px;
     }
 }
-
 .edit4{
     position: absolute;
     right: 4px;
     top: 5px;
 }
+.edit5{
+    top: 14px;
+    right: -40px;
+    position: absolute;
+}
+.edit6{
+    top: 14px;
+    left: -40px;
+    position: absolute;
+}
 .position_left{
     float: left;
 }
-
 .grid_news{
     display: grid;
     grid-template-columns:  1fr 3fr;
@@ -170,8 +164,6 @@ margin-left: 0px;
     display: grid;
     grid-template-columns: 1fr 3fr ;
 }
-
-
 #news_editLeft #news_editRight{
     color: black;
 }
@@ -179,4 +171,18 @@ margin-left: 0px;
     width: 121px;
     height: 22px;
     padding: 0px 0px;
+}
+.title_news_left{
+    display: block;
+    text-align: left;
+    margin-right: 60px;
+}
+.title_news_right{
+    display: block;
+    text-align: right;
+    margin-left: 60px;
+}
+.display_inl_bl{
+    display: inline-block;
+    position: relative;
 }

@@ -25,7 +25,6 @@ angular
                         } else {
                             $scope.SubdomainAns=true;
                         }
-
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
                     });
@@ -33,18 +32,14 @@ angular
             $scope.getSubdomain();
 
             $scope.loadCmsMenuList = function () {
-                // console.log("cmsCtrl loadCmsMenuList");
-
                 cmsService.menuList().$promise
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
                                 $scope.listsItemMenu = response;
-                                // console.log($scope.listsItemMenu);
                             });
                         } else {
                             $scope.listsItemMenu = response;
-                            // console.log($scope.listsItemMenu);
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
@@ -53,7 +48,6 @@ angular
             $scope.loadCmsMenuList();
 
             $scope.updateMenuLink = function (link, index, previousImage) {
-                console.log("cmsCtrl");
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
                 if (index !== undefined) {
@@ -99,7 +93,6 @@ angular
                         }
                         else {
                             $scope.settings = response;
-
                         }
                         $scope.buttonShow=true;
                     }, function errorCallback() {
@@ -109,13 +102,9 @@ angular
             $scope.getSettings();
 
             $scope.updateSettings = function (link,  previousImage) {
-                console.log(previousImage);
-
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
                 var imageUpdateBlock = '#logoUpdate';
-                console.log(imageUpdateBlock);
-
                 var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
                 uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
                 uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
@@ -130,7 +119,6 @@ angular
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
-
             };
 
             $scope.showDefaultSettings =function (){
@@ -149,23 +137,11 @@ angular
                 $scope.buttonShow=false;
             };
 
-            // $scope.reset_form_element = function (e) {
-            //     e.wrap('<form>').parent('form').trigger('reset');
-            //     e.unwrap();
-            //
-            // };
-
-
-
-
-
             $scope.removeLogoCms = function (id, image) {
-                console.log(image);
 
                 cmsService.removeLogo({image: image, id: id}).$promise
                     .then(function successCallback() {
-                        // $scope.reset_form_element( $('#logoUpdate') );
-                        //
+
                         function reset_form_element (e) {
                             e.wrap('<form>').parent('form').trigger('reset');
                             e.unwrap();
@@ -175,7 +151,6 @@ angular
                             reset_form_element( $('#logoUpdate') );
                             e.preventDefault();
                         });
-
 
                         $scope.getSettings();
                     }, function errorCallback(response) {
@@ -195,7 +170,8 @@ angular
                             });
                         }
                         else {
-                            $scope.news = response;
+                            $scope.news_reverse = response;
+                            $scope.news = $scope.news_reverse.slice().reverse();
                             for (var i=0; i<$scope.news.length; i++){
                                 $scope.news[i].strLimit=500;
                             }
@@ -207,8 +183,6 @@ angular
 
 
             $scope.updateNews = function (link, index, previousImage) {
-                console.log(index);
-
 
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
@@ -263,10 +237,8 @@ angular
     .controller('settingsCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
 
-
             $scope.data;
             $scope.buttonShow;
-
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
@@ -287,7 +259,6 @@ angular
                         }
                         else {
                             $scope.settings = response;
-
                         }
                         $scope.buttonShow=true;
                     }, function errorCallback() {
@@ -336,9 +307,7 @@ angular
             };
 
             $scope.mySettings=function (){
-                // $scope.loadCmsMenuList();
                 $scope.getSettings();
-                // $scope.loadCmsNews();
             };
 
             $scope.removeLogo = function (id, image) {
@@ -356,20 +325,12 @@ angular
             $scope.showLess = function(i) {
                 $scope.news[i].strLimit = 500;
             };
-
-            // $scope.loadCmsNews();
         }
     ])
 
 
-
-
-
-    //////////////////////////
-
     .controller('subdomainCtrl', ['$scope', '$rootScope', '$http', 'NgTableDataService', 'NgTableParams', '$ngBootbox', 'ngToast',
         function ($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast  ) {
-
             $scope.changePageHeader('Створення доменного імені сайту');
                       $scope.addSubdomain = function (subdomain) {
                 $http({
@@ -422,7 +383,6 @@ angular
             $scope.loadCmsMenuList();
 
             $scope.updateMenuLink = function (link, index, previousImage) {
-                console.log("cmsMenuListCtrl");
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
                 if (index !== undefined) {
@@ -449,7 +409,6 @@ angular
 
             };
 
-
             $scope.removeMenuLink = function (id, image) {
                 cmsService.removeMenuLink({id: id, image: image}).$promise
                     .then(function successCallback() {
@@ -458,7 +417,6 @@ angular
                         bootbox.alert(response.data.reason);
                     });
             };
-
 
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
@@ -478,7 +436,6 @@ angular
             $scope.getSettings();
         }
     ])
-
 
     .controller('cmsSocialNetworksCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
@@ -501,13 +458,10 @@ angular
             };
             $scope.getSettings();
 
-
             $scope.updateSocialNetworks = function (link) {
-
 
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
-
 
                 $http.post(basePath + '/_teacher/_admin/cms/UpdateSocialNetworks', uploadSettings, {
                     withCredentials: true,
@@ -546,7 +500,8 @@ angular
                             });
                         }
                         else {
-                            $scope.news = response;
+                            $scope.news_reverse = response;
+                            $scope.news = $scope.news_reverse.slice().reverse();
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку новин не вдалося");

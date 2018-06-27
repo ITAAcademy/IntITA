@@ -10,7 +10,7 @@
     font-size: 18px;
     font-weight: normal;
     color: black;
-    padding: 10px 6px;
+    padding: 3px 6px;
 }
 #cms_content .nav>li>a:focus, .nav>li>a:hover {
     color: #003399;
@@ -27,12 +27,16 @@
     margin-right: 0px;
     display: flex;
 }
-
 .menu_blok{
     margin: auto;
     position: relative;
-}
+    margin-left: 20px;
 
+}
+.menu_blok_inl_bl{
+    display: block;
+    text-align: left;
+}
 .header_box .navbar-header_logo{
     position: relative;
 }
@@ -46,6 +50,11 @@
     position: absolute;
     right: 25px;
     top: 10px;
+}
+.edit7 {
+    position: absolute;
+    right: -30px;
+    top: -1px;
 }
 .grid_group3{
     margin-bottom: 30px;
@@ -76,9 +85,7 @@
      font-size: 12px;
      margin-top: 15px;
      width: 250px;
- }
-
-
+}
 hr{
     margin-top: 20px;
 }
@@ -90,7 +97,6 @@ hr{
     margin-top: 2px;
     display: block;
 }
-
 .box{
     margin-top: 10px;
     margin-bottom: 10px;
@@ -105,20 +111,23 @@ textarea.form-control {
     padding-left: 0px;
     height: 24px;
     width: 130px;
-
 }
 .buttons_box{
     text-align: right;
-    /*float: right;*/
-}
-#img_menu_list {
-    /*padding-top: 0px;*/
-    /*padding-top: 10px;*/
-    /*padding-bottom: 12px;*/
-    /*max-width: 500px;*/
-    /*max-height: 100px;*/
 }
 .grid_group_menu_header{
     display: grid;
     grid-template-columns: 3fr 1fr 2fr;
 }
+@media(max-width:500px) {
+    #cms_content .nav>li>a {
+        font-size: 16px;
+    }
+    .edit1 {
+        right: 0px;
+    }
+    .edit7 {
+        right: -43px;
+    }
+}
+

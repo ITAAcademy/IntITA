@@ -64,11 +64,9 @@ class CmsController extends TeacherCabinetController
         try {
             $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
             //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
-//            var_dump($params);die();
             $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
             $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $settings->attributes = $params;
-//            var_dump($settings); die();
             if (!$settings->save()) {
                 throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
             }
@@ -203,6 +201,7 @@ class CmsController extends TeacherCabinetController
     public function actionUpdateSettings()
     {
         $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"logo",key($_FILES));
+
         $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
         //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
         $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
@@ -215,6 +214,7 @@ class CmsController extends TeacherCabinetController
 
             throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
         }
+
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
@@ -225,10 +225,6 @@ class CmsController extends TeacherCabinetController
     $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
     $folderAddress = $path_domain . "/logo/";
     $imageAddress = $_POST["image"];
-//    var_dump($folderAddress);
-//    var_dump($imageAddress);
-//    die;
-
     if (file_exists($folderAddress.$imageAddress)) {  //видалення картинки з сервера(папки)
         unlink($folderAddress.$imageAddress);
     }
