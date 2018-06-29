@@ -9,7 +9,7 @@
                         <img ng-if="settings.logo" id="logo" ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
                     </a>
                      <div>
-                         <input class="edit" type="image" data-toggle="modal" data-target="#LogoModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                         <input class="edit hide_edit" type="image" data-toggle="modal" data-target="#LogoModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
                          <div class="modal fade" id="LogoModal" role="dialog">
                              <div class="modal-dialog modal-sm">
@@ -69,7 +69,7 @@
                             </li>
                         </ul>
                         <div>
-                            <input class="edit7" type="image" data-toggle="modal" data-target="#ListModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                            <input class="edit7 hide_edit" type="image" data-toggle="modal" data-target="#ListModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
                             <div class="modal fade" id="ListModal" role="dialog">
                                 <div class="modal-dialog modal-sm">
@@ -115,7 +115,7 @@
             </div>
             <div class="col-md-1">
                 <div>
-                    <input class="edit1" type="image" ng-click="" data-toggle="modal" data-target="#HeaderModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                    <input class="edit1 hide_edit" type="image" ng-click="" data-toggle="modal" data-target="#HeaderModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
                     <div class="modal fade" id="HeaderModal" role="dialog">
                         <div class="modal-dialog modal-sm">

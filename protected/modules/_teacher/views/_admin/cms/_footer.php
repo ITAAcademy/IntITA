@@ -43,7 +43,7 @@
                 </tbody>
             </table>
             <div>
-                <input class="edit2" type="image" ng-click="Modal_window()" data-toggle="modal" data-target="#SocialNetworksModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                <input class="edit2 hide_edit" type="image" ng-click="Modal_window()" data-toggle="modal" data-target="#SocialNetworksModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
                 <div class="modal fade" id="SocialNetworksModal" role="dialog">
                     <div class="modal-dialog ">

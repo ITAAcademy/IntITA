@@ -8,7 +8,7 @@
 
             </div>
             <div>
-                <input class="edit3" type="image" ng-click="" data-toggle="modal" data-target="#Title1Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                <input class="edit3 hide_edit" type="image" ng-click="" data-toggle="modal" data-target="#Title1Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                 <div class="modal fade" id="Title1Modal" role="dialog">
                     <div class="modal-dialog  modal-sm">
 
@@ -97,7 +97,7 @@
 
 
                     <div>
-                        <input class="edit1" type="image" ng-click="loadCmsMenuList()" data-toggle="modal" data-target="#AboutUsModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                        <input class="edit1 hide_edit" type="image" ng-click="loadCmsMenuList()" data-toggle="modal" data-target="#AboutUsModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
                         <div class="modal fade" id="AboutUsModal" role="dialog">
                             <div class="modal-dialog modal-lg">

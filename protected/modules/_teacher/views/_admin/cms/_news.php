@@ -1,3 +1,5 @@
+
+
 <div class="news_wrapper" ng-style="{'background-color':settings.news_background_color}" >
     <div class="container_n text-center stepHeaderCont">
         <div class="text-muted grid-title2 ">
@@ -6,7 +8,7 @@
                 <h3 class="text-primary  info_bot" ng-style="{color:settings.subtitle_color, 'border-bottom-color': settings.subtitle_color}"   ng-bind="settings.subtitle_2"></h3>
             </div>
             <div>
-                <input class="position_left" type="image" ng-click="" data-toggle="modal" data-target="#Title2Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                <input class="position_left hide_edit" type="image" ng-click="" data-toggle="modal" data-target="#Title2Modal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                 <div class="modal fade" id="Title2Modal" role="dialog">
                     <div class="modal-dialog  modal-sm">
                         <!-- Modal content -->
@@ -66,9 +68,9 @@
         </div>
 
         <div>
-            <input class="btn btn-primary add_news"  name="add_news" value="Додати новину" type="submit"  onclick="" data-toggle="modal" data-target="#AddNewsModal" >
+            <input class="btn btn-primary add_news hide_edit"  name="add_news" value="Додати новину" type="submit"  onclick="" data-toggle="modal" data-target="#AddNewsModal" >
             <div class="modal fade" id="AddNewsModal" role="dialog">
-                <div class="modal-dialog "
+                <div class="modal-dialog ">
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -127,7 +129,7 @@
                             <div class=" display_inl_bl  ">
                                 <h3 class="text-left  text " ng-style="{color:settings.title_color}">{{new.title}}</h3>
                                 <div>
-                                    <input class="edit5" id="OneNewsModalLeft" type="image"  data-toggle="modal" data-target="#NewsModalLeft{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                                    <input class="edit5 hide_edit" id="OneNewsModalLeft" type="image"  data-toggle="modal" data-target="#NewsModalLeft{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                                     <div  class="modal fade" id="NewsModalLeft{{$index}}" role="dialog">
                                         <div class="modal-dialog ">
                                             <!-- Modal content-->
@@ -203,7 +205,7 @@
                                 <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': '2px'}">
                             </div>
                             <div>
-                                <input class="edit4" id="OneNewsModalLeft2" type="image"  data-toggle="modal" data-target="#NewsModalLeft{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                                <input class="edit4 hide_edit" id="OneNewsModalLeft2" type="image"  data-toggle="modal" data-target="#NewsModalLeft{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                             </div>
                         </div>
                         <div class=" col-md-8 col-sm-7 text_out_left">
@@ -221,7 +223,7 @@
                                 </div>
                             </div>
                             <div>
-                                <input class="edit4" id="OneNewsModalLeft3" type="image"  data-toggle="modal" data-target="#NewsModalLeft{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                                <input class="edit4 hide_edit" id="OneNewsModalLeft3" type="image"  data-toggle="modal" data-target="#NewsModalLeft{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                             </div>
                         </div>
                     </div>
@@ -233,7 +235,7 @@
                         <div class=" display_inl_bl  ">
                             <h3 class="text-right  text " ng-style="{color:settings.title_color}">{{new.title}}</h3>
                             <div>
-                                <input class="edit6" id="OneNewsModalRight" type="image"  data-toggle="modal" data-target="#NewsModalRight{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                                <input class="edit6 hide_edit" id="OneNewsModalRight" type="image"  data-toggle="modal" data-target="#NewsModalRight{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                                 <div  class="modal fade" id="NewsModalRight{{$index}}" role="dialog">
                                     <div class="modal-dialog ">
                                         <!-- Modal content-->
@@ -321,7 +323,7 @@
                                 </div>
                             </div>
                             <div>
-                                <input class="edit4" id="OneNewsModalRight3" type="image"  data-toggle="modal" data-target="#NewsModalRight{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                                <input class="edit4 hide_edit" id="OneNewsModalRight3" type="image"  data-toggle="modal" data-target="#NewsModalRight{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                             </div>
                         </div>
 
@@ -330,7 +332,7 @@
                                 <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news"  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': '2px'}">
                             </div>
                             <div>
-                                <input class="edit4" id="OneNewsModalRight2" type="image"  data-toggle="modal" data-target="#NewsModalRight{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+                                <input class="edit4 hide_edit" id="OneNewsModalRight2" type="image"  data-toggle="modal" data-target="#NewsModalRight{{$index}}" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                             </div>
                         </div>
                     </div>

@@ -178,15 +178,20 @@ class CmsController extends TeacherCabinetController
 
     public function actionGeneratePage()
     {   $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+
         $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
-        $subdomain->createSubdomainDirectory($path_domain);
-        $path = $path_domain . '/index.php';
+                            // http://intita/domains/domain_name.intita/
+        $subdomain->createSubdomainDirectory($path_domain); //створюємо директорію
+
+        $path = $path_domain . '/index.php'; // створюємо файл в попередньо створеній директорії
+
         file_put_contents($path, '<?php
                 include "../activeDomains.php";
                 if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
                   exit("Domain not active!");
                 };?>');
-        file_put_contents($path, $_POST["data"], FILE_APPEND);
+
+        file_put_contents($path, $_POST["data"], FILE_USE_INCLUDE_PATH);
         $address = Yii::app()->basePath . '/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
         if (file_exists($address)) {
             array_map('unlink', glob("$address/*.*"));
@@ -195,7 +200,7 @@ class CmsController extends TeacherCabinetController
             mkdir($address, 0777, true);
         }
         $path = $address . '/index.php';
-        file_put_contents($path, $_POST["data"], FILE_APPEND);
+        file_put_contents($path, $_POST["data"], FILE_USE_INCLUDE_PATH);
     }
 
     public function actionUpdateSettings()
