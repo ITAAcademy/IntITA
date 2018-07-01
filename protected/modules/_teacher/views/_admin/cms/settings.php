@@ -115,7 +115,6 @@ p {
         width: 220px;
     }
 }
-
 @media(max-width:400px) {
     .in_group2{
         grid-template-columns: 1fr;
@@ -125,7 +124,6 @@ p {
     }
     .grid_button{
         grid-template-columns:  1fr;
-
     }
 }
 .link_settings{
@@ -135,16 +133,8 @@ p {
     text-shadow: 0.1em 0.1em 0.2em black;
     color: aliceblue;
 }
-
 </style>
 <div class="settings_conteiner"  ng-controller="settingsCtrl">
-
-
-
-
-
-
-
 
     <div class="settings_box">
         <div class="grid_main first_blok" >
@@ -188,7 +178,7 @@ p {
             </div>
             <div class="grid_group" >
                 <div class="intent" style="font-size: 16px;">
-                    <p class="in_intent" ng-style="{color:settings.text_color}" >Колір текста</p>
+                    <p class="in_intent" ng-style="{color:settings.text_color}" >Колір тексту</p>
                     <p class="in_intent" ng-style="{color:settings.text_color}" >Text color</p>
                 </div>
                 <div  class="square" >
@@ -223,7 +213,6 @@ p {
                 <div class="rectangle" >
                     <input class="in_rectangle" ng-model="settings.general_hover_color" color-picker color-picker-model="settings.general_hover_color" type="text" >
                 </div>
-
             </div>
         </div>
         <div class="grid_main">
@@ -251,7 +240,6 @@ p {
                     <input class="in_rectangle" ng-model="settings.footer_link_color  " color-picker color-picker-model="settings.footer_link_color" type="text" >
                 </div>
             </div>
-
         </div>
         <div class="grid_main">
             <div class="grid_group" >
@@ -280,7 +268,6 @@ p {
                     <input class="in_rectangle" ng-model="settings.header_border_color" color-picker color-picker-model="settings.footer_border_color" type="text">
                 </div>
             </div>
-
         </div>
         <div class="grid_main blok_separation">
             <div class="grid_group" >
@@ -308,7 +295,6 @@ p {
                     <input class="in_rectangle"  ng-model="settings.news_text_border_color" color-picker color-picker-model="settings.news_text_border_color" type="text" >
                 </div>
             </div>
-
         </div>
         <div class="grid_main">
             <div class="grid_group" >
@@ -389,10 +375,28 @@ p {
                 </div>
             </div>
         </div>
-
-
-
-
+        <div class="grid_main blok_separation">
+            <div class="grid_group" >
+                <div class="intent">
+                </div>
+                <div  class="square" >
+                </div>
+                <div class="rectangle" >
+                </div>
+            </div>
+            <div class="grid_group" >
+                <div class="intent">
+                    <p class="in_intent"  ng-style="{color:settings.news_date_color}" >Колір дати новин</p>
+                    <p class="in_intent"  ng-style="{color:settings.news_date_color}" >News date color</p>
+                </div>
+                <div  class="square" >
+                <input  class="in_square" type="color" ng-model="settings.news_date_color">
+                </div>
+                <div class="rectangle" >
+                    <input class="in_rectangle"  ng-model="settings.news_date_color" color-picker color-picker-model="settings.news_date_color" type="text">
+                </div>
+            </div>
+        </div>
         <div class="grid_main">
             <div class="grid_group3" >
                 <div class="in_group3" >
@@ -459,143 +463,5 @@ p {
             <div class="save_box link_settings" ng-hide="buttonShow"  ng-click="mySettings()"><a>Повернутись до моїх налаштувань</a></div>
         </div>
     </div>
-
-
-
-
-    </br></br></br></br></br></br></br></br>
-
-////////////////////////////////////////////////////////////////////////////////////////////
-</br></br></br></br></br></br></br></br>
-
-
-    <ul>
-        <li class="slide_settings">
-            <div class="first_box">
-                <div class="row " >
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
-                            <div  class="col-md-2 col-xs-2 square" >
-                                <input  class="in_square" type="color" ng-model="settings.news_date_color">
-                            </div>
-                            <div class="col-md-4 col-xs-4 rectangle" >
-                                <input class="in_rectangle"  ng-model="settings.news_date_color" color-picker color-picker-model="settings.news_date_color" type="text">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" style=" font-size: 16px ">
-                                <p class="in_intent"  ng-style="{color:settings.news_date_color}" >News date color</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="second_box">
-                <div class="row ">
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
-
-                            <div class="col-md-6 col-xs-6 rectangle" >
-                                <input class="in_rectangle_soc" type="text" ng-model="settings.title">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" >
-                                <p class="in_intent" >Title</p></div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
-
-                            <div class="col-md-6 col-xs-6 rectangle" >
-                                <input class="in_rectangle_soc" type="text" ng-model="settings.subtitle">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" >
-                                <p class="in_intent" >Subtitle</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="third_box">
-                <div class="row ">
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
-
-                            <div class="col-md-6 col-xs-6 rectangle" >
-                                <input class="in_rectangle_soc" type="text" ng-model="settings.title_2">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" >
-                                <p class="in_intent" >Title 2</p></div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12"  >
-                        <div class="row group" >
-
-                            <div class="col-md-6 col-xs-6 rectangle" >
-                                <input class="in_rectangle_soc" type="text" ng-model="settings.subtitle_2">
-                            </div>
-                            <div class="col-md-6 col-xs-6 intent" >
-                                <p class="in_intent" >Subtitle 2</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-
-    </ul>
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 </div>
 
-
-<hr>
-
-
-<!---->
-<!---->
-<!---->
-<!---->
-<!--<script>-->
-<!--$jq(document).ready(function () {-->
-<!--    var slides = $jq('.slide_settings');-->
-<!--    var container = $jq('#slides_settings_1 ul');-->
-<!--    var elm = container.find(':first-child').prop("tagName");-->
-<!--    var item_width = container.width();-->
-<!--    var previous = 'prev'; //id of previous button-->
-<!--    var next = 'next'; //id of next button-->
-<!--    slides.width(item_width); //set the slides to the correct pixel width-->
-<!--    container.parent().width(item_width);-->
-<!--    container.width(slides.length * item_width); //set the slides container to the correct total width-->
-<!--    container.find(elm + ':first').before(container.find(elm + ':last'));-->
-<!--    resetSlides();-->
-<!--    //if user clicked on prev button-->
-<!--    $jq('#buttons a').click(function (e) {-->
-<!--        //slide the item-->
-<!--        if (container.is(':animated')) {-->
-<!--            return false;-->
-<!--        }-->
-<!--        if (e.target.id == previous) {-->
-<!--            container.stop().animate({-->
-<!--                    'left': 0-->
-<!--                }, 10, function () {-->
-<!--                container.find(elm + ':first').before(container.find(elm + ':last'));-->
-<!--                resetSlides();-->
-<!--            });-->
-<!--            }-->
-<!--        if (e.target.id == next) {-->
-<!--            container.stop().animate({-->
-<!--                    'left': item_width * -2-->
-<!--                }, 10, function () {-->
-<!--                container.find(elm + ':last').after(container.find(elm + ':first'));-->
-<!--                resetSlides();-->
-<!--            });-->
-<!--            }-->
-<!--        //cancel the link behavior-->
-<!--        return false;-->
-<!---->
-<!--    });-->
-<!--    function resetSlides() {-->
-<!--        //and adjust the container so current is in the frame-->
-<!--        container.css({-->
-<!--                'left': -1 * item_width-->
-<!--            });-->
-<!--        }-->
-<!--});-->
-<!--</script>-->

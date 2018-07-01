@@ -25,7 +25,6 @@ angular
                         } else {
                             $scope.SubdomainAns=true;
                         }
-
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
                     });
@@ -48,6 +47,42 @@ angular
             };
             $scope.loadCmsMenuList();
 
+            $scope.updateMenuLink = function (link, index, previousImage) {
+                var uploadImage = new FormData();
+                uploadImage.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#img_menu_list_Update' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadImage.append("img_menu_list", imageUpdate);
+                    uploadImage.append("previousImage", previousImage);
+                }
+                else {
+                    var image = $jq('#img_menu_list').prop('files')[0];
+                    uploadImage.append("img_menu_list", image);
+                }
+                $http.post(basePath + '/_teacher/_admin/cms/updateMenuLink', uploadImage, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.loadCmsMenuList();
+                    $scope.newLink = {id: null, description: null, link: null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+                $scope.loadCmsMenuList();
+            };
+
+            $scope.removeMenuLink = function (id, image) {
+                cmsService.removeMenuLink({id: id, image: image}).$promise
+                    .then(function successCallback() {
+                        $scope.loadCmsMenuList();
+                    }, function errorCallback(response) {
+                        bootbox.alert(response.data.reason);
+                    });
+            };
+
+
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
                     .then(function successCallback(response) {
@@ -58,7 +93,6 @@ angular
                         }
                         else {
                             $scope.settings = response;
-
                         }
                         $scope.buttonShow=true;
                     }, function errorCallback() {
@@ -85,7 +119,6 @@ angular
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
-
             };
 
             $scope.showDefaultSettings =function (){
@@ -96,76 +129,148 @@ angular
                         $scope.settings = response2;
                     });
                     $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
-                        $scope.lists = response3;
-                        for (var i=0; i<$scope.lists.length; i++){
-                            $scope.lists[i].strLimit=500;
+                        $scope.news = response3;
+                        for (var i=0; i<$scope.news.length; i++){
+                            $scope.news[i].strLimit=500;
                         }
                     });
                 $scope.buttonShow=false;
             };
 
-            // $scope.mySettings=function (){
-            //     $scope.loadCmsMenuList();
-            //     $scope.getSettings();
-            //     $scope.loadCmsNews();
-            // };
+            $scope.removeLogoCms = function (id, image) {
 
-            $scope.removeLogo = function (id, image) {
                 cmsService.removeLogo({image: image, id: id}).$promise
                     .then(function successCallback() {
+
+                        function reset_form_element (e) {
+                            e.wrap('<form>').parent('form').trigger('reset');
+                            e.unwrap();
+                        }
+
+                        $('#logo_clear').on ('click', function (e) {
+                            reset_form_element( $('#logoUpdate') );
+                            e.preventDefault();
+                        });
+
                         $scope.getSettings();
                     }, function errorCallback(response) {
                         bootbox.alert(response.data.reason);
                     });
             };
 
-            $scope.loadCmsNews = function () {
+            $scope.loadCmsNews = function ( ) {
                 cmsService.newsList().$promise
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
-                                $scope.lists = response;
-                                for (var i=0; i<$scope.lists.length; i++){
-                                    $scope.lists[i].strLimit=500;
+                                $scope.news = response;
+                                for (var i=0; i<$scope.news.length; i++){
+                                    $scope.news[i].strLimit=500;
                                 }
                             });
                         }
                         else {
-                            $scope.lists = response;
-                            for (var i=0; i<$scope.lists.length; i++){
-                                $scope.lists[i].strLimit=500;
+                            $scope.news_reverse = response;
+                            $scope.news = $scope.news_reverse.slice().reverse();
+                            for (var i=0; i<$scope.news.length; i++){
+                                $scope.news[i].strLimit=500;
                             }
                         }
                     }, function errorCallback() {
-                        bootbox.alert("Отримати дані списку меню не вдалося");
+                        bootbox.alert("Отримати дані списку новин не вдалося");
+                    });
+            };
+
+
+            $scope.updateNews = function (link, index, previousImage) {
+
+                var uploadImage = new FormData();
+                uploadImage.append("data", angular.toJson(link));
+                if (index !== undefined) {
+                    var imageUpdateBlock = '#photoUpdate' + index;
+                    var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
+                    uploadImage.append("photo", imageUpdate);
+                    uploadImage.append("previousImage", previousImage);
+                }
+                else {
+                    var image = $jq('#photo').prop('files')[0];
+                    uploadImage.append("photo", image);
+                }
+                $http.post(basePath + '/_teacher/_admin/cms/updateNews', uploadImage, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.loadCmsNews();
+                    $scope.newNews = {id: null, description: null, link: null};
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+            };
+
+            $scope.removeNews = function (id, image) {
+                cmsService.removeNews({id: id, image: image}).$promise
+                    .then(function successCallback() {
+                        $scope.loadCmsNews();
+                    }, function errorCallback(response){
+                        bootbox.alert(response.data.reason);
                     });
             };
 
             $scope.showMore = function(i) {
-                $scope.lists[i].strLimit = $scope.lists[i].text.length;
+                $scope.news[i].strLimit = $scope.news[i].text.length;
             };
             $scope.showLess = function(i) {
-                $scope.lists[i].strLimit = 500;
+                $scope.news[i].strLimit = 500;
             };
 
             $scope.loadCmsNews();
 
+            $scope.generatePage = function () {
+                console.log("CMS controller");
+
+                var content = document.getElementById("cms_content_generate");
+                $jq(".hide_edit").hide();
+                if($scope.content != null) {
+                    $jq("#sliderBlock").remove();
+                    var slider='<div ng-controller="sliderGeneratedCtrl" id="sliderBlock" ng-app="cmsAppNew">\n' +
+                        '    <div  id="slider" class="owl-carousel" style="opacity: 1; display: block;">\n' +
+                        '        <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">\n' +
+                        '            <div uib-slide class="slide" ng-repeat="slide in slides track by $index" index="$index">\n' +
+                        '                <div>\n' +
+                        '                    <img ng-src="{{slide.src}}">\n' +
+                        '                    <p class="title">{{slide.title}}</p>\n' +
+                        '                    <p class="description">{{slide.description}}</p>'+
+                        '                </div>\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '</div>';
+
+                    $jq("#headerCms").after(slider);
+                }
+
+                $jq.ajax({
+                    method: "POST",
+                    url: basePath + '/_teacher/_admin/cms/generatePage',
+                    dataType : 'html',
+                    data: {data: content.innerHTML},
+                    success : function() {
+                        location.reload();
+                    }
+                });
+            };
+            $scope.getSubdomain();
         }
-
     ])
-
-
 
 
 
     .controller('settingsCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
 
-        console.log("AAAAAAALLLLLLOOOO");
-
             $scope.data;
             $scope.buttonShow;
-
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
@@ -186,7 +291,6 @@ angular
                         }
                         else {
                             $scope.settings = response;
-
                         }
                         $scope.buttonShow=true;
                     }, function errorCallback() {
@@ -197,6 +301,7 @@ angular
             $scope.getSettings();
 
             $scope.updateSettings = function (link,  previousImage) {
+
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
                 var imageUpdateBlock = '#logoUpdate';
@@ -225,18 +330,16 @@ angular
                     $scope.settings = response2;
                 });
                 $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
-                    $scope.lists = response3;
-                    for (var i=0; i<$scope.lists.length; i++){
-                        $scope.lists[i].strLimit=500;
+                    $scope.news = response3;
+                    for (var i=0; i<$scope.news.length; i++){
+                        $scope.news[i].strLimit=500;
                     }
                 });
                 $scope.buttonShow=false;
             };
 
             $scope.mySettings=function (){
-                // $scope.loadCmsMenuList();
                 $scope.getSettings();
-                // $scope.loadCmsNews();
             };
 
             $scope.removeLogo = function (id, image) {
@@ -249,25 +352,17 @@ angular
             };
 
             $scope.showMore = function(i) {
-                $scope.lists[i].strLimit = $scope.lists[i].text.length;
+                $scope.news[i].strLimit = $scope.news[i].text.length;
             };
             $scope.showLess = function(i) {
-                $scope.lists[i].strLimit = 500;
+                $scope.news[i].strLimit = 500;
             };
-
-            // $scope.loadCmsNews();
         }
     ])
 
 
-
-
-
-    //////////////////////////
-
     .controller('subdomainCtrl', ['$scope', '$rootScope', '$http', 'NgTableDataService', 'NgTableParams', '$ngBootbox', 'ngToast',
         function ($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast  ) {
-
             $scope.changePageHeader('Створення доменного імені сайту');
                       $scope.addSubdomain = function (subdomain) {
                 $http({
@@ -307,11 +402,11 @@ angular
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
-                                $scope.lists = response;
+                                $scope.listsItemMenu = response;
                             });
                         }
                         else {
-                            $scope.lists = response;
+                            $scope.listsItemMenu = response;
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
@@ -342,7 +437,10 @@ angular
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
+                $scope.loadCmsMenuList();
+
             };
+
             $scope.removeMenuLink = function (id, image) {
                 cmsService.removeMenuLink({id: id, image: image}).$promise
                     .then(function successCallback() {
@@ -351,6 +449,7 @@ angular
                         bootbox.alert(response.data.reason);
                     });
             };
+
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
                     .then(function successCallback(response) {
@@ -369,7 +468,6 @@ angular
             $scope.getSettings();
         }
     ])
-
 
     .controller('cmsSocialNetworksCtrl', ['$scope', 'cmsService', '$http',
         function ($scope, cmsService, $http) {
@@ -392,16 +490,10 @@ angular
             };
             $scope.getSettings();
 
-
             $scope.updateSocialNetworks = function (link) {
-                console.log( "link");
-                console.log( link);
 
-                console.log("yes3");
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
-                console.log( "uploadSettings");
-                console.log( uploadSettings);
 
                 $http.post(basePath + '/_teacher/_admin/cms/UpdateSocialNetworks', uploadSettings, {
                     withCredentials: true,
@@ -436,14 +528,15 @@ angular
                     .then(function successCallback(response){
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
-                                $scope.lists = response;
+                                $scope.news = response;
                             });
                         }
                         else {
-                            $scope.lists = response;
+                            $scope.news_reverse = response;
+                            $scope.news = $scope.news_reverse.slice().reverse();
                         }
                     }, function errorCallback() {
-                        bootbox.alert("Отримати дані списку меню не вдалося");
+                        bootbox.alert("Отримати дані списку новин не вдалося");
                     });
             };
             $scope.loadCmsNews();
@@ -533,10 +626,10 @@ angular
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
-                                $scope.lists = response;
+                                $scope.slides = response;
                             });
                         } else {
-                            $scope.lists = response;
+                            $scope.slides = response;
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані списку меню не вдалося");
