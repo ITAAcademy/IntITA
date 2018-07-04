@@ -42,7 +42,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateMenuLink()
     {
-        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"lists",key($_FILES));
+        $uploadedFile = CrmImageUploadHelper::uploadImage($_POST["previousImage"],"lists",key($_FILES));
         $params = array_filter((array)json_decode($_POST['data']));
         $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
 
@@ -120,7 +120,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateNews()
     {
-        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"news",key($_FILES));
+        $uploadedFile = CrmImageUploadHelper::uploadImage($_POST["previousImage"],"news",key($_FILES));
         $current_date = date("Y-m-d H:i:s");
         $params = array_filter((array)json_decode($_POST['data']));
         $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
@@ -202,18 +202,27 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateSettings()
     {
-        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"logo",key($_FILES));
-        $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
-        //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
-        $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
-        $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-        $settings->attributes = $params;
-        if(isset($uploadedFile)){
-            $settings->logo = $uploadedFile;
-        }
-        if (!$settings->save()) {
-
-            throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $transaction = null;
+        try {
+            $uploadedFile = CrmImageUploadHelper::uploadImage($_POST["previousImage"],"logo",key($_FILES));
+            $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
+            //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
+            $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
+            $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $settings->attributes = $params;
+            if($uploadedFile){
+                $settings->logo = $uploadedFile;
+            }
+            if (!$settings->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+            $transaction->rollback();
         }
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
@@ -287,7 +296,7 @@ class CmsController extends TeacherCabinetController
     }
     public function actionUpdateMenuSlider()
     {
-        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"carousel",key($_FILES));
+        $uploadedFile = CrmImageUploadHelper::uploadImage($_POST["previousImage"],"carousel",key($_FILES));
         $params = array_filter((array)json_decode($_POST['data']));
         $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();
         $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
