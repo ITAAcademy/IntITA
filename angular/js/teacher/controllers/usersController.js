@@ -1202,7 +1202,13 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
         }
         else { $scope.endtDate = endDate; }
 
-        $scope.studentsTableParams = new NgTableParams({}, {
+        $scope.studentsTableParams = new NgTableParams({
+            organization:$scope.organization,
+            trainersScope:$scope.trainer,
+            sorting: {
+                "start_date": 'desc'
+            },
+        }, {
             getData: function (params) {
                 $scope.params=params.url();
                 $scope.params.startDate=startDate;
