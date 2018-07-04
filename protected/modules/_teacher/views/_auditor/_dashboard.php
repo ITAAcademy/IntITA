@@ -91,4 +91,21 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-4">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                LiqPay
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><a ui-sref="liqpay">LiqPay</a></li>
+                    <li><a ui-sref="liqpay_payments">Проплати</a></li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <em>Налаштування LiqPay</em>
+            </div>
+        </div>
+    </div>
 </div>

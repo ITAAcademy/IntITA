@@ -7,7 +7,7 @@
  */
 class LibraryController extends TeacherCabinetController {
     public function hasRole() {
-            return Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin());
+            return Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isDirector());
     }
     public function actionDashboard() {
         $this->renderPartial('/library/_dashboard', array(), false, true);
