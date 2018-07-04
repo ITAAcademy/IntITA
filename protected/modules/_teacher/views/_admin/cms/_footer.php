@@ -4,57 +4,60 @@
                                     'border-left-color': settings.footer_border_color  }"   class="row" >
 
     <div class="left_footer col-lg-2 col-md-2 col-sm-2 col-xs-2" ng-style="{'border-right-color':settings.footer_border_color}">
-        <table class="icon_table">
-            <tbody ><tr>
-                <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.twitter}}" target="_blank" title="Twitter">
-                        <img src="http://intita.com//images/mainpage/twitter.png">
-                    </a>
-                </td>
-                <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.youtube}}" target="_blank" title="Youtube">
-                        <img src="http://intita.com//images/mainpage/youtube.png">
-                    </a>
-                </td>
-                <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.google}} " target="_blank" title="Google+">
-                        <img src="http://intita.com//images/mainpage/googlePlus.png">
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.facebook}}" target="_blank" title="Facebook">
-                        <img src="http://intita.com//images/mainpage/facebook.png">
-                    </a>
-                </td>
-                <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.linkedin}}" target="_blank" title="Linkedin">
-                        <img src="http://intita.com//images/mainpage/inl.png">
-                    </a>
-                </td>
-                <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
-                    <a href="{{settings.instagram}}" target="_blank" title="Instagram">
-                        <img src="http://intita.com/images/mainpage/instagram.png">
-                    </a>
-                </td>
-            </tr>
-            </tbody></table>
-        <input class="edit2" type="image" ng-click="Modal_window()" data-toggle="modal" data-target="#SocialNetworksModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
+        <div class="social_inl_bl">
+            <table class="icon_table display_inl_bl">
+                <tbody ><tr>
+                    <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.twitter}}" target="_blank" title="Twitter">
+                            <img src="http://intita.com//images/mainpage/twitter.png">
+                        </a>
+                    </td>
+                    <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.youtube}}" target="_blank" title="Youtube">
+                            <img src="http://intita.com//images/mainpage/youtube.png">
+                        </a>
+                    </td>
+                    <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.google}} " target="_blank" title="Google+">
+                            <img src="http://intita.com//images/mainpage/googlePlus.png">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.facebook}}" target="_blank" title="Facebook">
+                            <img src="http://intita.com//images/mainpage/facebook.png">
+                        </a>
+                    </td>
+                    <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.linkedin}}" target="_blank" title="Linkedin">
+                            <img src="http://intita.com//images/mainpage/inl.png">
+                        </a>
+                    </td>
+                    <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
+                        <a href="{{settings.instagram}}" target="_blank" title="Instagram">
+                            <img src="http://intita.com/images/mainpage/instagram.png">
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <input class="edit2 hide_edit" type="image" ng-click="Modal_window()" data-toggle="modal" data-target="#SocialNetworksModal" src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
 
-        <div class="modal fade" id="SocialNetworksModal" role="dialog">
-            <div class="modal-dialog ">
+                <div class="modal fade" id="SocialNetworksModal" role="dialog">
+                    <div class="modal-dialog ">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Завантажити логотип</h4>
-                    </div>
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Завантажити логотип</h4>
+                            </div>
 
 
-                    <div class="modal-body">
-                        <div class="form-group form-link" >
+                            <div class="modal-body">
+                                <div class="form-group form-link" >
                                     <div class="grid_group_color" >
                                         <div class=" intent">
                                             <p class="in_intent"  >Колір іконок:</p>
@@ -145,15 +148,19 @@
                                             <input class="in_rectangle_soc form-control" placeholder="Введіть посилання на сторінку"  type="text" ng-model="settings.instagram">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateSettings(settings, settings.logo )">Зберегти</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateSettings(settings, settings.logo )">Зберегти</button>
+
                     </div>
                 </div>
-
             </div>
         </div>
+
+
     </div>
     <div class="center_footer col-lg-9 col-md-9 col-sm-9 col-xs-9">
         <div class=" row">

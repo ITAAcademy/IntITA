@@ -114,7 +114,8 @@
             </script>
         </div>
         <div>
-            <input id="save_cms" name="save" value="Згенерувати сторінку" type="submit"  onclick="bootbox.alert('Сторінку згенеровано!')" class="btn btn-primary" >
+            <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generatePage()" class="btn btn-primary hide_edit" >
+<!--            onclick="bootbox.alert('Сторінку згенеровано!')"-->
         </div>
     </div>
 </div>

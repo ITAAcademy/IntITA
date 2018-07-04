@@ -64,11 +64,9 @@ class CmsController extends TeacherCabinetController
         try {
             $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
             //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
-//            var_dump($params);die();
             $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
             $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $settings->attributes = $params;
-//            var_dump($settings); die();
             if (!$settings->save()) {
                 throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
             }
@@ -180,15 +178,20 @@ class CmsController extends TeacherCabinetController
 
     public function actionGeneratePage()
     {   $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+
         $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
-        $subdomain->createSubdomainDirectory($path_domain);
-        $path = $path_domain . '/index.php';
+                            // http://intita/domains/domain_name.intita/
+        $subdomain->createSubdomainDirectory($path_domain); //створюємо директорію
+
+        $path = $path_domain . '/index.php'; // створюємо файл в попередньо створеній директорії
+
         file_put_contents($path, '<?php
                 include "../activeDomains.php";
                 if (!in_array($_SERVER["HTTP_HOST"],$activeDomains)){
                   exit("Domain not active!");
                 };?>');
-        file_put_contents($path, $_POST["data"], FILE_APPEND);
+
+        file_put_contents($path, $_POST["data"], FILE_USE_INCLUDE_PATH);
         $address = Yii::app()->basePath . '/modules/_teacher/views/_admin/cms/' . Yii::app()->user->model->getCurrentOrganizationId();
         if (file_exists($address)) {
             array_map('unlink', glob("$address/*.*"));
@@ -197,7 +200,7 @@ class CmsController extends TeacherCabinetController
             mkdir($address, 0777, true);
         }
         $path = $address . '/index.php';
-        file_put_contents($path, $_POST["data"], FILE_APPEND);
+        file_put_contents($path, $_POST["data"], FILE_USE_INCLUDE_PATH);
     }
 
     public function actionUpdateSettings()
@@ -224,6 +227,7 @@ class CmsController extends TeacherCabinetController
             $result = ['message' => 'error', 'reason' => $error->getMessage()];
             $transaction->rollback();
         }
+
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
@@ -234,10 +238,6 @@ class CmsController extends TeacherCabinetController
     $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
     $folderAddress = $path_domain . "/logo/";
     $imageAddress = $_POST["image"];
-//    var_dump($folderAddress);
-//    var_dump($imageAddress);
-//    die;
-
     if (file_exists($folderAddress.$imageAddress)) {  //видалення картинки з сервера(папки)
         unlink($folderAddress.$imageAddress);
     }
