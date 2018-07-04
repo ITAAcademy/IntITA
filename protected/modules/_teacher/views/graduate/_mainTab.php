@@ -30,7 +30,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td width="30%"><strong>Сайт (місце роботи)</strong></td>
+                        <td width="30%"><strong>Посилання на місце роботи</strong></td>
                         <td>
                             <a href="<?=$model->work_site; ?>" target="_blank">
                                 <?= $model->work_site; ?>
