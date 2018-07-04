@@ -1201,7 +1201,7 @@ angular
                 $scope.paymentSchema['courseId'] = $item.id;
                 $scope.paymentSchema.serviceType = $scope.services[0].value;
                 $scope.paymentSchema.moduleId = null;
-                document.querySelector("input[ng-change*=reloadModule]").value = "";
+                $scope.selectedModule = null;
             };
             $scope.reloadCourse = function () {
                 $scope.paymentSchema['courseId'] = null;
@@ -1210,7 +1210,7 @@ angular
                 $scope.paymentSchema['moduleId'] = $item.id;
                 $scope.paymentSchema.serviceType = $scope.services[1].value;
                 $scope.paymentSchema.courseId = null;
-                document.querySelector("input[ng-change*=reloadCourse]").value = "";
+                $scope.selectedCourse = null;
             };
             $scope.reloadModule = function () {
                 $scope.paymentSchema['moduleId'] = null;
