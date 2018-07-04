@@ -182,12 +182,12 @@ class Library extends CActiveRecord
         if(!$model && $res->result=='ok'){
             $model = new LibraryPayments();
             $model->library_id = $this->id;
-            $model->payment_id = $res->payment_id;
-            $model->sender_phone = $res->sender_phone;
-            $model->sender_card_mask2 = $res->sender_card_mask2;
+            if(isset($res->payment_id)) $model->payment_id = $res->payment_id;
+            if(isset($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+            if(isset($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+            if(isset($res->amount)) $model->amount = $res->amount;
+            if(isset($res->order_id)) $model->order_id = $res->order_id;
             $model->user_id = $orderParams['user_id'];
-            $model->amount = $res->amount;
-            $model->order_id = $res->order_id;
             $model->date = new CDbExpression('NOW()');;
             $model->status = 1;
             $model->save();
@@ -210,12 +210,12 @@ class Library extends CActiveRecord
         ));
         if($res->result=='ok'){
             $model->library_id = $this->id;
-            $model->payment_id = $res->payment_id;
-            $model->sender_phone = $res->sender_phone;
-            $model->sender_card_mask2 = $res->sender_card_mask2;
+            if(isset($res->payment_id)) $model->payment_id = $res->payment_id;
+            if(isset($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+            if(isset($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+            if(isset($res->amount)) $model->amount = $res->amount;
+            if(isset($res->order_id)) $model->order_id = $res->order_id;
             $model->user_id = $orderParams['user_id'];
-            $model->amount = $res->amount;
-            $model->order_id = $res->order_id;
             $model->date = new CDbExpression('NOW()');;
             $model->status = 1;
             $model->save();
