@@ -1,21 +1,24 @@
 angular
     .module('cmsApp')
-    .controller('cmsCtrl', ['$scope', 'cmsService', '$http',
-        function ($scope, cmsService, $http) {
+    .controller('cmsCtrl', ['$scope', 'cmsService', '$http','ngToast',
+        function ($scope, cmsService, $http, ngToast) {
+            $scope.changePageHeader('Конструктор сайту');
+
             $scope.domainPath = domainPath;
             $scope.domainPathNews = domainPathNews;
-            $scope.data;
-            $scope.buttonShow;
-            $scope.SubdomainAns;
-
+            $scope.data = '';
+            $scope.buttonShow = '';
+            $scope.SubdomainAns = '';
+            $scope.pathToCmsTemplates = basePath + "/angular/js/teacher/templates/cms/";
+            $scope.templateUrl = function(template) {
+                return $scope.pathToCmsTemplates+template;
+            }
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
                     $scope.domainPathLogo = response.domainPath+'/logo/';
                 }, function errorCallback() {
                     bootbox.alert("Отримати піддомен не вдалося");
                 });
-
-            $scope.changePageHeader('Конструктор сайту');
 
             $scope.getSubdomain = function () {
                 cmsService.Subdomain().$promise
@@ -114,7 +117,12 @@ angular
                     transformRequest: angular.identity
                 }).success(function () {
                     $scope.getSettings();
-                    bootbox.alert('Дані успішно збережені!');
+                    ngToast.create({
+                        content: 'Дані успішно збережені!',
+                        className: 'success',
+                        dismissOnTimeout: true,
+                        timeout: 2000
+                    });
                     $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
@@ -260,14 +268,13 @@ angular
                     }
                 });
             };
-            $scope.getSubdomain();
         }
     ])
 
 
 
-    .controller('settingsCtrl', ['$scope', 'cmsService', '$http',
-        function ($scope, cmsService, $http) {
+    .controller('settingsCtrl', ['$scope', 'cmsService', '$http','ngToast',
+        function ($scope, cmsService, $http, ngToast) {
 
             $scope.data;
             $scope.buttonShow;
@@ -314,7 +321,12 @@ angular
                     transformRequest: angular.identity
                 }).success(function () {
                     $scope.getSettings();
-                    bootbox.alert('Дані успішно збережені!');
+                    ngToast.create({
+                        content: 'Дані успішно збережені!',
+                        className: 'success',
+                        dismissOnTimeout: true,
+                        timeout: 2000
+                    });
                     $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
@@ -469,8 +481,8 @@ angular
         }
     ])
 
-    .controller('cmsSocialNetworksCtrl', ['$scope', 'cmsService', '$http',
-        function ($scope, cmsService, $http) {
+    .controller('cmsSocialNetworksCtrl', ['$scope', 'cmsService', '$http','ngToast',
+        function ($scope, cmsService, $http, ngToast) {
             $scope.changePageHeader('Редактор соцмереж');
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
@@ -500,13 +512,17 @@ angular
                     headers: {'Content-Type': undefined},
                     transformRequest: angular.identity
                 }).success(function () {
-                    bootbox.alert('Дані успішно збережені!');
+                    ngToast.create({
+                        content: 'Дані успішно збережені!',
+                        className: 'success',
+                        dismissOnTimeout: true,
+                        timeout: 2000
+                    });
 
                     $scope.getSettings();
                     $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
-                    bootbox.alert('Дані успішно збережені!');
                 });
             };
         }

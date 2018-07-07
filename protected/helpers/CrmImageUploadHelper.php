@@ -8,30 +8,28 @@
 
 class CrmImageUploadHelper
 {
-    public static function uploadImage($file,$folder,$primaryKey){
-        $endAddress = null;
+    public static function uploadImage($oldLink,$folder,$primaryKey){
+        $link = null;
         $addressForFile = "";
-        $previousImage = isset($file) ? $file : null;
-        if (isset($_FILES) && !empty($_FILES)) {
+        if (!empty($_FILES)) {
             $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-            $path_domain = Yii::app()->basePath .'/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
-            $folderAddress = $path_domain . "/" . $folder ."/";
+            $folderAddress = Yii::app()->basePath .'/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema() . "/" . $folder ."/";
             if (!file_exists($folderAddress)) {
                 mkdir($folderAddress, 0777, true);
             }
-            if ($previousImage && file_exists($folderAddress . $previousImage)) {
-                unlink($folderAddress . $previousImage);
+            if ($oldLink && file_exists($folderAddress . $oldLink)) {
+                unlink($folderAddress . $oldLink);
             }
 
             $end_file_name = $_FILES["$primaryKey"]["name"];
             $tmp_file_name = $_FILES["$primaryKey"]["tmp_name"];
             if (getimagesize($tmp_file_name)) {
-                $endAddress = date("jYgi") . basename($end_file_name);
-                $addressForFile = $folderAddress . $endAddress;
+                $link = date("jYgi") . basename($end_file_name);
+                $addressForFile = $folderAddress . $link;
             }
             copy($tmp_file_name, $addressForFile);
         }
 
-        return $endAddress;
+        return $link;
     }
 }

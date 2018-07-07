@@ -42,19 +42,28 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateMenuLink()
     {
-        $uploadedFile = CrmImageUploadHelper::uploadImage($_POST["previousImage"],"lists",key($_FILES));
-        $params = array_filter((array)json_decode($_POST['data']));
-        $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
-
-        $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-
-        $menuLink->attributes = $params;
-        if(isset($uploadedFile)){
-            $menuLink->image = $uploadedFile;
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $params = array_filter((array)json_decode($_POST['data']));
+            $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
+            $link = CrmImageUploadHelper::uploadImage($menuLink->image,"lists",key($_FILES));
+            $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $menuLink->attributes = $params;
+            if($link){
+                $menuLink->image = $link;
+            }
+            if (!$menuLink->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
-        if (!$menuLink->save()) {
-            throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
-        }
+
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
     public function actionUpdateSocialNetworks()
