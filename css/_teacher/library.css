@@ -37,7 +37,8 @@
     margin-top: 27px;
 }
 .bookColumn{
-    display: inline-block;
+    width: 100%;
+    display: table-cell;
     vertical-align: top;
 }
 .titleBook{
@@ -48,4 +49,21 @@
 .libraryStar{
     text-align: center;
     margin-bottom: 18px;
+}
+@media only screen and (max-width: 800px) {
+    .one,.two{
+        width:99%;
+        float:none;
+        margin: 0 auto;
+    }
+    /*#coursesTable{*/
+        /*display: inline-block;*/
+        /*width:100%;*/
+    /*}*/
+    /*.leftColumn, .rightColumn{*/
+        /*display: block;*/
+        /*width:100%;*/
+    /*}*/
+    /*#miniConcept{display: block}*/
+    /*#largeConcept{display: none}*/
 }

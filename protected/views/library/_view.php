@@ -5,8 +5,8 @@
 <?php
 $param = Yii::app()->session["lg"] ? "title_" . Yii::app()->session["lg"] : "title_ua";
 ?>
-<div class="view" ng-controller="libraryCtrl">
-    <div class="bookColumn">
+<div class="view">
+    <div>
         <img class="logoBook"
              src="<?php echo $data->logo ? '/files/library/' . $data->id . '/logo/' . $data->logo : StaticFilesHelper::fullPathTo('css', 'images/books.png') ?>">
     </div>
