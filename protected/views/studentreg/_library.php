@@ -7,7 +7,7 @@
 ?>
 <div class="courseData" ng-controller="libraryCtrl">
     <?php foreach ($library as $data){ ?>
-        <div class="bookColumn">
+        <div>
             <img class="logoBook" style="max-width: 100px" src="<?php echo $data->library->logo ? '/files/library/' . $data->library->id . '/logo/' . $data->library->logo : StaticFilesHelper::fullPathTo('css', 'images/books.png') ?>">
         </div>
         <div class="bookColumn">
