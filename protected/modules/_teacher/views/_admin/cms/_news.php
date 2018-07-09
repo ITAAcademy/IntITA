@@ -35,7 +35,7 @@
                      style="box-shadow: 0 0 5px {{settings.news_text_border_color}}">
                     <div class="col-md-4 col-sm-5 img_out img_out_left">
                         <div class="img_news_box1">
-                            <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news"
+                            <img src='{{new.id && domainPathNews+ new.img || new.img}}' ng-hide="new.id && !(new.img | isNotLink)" class="img_news"
                                  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': '2px'}">
                         </div>
                         <div>
@@ -121,7 +121,7 @@
 
                     <div class="col-md-4 col-sm-5 img_out img_out_rigth">
                         <div class="img_news_box2">
-                            <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news"
+                            <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news" ng-hide="new.id && !(new.img | isNotLink)"
                                  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': '2px'}">
                         </div>
                         <div>

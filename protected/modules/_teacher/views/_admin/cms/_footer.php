@@ -10,29 +10,29 @@
                 <tr>
                     <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                         <a href="{{settings.twitter}}" target="_blank" title="Twitter">
-                            <img src="http://intita.com//images/mainpage/twitter.png">
+                            <img src="http://intita.com/images/mainpage/twitter.png">
                         </a>
                     </td>
                     <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                         <a href="{{settings.youtube}}" target="_blank" title="Youtube">
-                            <img src="http://intita.com//images/mainpage/youtube.png">
+                            <img src="http://intita.com/images/mainpage/youtube.png">
                         </a>
                     </td>
                     <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                         <a href="{{settings.google}} " target="_blank" title="Google+">
-                            <img src="http://intita.com//images/mainpage/googlePlus.png">
+                            <img src="http://intita.com/images/mainpage/googlePlus.png">
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                         <a href="{{settings.facebook}}" target="_blank" title="Facebook">
-                            <img src="http://intita.com//images/mainpage/facebook.png">
+                            <img src="http://intita.com/images/mainpage/facebook.png">
                         </a>
                     </td>
                     <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                         <a href="{{settings.linkedin}}" target="_blank" title="Linkedin">
-                            <img src="http://intita.com//images/mainpage/inl.png">
+                            <img src="http://intita.com/images/mainpage/inl.png">
                         </a>
                     </td>
                     <td ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
@@ -79,7 +79,7 @@
                                             <div class="intent-img"
                                                  ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                                                 <a href="{{settings.twitter}}" target="_blank" title="Twitter">
-                                                    <img src="http://intita.com//images/mainpage/twitter.png">
+                                                    <img src="http://intita.com/images/mainpage/twitter.png">
                                                 </a>
                                             </div>
 
@@ -95,7 +95,7 @@
                                             <div class="intent-img"
                                                  ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                                                 <a href="{{settings.youtube}}" target="_blank" title="Youtube">
-                                                    <img src="http://intita.com//images/mainpage/youtube.png">
+                                                    <img src="http://intita.com/images/mainpage/youtube.png">
                                                 </a>
                                             </div>
 
@@ -111,7 +111,7 @@
                                             <div class="intent-img"
                                                  ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                                                 <a href="{{settings.google}}" target="_blank" title="Google+">
-                                                    <img src="http://intita.com//images/mainpage/googlePlus.png">
+                                                    <img src="http://intita.com/images/mainpage/googlePlus.png">
                                                 </a>
                                             </div>
 
@@ -127,7 +127,7 @@
                                             <div class="intent-img"
                                                  ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                                                 <a href="{{settings.facebook}}" target="_blank" title="Facebook">
-                                                    <img src="http://intita.com//images/mainpage/facebook.png">
+                                                    <img src="http://intita.com/images/mainpage/facebook.png">
                                                 </a>
                                             </div>
 
@@ -143,7 +143,7 @@
                                             <div class="intent-img"
                                                  ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                                                 <a href="{{settings.linkedin}}" target="_blank" title="Linkedin">
-                                                    <img src="http://intita.com//images/mainpage/inl.png">
+                                                    <img src="http://intita.com/images/mainpage/inl.png">
                                                 </a>
                                             </div>
 
@@ -159,7 +159,7 @@
                                             <div class="intent-img"
                                                  ng-style="{'border-radius': '15px', 'background-color': settings.icon_shadow_color}">
                                                 <a href="{{settings.instagram}}" target="_blank" title="Instagram">
-                                                    <img src="http://intita.com//images/mainpage/instagram.png">
+                                                    <img src="http://intita.com/images/mainpage/instagram.png">
                                                 </a>
                                             </div>
 

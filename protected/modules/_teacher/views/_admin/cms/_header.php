@@ -8,7 +8,7 @@
             <div class="col-md-3 ">
                 <div class=" navbar-header_logo">
                     <a href="">
-                        <img ng-if="settings.logo" id="logo"
+                        <img ng-if="settings.logo" id="logo" ng-hide="settings.id && !(settings.logo | isNotLink)"
                              ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
                         <img class="edit hide_edit" data-toggle="modal" data-target="#logoModal"
                              src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
