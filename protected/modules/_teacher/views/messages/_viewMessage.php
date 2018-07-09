@@ -14,7 +14,7 @@ $url = Yii::app()->createUrl('/_teacher/messages/form');
         <div class="pull-right">
             <em><?= CommonHelper::formatMessageDate($message->message0->create_date);?></em>
             <?php if (!$deleted) { ?>
-            <div class="btn-group" ng-show="isDeleted('<?= $message->id_message; ?>')">
+            <div class="btn-group" ng-show="isDeleted()">
                 <button type="button" class="btn btn-default btn-xs dropdown-toggle"
                         data-toggle="dropdown">
                     Дії

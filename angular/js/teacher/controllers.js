@@ -654,9 +654,8 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
         $jq(el).toggle("medium");
     }
 
-    $scope.isDeleted = function (messageId) {
-        var path = '/deletedmessage/'+messageId;
-        return path === $location.path() ? false : true;
+    $scope.isDeleted = function () {
+        return $state.current.url === '/deletedmessage/:idMessage' ? false : true;
     }
 }
 
