@@ -74,6 +74,7 @@ angular
             libraryService.getLibrary({'id':$stateParams.id}).$promise
             .then(function successCallback(response) {
                 response.data.price =  Number(response.data.price);
+                response.data.paper_price =  Number(response.data.paper_price);
                 $scope.formData = response.data;
             }, function errorCallback() {
                 bootbox.alert("Отримати дані категорії не вдалося");

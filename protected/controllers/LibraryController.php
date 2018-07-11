@@ -194,22 +194,42 @@ class LibraryController extends Controller
         $library->sendTicket($order_id);
     }
 
+//    public function actionGetBook($id){
+//        $book = Library::model()->findByPk($id);
+//        $userId = Yii::app()->user->getId();
+//        $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>1));
+//        if ($book && $payment){
+//         $bookFile = Yii::app()->getBasePath() . "/../files/library/buy/{$userId}/{$book->link}";
+//         if(file_exists($bookFile) && is_file($bookFile)){
+//          return   Yii::app()->request->xSendFile("/files/library/buy/{$userId}/{$book->link}",[
+//              'forceDownload'=>true,
+//              'xHeader'=>'X-Accel-Redirect',
+//              'terminate'=>false
+//          ]);
+//         }
+//        }
+//        else {
+//         throw new CHttpException(404,'Документ не знайдено');
+//        }
+//    }
     public function actionGetBook($id){
         $book = Library::model()->findByPk($id);
-        $userId = Yii::app()->user->getId();
         $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>1));
         if ($book && $payment){
-         $bookFile = Yii::app()->getBasePath() . "/../files/library/buy/{$userId}/{$book->link}";
-         if(file_exists($bookFile) && is_file($bookFile)){
-          return   Yii::app()->request->xSendFile("/files/library/buy/{$userId}/{$book->link}",[
-              'forceDownload'=>true,
-              'xHeader'=>'X-Accel-Redirect',
-              'terminate'=>false
-          ]);
-         }
+            $file = "/files/library/{$book->id}/link/{$book->link}";
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].$file)){
+                return   Yii::app()->request->xSendFile($file,[
+                    'forceDownload'=>true,
+                    'xHeader'=>'X-Accel-Redirect',
+                    'terminate'=>false
+                ]);
+            }
+            else{
+                throw new CHttpException(404,'Документ не знайдено');
+            }
         }
         else {
-         throw new CHttpException(404,'Документ не знайдено');
+            throw new CHttpException(404,'Документ не знайдено');
         }
     }
 

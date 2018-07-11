@@ -229,7 +229,7 @@
             $model->date = new CDbExpression('NOW()');;
             $model->status = 1;
             if($model->save()){
-                $this->drawWatermark($model->user_id);
+//                $this->drawWatermark($model->user_id);
             }
         }
         return $res->result;
