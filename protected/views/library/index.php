@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 ?>
 
     <link type="text/css" rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', '_teacher/library.css') ?>"/>
-<div class="container">
+<div class="container" ng-controller="libraryCtrl">
 <h1>Бібліотека</h1>
 <?php
 $this->widget('application.components.ColumnListView', array(

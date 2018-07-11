@@ -12,16 +12,6 @@
 </head>
 <?php $tr_number=0;?>
 <style>
-    #schema{
-        width: 85%;
-    }
-    #courseSchema {
-        width: 85%;
-        overflow-x: scroll;
-    }
-    .end-line-wrap{
-        width: 70px;
-    }
    #schema td{
         overflow: visible;
     }
@@ -89,90 +79,78 @@
         <?php for ($i = 0, $count = count($modules); $i < $count; $i++) {
             if($i == 0){?>
                 <tr id="trainee-wrap">
-                    <td class="trainee">
+                    <td>
                         <p><?php echo Course::getMessage($message, 'trainee'); ?><span class="title-line"></span></p>
                         <img class="logo-module" src="<?php echo Config::getBaseUrl() ."/images/course/" .Course::getLogo($idCourse);?>">
                     </td>
                 </tr>
             <?php } ?>
             <?php
-            if (Module::getLessonsCount($modules[$i]['id_module']) > 0) {
-                ?>
-                <?php if ($tr_number % 2 == 0) {
-                            $tr_number++;
-                            echo "<tr id=\"$tr_number\">";
-                        }
-                        else{
-                            $tr_number++;
-                            echo "<tr id=\"$tr_number\">";
-                        }
-                 ?>
-                <td class="hours">
-                    <p><?php echo Module::getModuleName($modules[$i]['id_module'])?><span class="title-line"></span></p>
-                <img class="logo-module" src="<?php echo Config::getBaseUrl(). "/images/module/" . Module::getModuleLogo($modules[$i]['id_module']); ?>">
-                </td>
-                <?php
-                $firstColumnFlag = 0;
-                $lastColumnFlag = 0;
-                $countCells = count($tableCells[$i]) - 1;
-                for ($j = 0; $j < $courseDuration; $j++) {
-                    if ($tableCells[$i][$j] == 0 && $j!= $courseDuration-1) {
-                        ?>
-                        <td class="emptyMonthsCell"></td>
-                    <?php } else {
-                        $firstColumnFlag++;
-                          if($firstColumnFlag == 1 && $countCells != 1) {
-                              if($tableCells[$i][$j+1] == '0' || $tableCells[$i][$j+1] == NULL){
-                          ?>
-                            <td class="fullMonthsCell last-item first-item-without">
-                                   <div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць">
-                                  <?php echo $tableCells[$i][$j]; ?>
-                                      </div>
-                              </td>
-                              <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
-                                    <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
-                                </td>
-                                  <?php } else{ ?>
-                            <td class="fullMonthsCell first-item">
-                                 <div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць"><?php echo $tableCells[$i][$j]; ?></div>
-                            </td>
-                            <?php
-                              }
-                        }
-                        elseif(($firstColumnFlag == 1 && $countCells == 1)){
+            if (Module::getLessonsCount($modules[$i]['id_module']) > 0) { ?>
+                <tr id="<?php echo $tr_number ?>">
+                    <td class="hours">
+                        <p><?php echo Module::getModuleName($modules[$i]['id_module'])?><span class="title-line"></span></p>
+                    <img class="logo-module" src="<?php echo Config::getBaseUrl(). "/images/module/" . Module::getModuleLogo($modules[$i]['id_module']); ?>">
+                    </td>
+                    <?php
+                    $firstColumnFlag = 0;
+                    $lastColumnFlag = 0;
+                    $countCells = count($tableCells[$i]) - 1;
+                    for ($j = 0; $j < $countCells; $j++) {
+                        if ($tableCells[$i][$j] == 0 && $j!= $countCells-1) {
                             ?>
-                            <td class="fullMonthsCell last-item first-item-without">
-                                 <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць""><?php echo $tableCells[$i][$j]; ?></div>
-                            </td>
-                            <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>"'>
-
-                                    <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
-                                </td>
-                        <?php
-                        }
-                        else {
-                            if($j == $countCells-1){?>
-                                <td class="fullMonthsCell last-item">
-                                   <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць" style="padding-right: 10px;"> <?php echo $tableCells[$i][$j]; ?></div>
-                                </td>
-                                 <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
-                                    <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
-                                </td>
-                            <?php }else{ ?>
-                                <?php if ($j!= $courseDuration-1){ ?>
-                                    <td class="fullMonthsCell item">
-                                <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць" style="padding-right: 10px;"> <?php echo $tableCells[$i][$j]; ?> </div>
+                            <td class="emptyMonthsCell"></td>
+                        <?php } else {
+                            $firstColumnFlag++;
+                              if($firstColumnFlag == 1 && $countCells != 1) {
+                                  if(!isset($tableCells[$i][$j+1])){
+                              ?>
+                                <td class="fullMonthsCell last-item first-item-without">
+                                       <div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць">
+                                      <?php echo $tableCells[$i][$j]; ?>
+                                          </div>
+                                  </td>
+                                  <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
+                                        <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
                                     </td>
-                                        </div>
-                                <?php } ?>
+                                      <?php } else{ ?>
+                                <td class="fullMonthsCell first-item">
+                                     <div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць"><?php echo $tableCells[$i][$j]; ?></div>
+                                </td>
+                                <?php
+                                  }
+                            }
+                            elseif(($firstColumnFlag == 1 && $countCells == 1)){
+                                ?>
+                                <td class="fullMonthsCell last-item first-item-without">
+                                     <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць"><?php echo $tableCells[$i][$j]; ?></div>
+                                </td>
+                                <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
 
-                        <?php }
+                                        <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
+                                    </td>
+                            <?php
+                            }
+                            else {
+                                if($j == $countCells-1){?>
+                                    <td class="fullMonthsCell last-item">
+                                       <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" data-placement="top" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць" style="padding-right: 10px;"> <?php echo $tableCells[$i][$j]; ?></div>
+                                    </td>
+                                     <td class="examCell<?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeSymbol() ?>">
+                                        <p class="end"><?php echo $modules[$i]->moduleInCourse->lastLecture()->lectureTypeTooltip();?></p>
+                                    </td>
+                                <?php }else{ ?>
+                                    <?php if ($j!= $countCells-1){ ?>
+                                        <td class="fullMonthsCell item">
+                                    <div class="item-data-wrap yellow-tooltip"  data-toggle="tooltip" title="<?php echo $tableCells[$i][$j]; ?> годин/місяць" style="padding-right: 10px;"> <?php echo $tableCells[$i][$j]; ?> </div>
+                                        </td>
+                                    <?php } ?>
+                            <?php }
+                            }
                         }
-                    }
-                }
-                }
-                ?>
-            </tr>
+                    } ?>
+                </tr>
+            <?php } ?>
         <?php } ?>
     </table>
     <?php if (!$save) { ?>
@@ -186,12 +164,11 @@
 </div>
 <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'jquery.min.js'); ?>"></script>
 <script src="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
+
 <script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
-<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
     $(".last-item").each(function (index) {
             for(var j=0; j<$(".last-item")[index].parentNode.id; j++){
 
@@ -239,11 +216,13 @@ $(document).ready(function(){
                 $("#trainee-wrap").children()[j].remove();
             }
         }
-     for(var i=0; i < ($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1]); i++){
-                if(i==0){
+     for(var i=0; i < ($(".monthsCell")[ $(".monthsCell").length-1].innerText); i++){
+         if(i<lastElements[lastElements.length-1]){
+             $("#trainee-wrap").append("<td class='trainee'></td>");
+         } else if(i==lastElements[lastElements.length-1]){
                     $("#trainee-wrap").append("<td class='trainee-first-item'><div class='item-data-wrap yellow-tooltip' data-toggle='tooltip' data-placement='top' title='8 годин/місяць'> 8 </div></td>");
                 }
-                else if(i!==0 && i!==($(".monthsCell")[ $(".monthsCell").length-1].innerText - lastElements[lastElements.length-1])-1){
+                else if(i<$(".monthsCell")[ $(".monthsCell").length-1].innerText-1){
                     $("#trainee-wrap").append("<td class='trainee-item'><div class='item-data-wrap yellow-tooltip' data-toggle='tooltip' data-placement='top' title='8 годин/місяць'> 8 </div></td>");
                 }
                 else{
@@ -253,7 +232,9 @@ $(document).ready(function(){
             for(var j=0; j<$("#trainee-wrap > .border-right").length; j++){
                 $("#trainee-wrap > .border-right")[j].innerHTML += "<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"годин/місяць\"><div class='coub'></div></div>";
             }
-            $("#trainee-wrap > .last-item")[0].innerHTML = "<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"годин/місяць\"><div class='coub'></div></div>";
+            if($("#trainee-wrap > .last-item")[0]){
+                $("#trainee-wrap > .last-item")[0].innerHTML = "<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"годин/місяць\"><div class='coub'></div></div>";
+            }
                 $(".trainee-last-item").append("<div class=\"item-data-wrap yellow-tooltip coub-tooltip\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Дипломний проект\"><div class='coub-exam'></div></div>");
             $(document).ready(function(){
                 var examWrap = document.createElement("td");
@@ -261,7 +242,7 @@ $(document).ready(function(){
                 examWrap.style.setProperty("background","none","!important");
                 examWrap.innerHTML = "<p class='end'>Дипломний проект</p>";
                 traineeWrap.appendChild(examWrap);
-    });
+            });
             k=$(".coub").length+1;
     var arrTooltip = [];
     for(var i = 0; i < $(".coub").length; i++){
@@ -279,6 +260,3 @@ $(document).ready(function(){
             $(".coub")[i].parentElement.setAttribute("title",title);
     }
 </script>
-<div class="item-data-wrap yellow-tooltip" data-toggle="tooltip" data-placement="top" title="годин/місяць">
-          <?php echo $tableCells[$i][$j]; ?>
-    </div>
