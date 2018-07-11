@@ -240,7 +240,6 @@ angular
                 var promise = $scope.tasksTableParams = new NgTableParams({
                     sorting: {
                         'idTask.priority': 'desc',
-                        // assigned_date: 'desc',
                     },
                     id: idRole
                 }, {
@@ -365,7 +364,7 @@ angular
                 if (oldstate == 4 && !$scope.canComplete(task)) {
                     bootbox.alert('Співвиконавець не може виконувати дії з завершеними завданнями');
                 }else if (newstate == 4 && !$scope.canComplete(task)) {
-                    bootbox.alert('Співвиконавець не може завершити завдання');
+                    bootbox.alert('Співвиконавець не може завершити завдання222');
                 } else if (newstate == 1 && !$scope.canComplete(task)) {
                     bootbox.alert('Співвиконавець не може перенести завдання в статус очікування');
                 } else {
@@ -406,7 +405,7 @@ angular
             $scope.changeRouterState($state.$current.name);
 
             $scope.canComplete = function (task) {
-                if(task.producer==$scope.currentUser || task.executant==$scope.currentUser || _.isObject(_.find(task.observers, {id_user: $scope.currentUser}))){
+                if((task.producer || task.producerName.id)==$scope.currentUser || (task.executant || task.executantName.id)==$scope.currentUser || _.isObject(_.find(task.observers, {id_user: $scope.currentUser}))){
                     return true;
                 }else{
                     return false;

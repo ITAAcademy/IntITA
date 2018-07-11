@@ -202,7 +202,7 @@ class TasksController extends TeacherCabinetController
         $params = $_GET;
         $criteria = new CDbCriteria();
         $criteria->alias = 't';
-        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName'];
+        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName','idTask.observers'];
         $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
         $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, $params['id'] );
         if (isset($params['filter']['idTask.producerName.fullName'])) {
