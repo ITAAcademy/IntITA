@@ -163,7 +163,7 @@ angular
                     searchField: 'number',
                     provider: agreements,
                     label: function (agreements) {
-                        return agreements ? ((agreements.number || '') + ' від ' + (agreements.create_date || '')) : '';
+                        return agreements ? (agreements.service.description + (agreements.number || '') + ' від ' + (agreements.create_date || '')) : '';
                     },
                     onSelect: function ($model) {
                         $scope.clearOperation();
