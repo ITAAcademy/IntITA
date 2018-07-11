@@ -1,5 +1,5 @@
 <?php
-/* @var $this LibraryController */
+/* @var $this VacationController */
 /* @var $model Library */
 
 $this->breadcrumbs=array(

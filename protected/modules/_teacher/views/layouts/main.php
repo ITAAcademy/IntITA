@@ -170,6 +170,7 @@
 
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/crm/routers/crmRouter.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/routers/libraryRouter.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/routers/vacationsRouter.js'); ?>"></script>
     <!--Angular controllers-->
 
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/controllers.js'); ?>"></script>
