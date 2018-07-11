@@ -42,19 +42,28 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateMenuLink()
     {
-        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"lists",key($_FILES));
-        $params = array_filter((array)json_decode($_POST['data']));
-        $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
-
-        $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-
-        $menuLink->attributes = $params;
-        if(isset($uploadedFile)){
-            $menuLink->image = $uploadedFile;
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $params = array_filter((array)json_decode($_POST['data']));
+            $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
+            $link = CrmImageUploadHelper::uploadImage($menuLink->image,"lists",key($_FILES));
+            $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $menuLink->attributes = $params;
+            if($link){
+                $menuLink->image = $link;
+            }
+            if (!$menuLink->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
-        if (!$menuLink->save()) {
-            throw new \application\components\Exceptions\IntItaException(500, $menuLink->getValidationErrors());
-        }
+
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
     public function actionUpdateSocialNetworks()
@@ -62,8 +71,7 @@ class CmsController extends TeacherCabinetController
         $result = ['message' => 'OK'];
         $statusCode = 201;
         try {
-            $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
-            //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
+            $params = array_filter((array)json_decode($_POST['data']));
             $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
             $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $settings->attributes = $params;
@@ -118,18 +126,27 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateNews()
     {
-        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"news",key($_FILES));
-        $current_date = date("Y-m-d H:i:s");
-        $params = array_filter((array)json_decode($_POST['data']));
-        $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
-        $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-        $new->date = $current_date;
-        $new->attributes = $params;
-        if(isset($uploadedFile)){
-            $new->img = $uploadedFile;
-        }
-        if (!$new->save()) {
-            throw new \application\components\Exceptions\IntItaException(500, $new->getValidationErrors());
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $params = array_filter((array)json_decode($_POST['data']));
+            $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
+            $link = CrmImageUploadHelper::uploadImage($new->img,"news",key($_FILES));
+            $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $new->date = date("Y-m-d H:i:s");
+            $new->attributes = $params;
+            if($link){
+                $new->img = $link;
+            }
+            if (!$new->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $new->getValidationErrors());
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
 
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
@@ -161,7 +178,8 @@ class CmsController extends TeacherCabinetController
     }
 
     public function actionSettings()
-    { $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+    {
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
         if (isset($subdomain)) {
             $this->renderPartial('settings');
         } else{
@@ -180,7 +198,6 @@ class CmsController extends TeacherCabinetController
     {   $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
 
         $path_domain = Yii::app()->basePath . '/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema();
-                            // http://intita/domains/domain_name.intita/
         $subdomain->createSubdomainDirectory($path_domain); //створюємо директорію
 
         $path = $path_domain . '/index.php'; // створюємо файл в попередньо створеній директорії
@@ -205,19 +222,29 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateSettings()
     {
-        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"logo",key($_FILES));
-
-        $params = array_filter((array)json_decode($_POST['data'])); //array_filter -- Применяет фильтр к массиву, используя функцию обратного вызова
-        //Принимает закодированную в JSON строку и преобразует ее в переменную PHP.
-        $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
-        $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-        $settings->attributes = $params;
-        if(isset($uploadedFile)){
-            $settings->logo = $uploadedFile;
+        function valueNull($value) {
+            return !$value?null:$value;
         }
-        if (!$settings->save()) {
-
-            throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());  // $menuLink
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $params = array_map("valueNull", (array)json_decode($_POST['data']));
+            $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
+            $link = CrmImageUploadHelper::uploadImage($settings->logo,"logo",key($_FILES));
+            $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $settings->attributes = $params;
+            if($link){
+                $settings->logo = $link;
+            }
+            if (!$settings->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
 
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
@@ -288,7 +315,7 @@ class CmsController extends TeacherCabinetController
     }
     public function actionUpdateMenuSlider()
     {
-        $uploadedFile = ImageUploadHelper::uploadImage($_POST["previousImage"],"carousel",key($_FILES));
+        $uploadedFile = CrmImageUploadHelper::uploadImage($_POST["previousImage"],"carousel",key($_FILES));
         $params = array_filter((array)json_decode($_POST['data']));
         $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();
         $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();

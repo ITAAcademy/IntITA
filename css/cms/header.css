@@ -16,11 +16,12 @@
     color: #003399;
     background-color: inherit;
 }
-#logo {
+.header .navbar{
     padding-top: 10px;
-    padding-bottom: 12px;
-    max-width: 500px;
-    max-height: 100px;
+}
+#logo {
+    max-width: 232px;
+    max-height: 75px;
 }
 .navbar .header_box{
     margin-left: 0px;
@@ -41,20 +42,15 @@
     position: relative;
 }
 .edit{
-    margin-right: -30px;
     position: absolute;
+    cursor: pointer;
+}
+.edit-not-absolute{
+    cursor: pointer;
+}
+.top-right{
+    top:0;
     right: 0;
-    top: 10px;
-}
-.edit1{
-    position: absolute;
-    right: 25px;
-    top: 10px;
-}
-.edit7 {
-    position: absolute;
-    right: -30px;
-    top: -1px;
 }
 .grid_group3{
     margin-bottom: 30px;
@@ -122,12 +118,6 @@ textarea.form-control {
 @media(max-width:500px) {
     #cms_content .nav>li>a {
         font-size: 16px;
-    }
-    .edit1 {
-        right: 0px;
-    }
-    .edit7 {
-        right: -43px;
     }
 }
 

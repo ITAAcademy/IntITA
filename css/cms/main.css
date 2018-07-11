@@ -9,3 +9,7 @@
     margin: 0 auto;
     display: block;
 }
+.modal-header .close{
+    color: #cc0000;
+    opacity: 1;
+}

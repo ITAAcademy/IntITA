@@ -1,21 +1,24 @@
 angular
     .module('cmsApp')
-    .controller('cmsCtrl', ['$scope', 'cmsService', '$http',
-        function ($scope, cmsService, $http) {
+    .controller('cmsCtrl', ['$scope', 'cmsService', '$http','ngToast',
+        function ($scope, cmsService, $http, ngToast) {
+            $scope.changePageHeader('Конструктор сайту');
+
             $scope.domainPath = domainPath;
             $scope.domainPathNews = domainPathNews;
-            $scope.data;
-            $scope.buttonShow;
-            $scope.SubdomainAns;
-
+            $scope.data = '';
+            $scope.buttonShow = '';
+            $scope.SubdomainAns = '';
+            $scope.pathToCmsTemplates = basePath + "/angular/js/teacher/templates/cms/";
+            $scope.templateUrl = function(template) {
+                return $scope.pathToCmsTemplates+template;
+            }
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
                     $scope.domainPathLogo = response.domainPath+'/logo/';
                 }, function errorCallback() {
                     bootbox.alert("Отримати піддомен не вдалося");
                 });
-
-            $scope.changePageHeader('Конструктор сайту');
 
             $scope.getSubdomain = function () {
                 cmsService.Subdomain().$promise
@@ -47,14 +50,13 @@ angular
             };
             $scope.loadCmsMenuList();
 
-            $scope.updateMenuLink = function (link, index, previousImage) {
+            $scope.updateMenuLink = function (link, index) {
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
                 if (index !== undefined) {
                     var imageUpdateBlock = '#img_menu_list_Update' + index;
                     var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
                     uploadImage.append("img_menu_list", imageUpdate);
-                    uploadImage.append("previousImage", previousImage);
                 }
                 else {
                     var image = $jq('#img_menu_list').prop('files')[0];
@@ -101,20 +103,24 @@ angular
             };
             $scope.getSettings();
 
-            $scope.updateSettings = function (link,  previousImage) {
+            $scope.updateSettings = function (link) {
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
                 var imageUpdateBlock = '#logoUpdate';
                 var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
                 uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
-                uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
                 $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
                     withCredentials: true,
                     headers: {'Content-Type': undefined},
                     transformRequest: angular.identity
                 }).success(function () {
                     $scope.getSettings();
-                    bootbox.alert('Дані успішно збережені!');
+                    ngToast.create({
+                        content: 'Дані успішно збережені!',
+                        className: 'success',
+                        dismissOnTimeout: true,
+                        timeout: 2000
+                    });
                     $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
@@ -182,7 +188,7 @@ angular
             };
 
 
-            $scope.updateNews = function (link, index, previousImage) {
+            $scope.updateNews = function (link, index) {
 
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
@@ -190,7 +196,6 @@ angular
                     var imageUpdateBlock = '#photoUpdate' + index;
                     var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
                     uploadImage.append("photo", imageUpdate);
-                    uploadImage.append("previousImage", previousImage);
                 }
                 else {
                     var image = $jq('#photo').prop('files')[0];
@@ -202,7 +207,8 @@ angular
                     transformRequest: angular.identity
                 }).success(function () {
                     $scope.loadCmsNews();
-                    $scope.newNews = {id: null, description: null, link: null};
+                    document.getElementById("photo").value = "";
+                    $jq('#newsModal').modal('hide');
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
                 });
@@ -260,14 +266,13 @@ angular
                     }
                 });
             };
-            $scope.getSubdomain();
         }
     ])
 
 
 
-    .controller('settingsCtrl', ['$scope', 'cmsService', '$http',
-        function ($scope, cmsService, $http) {
+    .controller('settingsCtrl', ['$scope', 'cmsService', '$http','ngToast',
+        function ($scope, cmsService, $http, ngToast) {
 
             $scope.data;
             $scope.buttonShow;
@@ -300,21 +305,25 @@ angular
 
             $scope.getSettings();
 
-            $scope.updateSettings = function (link,  previousImage) {
+            $scope.updateSettings = function (link) {
 
                 var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
                 uploadSettings.append("data", angular.toJson(link));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
                 var imageUpdateBlock = '#logoUpdate';
                 var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];  //Возвращает / изменяет значение свойств выбранных элементов.
                 uploadSettings.append("photo", imageUpdate);               // записуємо нову картинку в БД
-                uploadSettings.append("previousImage", previousImage);  // записуємо стару картинку
                 $http.post(basePath + '/_teacher/_admin/cms/UpdateSettings', uploadSettings, {
                     withCredentials: true,
                     headers: {'Content-Type': undefined},
                     transformRequest: angular.identity
                 }).success(function () {
                     $scope.getSettings();
-                    bootbox.alert('Дані успішно збережені!');
+                    ngToast.create({
+                        content: 'Дані успішно збережені!',
+                        className: 'success',
+                        dismissOnTimeout: true,
+                        timeout: 2000
+                    });
                     $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
@@ -414,14 +423,13 @@ angular
             };
             $scope.loadCmsMenuList();
 
-            $scope.updateMenuLink = function (link, index, previousImage) {
+            $scope.updateMenuLink = function (link, index) {
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
                 if (index !== undefined) {
                     var imageUpdateBlock = '#img_menu_list_Update' + index;
                     var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
                     uploadImage.append("img_menu_list", imageUpdate);
-                    uploadImage.append("previousImage", previousImage);
                 }
                 else {
                     var image = $jq('#img_menu_list').prop('files')[0];
@@ -469,8 +477,8 @@ angular
         }
     ])
 
-    .controller('cmsSocialNetworksCtrl', ['$scope', 'cmsService', '$http',
-        function ($scope, cmsService, $http) {
+    .controller('cmsSocialNetworksCtrl', ['$scope', 'cmsService', '$http','ngToast',
+        function ($scope, cmsService, $http, ngToast) {
             $scope.changePageHeader('Редактор соцмереж');
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
@@ -500,13 +508,17 @@ angular
                     headers: {'Content-Type': undefined},
                     transformRequest: angular.identity
                 }).success(function () {
-                    bootbox.alert('Дані успішно збережені!');
+                    ngToast.create({
+                        content: 'Дані успішно збережені!',
+                        className: 'success',
+                        dismissOnTimeout: true,
+                        timeout: 2000
+                    });
 
                     $scope.getSettings();
                     $scope.newSettings = {id: null, description: null, link: null};
                 }, function errorCallback(response) {
                     bootbox.alert(response.data.reason);
-                    bootbox.alert('Дані успішно збережені!');
                 });
             };
         }
@@ -541,7 +553,7 @@ angular
             };
             $scope.loadCmsNews();
 
-            $scope.updateNews = function (link, index, previousImage) {
+            $scope.updateNews = function (link, index) {
 
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
@@ -549,7 +561,6 @@ angular
                     var imageUpdateBlock = '#photoUpdate' + index;
                     var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
                     uploadImage.append("photo", imageUpdate);
-                    uploadImage.append("previousImage", previousImage);
                 }
                 else {
                     var image = $jq('#photo').prop('files')[0];
@@ -637,14 +648,13 @@ angular
             };
             $scope.loadCmsSliderList();
 
-            $scope.updateSliderData = function (link, index, previousImage) {
+            $scope.updateSliderData = function (link, index) {
                 var uploadImage = new FormData();
                 uploadImage.append("data", angular.toJson(link));
                 if (index !== undefined) {
                     var imageUpdateBlock = '#slideUpdate' + index;
                     var imageUpdate = $jq(imageUpdateBlock).prop('files')[0];
                     uploadImage.append("slide", imageUpdate);
-                    uploadImage.append("previousImage", previousImage);
                 }
                 else {
                     var image = $jq('#slide').prop('files')[0];
@@ -672,7 +682,12 @@ angular
             };
 
         }
-    ]);
+    ])
+    .filter('isNotLink', function() {
+        return function (input) {
+            return input.indexOf("https://")==-1 && input.indexOf("http://")==-1
+        };
+    })
 
 function changeColorOff (e) {
     element= jQuery(e).children();

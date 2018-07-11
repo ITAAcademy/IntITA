@@ -2,7 +2,6 @@
     domainPath='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/lists/"   ?>';
     domainPathNews='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/news/"   ?>';
     domainPathLogo='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/logo/"   ?>';
-
 </script>
 <style>
     .slide img{width:100%;height:500px !important;z-index:0;}
@@ -15,12 +14,10 @@
     }
 
 </style>
-
 <div  ng-controller="cmsCtrl" >
     <div id="cms_content_generate">
         <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'jquery.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
-        <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular/angular.min.js'); ?>"></script>
         <div id="cms_content" class="clearfix">
             <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'fontface.css'); ?>"/>
             <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/main.css'); ?>"/>
@@ -56,6 +53,11 @@
                                 slide_description = [],
                                 currIndex = 0,   /*поточна кількість доданих слайдів*/
                                 slides = $scope.slides = [];   /*масив об'єктів з властивостями слайдів*/
+                                var head = document.getElementById('cms_content_generate');
+                                var script = document.createElement('script');
+                                script.type = 'text/javascript';
+                                script.src = "<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular/angular.min.js'); ?>";
+                                head.appendChild(script);
                                 $http({
                                     method: 'GET',
                                     url: '/_teacher/_admin/cms/getDomainPath'
@@ -109,15 +111,19 @@
                                 };
                             }
                         ]);
-
-
             </script>
         </div>
         <div>
             <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generatePage()" class="btn btn-primary hide_edit" >
-<!--            onclick="bootbox.alert('Сторінку згенеровано!')"-->
         </div>
     </div>
+    <div ng-include="templateUrl('logoModal.html')"></div>
+    <div ng-include="templateUrl('menuListModal.html')"></div>
+    <div ng-include="templateUrl('headerModal.html')"></div>
+    <div ng-include="templateUrl('titlesModal.html')"></div>
+    <div ng-include="templateUrl('aboutUsModal.html')"></div>
+    <div ng-include="templateUrl('newsModal.html')"></div>
+    <div ng-include="templateUrl('socialNetworksModal.html')"></div>
 </div>
 
 

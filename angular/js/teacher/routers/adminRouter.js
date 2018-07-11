@@ -107,7 +107,7 @@ angular
         .state('admin/subdomain', {
             url: "/admin/subdomain",
             cache: false,
-            templateUrl: basePath+"/_teacher/_admin/cms/subdomain",
+            templateUrl: basePath+"/_teacher/_admin/cms/index",
         })
 
 });

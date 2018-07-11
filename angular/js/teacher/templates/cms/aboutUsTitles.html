@@ -1,0 +1,59 @@
+<div class="modal fade" id="Title1Modal" role="dialog">
+    <div class="modal-dialog  modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Заголовок та підзаголовок меню</h4>
+            </div>
+            <div class="modal-body">
+                <div class="grid_group_title2">
+                    <div class="intent">
+                        <p class="in_intent_title title_color_style"
+                           ng-style="{color:settings.title_color}">Заголовок</p>
+                    </div>
+                    <div class="square">
+                        <input class="in_square" type="color" ng-model="settings.title_color">
+                    </div>
+                    <div class="rectangle">
+                        <input class="in_rectangle" ng-model="settings.title_color" color-picker
+                               color-picker-model="settings.title_color" type="text">
+                    </div>
+                </div>
+                <div class="grid_group_title1">
+                    <div class=""><p>Контент</p>
+                    </div>
+                    <div class="rectangle">
+                        <input class="in_rectangle_soc_title" type="text" ng-model="settings.title">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="grid_group_title2">
+                    <div class="intent">
+                        <p class="in_intent_title title_color_style"
+                           ng-style="{color:settings.subtitle_color}">Підзаголовок</p>
+                    </div>
+                    <div class="square">
+                        <input class="in_square" type="color" ng-model="settings.subtitle_color">
+                    </div>
+                    <div class="rectangle">
+                        <input class="in_rectangle" ng-model="settings.subtitle_color" color-picker
+                               color-picker-model="settings.subtitle_color" type="text">
+                    </div>
+                </div>
+                <div class="grid_group_title1">
+                    <div class=""><p>Контент</p>
+                    </div>
+                    <div class="rectangle">
+                        <input class="in_rectangle_soc_title" type="text" ng-model="settings.subtitle">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        ng-click="updateSettings(settings, settings.logo )">Зберегти
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
