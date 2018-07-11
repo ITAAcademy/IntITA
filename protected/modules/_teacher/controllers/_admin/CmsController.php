@@ -222,11 +222,14 @@ class CmsController extends TeacherCabinetController
 
     public function actionUpdateSettings()
     {
+        function valueNull($value) {
+            return !$value?null:$value;
+        }
         $result = ['message' => 'OK'];
         $statusCode = 201;
         $transaction = Yii::app()->db->beginTransaction();
         try {
-            $params = array_filter((array)json_decode($_POST['data']));
+            $params = array_map("valueNull", (array)json_decode($_POST['data']));
             $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
             $link = CrmImageUploadHelper::uploadImage($settings->logo,"logo",key($_FILES));
             $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();

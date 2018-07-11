@@ -162,8 +162,10 @@
     top: -28px
 }
 .social_inl_bl{
-    display: block;
-    text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 

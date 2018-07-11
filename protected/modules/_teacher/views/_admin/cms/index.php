@@ -113,16 +113,17 @@
                         ]);
             </script>
         </div>
-        <div ng-include="templateUrl('logoModal.html')"></div>
-        <div ng-include="templateUrl('menuListModal.html')"></div>
-        <div ng-include="templateUrl('headerModal.html')"></div>
-        <div ng-include="templateUrl('titlesModal.html')"></div>
-        <div ng-include="templateUrl('aboutUsModal.html')"></div>
-        <div ng-include="templateUrl('newsModal.html')"></div>
         <div>
             <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generatePage()" class="btn btn-primary hide_edit" >
         </div>
     </div>
+    <div ng-include="templateUrl('logoModal.html')"></div>
+    <div ng-include="templateUrl('menuListModal.html')"></div>
+    <div ng-include="templateUrl('headerModal.html')"></div>
+    <div ng-include="templateUrl('titlesModal.html')"></div>
+    <div ng-include="templateUrl('aboutUsModal.html')"></div>
+    <div ng-include="templateUrl('newsModal.html')"></div>
+    <div ng-include="templateUrl('socialNetworksModal.html')"></div>
 </div>
 
 
