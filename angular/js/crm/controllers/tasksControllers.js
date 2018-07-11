@@ -197,9 +197,9 @@ angular
                 }
             }
 
-            $rootScope.loadTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
+            $rootScope.loadTasks = function (idRole) {
                 if ($scope.board == 1) {
-                    return $scope.loadKanbanTasks(idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName).then(function (data) {
+                    return $scope.loadKanbanTasks(idRole).then(function (data) {
                         $scope.setKanbanHeight();
                     });
                 } else {
@@ -211,13 +211,7 @@ angular
                 if (!keyEvent || keyEvent.which === 13) {
                     $rootScope.loadTasks(
                         $rootScope.roleId,
-                        $scope.filter.name,
-                        $scope.filter.fullName,
-                        $scope.filter.id,
-                        $scope.filter.priority,
-                        $scope.filter.type,
-                        $scope.filter.parentType,
-                        $scope.filter.groupsNames
+                        $scope.filter
                     );
                 }
             },
@@ -256,19 +250,19 @@ angular
                 return promise;
             };
 
-            $scope.loadKanbanTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
+            $scope.loadKanbanTasks = function (idRole) {
                 var promise = $scope.crmCanbanTasksList =
                     crmTaskServices
                         .getTasks({
                             'sorting[idTask.priority]': 'desc',
                             id: idRole,
-                            'filter[idTask.name]': filterName,
-                            'filter[idUser.fullName]': fullName,
-                            'filter[idTask.id]': filterId,
-                            'filter[idTask.priority]': filterPriority,
-                            'filter[idTask.type]': filterType,
-                            'filter[idTask.parentType]': filterParentType,
-                            'filter[idTask.groupsNames]': groupsName,
+                            'filter[idTask.name]': $scope.filter.name,
+                            'filter[idUser.fullName]': $scope.filter.fullName,
+                            'filter[idTask.id]': $scope.filter.id,
+                            'filter[idTask.priority]': $scope.filter.priority,
+                            'filter[idTask.type]': $scope.filter.type,
+                            'filter[idTask.parentType]': $scope.filter.parentType,
+                            'filter[idTask.groupsNames]': $scope.filter.groupsNames,
                         })
                         .$promise
                         .then(function (data) {
