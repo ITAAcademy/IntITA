@@ -1,5 +1,5 @@
   app:
-    image: devopsintita/intita:php5-dev-latest
+    image: devopsintita/intita:php72-dev-latest
     user: ${USER_ID}:${USER_GID}
     container_name: "IntITA_app"
     working_dir: /app
