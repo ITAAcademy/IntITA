@@ -16,7 +16,7 @@ html{font-family:"MyriadPro";}
     margin-left: -2px;
 }
 .box_out .box_inside, .box_out .box_inside_right{
-
+    height: 220px;
     margin-bottom: 40px;
     padding-right: 0px;
     padding-left: 0px;
@@ -71,7 +71,13 @@ html{font-family:"MyriadPro";}
     padding-left: 0px;
 }
 .box_inside .img_news_box1, .box_inside_right .img_news_box2{
-
+    height: 220px;
+}
+.box_inside .img_news_box1{
+    float: left;
+}
+.box_inside_right .img_news_box2{
+    float: right;
 }
 .box_out .box_inside_right{
     margin-right: 1px;

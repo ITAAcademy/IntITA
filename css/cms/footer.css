@@ -2,6 +2,7 @@
     text-decoration: none;
 }
 #footer_main{
+    height: 85px;
     display: block;
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -16,6 +17,7 @@
     width: 100%;
 }
 .left_footer {
+    height: 100%;
     padding-top: 11px;
     display: table-cell;
     vertical-align: top;
