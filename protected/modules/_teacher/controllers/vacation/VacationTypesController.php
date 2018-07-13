@@ -27,7 +27,6 @@ class VacationTypesController extends TeacherCabinetController
 	 */
 	public function actionCreate()
 	{
-//	    var_dump("actionCreate"); die;
 		$model=new VacationTypes;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -40,7 +39,7 @@ class VacationTypesController extends TeacherCabinetController
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->render('create',array(
+		$this->render('/vacation/create',array(
 			'model'=>$model,
 		));
 	}

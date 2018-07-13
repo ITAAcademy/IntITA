@@ -15,4 +15,4 @@ $this->menu=array(
 
 <h1>Create VacationTypes</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('/vacation/_form', array('model'=>$model)); ?>
