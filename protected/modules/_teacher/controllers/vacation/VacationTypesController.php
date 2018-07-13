@@ -3,7 +3,7 @@
 class VacationTypesController extends TeacherCabinetController
 {
     public function hasRole() {
-        return true;
+        return Yii::app()->user->model->isTeacher();
     }
 
     public function actionDashboard() {
@@ -27,6 +27,7 @@ class VacationTypesController extends TeacherCabinetController
 	 */
 	public function actionCreate()
 	{
+//	    var_dump("actionCreate"); die;
 		$model=new VacationTypes;
 
 		// Uncomment the following line if AJAX validation is needed

@@ -14,6 +14,10 @@ $this->menu=array(
 
 <h1>Vacation Types</h1>
 
+<a href="#/vacationTypes/create">
+    <button type="button" class="btn btn-primary">Додати тип відпусток</button>
+</a>
+
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',

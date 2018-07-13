@@ -21,6 +21,11 @@ angular
                 // template:'<p>Hello World</p>'
                 templateUrl: url + "/vacationTypes/index",
             })
+            .state('vacationTypes/create', {
+                url: "/vacationTypes/create",
+                cache: false,
+                templateUrl: url + "/vacationTypes/create",
+            })
             // .state('library/list', {
             //     url: "/library/list",
             //     cache: false,
