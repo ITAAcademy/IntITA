@@ -200,9 +200,7 @@
             $model->user_id = $orderParams['user_id'];
             $model->date = new CDbExpression('NOW()');;
             $model->status = 1;
-            if($model->save()){
-                $this->drawWatermark($model->user_id);
-            }
+            $model->save();
         }
     }
 
@@ -230,9 +228,7 @@
             $model->user_id = $orderParams['user_id'];
             $model->date = new CDbExpression('NOW()');;
             $model->status = 1;
-            if($model->save()){
-                $this->drawWatermark($model->user_id);
-            }
+            $model->save();
         }
         return $res->result;
     }
