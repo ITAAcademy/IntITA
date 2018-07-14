@@ -10,26 +10,116 @@
     font-size: 18px;
     font-weight: normal;
     color: black;
-    padding: 10px 6px;
+    padding: 3px 6px;
 }
 #cms_content .nav>li>a:focus, .nav>li>a:hover {
     color: #003399;
     background-color: inherit;
 }
-
-#logo {
+.header{
+    width: 100%;
+}
+.header .navbar{
     padding-top: 10px;
-    padding-bottom: 12px;
-    max-width: 500px;
-    max-height: 100px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+#logo {
+    max-width: 232px;
+    max-height: 75px;
 }
 .navbar .header_box{
     margin-left: 0px;
     margin-right: 0px;
     display: flex;
-
 }
 .menu_blok{
-    margin: auto
+    margin: auto;
+    position: relative;
+    margin-left: 20px;
+
 }
-.
+.menu_blok_inl_bl{
+    display: block;
+    text-align: left;
+}
+.header_box .navbar-header_logo{
+    position: relative;
+}
+.edit{
+    position: absolute;
+    cursor: pointer;
+}
+.top-right{
+    top:0;
+    right: 0;
+}
+.grid_group3{
+    margin-bottom: 30px;
+}
+.in_group3{
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.in_group3-1{
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns:  1fr 6fr;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.logo .image_update{
+    width: 121px;
+    height: 22px;
+    padding: 0px 0px;
+}
+#logo_img{
+    max-width: 200px;
+    max-height: 200px;
+}
+.logo-discription{
+     font-size: 12px;
+     margin-top: 15px;
+     width: 250px;
+}
+hr{
+    margin-top: 20px;
+}
+.preview{
+    width: 101px;
+    margin-bottom: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    display: block;
+}
+.box{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+textarea.form-control {
+    height: 120px;
+}
+.img_menu_list_style{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    height: 24px;
+    width: 130px;
+}
+.buttons_box{
+    text-align: right;
+}
+.grid_group_menu_header{
+    display: grid;
+    grid-template-columns: 3fr 1fr 2fr;
+}
+@media(max-width:500px) {
+    #cms_content .nav>li>a {
+        font-size: 16px;
+    }
+}
+

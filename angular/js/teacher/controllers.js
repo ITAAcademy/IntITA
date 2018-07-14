@@ -401,7 +401,7 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
     };
 }
 
-function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource, $filter) {
+function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource, $filter, $location) {
 
     $scope.checkboxes = {'checked': false, items: {}};
 
@@ -652,6 +652,10 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
 
     $scope.collapse = function (el) {
         $jq(el).toggle("medium");
+    }
+
+    $scope.isDeleted = function () {
+        return $state.current.url === '/deletedmessage/:idMessage' ? false : true;
     }
 }
 

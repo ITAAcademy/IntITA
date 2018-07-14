@@ -1,70 +1,61 @@
 html{font-family:"MyriadPro";}
 .stepHeaderCont{
+    max-width: 1200px;
+    margin: 0 auto;
     margin-bottom: 60px;
 }
 .news_container{
     margin: 0px auto;
     max-width:1020px;
+    margin-top: 45px;
     }
 .box_new {
-    padding: 10px 50px 10px 50px;
+    padding: 10px;
     position:relative;
-    padding-bottom:50px;
 }
-.box_inside .text_out_left{
-    margin-left: -2px;
-}
-.box_out .box_inside, .box_out .box_inside_right{
+.news_box .box_inside{
+    height: 220px;
     margin-bottom: 40px;
     padding-right: 0px;
     padding-left: 0px;
     background-color: #ffffff;
     margin-left: 0px;
     margin-right: 0px;
+    margin-top: 35px;
 }
-
 .container_n {
     width: 100%;
     padding-right: 0px;
     padding-left: 0px;
 }
 .news_wrapper{
-    padding-bottom: 10px;
     padding-top: 60px;
 }
 .box_new .box_text{
     margin-right: 0px;
     margin-left: 0px;
 }
-.text-date {
+.news_box:nth-child(odd) .text-date {
+    float: left;
+}
+.news_box:nth-child(even) .text-date {
     float: right;
-    position: absolute;
-    bottom: 0px;
 }
-.text-date_left{
-    right: 65px;
+
+.text-date_p{
+    margin-bottom: 0px;
 }
+
+
+
 .info_bot{
     display: inline-table;
 }
 .img_news {
     max-width: 100%;
     max-height: 100%;
-    /*margin-top: 1px;*/
 }
-.box_inside .img_out_left{
-    padding-left: 1px;
-    padding-right: 1px;
-
-}
-.box_inside_right .img_out_rigth{
-    padding-right: 0px;
-    padding-left: 0px;
-}
-.box_inside .img_news_box1, .box_inside_right .img_news_box2{
-
-}
-.box_out .box_inside_right{
+.news_box .box_inside_right{
     margin-right: 1px;
 }
 .text-primary {
@@ -73,4 +64,141 @@ html{font-family:"MyriadPro";}
 }
 .text-muted{
     margin-bottom: 0px;
+}
+.grid-title2{
+      display: grid;
+      grid-template-columns: 8fr 1fr;
+  }
+.grid_group_title1{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+.grid_group_title2{
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+}
+.in_rectangle_soc_title {
+    width: 193px;
+    margin-left: 0px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.in_intent_title{
+margin-left: 0px;
+}
+.news_titles{
+    margin-left: 120px;
+}
+.add_news{
+    margin-top: 20px;
+    float: left;
+    margin-left: 20px;
+    clear: both;
+}
+.grid_group_add_news{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+.news_img .rectangle_news{
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 8px;
+    height: 24px;
+    width: 122px;
+}
+@media(max-width:767px) {
+    .news_titles{
+        margin-left: 59px;
+    }
+    .grid_group_add_news{
+        grid-template-columns: 1fr 2fr;
+    }
+    .box_inside{
+        background: none!important;
+        box-shadow: none!important;
+    }
+    .news_box .title_news, .news_box .text-date{
+        margin-left: 24px;
+    }
+}
+@media(max-width:450px) {
+    .news_titles{
+        margin-left: 30px;
+    }
+}
+.edit4{
+    position: absolute;
+    right: 4px;
+    top: 5px;
+}
+.edit5{
+    top: 14px;
+    right: -40px;
+    position: absolute;
+}
+.edit6{
+    top: 14px;
+    left: -40px;
+    position: absolute;
+}
+.position_left{
+    float: left;
+}
+.grid_news{
+    display: grid;
+    grid-template-columns:  1fr 3fr;
+}
+
+.grid_news_color{
+    display: grid;
+    grid-template-columns: 1fr 3fr ;
+}
+#news_editLeft #news_editRight{
+    color: black;
+}
+.image_news .image_input {
+    width: 121px;
+    height: 22px;
+    padding: 0px 0px;
+}
+.news_box:nth-child(even) .title_news{
+    display: block;
+    text-align: right;
+}
+.news_box:nth-child(odd) .title_news{
+    display: block;
+    text-align: left;
+}
+.news_box:nth-child(even) .edit-not-absolute{
+    position: absolute;
+    top: 20px;
+    left: -30px;
+}
+.news_box:nth-child(odd) .edit-not-absolute{
+    position: absolute;
+    top: 20px;
+    right: -30px;
+}
+.news_box:nth-child(even) .img_news_box{
+    height: 100%;
+    text-align: left;
+    float: left;
+    padding: 0;
+}
+.news_box:nth-child(odd) .img_news_box{
+    height: 100%;
+    text-align: right;
+    float: right;
+    padding: 0;
+}
+.news_box:nth-child(even) .text_out{
+    float: left;
+}
+.news_box:nth-child(odd) .text_out{
+    float: right;
+}
+.display_inl_bl{
+    display: inline-block;
+    position: relative;
 }

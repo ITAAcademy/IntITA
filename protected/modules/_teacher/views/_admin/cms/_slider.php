@@ -1,5 +1,5 @@
 <div ng-cloak ng-controller="sliderCtrl" id="sliderBlock">
-    <div  id="slider" class="owl-carousel" style="opacity: 1; display: block;">
+    <div id="slider" class="owl-carousel" style="opacity: 1; display: block;">
         <div uib-carousel active="active" interval="myInterval">
             <div uib-slide class="slide" ng-repeat="slide in slides track by $index" index="$index">
                 <div>

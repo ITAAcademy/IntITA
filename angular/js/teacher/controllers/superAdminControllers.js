@@ -18,7 +18,8 @@ function mainSuperAdminCtrl($scope, $rootScope, $http) {
             url: basePath + '/_teacher/_super_admin/response/getNewResponsesCount',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(response){;
-            $rootScope.countOfNewResponses=response;
+            $rootScope.countOfNewResponses=response[0];
+            $rootScope.countOfNewCities=response[1];
         }).error(function(){
             console.log("Отримати дані про нові відгуки про викладачів не вдалося");
         })

@@ -163,7 +163,7 @@ angular
                     searchField: 'number',
                     provider: agreements,
                     label: function (agreements) {
-                        return agreements ? ((agreements.number || '') + ' від ' + (agreements.create_date || '')) : '';
+                        return agreements ? (agreements.service.description + (agreements.number || '') + ' від ' + (agreements.create_date || '')) : '';
                     },
                     onSelect: function ($model) {
                         $scope.clearOperation();
@@ -1199,12 +1199,18 @@ angular
 
             $scope.onSelectCourse = function ($item) {
                 $scope.paymentSchema['courseId'] = $item.id;
+                $scope.paymentSchema.serviceType = $scope.services[0].value;
+                $scope.paymentSchema.moduleId = null;
+                $scope.selectedModule = null;
             };
             $scope.reloadCourse = function () {
                 $scope.paymentSchema['courseId'] = null;
             };
             $scope.onSelectModule = function ($item) {
                 $scope.paymentSchema['moduleId'] = $item.id;
+                $scope.paymentSchema.serviceType = $scope.services[1].value;
+                $scope.paymentSchema.courseId = null;
+                $scope.selectedCourse = null;
             };
             $scope.reloadModule = function () {
                 $scope.paymentSchema['moduleId'] = null;

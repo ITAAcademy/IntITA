@@ -1,0 +1,49 @@
+<div class="modal fade" id="headerModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Редактор хедера</h4>
+            </div>
+            <div class="modal-body">
+                <div class="grid_group_menu_header">
+                    <div class="intent">
+                        <p class="in_intent_title "
+                           ng-style="{'background-color':settings.header_background_color}">Фон
+                            хідера</p>
+                    </div>
+                    <div class="square">
+                        <input class="in_square" type="color"
+                               ng-model="settings.header_background_color">
+                    </div>
+                    <div class="rectangle">
+                        <input class="in_rectangle" ng-model="settings.header_background_color"
+                               color-picker color-picker-model="settings.header_background_color"
+                               type="text">
+                    </div>
+                </div>
+                <div class="grid_group_menu_header">
+                    <div class="intent">
+                        <p class="in_intent_title "
+                           ng-style="{'border-color':settings.header_border_color, 'border-style': 'solid', 'border-width': 'thin'}">
+                            Рамка в хідері</p>
+                    </div>
+                    <div class="square">
+                        <input class="in_square" type="color"
+                               ng-model="settings.header_border_color">
+                    </div>
+                    <div class="rectangle">
+                        <input class="in_rectangle" ng-model="settings.header_border_color"
+                               color-picker color-picker-model="settings.header_border_color"
+                               type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        ng-click="updateSettings(settings, settings.logo )">Зберегти
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

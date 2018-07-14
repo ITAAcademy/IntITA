@@ -90,7 +90,7 @@ function studentsTableCtrl ($scope, usersService, NgTableParams, $attrs){
     $scope.changePageHeader('Закріплені студенти');
     $jq(function() {
         $jq( "#from" ).datepicker({
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'yy-mm-dd',
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 1,
@@ -371,6 +371,7 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             .then(function () {
                     $scope.id_oldTrainer = undefined;
 		            $scope.id_newTrainer = undefined;
+                    $scope.getTrainers();
                     console.info('success, exchanged trainers');
 		            $scope.addUIHandlers('Операцію успішно виконано');
                 },
@@ -1191,7 +1192,23 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
     });
 
     $scope.updateStudentList=function(organization, startDate, endDate){
-        $scope.studentsTableParams = new NgTableParams({}, {
+        if (startDate === undefined) { $scope.startDate = '2000-01-01 00:00:00'; }
+            else { $scope.startDate = startDate; }
+        if (endDate === undefined || endDate === ' 23:59:59') {
+            var cur_date = new Date();
+            cur_date = new Date(cur_date.getTime() - 3000000);
+            $scope.endDate = cur_date.getFullYear().toString()+"-"+((cur_date.getMonth()+1).toString().length==2?(cur_date.getMonth()+1).toString():"0"+(cur_date.getMonth()+1).toString())+"-"+(cur_date.getDate().toString().length==2?cur_date.getDate().toString():"0"+cur_date.getDate().toString())+" "+(cur_date.getHours().toString().length==2?cur_date.getHours().toString():"0"+cur_date.getHours().toString())+":"+((parseInt(cur_date.getMinutes()/5)*5).toString().length==2?(parseInt(cur_date.getMinutes()/5)*5).toString():"0"+(parseInt(cur_date.getMinutes()/5)*5).toString())+":00";
+            $scope.to = cur_date.getFullYear().toString()+"-"+((cur_date.getMonth()+1).toString().length==2?(cur_date.getMonth()+1).toString():"0"+(cur_date.getMonth()+1).toString())+"-"+(cur_date.getDate().toString().length==2?cur_date.getDate().toString():"0"+cur_date.getDate().toString());
+        }
+        else { $scope.endtDate = endDate; }
+
+        $scope.studentsTableParams = new NgTableParams({
+            organization:$scope.organization,
+            trainersScope:$scope.trainer,
+            sorting: {
+                "start_date": 'desc'
+            },
+        }, {
             getData: function (params) {
                 $scope.params=params.url();
                 $scope.params.startDate=startDate;

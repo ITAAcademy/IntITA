@@ -11,6 +11,12 @@ angular
                 '',
                 {},
                 {
+                    updateSocialNetworks: {
+                        url: url + '/updateSocialNetworks',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
+                    },
                     menuList: {
                         url: url + '/getMenuList',
                         method: 'GET',
@@ -28,11 +34,16 @@ angular
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)
                     },
-
                     newsList: {
                         url: url + '/getNews',
                         method: 'GET',
                         isArray: true
+                    },
+                    newsOneNewsList: {
+                        url: url + '/getOneNews',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
                     },
                     updateNews: {
                         url: url + '/updateNews',
@@ -74,6 +85,22 @@ angular
                     },
                     removeMenuSlider: {
                         url: url + '/removeMenuSlider',
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        transformRequest : transformRequest.bind(null)
+                    },
+                    IndexShow:{
+                        url: url + '/indexShow',
+                        method: 'GET',
+                        //isArray: true
+                    },
+                    Subdomain:{
+                        url: url + '/getSubdomain',
+                        method: 'GET',
+                        //isArray: true
+                    },
+                    generatePage:{
+                        url: url + '/generatePage',
                         method: 'POST',
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
                         transformRequest : transformRequest.bind(null)

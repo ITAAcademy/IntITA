@@ -95,7 +95,11 @@ function liqpayCtrl ($scope, liqpayService){
 function liqpayPaymentsCtrl ($scope, NgTableParams, liqpayService, ngToast){
     $scope.changePageHeader('Бібліотечні проплати');
 
-    $scope.libraryPaymentsTableParams = new NgTableParams({}, {
+    $scope.libraryPaymentsTableParams = new NgTableParams({
+        sorting: {
+            'date': 'desc',
+        },
+    }, {
         getData: function (params) {
             return liqpayService
                 .getPayments(params.url())

@@ -2,7 +2,7 @@
 
 class CrmHelper
 {
-    static function getUsersCrmTasks($user, $active=false, $role=false, $completed = false)
+    static function getUsersCrmTasks($user, $active=true, $role=false, $completed = false)
     {
         $tasksIds = CrmHelper::getIndividualUsersCrmTasks($user, $active, $role, $completed);
         $subgroupsTasksIds = CrmHelper::getSubgroupsCrmTasks($user, $active, $role, $completed);

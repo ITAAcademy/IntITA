@@ -9,6 +9,7 @@
  * @property string $title_ua
  * @property string $title_ru
  * @property string $title_en
+ * @property boolean $checked
  *
  * The followings are the available model relations:
  * @property AddressCountry $country0
@@ -35,9 +36,10 @@ class AddressCity extends CActiveRecord
 			array('country,title_ua, title_ru, title_en', 'required'),
 			array('country', 'numerical', 'integerOnly'=>true),
 			array('title_ua, title_ru, title_en', 'length', 'max'=>50),
+			array('id, country, title_ua, title_ru, title_en, checked', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, country, title_ua, title_ru, title_en', 'safe', 'on'=>'search'),
+			array('id, country, title_ua, title_ru, title_en, checked', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +67,7 @@ class AddressCity extends CActiveRecord
 			'title_ua' => 'Title Ua',
 			'title_ru' => 'Title Ru',
 			'title_en' => 'Title En',
+			'checked' => 'Checked',
 		);
 	}
 
@@ -91,6 +94,7 @@ class AddressCity extends CActiveRecord
 		$criteria->compare('title_ua',$this->title_ua,true);
 		$criteria->compare('title_ru',$this->title_ru,true);
 		$criteria->compare('title_en',$this->title_en,true);
+		$criteria->compare('checked',$this->checked);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

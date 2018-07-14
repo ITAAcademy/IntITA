@@ -319,6 +319,7 @@ class StudentRegController extends Controller
     {
         $id = Yii::app()->request->getPost('id', 0);
         $model = RegisteredUser::userById($id);
+        unset($model->registrationData->email);
         $teacher_attributes = [];
         $graduate = [];
         if($model->trainer){

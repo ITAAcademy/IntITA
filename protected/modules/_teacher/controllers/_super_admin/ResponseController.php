@@ -166,6 +166,8 @@ class ResponseController extends TeacherCabinetController{
 
     public function actionGetNewResponsesCount()
     {
-        echo count(Response::model()->findAllByAttributes(array('is_checked'=>null)));
+        $result[] = count(Response::model()->findAllByAttributes(array('is_checked'=>null)));
+        $result[] = count(AddressCity::model()->findAllByAttributes(array('checked'=>0)));
+        echo json_encode($result);
     }
 }

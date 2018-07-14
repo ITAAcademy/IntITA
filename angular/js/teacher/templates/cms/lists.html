@@ -4,57 +4,97 @@
     }
     .preview{
         width: 101px;
-        margin: 0 auto;
+        margin-bottom: 5px;
+        margin-left: 2px;
+        margin-right: 2px;
+        margin-top: 2px;
         display: block;
+    }
+    .box{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    textarea.form-control {
+        height: 120px;
+    }
+    .img_menu_list_style{
+        padding-top: 1px;
+        padding-bottom: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+        height: 24px;
+        width: 136px;
+    }
+    .buttons_box{
+    text-align: right;
     }
 </style>
 
 <div class="form-group form-link" ng-controller="cmsMenuListCtrl">
     <p>Повернутися до <a class="text-right" href="#/admin/intita_cms">Конструктора сайту</a></p>
-    <label>Список меню</label>
-    <div ng-repeat="list in lists track by $index" class="row">
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Меню" ng-model="list.title">
+    <div class="" ng-if="listsItemMenu.length<3">
+        <div class=" first_line box row">
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Меню" ng-model="newLink.title">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Посилання" ng-model="newLink.link">
+            </div>
+            <div class="col-md-4"></div>
         </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Посилання" ng-model="list.link">
+        <div class="second_line box row">
+            <div class="col-md-2">
+                <input id="img_menu_list" enctype="multipart/form-data" type="file" class=" img_menu_list_style" placeholder="Логотип" name="logo">
+            </div>
+            <div class="col-md-10">
+                <textarea class="form-control input" placeholder="Опис" ng-model="newLink.description" style="resize: none"></textarea>
+            </div>
         </div>
-        <div class="col-md-2">
-            <img class="preview"  ng-src='{{list.id && domainPath+list.image || list.image}}'>
-            <input id="logoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control logoUpdate" placeholder="Логотип" name="logo">
+        <div class="third_line box row">
+            <div class="col-md-12 buttons_box">
+                <a href="javascript:void(0)">
+                    <button  class="btn btn-primary"  title="Зберегти" aria-hidden="true" ng-click="updateMenuLink(newLink)" >Зберегти</button>
+                </a>
+            </div>
         </div>
-        <div class="col-md-5">
-            <textarea class="form-control" placeholder="Опис" ng-model="list.description" style="resize: none"></textarea>
-        </div>
-        <div class="col-md-1">
-            <a href="javascript:void(0)">
-                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateMenuLink(list, $index,list.image)"></i>
-            </a>
-            <a href="javascript:void(0)">
-                <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeMenuLink(list.id,list.image)"></i>
-            </a>
-        </div>
-        <div class="col-md-12">
+        <div class="">
             <hr>
         </div>
     </div>
-    <div class="row" ng-if="lists.length<3">
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Меню" ng-model="newLink.title">
+
+    <label>Список меню</label>
+    <div ng-repeat="list in listsItemMenu track by $index" class="">
+        <div class=" first_line box row">
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Меню" ng-model="list.title">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Посилання" ng-model="list.link">
+            </div>
+            <div class="col-md-4"></div>
         </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Посилання" ng-model="newLink.link">
+
+        <div class="second_line box row">
+            <div class="col-md-2">
+                <img class="preview"  ng-src='{{list.id && domainPath+list.image || list.image}}'>
+                <input id="img_menu_list_Update{{$index}}" enctype="multipart/form-data" type="file" class=" img_menu_list_Update  img_menu_list_style " placeholder="Логотип" name="logo">
+            </div>
+            <div class="col-md-10">
+                <textarea class="form-control input" placeholder="Опис" ng-model="list.description" style="resize: none"></textarea>
+            </div>
         </div>
-        <div class="col-md-2">
-            <input id="logo" enctype="multipart/form-data" type="file" class="form-control" placeholder="Логотип" name="logo">
+        <div class="third_line box row">
+            <div class="col-md-10 buttons_box">
+                <a href="javascript:void(0)">
+                    <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeMenuLink(list.id,list.image)"></i>
+                </a>
+            </div >
+            <div class="col-md-2 buttons_box">
+                <button  class="btn btn-primary"  title="Зберегти" aria-hidden="true" ng-click="updateMenuLink(list, $index,list.image)" >Зберегти</button>
+            </div>
         </div>
-        <div class="col-md-5">
-            <textarea class="form-control" placeholder="Опис" ng-model="newLink.description" style="resize: none"></textarea>
-        </div>
-        <div class="col-md-1">
-            <a href="javascript:void(0)">
-                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateMenuLink(newLink)"></i>
-            </a>
+        <div class="">
+            <hr>
         </div>
     </div>
 </div>
