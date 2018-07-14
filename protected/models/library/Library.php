@@ -200,9 +200,7 @@
             $model->user_id = $orderParams['user_id'];
             $model->date = new CDbExpression('NOW()');;
             $model->status = 1;
-            if($model->save()){
-                $this->drawWatermark($model->user_id);
-            }
+            $model->save();
         }
     }
 
@@ -230,9 +228,7 @@
             $model->user_id = $orderParams['user_id'];
             $model->date = new CDbExpression('NOW()');;
             $model->status = 1;
-            if($model->save()){
-                $this->drawWatermark($model->user_id);
-            }
+            $model->save();
         }
         return $res->result;
     }
@@ -357,10 +353,10 @@
      $draw->setFontSize(16);
 
      /* Добавляем свой текст */
-     $draw->annotation(20, 50, "INTITA: user-" . $userId);
+     $draw->annotation(0, 0, "INTITA: user-" . $userId);
 
      $canvas = new Imagick();
-     $canvas->newImage(250, 70, "white");
+     $canvas->newImage(50, 20, "white");
      $canvas->drawImage($draw);
      $canvas->setImageFormat('png');
      $filename = sys_get_temp_dir() . "/{$userId}-watermark.png";
