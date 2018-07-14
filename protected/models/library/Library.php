@@ -331,7 +331,7 @@
          }
          $watermark = new Watermark($bookFile);
          $watermark->setPosition(Watermark::POSITION_BOTTOM_RIGHT);
-         $watermark->setOffset(50, 50);
+         $watermark->setOffset(10, 50);
          $watermark->setOpacity(.2);
          $watermark->setTiled();
 
@@ -354,10 +354,10 @@
      $draw = new ImagickDraw();
 
      /* Устанавливаем размер шрифта в 52 */
-     $draw->setFontSize(52);
+     $draw->setFontSize(16);
 
      /* Добавляем свой текст */
-     $draw->annotation(20, 50, "UID: " . $userId);
+     $draw->annotation(20, 50, "INTITA: user-" . $userId);
 
      $canvas = new Imagick();
      $canvas->newImage(250, 70, "white");
