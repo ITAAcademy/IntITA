@@ -16,8 +16,13 @@
     color: #003399;
     background-color: inherit;
 }
+.header{
+    width: 100%;
+}
 .header .navbar{
     padding-top: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 #logo {
     max-width: 232px;
@@ -43,9 +48,6 @@
 }
 .edit{
     position: absolute;
-    cursor: pointer;
-}
-.edit-not-absolute{
     cursor: pointer;
 }
 .top-right{

@@ -2,15 +2,15 @@
     <p>Повернутися до <a class="text-right" href="#/admin/intita_cms">Конструктора сайту</a></p>
 
 
-    <div class="box_out" >
+    <div class="news_box" >
         <div class="row box_inside"   >
-            <div class="col-md-3 col-sm-4 img_out img_out_left" >
-                <div class="img_news_box1">
+            <div class="col-md-3 col-sm-4 img_out" >
+                <div class="img_news_box">
                     <input id="photo" enctype="multipart/form-data" type="file"  class="form-control photoUpdate" placeholder="Фото новини" name="photo">
                 </div>
             </div>
-            <div class=" col-md-9 col-sm-8 text_out_left">
-                <div class="title_news_left box_new">
+            <div class=" col-md-9 col-sm-8 text_out">
+                <div class="title_news box_new">
                     <div class=" display_inl_bl  ">
                         <input type="text" class="form-control" placeholder="Заголовок" ng-model="newNews.title">
                     </div>
@@ -35,21 +35,21 @@
 
     <label>Список новин</label>
     <div ng-repeat="new in news track by $index" >
-        <div class="box_out" >
+        <div class="news_box" >
             <div class="row box_inside"  >
-                <div class="col-md-3 col-sm-4 img_out img_out_left" >
-                    <div class="img_news_box1">
+                <div class="col-md-3 col-sm-4 img_out" >
+                    <div class="img_news_box">
                         <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news preview"  >
                         <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
                     </div>
                 </div>
-                <div class=" col-md-9 col-sm-8 text_out_left">
-                    <div class="title_news_left box_new">
-                        <div class=" display_inl_bl  ">
+                <div class=" col-md-9 col-sm-8 text_out">
+                    <div class="title_news box_new">
+                        <div class="display_inl_bl">
                             <input type="text" class="form-control" placeholder="Заголовок" ng-model="new.title">
                         </div>
                     </div>
-                    <div class=" text-date_left box_new">
+                    <div class="text-date box_new">
                         <input type="text" class="form-control" placeholder="Дата" ng-model="new.date">
                     </div>
                     <div   class="box_new ">
@@ -94,12 +94,6 @@
         height: 23px;
         margin-top: 5px;
     }
-    .news_textarea{
-        /*margin-left: 15px;*/
-    }
-    .text_out_left{
-        padding-right: 50px;
-    }
     .edit_line {
         padding-right: 50px;
         float: right;
@@ -110,8 +104,11 @@
         margin-left: 20px;
         margin-right: 20px;
     }
-    .box_out{
+    .news_box{
         margin-bottom: 45px;
+    }
+    .news_box:nth-child(odd){
+        background: red;
     }
     .box_new{
         margin-bottom: 10px;
