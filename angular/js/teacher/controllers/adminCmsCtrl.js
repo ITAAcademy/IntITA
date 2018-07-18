@@ -92,6 +92,7 @@ angular
                         if (!response.id) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
                                 $scope.settings = response;
+                                $scope.settings.logo = generateRelativePath($scope.settings.logo);
                             });
                         }
                         else {
@@ -609,7 +610,7 @@ angular
                                 $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
                                     $scope.slides = response;
                                     for (var i = 0; i < $scope.slides.length; i++) {
-                                        $scope.slides[i].src = basePath + '/domains/' + $scope.slides[i].src;
+                                        $scope.slides[i].src = generateRelativePath($scope.slides[i].src);
                                     }
                                 });
                             } else {
@@ -689,11 +690,11 @@ angular
 
         }
     ])
-    .filter('isNotLink', function () {
-        return function (input) {
-            return input.indexOf("https://") == -1 && input.indexOf("http://") == -1
-        };
-    })
+    // .filter('isNotLink', function () {
+    //     return function (input) {
+    //         return input.indexOf("https://") == -1 && input.indexOf("http://") == -1
+    //     };
+    // })
 
 function changeColorOff(e) {
     element = jQuery(e).children();
@@ -703,4 +704,8 @@ function changeColorOff(e) {
 function changeColorOn(e) {
     element = jQuery(e).children();
     element.css("color", e.getAttribute("data-hover"));
+}
+
+function generateRelativePath(src) {
+    return basePath + '/domains/' + src;
 }

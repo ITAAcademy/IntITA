@@ -1,32 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Quicks
- * Date: 22.12.2015
- * Time: 17:05
- */
 
-class CmsController extends TeacherCabinetController
+class SubdomainCmsController extends TeacherCabinetController
 {
 
     public function hasRole()
     {
-        return Yii::app()->user->model->isAdmin();
-    }
-
-    public function actionIndex()
-    {
-        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
-        if($subdomain){
-            $this->renderPartial('index', array(), false, true);
-        }else{
-            $this->renderPartial('subdomain', array('subdomain'=>$subdomain), false, true);
-        }
+        return true;
     }
 
     public function actionGetSubdomain()
     {
-        var_dump(Yii::app()->user->model->getCurrentOrganizationId());die;
+//        var_dump(Yii::app()->user->model->getCurrentOrganizationId());die;
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
         return $subdomain;
     }

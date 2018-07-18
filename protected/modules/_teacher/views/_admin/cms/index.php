@@ -22,6 +22,8 @@
 </style>
 <div ng-controller="cmsCtrl">
     <div id="cms_content_generate">
+        <link rel="shortcut icon" href="<?php echo StaticFilesHelper::fullPathTo('css', 'images/favicon.ico'); ?>"
+              type="image/x-icon"/>
         <script type="text/javascript"
                 src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular/angular.js'); ?>"></script>
         <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-resource/angular-resource.min.js'); ?>"></script>
