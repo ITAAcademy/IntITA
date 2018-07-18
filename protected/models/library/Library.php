@@ -28,6 +28,7 @@
    use composerLoader;
    const ACTIVE   = 1;
    const INACTIVE = 0;
+   const SUCCESS_STATUS = 'success';
 
   /**
    * @return string the associated database table name
@@ -157,7 +158,7 @@
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
         $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
         $order_id = LiqpayPayment::dsCrypt('user_id='.Yii::app()->user->getId().'&library_id='.$this->id);
-        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id, 'status'=>1));
+        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id, 'status'=>Library::SUCCESS_STATUS));
         if(!$model){
             $html = $liqpay->cnb_form(array(
                 'version'=>'3',
@@ -189,17 +190,18 @@
             'version'       => '3',
             'order_id'      => $order_id
         ));
-        if(!$model && $res->result=='ok'){
+
+        if(!$model || ($model && $model->status!=Library::SUCCESS_STATUS)) {
             $model = new LibraryPayments();
             $model->library_id = $this->id;
-            if(!empty($res->payment_id)) $model->payment_id = $res->payment_id;
-            if(!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
-            if(!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
-            if(!empty($res->amount)) $model->amount = $res->amount;
-            if(!empty($res->order_id)) $model->order_id = $res->order_id;
+            if (!empty($res->payment_id)) $model->payment_id = $res->payment_id;
+            if (!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+            if (!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+            if (!empty($res->amount)) $model->amount = $res->amount;
+            if (!empty($res->order_id)) $model->order_id = $res->order_id;
             $model->user_id = $orderParams['user_id'];
             $model->date = new CDbExpression('NOW()');;
-            $model->status = 1;
+            $model->status = $res->status;
             $model->save();
         }
     }
@@ -218,19 +220,21 @@
             'version'       => '3',
             'order_id'      => $order_id
         ));
-        if($res->result=='ok'){
+
+        if(!$model || ($model && $model->status!=Library::SUCCESS_STATUS)) {
             $model->library_id = $this->id;
-            if(!empty($res->payment_id)) $model->payment_id = $res->payment_id;
-            if(!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
-            if(!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
-            if(!empty($res->amount)) $model->amount = $res->amount;
-            if(!empty($res->order_id)) $model->order_id = $res->order_id;
+            if (!empty($res->payment_id)) $model->payment_id = $res->payment_id;
+            if (!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+            if (!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+            if (!empty($res->amount)) $model->amount = $res->amount;
+            if (!empty($res->order_id)) $model->order_id = $res->order_id;
             $model->user_id = $orderParams['user_id'];
             $model->date = new CDbExpression('NOW()');;
-            $model->status = 1;
+            $model->status = $res->status;
             $model->save();
         }
-        return $res->result;
+
+        return $res->status;
     }
 
    public function sendTicket($order_id)
