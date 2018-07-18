@@ -17,15 +17,8 @@
             </div>
             <div class="col-md-9 menu_blok">
                 <div class="menu_blok_inl_bl">
-                    <div class="display_inl_bl">
-                        <ul class="nav navbar-nav ">
-                            <li class="menu_hover" data-hover="{{settings.header_hover_color}}"
-                                data-link="{{settings.header_link_color}}"
-                                onmouseenter="changeColorOn(this)" onmouseleave="changeColorOff(this)"
-                                ng-repeat="list in listsItemMenu track by $index">
-                                <a href="{{list.link}}" ng-style="{color:settings.header_link_color}">{{list.title}}</a>
-                            </li>
-                        </ul>
+                    <div class="display_inl_bl" id="menuBlock">
+                        <div ng-include="templateUrl('/partial/menu.html')"></div>
                         <div>
                             <img class="edit hide_edit" type="image" data-toggle="modal" data-target="#listModal"
                                  src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
