@@ -29,7 +29,7 @@
     </div>
     <button class="btn btn-primary pull-right" ng-click="liqPayStatusRequest()">Відправити запит</button>
     <table class="table table-condensed table-striped" ng-table="libraryPaymentsTableParams">
-        <tr ng-repeat="row in $data track by $index">
+        <tr ng-repeat="row in $data track by $index" ng-class="{green: row.status == 'success'}">
             <td title="'Order ID'" filter="{'order_id': 'text'}" style="word-break: break-all">
                 {{row.order_id}}
             </td>
@@ -51,8 +51,8 @@
             <td title="'Сума грн.'" filter="{'amount': 'text'}">
                 {{row.amount}}
             </td>
-            <td  title="'Проплочено'" filter="{'status': 'text'}" sortable="'status'">
-                {{row.status==1?'Проплочено':'Не проплочено'}}
+            <td title="'Статус'" filter="{'status': 'text'}" sortable="'status'">
+                {{row.status}}
             </td>
             <td  title="'Дата'" filter="{'date': 'text'}" sortable="'date'">
                 {{row.date}}

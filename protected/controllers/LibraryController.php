@@ -214,7 +214,7 @@ class LibraryController extends Controller
 //    }
     public function actionGetBook($id){
         $book = Library::model()->findByPk($id);
-        $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>1));
+        $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>Library::SUCCESS_STATUS));
         if ($book && $payment){
             $file = "/files/library/{$book->id}/link/{$book->link}";
             // todo

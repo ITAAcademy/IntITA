@@ -28,6 +28,7 @@
    use composerLoader;
    const ACTIVE   = 1;
    const INACTIVE = 0;
+   const SUCCESS_STATUS = 'success';
 
   /**
    * @return string the associated database table name
@@ -189,19 +190,18 @@
             'version'       => '3',
             'order_id'      => $order_id
         ));
-        if(!$model && $res->result=='ok'){
-            $model = new LibraryPayments();
-            $model->library_id = $this->id;
-            if(!empty($res->payment_id)) $model->payment_id = $res->payment_id;
-            if(!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
-            if(!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
-            if(!empty($res->amount)) $model->amount = $res->amount;
-            if(!empty($res->order_id)) $model->order_id = $res->order_id;
-            $model->user_id = $orderParams['user_id'];
-            $model->date = new CDbExpression('NOW()');;
-            $model->status = 1;
-            $model->save();
-        }
+
+        $model = new LibraryPayments();
+        $model->library_id = $this->id;
+        if(!empty($res->payment_id)) $model->payment_id = $res->payment_id;
+        if(!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+        if(!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+        if(!empty($res->amount)) $model->amount = $res->amount;
+        if(!empty($res->order_id)) $model->order_id = $res->order_id;
+        $model->user_id = $orderParams['user_id'];
+        $model->date = new CDbExpression('NOW()');;
+        $model->status = $res->status;
+        $model->save();
     }
 
    public function getStatus($order_id)
@@ -218,19 +218,19 @@
             'version'       => '3',
             'order_id'      => $order_id
         ));
-        if($res->result=='ok'){
-            $model->library_id = $this->id;
-            if(!empty($res->payment_id)) $model->payment_id = $res->payment_id;
-            if(!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
-            if(!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
-            if(!empty($res->amount)) $model->amount = $res->amount;
-            if(!empty($res->order_id)) $model->order_id = $res->order_id;
-            $model->user_id = $orderParams['user_id'];
-            $model->date = new CDbExpression('NOW()');;
-            $model->status = 1;
-            $model->save();
-        }
-        return $res->result;
+
+        $model->library_id = $this->id;
+        if(!empty($res->payment_id)) $model->payment_id = $res->payment_id;
+        if(!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+        if(!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+        if(!empty($res->amount)) $model->amount = $res->amount;
+        if(!empty($res->order_id)) $model->order_id = $res->order_id;
+        $model->user_id = $orderParams['user_id'];
+        $model->date = new CDbExpression('NOW()');;
+        $model->status = $res->status;
+        $model->save();
+
+        return $res->status;
     }
 
    public function sendTicket($order_id)
