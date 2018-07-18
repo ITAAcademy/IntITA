@@ -191,17 +191,19 @@
             'order_id'      => $order_id
         ));
 
-        $model = new LibraryPayments();
-        $model->library_id = $this->id;
-        if(!empty($res->payment_id)) $model->payment_id = $res->payment_id;
-        if(!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
-        if(!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
-        if(!empty($res->amount)) $model->amount = $res->amount;
-        if(!empty($res->order_id)) $model->order_id = $res->order_id;
-        $model->user_id = $orderParams['user_id'];
-        $model->date = new CDbExpression('NOW()');;
-        $model->status = $res->status;
-        $model->save();
+        if(!$model || ($model && $model->status!=Library::SUCCESS_STATUS)) {
+            $model = new LibraryPayments();
+            $model->library_id = $this->id;
+            if (!empty($res->payment_id)) $model->payment_id = $res->payment_id;
+            if (!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+            if (!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+            if (!empty($res->amount)) $model->amount = $res->amount;
+            if (!empty($res->order_id)) $model->order_id = $res->order_id;
+            $model->user_id = $orderParams['user_id'];
+            $model->date = new CDbExpression('NOW()');;
+            $model->status = $res->status;
+            $model->save();
+        }
     }
 
    public function getStatus($order_id)
@@ -219,16 +221,18 @@
             'order_id'      => $order_id
         ));
 
-        $model->library_id = $this->id;
-        if(!empty($res->payment_id)) $model->payment_id = $res->payment_id;
-        if(!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
-        if(!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
-        if(!empty($res->amount)) $model->amount = $res->amount;
-        if(!empty($res->order_id)) $model->order_id = $res->order_id;
-        $model->user_id = $orderParams['user_id'];
-        $model->date = new CDbExpression('NOW()');;
-        $model->status = $res->status;
-        $model->save();
+        if(!$model || ($model && $model->status!=Library::SUCCESS_STATUS)) {
+            $model->library_id = $this->id;
+            if (!empty($res->payment_id)) $model->payment_id = $res->payment_id;
+            if (!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+            if (!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+            if (!empty($res->amount)) $model->amount = $res->amount;
+            if (!empty($res->order_id)) $model->order_id = $res->order_id;
+            $model->user_id = $orderParams['user_id'];
+            $model->date = new CDbExpression('NOW()');;
+            $model->status = $res->status;
+            $model->save();
+        }
 
         return $res->status;
     }
