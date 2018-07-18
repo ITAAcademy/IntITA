@@ -60,7 +60,7 @@ class SuperVisorController extends TeacherCabinetController
         $this->renderPartial('/_supervisor/forms/_subgroupForm', array('scenario' => 'update'), false, true);
     }
 
-    public function actionOfflineSubgrups()
+    public function actionOfflineGroupSubgroups()
     {
         $this->renderPartial('/_supervisor/tables/_offlineGroupSubgroups', array(), false, true);
     }

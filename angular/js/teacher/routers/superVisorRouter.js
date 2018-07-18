@@ -18,13 +18,6 @@ config(function ($stateProvider) {
             cache: false,
             templateUrl: basePath + "/_teacher/_supervisor/superVisor/offlineGroups",
         })
-        .state('supervisor/offlineGroup/:id', {
-            url: "/supervisor/offlineGroup/:id",
-            cache: false,
-            templateUrl: function ($stateParams) {
-                return basePath + "/_teacher/_supervisor/superVisor/offlineGroup/?id=" + $stateParams.id
-            }
-        })
         .state('supervisor/offlineSubgroups', {
             url: "/supervisor/offlineSubgroups",
             cache: false,
@@ -180,12 +173,12 @@ config(function ($stateProvider) {
                 return basePath + "/_teacher/_supervisor/superVisor/offlineGroup/?id=" + $stateParams.id
             },
         })
-        .state('supervisorGroup.offlineSubgrups', {
-            url: "/offlineSubgrups",
+        .state('supervisorGroup.offlineSubgroups', {
+            url: "/offlineSubgroups",
             views: {
                 'supervisorTabs': {
                     templateUrl: function ($stateParams) {
-                        return basePath + "/_teacher/_supervisor/superVisor/offlineSubgrups"
+                        return basePath + "/_teacher/_supervisor/superVisor/offlineGroupSubgroups"
                     },
                 }
             }
