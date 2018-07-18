@@ -60,6 +60,7 @@
         </tr>
     </table>
 </div>
+<a target="_blank" href="https://www.liqpay.ua/ru/doc/status">Статуси liqpay</a>
 <script type="text/ng-template" id="libraryTemplate.html">
     <a>
         <div class="typeahead_wrapper  tt-selectable">
