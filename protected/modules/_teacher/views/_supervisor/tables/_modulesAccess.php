@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="modulesAccessCtrl">
+<div class="panel panel-default">
     <div class="panel-body">
         <a type="button" class="btn btn-primary" ng-href="#/supervisor/groupAccess/module/group/{{groupId}}">
             Додати доступ до модуля
@@ -10,9 +10,6 @@
                 <td data-title="'Модуль'" filter="{'module.title_ua': 'text'}" sortable="'module.title_ua'">
                     <a href="" ng-click="moduleLink(row.module.module_ID)">{{row.module.title_ua}}</a>
                 </td>
-<!--                <td data-title="'Початок доступу'" sortable="'start_date'" filter="{'start_date': 'text'}">-->
-<!--                    {{row.start_date}}-->
-<!--                </td>-->
                 <td data-title="'Закінчення доступу'" sortable="'end_date'" filter="{'end_date': 'text'}">
                     {{row.end_date}}
                 </td>

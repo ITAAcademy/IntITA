@@ -113,7 +113,7 @@ function offlineGroupCtrl ($scope, $state, $http, $stateParams, superVisorServic
     $scope.changePageHeader('Офлайн група');
 
     $scope.tabs = [
-        { title: "Підгрупи", route: "offlineSubgrups"},
+        { title: "Підгрупи", route: "offlineSubgroups"},
         { title: "Студенти", route: "offlineStudents"},
         { title: "Доступ до курсів", route: "coursesAccess"},
         { title: "Доступ до модулів", route: "modulesAccess"},
@@ -272,7 +272,7 @@ function offlineGroupCtrl ($scope, $state, $http, $stateParams, superVisorServic
         }).then(function successCallback(response) {
             bootbox.alert(response.data, function(){
                 chatIntITAMessenger.updateGroup($stateParams.id).then(function () {
-                    $state.go("supervisor/offlineGroup/:id", {id:$stateParams.id}, {reload: true});
+                    $state.go("supervisorGroup/:id/offlineSubgroups", {id:$stateParams.id}, {reload: true});
                 });
             });
         }, function errorCallback() {
@@ -419,10 +419,10 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
             bootbox.alert(response.data.message, function(){
                 if(response.data.idSubgroup){
                     chatIntITAMessenger.updateSubgroup(response.data.idSubgroup).then(function () {
-                        $state.go("supervisor/offlineGroup/:id", {id:$scope.groupId}, {reload: true});
+                        $state.go("supervisorGroup/:id/offlineSubgroups", {id:$scope.groupId}, {reload: true});
                     });
                 }else{
-                    $state.go("supervisor/offlineGroup/:id", {id:$scope.groupId}, {reload: true});
+                    $state.go("supervisorGroup/:id/offlineSubgroups", {id:$scope.groupId}, {reload: true});
                 }
             });
         }, function errorCallback() {
@@ -454,7 +454,7 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
     };
     $scope.goBack= function () {
         if($stateParams.groupId) {
-            $state.go('supervisorGroup.offlineSubgrups', {id:$stateParams.groupId}, {reload: true});
+            $state.go('supervisorGroup.offlineSubgroups', {id:$stateParams.groupId}, {reload: true});
         } else if($stateParams.id) {
             $state.go('supervisor/offlineSubgroup/:id', {id:$stateParams.id}, {reload: true});
         }

@@ -27,7 +27,7 @@
                     <a ng-href="#/users/profile/{{row.id_user}}">{{row.end_date}}</a>
                 </td>
                 <td data-title="'Група'" filter="{'group.name': 'text'}" sortable="'group.name'">
-                    <a ng-href="#/supervisor/offlineGroup/{{row.group.id}}">{{row.group.name}}</a>
+                    <a ng-href="#/supervisorGroup/{{row.group.id}}/offlineSubgroups">{{row.group.name}}</a>
                 </td>
                 <td data-title="'Підгрупа'" sortable="'subgroupName.name'" filter="{'subgroupName.name': 'text'}" >
                     <a ng-href="#/supervisor/offlineSubgroup/{{row.subgroupName.id}}">{{row.subgroupName.name}}</a>
