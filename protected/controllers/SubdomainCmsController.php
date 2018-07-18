@@ -8,10 +8,14 @@ class SubdomainCmsController extends TeacherCabinetController
         return true;
     }
 
+    private function getSubdomainName()
+    {
+        return $subdomain_name = array_shift((explode('.', $_SERVER['HTTP_HOST'])));
+    }
+
     public function actionGetSubdomain()
     {
-//        var_dump(Yii::app()->user->model->getCurrentOrganizationId());die;
-        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        $subdomain = Subdomains::model()->findByAttributes(array('domain_name' => $this->getSubdomainName()));
         return $subdomain;
     }
 
@@ -22,9 +26,9 @@ class SubdomainCmsController extends TeacherCabinetController
 
     public function actionGetMenuList()
     {
-        $subdomain = array_shift((explode('.', $_SERVER['HTTP_HOST'])));
-        var_dump($subdomain);die;
-        echo  CJSON::encode(CmsMenuList::model()->findAllByAttributes(array('id_organization' => Yii::app()->user->model->getCurrentOrganizationId())));
+//        var_dump($this->getSubdomainName());die;
+        $organization = Subdomains::model()->findByAttributes(array('domain_name' => $this->getSubdomainName()))->organization;
+        echo  CJSON::encode(CmsMenuList::model()->findAllByAttributes(array('id_organization' => $organization)));
     }
 
     public function actionUpdateMenuLink()
