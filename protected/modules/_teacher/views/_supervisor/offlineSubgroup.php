@@ -7,7 +7,7 @@
                 </a>
             </li>
             <li>
-                <a type="button" class="btn btn-primary" ng-href="#/supervisor/offlineGroup/{{group.id}}">
+                <a type="button" class="btn btn-primary" ng-href="#/supervisorGroup/{{group.id}}/offlineSubgroups">
                     Група підгрупи
                 </a>
             </li>

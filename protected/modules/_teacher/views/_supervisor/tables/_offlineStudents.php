@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="offlineGroupStudentsCtrl">
+<div class="panel panel-default">
     <div class="panel-body">
         <a type="button" class="btn btn-primary" ng-href="#/supervisor/studentsWithoutGroup">Офлайн студенти(без групи)</a>
         <a ng-if="subgroup.id" type="button" class="btn btn-primary" ng-href="#/supervisor/addStudentToSubgroup/{{subgroup.id}}">Додати студента в підгрупу</a>
@@ -30,7 +30,7 @@
                     <span ng-if="row.user.education_shift==3">байдуже</span>
                 </td>
                 <td data-title="'Група'" filter="{'group.name': 'text'}" sortable="'group.name'">
-                    <a ng-href="#/supervisor/offlineGroup/{{row.group.id}}">{{row.group.name}}</a>
+                    <a ng-href="#/supervisorGroup/{{row.group.id}}/offlineSubgroups">{{row.group.name}}</a>
                 </td>
                 <td data-title="'Підгрупа'" sortable="'subgroupName.name'" filter="{'subgroupName.name': 'text'}" >
                     <a ng-href="#/supervisor/offlineSubgroup/{{row.subgroupName.id}}">{{row.subgroupName.name}}</a>

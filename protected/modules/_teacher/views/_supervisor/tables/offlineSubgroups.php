@@ -8,7 +8,7 @@
                             <a ng-href="#/supervisor/offlineSubgroup/{{row.id}}">{{row.name}}</a>
                         </td>
                         <td data-title="'Група'" filter="{'groupName.name': 'text'}" sortable="'groupName.name'">
-                            <a ng-href="#/supervisor/offlineGroup/{{row.groupName.id}}">{{row.groupName.name}}</a>
+                            <a ng-href="#/supervisorGroup/{{row.groupName.id}}/offlineSubgroups">{{row.groupName.name}}</a>
                         </td>
                         <td data-title="'Інформація(розклад)'" ><span ng-bind-html="row.data | linky:'_blank'"></span></td>
                         <td data-title="'Тренер підгрупи'" filter="{'subgroupTrainer.fullName': 'text'}" sortable="'subgroupTrainer.fullName'">
