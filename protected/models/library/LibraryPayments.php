@@ -9,7 +9,7 @@
  * @property integer $library_id
  * @property integer $user_id
  * @property string $amount
- * @property integer $status
+ * @property string $status
  * @property string $date
  * @property integer $payment_id
  * @property string $sender_phone
@@ -37,8 +37,8 @@ class LibraryPayments extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('order_id, library_id, user_id, date', 'required'),
-			array('library_id, user_id, status', 'numerical', 'integerOnly'=>true),
+			array('order_id, library_id, user_id, date, status', 'required'),
+			array('library_id, user_id', 'numerical', 'integerOnly'=>true),
 			array('order_id', 'length', 'max'=>128),
 			array('amount', 'length', 'max'=>10),
 			// The following rule is used by search().
