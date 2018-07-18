@@ -2,7 +2,8 @@
 
 angular
     .module('teacherApp')
-    .controller('cabinetCtrl', cabinetCtrl);
+    .controller('cabinetCtrl', cabinetCtrl)
+    .controller('mainCmsCtrl', ['$scope', '$http', function ($scope, $http) {}])
 
 angular
     .module('teacherApp')

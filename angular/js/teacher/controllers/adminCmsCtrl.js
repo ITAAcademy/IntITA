@@ -1,7 +1,7 @@
 angular
     .module('cmsApp')
-    .controller('cmsCtrl', ['$scope', 'cmsService', '$http','ngToast',
-        function ($scope, cmsService, $http, ngToast) {
+    .controller('cmsCtrl', ['$scope', 'cmsService', '$http', 'ngToast','$q',
+        function ($scope, cmsService, $http, ngToast, $q) {
             $scope.changePageHeader('Конструктор сайту');
 
             $scope.domainPath = domainPath;
@@ -10,12 +10,12 @@ angular
             $scope.buttonShow = '';
             $scope.SubdomainAns = '';
             $scope.pathToCmsTemplates = basePath + "/angular/js/teacher/templates/cms/";
-            $scope.templateUrl = function(template) {
-                return $scope.pathToCmsTemplates+template;
+            $scope.templateUrl = function (template) {
+                return $scope.pathToCmsTemplates + template;
             }
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
-                    $scope.domainPathLogo = response.domainPath+'/logo/';
+                    $scope.domainPathLogo = response.domainPath + '/logo/';
                 }, function errorCallback() {
                     bootbox.alert("Отримати піддомен не вдалося");
                 });
@@ -23,10 +23,10 @@ angular
             $scope.getSubdomain = function () {
                 cmsService.Subdomain().$promise
                     .then(function successCallback(response) {
-                        if(response !== undefined){
-                            $scope.SubdomainAns=false;
+                        if (response !== undefined) {
+                            $scope.SubdomainAns = false;
                         } else {
-                            $scope.SubdomainAns=true;
+                            $scope.SubdomainAns = true;
                         }
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
@@ -39,6 +39,7 @@ angular
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
+                                $scope.domainListsItemMenuEmpty = true;
                                 $scope.listsItemMenu = response;
                             });
                         } else {
@@ -96,7 +97,7 @@ angular
                         else {
                             $scope.settings = response;
                         }
-                        $scope.buttonShow=true;
+                        $scope.buttonShow = true;
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
                     });
@@ -127,20 +128,20 @@ angular
                 });
             };
 
-            $scope.showDefaultSettings =function (){
-                    $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response1) {
-                        $scope.listsItemMenu = response1;
-                    });
-                    $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response2) {
-                        $scope.settings = response2;
-                    });
-                    $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
-                        $scope.news = response3;
-                        for (var i=0; i<$scope.news.length; i++){
-                            $scope.news[i].strLimit=500;
-                        }
-                    });
-                $scope.buttonShow=false;
+            $scope.showDefaultSettings = function () {
+                $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response1) {
+                    $scope.listsItemMenu = response1;
+                });
+                $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response2) {
+                    $scope.settings = response2;
+                });
+                $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
+                    $scope.news = response3;
+                    for (var i = 0; i < $scope.news.length; i++) {
+                        $scope.news[i].strLimit = 500;
+                    }
+                });
+                $scope.buttonShow = false;
             };
 
             $scope.removeLogoCms = function (id, image) {
@@ -148,13 +149,13 @@ angular
                 cmsService.removeLogo({image: image, id: id}).$promise
                     .then(function successCallback() {
 
-                        function reset_form_element (e) {
+                        function reset_form_element(e) {
                             e.wrap('<form>').parent('form').trigger('reset');
                             e.unwrap();
                         }
 
-                        $('#logo_clear').on ('click', function (e) {
-                            reset_form_element( $('#logoUpdate') );
+                        $('#logo_clear').on('click', function (e) {
+                            reset_form_element($('#logoUpdate'));
                             e.preventDefault();
                         });
 
@@ -164,22 +165,22 @@ angular
                     });
             };
 
-            $scope.loadCmsNews = function ( ) {
+            $scope.loadCmsNews = function () {
                 cmsService.newsList().$promise
                     .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
                                 $scope.news = response;
-                                for (var i=0; i<$scope.news.length; i++){
-                                    $scope.news[i].strLimit=500;
+                                for (var i = 0; i < $scope.news.length; i++) {
+                                    $scope.news[i].strLimit = 500;
                                 }
                             });
                         }
                         else {
                             $scope.news_reverse = response;
                             $scope.news = $scope.news_reverse.slice().reverse();
-                            for (var i=0; i<$scope.news.length; i++){
-                                $scope.news[i].strLimit=500;
+                            for (var i = 0; i < $scope.news.length; i++) {
+                                $scope.news[i].strLimit = 500;
                             }
                         }
                     }, function errorCallback() {
@@ -218,15 +219,15 @@ angular
                 cmsService.removeNews({id: id, image: image}).$promise
                     .then(function successCallback() {
                         $scope.loadCmsNews();
-                    }, function errorCallback(response){
+                    }, function errorCallback(response) {
                         bootbox.alert(response.data.reason);
                     });
             };
 
-            $scope.showMore = function(i) {
+            $scope.showMore = function (i) {
                 $scope.news[i].strLimit = $scope.news[i].text.length;
             };
-            $scope.showLess = function(i) {
+            $scope.showLess = function (i) {
                 $scope.news[i].strLimit = 500;
             };
 
@@ -234,44 +235,46 @@ angular
 
             $scope.generatePage = function () {
                 console.log("CMS controller");
-
+                if($scope.domainListsItemMenuEmpty){
+                    $scope.listsItemMenu.forEach(function(item, i) {
+                        $scope.updateMenuLink(item, i);
+                    });
+                }
                 var content = document.getElementById("cms_content_generate");
                 $jq(".hide_edit").hide();
-                if($scope.content != null) {
-                    $jq("#sliderBlock").remove();
-                    var slider='<div ng-controller="sliderGeneratedCtrl" id="sliderBlock" ng-app="cmsAppNew">\n' +
-                        '    <div  id="slider" class="owl-carousel" style="opacity: 1; display: block;">\n' +
-                        '        <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">\n' +
-                        '            <div uib-slide class="slide" ng-repeat="slide in slides track by $index" index="$index">\n' +
-                        '                <div>\n' +
-                        '                    <img ng-src="{{slide.src}}">\n' +
-                        '                    <p class="title">{{slide.title}}</p>\n' +
-                        '                    <p class="description">{{slide.description}}</p>'+
-                        '                </div>\n' +
-                        '            </div>\n' +
-                        '        </div>\n' +
-                        '    </div>\n' +
-                        '</div>';
-
-                    $jq("#headerCms").after(slider);
+                if (content != null) {
+                    $q.all([
+                        $http.get($scope.templateUrl('/partial/menu.html')),
+                        $http.get($scope.templateUrl('/partial/slider.html')),
+                        $http.get($scope.templateUrl('/partial/fullMenu.html')),
+                        $http.get($scope.templateUrl('/partial/news.html'))])
+                        .then(function (response) {
+                            $jq("#menuBlock").html(response[0].data);
+                            $jq("#sliderBlock").html(response[1].data);
+                            $jq("#aboutBlock").html(response[2].data);
+                            $jq("#newsBlock").html(response[3].data);
+                            $jq.ajax({
+                                method: "POST",
+                                url: basePath + '/_teacher/_admin/cms/generatePage',
+                                dataType: 'html',
+                                data: {data: content.innerHTML},
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
+                        })
+                        .catch(function (error) {
+                            console.log(error)
+                            alert('Помилка завантаження данних')
+                        });
                 }
-
-                $jq.ajax({
-                    method: "POST",
-                    url: basePath + '/_teacher/_admin/cms/generatePage',
-                    dataType : 'html',
-                    data: {data: content.innerHTML},
-                    success : function() {
-                        location.reload();
-                    }
-                });
             };
         }
     ])
 
 
 
-    .controller('settingsCtrl', ['$scope', 'cmsService', '$http','ngToast',
+    .controller('settingsCtrl', ['$scope', 'cmsService', '$http', 'ngToast',
         function ($scope, cmsService, $http, ngToast) {
 
             $scope.data;
@@ -279,7 +282,7 @@ angular
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
-                    $scope.domainPathLogo = response.domainPath+'/logo/';
+                    $scope.domainPathLogo = response.domainPath + '/logo/';
                 }, function errorCallback() {
                     bootbox.alert("Отримати піддомен не вдалося");
                 });
@@ -297,7 +300,7 @@ angular
                         else {
                             $scope.settings = response;
                         }
-                        $scope.buttonShow=true;
+                        $scope.buttonShow = true;
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
                     });
@@ -331,7 +334,7 @@ angular
 
             };
 
-            $scope.showDefaultSettings =function (){
+            $scope.showDefaultSettings = function () {
                 $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response1) {
                     $scope.listsItemMenu = response1;
                 });
@@ -340,14 +343,14 @@ angular
                 });
                 $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response3) {
                     $scope.news = response3;
-                    for (var i=0; i<$scope.news.length; i++){
-                        $scope.news[i].strLimit=500;
+                    for (var i = 0; i < $scope.news.length; i++) {
+                        $scope.news[i].strLimit = 500;
                     }
                 });
-                $scope.buttonShow=false;
+                $scope.buttonShow = false;
             };
 
-            $scope.mySettings=function (){
+            $scope.mySettings = function () {
                 $scope.getSettings();
             };
 
@@ -360,10 +363,10 @@ angular
                     });
             };
 
-            $scope.showMore = function(i) {
+            $scope.showMore = function (i) {
                 $scope.news[i].strLimit = $scope.news[i].text.length;
             };
-            $scope.showLess = function(i) {
+            $scope.showLess = function (i) {
                 $scope.news[i].strLimit = 500;
             };
         }
@@ -371,23 +374,23 @@ angular
 
 
     .controller('subdomainCtrl', ['$scope', '$rootScope', '$http', 'NgTableDataService', 'NgTableParams', '$ngBootbox', 'ngToast',
-        function ($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast  ) {
+        function ($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast) {
             $scope.changePageHeader('Створення доменного імені сайту');
-                      $scope.addSubdomain = function (subdomain) {
+            $scope.addSubdomain = function (subdomain) {
                 $http({
-                    method:'POST',
+                    method: 'POST',
                     url: basePath + '/_teacher/_admin/cms/addSubdomain',
-                    data:$jq.param({subdomain:subdomain}),
-                    headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+                    data: $jq.param({subdomain: subdomain}),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 }).success(function (response) {
-                    if (response.data === true){
+                    if (response.data === true) {
                         ngToast.create({
                             className: 'success',
                             content: 'Субдомен додано!'
                         });
                         location.reload();
                     }
-                    else{
+                    else {
                         $ngBootbox.alert(response.message);
                     }
                 })
@@ -401,7 +404,7 @@ angular
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
-                    $scope.domainPath = response.domainPath+'/lists/';
+                    $scope.domainPath = response.domainPath + '/lists/';
                 }, function errorCallback() {
                     bootbox.alert("Отримати піддомен не вдалося");
                 });
@@ -477,7 +480,7 @@ angular
         }
     ])
 
-    .controller('cmsSocialNetworksCtrl', ['$scope', 'cmsService', '$http','ngToast',
+    .controller('cmsSocialNetworksCtrl', ['$scope', 'cmsService', '$http', 'ngToast',
         function ($scope, cmsService, $http, ngToast) {
             $scope.changePageHeader('Редактор соцмереж');
             $scope.getSettings = function () {
@@ -491,7 +494,7 @@ angular
                         else {
                             $scope.settings = response;
                         }
-                        $scope.buttonShow=true;
+                        $scope.buttonShow = true;
                     }, function errorCallback() {
                         bootbox.alert("Отримати дані не вдалося");
                     });
@@ -530,14 +533,14 @@ angular
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
-                    $scope.domainPathNews = response.domainPath+'/news/';
+                    $scope.domainPathNews = response.domainPath + '/news/';
                 }, function errorCallback() {
                     bootbox.alert("Отримати піддомен не вдалося");
                 });
 
             $scope.loadCmsNews = function () {
                 cmsService.newsList().$promise
-                    .then(function successCallback(response){
+                    .then(function successCallback(response) {
                         if (response.length == 0) {
                             $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
                                 $scope.news = response;
@@ -582,7 +585,7 @@ angular
                 cmsService.removeNews({id: id, image: image}).$promise
                     .then(function successCallback() {
                         $scope.loadCmsNews();
-                    }, function errorCallback(response){
+                    }, function errorCallback(response) {
                         bootbox.alert(response.data.reason);
                     });
             };
@@ -598,18 +601,21 @@ angular
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
-                    $scope.domainPath = response.domainPath+'/carousel/';
+                    $scope.domainPath = response.domainPath + '/carousel/';
 
                     cmsService.menuSlider().$promise
                         .then(function successCallback(response) {
                             if (response.length == 0) {
                                 $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
                                     $scope.slides = response;
+                                    for (var i = 0; i < $scope.slides.length; i++) {
+                                        $scope.slides[i].src = basePath + '/domains/' + $scope.slides[i].src;
+                                    }
                                 });
                             } else {
                                 $scope.slides = response;
-                                for(var i=0; i<$scope.slides.length; i++){
-                                    $scope.slides[i].src = $scope.domainPath+$scope.slides[i].src;
+                                for (var i = 0; i < $scope.slides.length; i++) {
+                                    $scope.slides[i].src = $scope.domainPath + $scope.slides[i].src;
                                 }
                             }
                         }, function errorCallback() {
@@ -627,7 +633,7 @@ angular
 
             cmsService.domainPath().$promise
                 .then(function successCallback(response) {
-                    $scope.domainPath = response.domainPath+'/carousel/';
+                    $scope.domainPath = response.domainPath + '/carousel/';
                 }, function errorCallback() {
                     bootbox.alert("Отримати піддомен не вдалося");
                 });
@@ -683,18 +689,18 @@ angular
 
         }
     ])
-    .filter('isNotLink', function() {
+    .filter('isNotLink', function () {
         return function (input) {
-            return input.indexOf("https://")==-1 && input.indexOf("http://")==-1
+            return input.indexOf("https://") == -1 && input.indexOf("http://") == -1
         };
     })
 
-function changeColorOff (e) {
-    element= jQuery(e).children();
+function changeColorOff(e) {
+    element = jQuery(e).children();
     element.css("color", e.getAttribute("data-link"));
 }
 
-function changeColorOn (e) {
-    element= jQuery(e).children();
-    element.css("color",e.getAttribute("data-hover"));
+function changeColorOn(e) {
+    element = jQuery(e).children();
+    element.css("color", e.getAttribute("data-hover"));
 }

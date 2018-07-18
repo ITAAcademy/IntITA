@@ -315,16 +315,27 @@ class CmsController extends TeacherCabinetController
     }
     public function actionUpdateMenuSlider()
     {
-        $uploadedFile = CrmImageUploadHelper::uploadImage($_POST["previousImage"],"carousel",key($_FILES));
-        $params = array_filter((array)json_decode($_POST['data']));
-        $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();
-        $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-        $menuSlider->attributes = $params;
-        if(isset($uploadedFile)){
-            $menuSlider->src = $uploadedFile;
-        }
-        if (!$menuSlider->save()) {
-            throw new \application\components\Exceptions\IntItaException(500, $menuSlider->getValidationErrors());
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $params = array_filter((array)json_decode($_POST['data']));
+            $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();
+            $link = CrmImageUploadHelper::uploadImage($menuSlider->src,"carousel",key($_FILES));
+            $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $menuSlider->attributes = $params;
+
+            if($link){
+                $menuSlider->src = $link;
+            }
+            if (!$menuSlider->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $menuSlider->getValidationErrors());
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
 
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);

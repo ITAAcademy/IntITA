@@ -1,129 +1,78 @@
 <script type="text/javascript">
-    domainPath='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/lists/"   ?>';
-    domainPathNews='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/news/"   ?>';
-    domainPathLogo='<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() ."/logo/"   ?>';
+    domainPath = '<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() . "/lists/"   ?>';
+    domainPathNews = '<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() . "/news/"   ?>';
+    domainPathLogo = '<?php echo Config::getBaseUrl() . '/domains/' . Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . '.' . Config::getBaseUrlWithoutSchema() . "/logo/"   ?>';
 </script>
 <style>
-    .slide img{width:100%;height:500px !important;z-index:0;}
-    #cms_content_generate{
+    .slide img {
+        width: 100%;
+        height: 500px !important;
+        z-index: 0;
+    }
+
+    #cms_content_generate {
         margin-bottom: 40px;
     }
-    #save_cms{
+
+    #save_cms {
         position: absolute;
         margin-top: 75px;
     }
 
 </style>
-<div  ng-controller="cmsCtrl" >
+<div ng-controller="cmsCtrl">
     <div id="cms_content_generate">
-        <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'jquery.min.js'); ?>"></script>
+        <script type="text/javascript"
+                src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular/angular.js'); ?>"></script>
+        <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-resource/angular-resource.min.js'); ?>"></script>
+        <script type="text/javascript"
+                src="<?php echo StaticFilesHelper::fullPathTo('angular', 'cmsControllers.js'); ?>"></script>
+        <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/services/cmsDomainService.js'); ?>"></script>
+        <script type="text/javascript"
+                src="<?php echo StaticFilesHelper::fullPathTo('js', 'jquery.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo StaticFilesHelper::fullPathTo('js', 'cms.js'); ?>"></script>
-        <div id="cms_content" class="clearfix">
+        <div id="cms_content" class="clearfix" ng-app="cmsDomainApp">
             <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'fontface.css'); ?>"/>
-            <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/main.css'); ?>"/>
-            <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/header.css'); ?>"/>
-            <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/slider.css'); ?>"/>
-            <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/about_us.css'); ?>"/>
-            <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/news.css'); ?>"/>
-            <link rel="stylesheet" type="text/css" href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/footer.css'); ?>"/>
-            <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>">
+            <link rel="stylesheet" type="text/css"
+                  href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/main.css'); ?>"/>
+            <link rel="stylesheet" type="text/css"
+                  href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/header.css'); ?>"/>
+            <link rel="stylesheet" type="text/css"
+                  href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/slider.css'); ?>"/>
+            <link rel="stylesheet" type="text/css"
+                  href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/about_us.css'); ?>"/>
+            <link rel="stylesheet" type="text/css"
+                  href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/news.css'); ?>"/>
+            <link rel="stylesheet" type="text/css"
+                  href="<?php echo StaticFilesHelper::fullPathTo('css', 'cms/footer.css'); ?>"/>
+            <link rel="stylesheet"
+                  href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>">
             <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'); ?>"></script>
-            <?php
-            $this->renderPartial('_header', array());
-            $this->renderPartial('_slider', array());
-            $this->renderPartial('_about_us', array());
-            $this->renderPartial('_news', array());
-            $this->renderPartial('_footer', array());
-            ?>
-            <script>
-                    $(".owl-carousel img").height($(window).width()/2);
-                    $(window).resize(function () {
-                        $(".owl-carousel img").height($(window).width()/2);
-                    });
-                    $(window).on("orientationchange",function(){
-                        $(".owl-carousel img").height($(window).width()/2);
-                    });
-                 angular
-                        .module('cmsAppNew',['ui.bootstrap'])
-                          .controller('sliderGeneratedCtrl', ['$scope','$http',
-                            function ($scope,$http) {
-                                var domain = "",
-                                sliders_src = [],
-                                slide_title = [],
-                                slide_description = [],
-                                currIndex = 0,   /*поточна кількість доданих слайдів*/
-                                slides = $scope.slides = [];   /*масив об'єктів з властивостями слайдів*/
-                                var head = document.getElementById('cms_content_generate');
-                                var script = document.createElement('script');
-                                script.type = 'text/javascript';
-                                script.src = "<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular/angular.min.js'); ?>";
-                                head.appendChild(script);
-                                $http({
-                                    method: 'GET',
-                                    url: '/_teacher/_admin/cms/getDomainPath'
-                                }).then(function (response) {
-                                    domain = response.data.domainPath;
-                                }).then(function () {
-                                    $http({
-                                        method: 'GET',
-                                        url: '/_teacher/_admin/cms/getMenuSlider'
-                                    }).then(function (response) {
-                                        if (response.data.length == 0) {
-                                            $http.get('/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
-                                                addSlideWithInfo(response,false);
-                                            });
-                                        }
-                                        else{
-                                            addSlideWithInfo(response,true);
-                                        }
-                                        function addSlideWithInfo(response,status){
-                                            if (status == true){
-                                                var data = response.data;
-                                                var img_address = domain + '/carousel/';
-                                            }
-                                            else{
-                                                var data = response;
-                                                var img_address = "";
-                                            }
-                                            for(var i = 0; i < data.length; i++) {
-                                                sliders_src.push(img_address +data[i].src);
-                                                slide_title.push(data[i].title);
-                                                slide_description.push(data[i].description);
-                                            };
-                                            for (var i = 0; i < sliders_src.length; i++) {   /*формування початкового набору слайдів*/
-                                                $scope.addSlide();
-                                                currIndex++;
-                                            };
-                                        }
-                                    });
-                                })
-                                $scope.test = 5;
-                                $scope.myInterval = 3000;   /*період зміни слайдів*/
-                                $scope.noWrapSlides = false;   /*???*/
-                                $scope.active = 0;   /*індекс першого слайду*/
-                                $scope.addSlide = function() {   /*функція для додавання нового слайду*/
-                                    slides.push({
-                                        src: sliders_src[currIndex],   /*адреса зображення*/
-                                        title: slide_title[currIndex],   /*стрічка тексту*/
-                                        description: slide_description[currIndex],
-                                        id: currIndex   /*індекс поточного слайду*/
-                                    });
-                                };
-                            }
-                        ]);
-            </script>
+            <div ng-controller="mainCmsCtrl">
+                <?php
+                $this->renderPartial('_header', array());
+                $this->renderPartial('_slider', array());
+                $this->renderPartial('_about_us', array());
+                $this->renderPartial('_news', array());
+                $this->renderPartial('_footer', array());
+                ?>
+            </div>
         </div>
         <div>
-            <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generatePage()" class="btn btn-primary hide_edit" >
+            <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generatePage()"
+                   class="btn btn-primary hide_edit">
         </div>
     </div>
-    <div ng-include="templateUrl('logoModal.html')"></div>
-    <div ng-include="templateUrl('menuListModal.html')"></div>
-    <div ng-include="templateUrl('headerModal.html')"></div>
-    <div ng-include="templateUrl('titlesModal.html')"></div>
-    <div ng-include="templateUrl('aboutUsModal.html')"></div>
-    <div ng-include="templateUrl('newsModal.html')"></div>
-    <div ng-include="templateUrl('socialNetworksModal.html')"></div>
+    <div class="news_box" ng-repeat="new in news track by $index">
+        <div ng-include="templateUrl('/modal/newsModalLeft.html')" ng-init="index = $index"></div>
+    </div>
+    <div ng-include="templateUrl('/modal/logoModal.html')"></div>
+    <div ng-include="templateUrl('/modal/menuListModal.html')"></div>
+    <div ng-include="templateUrl('/modal/headerModal.html')"></div>
+    <div ng-include="templateUrl('/modal/titlesModal.html')"></div>
+    <div ng-include="templateUrl('/modal/aboutUsModal.html')"></div>
+    <div ng-include="templateUrl('/modal/newsModal.html')"></div>
+    <div ng-include="templateUrl('/modal/socialNetworksModal.html')"></div>
 </div>
 
 

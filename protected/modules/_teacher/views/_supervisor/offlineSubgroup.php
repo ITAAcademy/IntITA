@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="offlineSubgroupCtrl">
+<div class="panel panel-default">
     <div class="panel-body">
         <ul class="list-inline">
             <li>
@@ -50,7 +50,6 @@
                 <uib-tab index="2" heading="Виключені студенти">
                     <?php $this->renderPartial('/_supervisor/tables/_canceledStudents',array());?>
                 </uib-tab>
-
             </uib-tabset>
         </div>
     </div>

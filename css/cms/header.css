@@ -49,6 +49,7 @@
 .edit{
     position: absolute;
     cursor: pointer;
+    z-index: 100;
 }
 .top-right{
     top:0;
