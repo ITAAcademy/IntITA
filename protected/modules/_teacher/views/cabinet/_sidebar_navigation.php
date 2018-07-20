@@ -121,6 +121,14 @@
                         <i class="fa fa-link fa-fw"></i>
                     </a>
                 </li>
+                <li>
+                    <a href="#/vacations" class="show_elem">
+                        <i class="fa fa-link fa-fw"></i> Відпустки
+                    </a>
+                    <a href="#/vacations" uib-tooltip="Відпустки" tooltip-placement="right" class="hid" style="display: none">
+                        <i class="fa fa-sun-o fa-fw"></i>
+                    </a>
+                </li>
                 <?php if(
                     Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin())
                 ) {?>
