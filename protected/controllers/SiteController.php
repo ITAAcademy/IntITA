@@ -197,7 +197,8 @@ class SiteController extends Controller {
         $part = Yii::app()->request->getPost('page', 0);
         $user_id = Yii::app()->user->id;
 
-        $Model = EventsFactory::trackEvent($event);
+        $eventsFactory = new EventsFactory;
+        $Model = $eventsFactory->trackEvent($event);
         $Model->trackEvent($user_id, $lesson, $part);
 //        $r = new LogTracks;
 //        $r->LogOut(Yii::app()->user->getId());
@@ -660,7 +661,8 @@ class SiteController extends Controller {
                         $part = Yii::app()->request->getPost('page', 0);
                         $user_id = Yii::app()->user->id;
 
-                        $Model = EventsFactory::trackEvent($event);
+                        $eventsFactory = new EventsFactory;
+                        $Model = $eventsFactory->trackEvent($event);
                         $Model->trackEvent($user_id, $lesson, $part);
                         if (!empty($callBack)) {
                             $this->redirect($callBack);
