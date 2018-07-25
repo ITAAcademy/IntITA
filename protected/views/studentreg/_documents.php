@@ -11,28 +11,40 @@
 <div ng-show="document.type" ng-form name="documents">
     <div class="row" ng-show="document.type==1">
         <label><?php echo Yii::t('regexp', '0162') ?></label>
-        <input type="text" maxlength="32" placeholder="<?php echo Yii::t('regexp', '0162') ?>" ng-model="document.last_name">
+        <input type="text" maxlength="32" name="last_name" placeholder="<?php echo Yii::t('regexp', '0162') ?>" ng-model="document.last_name" ng-pattern="regexpDocumentsForm.userFullName">
+        <div ng-cloak class="clientValidationError" ng-show="documents.last_name.$error.pattern">
+            Введено неприпустимий символ
+        </div>
     </div>
     <div class="row" ng-show="document.type==1">
         <label><?php echo Yii::t('regexp', '0160') ?></label>
-        <input type="text" maxlength="32" placeholder="<?php echo Yii::t('regexp', '0160') ?>" ng-model="document.first_name">
+        <input type="text" maxlength="32" placeholder="<?php echo Yii::t('regexp', '0160') ?>" ng-model="document.first_name" name="first_name" ng-pattern="regexpDocumentsForm.userFullName">
+        <div ng-cloak class="clientValidationError" ng-show="documents.first_name.$error.pattern">
+            Введено неприпустимий символ
+        </div>
     </div>
     <div class="row" ng-show="document.type==1">
         <label><?php echo 'По-батькові' ?></label>
-        <input type="text" maxlength="32" placeholder="<?php echo 'По-батькові' ?>" ng-model="document.middle_name">
+        <input type="text" maxlength="32" name="middle_name" placeholder="<?php echo 'По-батькові' ?>" ng-model="document.middle_name" ng-pattern="regexpDocumentsForm.userFullName">
+        <div ng-cloak class="clientValidationError" ng-show="documents.middle_name.$error.pattern">
+            Введено неприпустимий символ
+        </div>
     </div>
     <div class="row">
         <label><?php echo Yii::t('regexp', '0927') ?></label>
-        <input ng-if="document.type==1" type="text" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-model="document.number" ng-required="true">
-        <input ng-if="document.type==2" type="text" name="inn" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-pattern="innRegexp" ng-model="document.number" ng-required="true">
+        <input ng-if="document.type==1" type="text" name="pasportNumber" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-model="document.number" ng-required="true" ng-pattern="regexpDocumentsForm.pasportNumber">
+        <input ng-if="document.type==2" type="text" name="inn" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-pattern="regexpDocumentsForm.innNumber" ng-model="document.number" ng-required="true">
         <input ng-if="document.type==3" type="text" name="certificate" placeholder="<?php echo Yii::t('regexp', '0927') ?>" ng-model="document.number" ng-required="true">
-        <div ng-cloak class="clientValidationError" ng-show="documents.inn.$error.pattern">
-            Введіть 10-значний ідентифікаційний номер
+        <div ng-cloak class="clientValidationError" ng-show="documents.inn.$error.pattern || documents.pasportNumber.$error.pattern">
+            {{documents.inn.$error.pattern ? 'Введіть 10-значний ідентифікаційний номер' : documents.pasportNumber.$error.pattern ? 'Введіть (серію та) 6-значний номер' : ''}}
         </div>
     </div>
     <div class="row" ng-show="document.type==1">
         <label><?php echo Yii::t('regexp', '0928') ?></label>
-        <input type="text" placeholder="<?php echo Yii::t('regexp', '0928') ?>" ng-model="document.issued">
+        <input type="text" name="issued" placeholder="<?php echo Yii::t('regexp', '0928') ?>" ng-model="document.issued" ng-pattern="regexpDocumentsForm.issued">
+        <div ng-cloak class="clientValidationError" ng-show="documents.issued.$error.pattern">
+            Введено неприпустимий символ
+        </div>
     </div>
     <div class="row" ng-show="document.type==1">
         <label><?php echo Yii::t('regexp', '0929') ?></label>
