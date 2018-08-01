@@ -549,8 +549,7 @@ function editProfileController($scope, $http, countryCity, careerService, specia
         userFullName: /^[а-еж-щьюяієїґА-ЕЖ-ЩЬЮЯІЇЄҐ\-\'’]*$/,
         pasportNumber: /^([а-еж-щьюяієїґ]{2}\d{6})$|^(\d{6})$/i,
         issued: /^[а-еж-щьюяієїґ\-\s\'’]*$/i,
-        innNumber: /^\d{10}$/,
-
+        innNumber: /^\d{10}$/
     }
 
 }
