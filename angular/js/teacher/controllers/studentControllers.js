@@ -463,7 +463,7 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
     };
     $scope.getWrittenAgreementRequestStatus($stateParams.agreementId);
 
-    $scope.updateUserAgreementData = function(type, data, attributes){
+    $scope.updateUserAgreementData = function(type, data,attributes){
         bootbox.dialog({
                 title: "Змінити дані",
                 message: '<div class="panel-body"><div class="row"><form role="form" name="commentMessage"><div class="form-group col-md-12">'+

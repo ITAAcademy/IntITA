@@ -542,6 +542,7 @@ class StudentController extends TeacherCabinetController
                 return;
             }
         }
+        
     }
 
     public function actionUpdateUserData()
