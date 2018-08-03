@@ -17,6 +17,7 @@ $header = new Header();
           content="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'intitaLogo.jpg'); ?>">
     <!-- for tabs -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="<?php echo Yii::app()->getRequest()->getCsrfToken() ?>">
 
     <!-- fonts -->
     <link rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', 'fontface.css'); ?>"/>

@@ -23,6 +23,8 @@ class Controller extends CController
 
         Config::model()->cache(3600)->findAllByAttributes(array('hidden' => 0));
         $this->pageTitle = Yii::app()->name;
+        // parent::init();
+        // $this->initAjaxCsrfToken();
 	}
 	/**
 	 * @var string the default layout for the controller view. Defaults to '//layouts/column1',
@@ -60,6 +62,15 @@ class Controller extends CController
 			),
 		);
 	}
+
+	// this function will work to post csrf token.
+    // protected function initAjaxCsrfToken() {
+
+    //     Yii::app()->clientScript->registerScript('AjaxCsrfToken', ' $.ajaxSetup({
+    //                      data: {"' . Yii::app()->request->csrfTokenName . '": "' . Yii::app()->request->csrfToken . '"},
+    //                      cache:false
+    //                 });', CClientScript::POS_HEAD);
+    // }
         
 //        public function afterAction($action) {
 //             $sql = 'INSERT INTO log_actions VALUES '

@@ -6,6 +6,7 @@ angular
     .controller('profileCtrl',profileCtrl);
 
 function profileCtrl($http,$scope, $ngBootbox, $httpParamSerializerJQLike) {
+
     $scope.getProfileData=function (userId) {
         var promise = $http({
             url: basePath+'/studentreg/getProfileData',

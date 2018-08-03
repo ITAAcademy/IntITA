@@ -257,6 +257,10 @@ return array(
                 ),
             ),
         ),
+        'request' => array(
+            'class' => 'application.components.HttpRequest',
+            'enableCsrfValidation' => true,
+        ),
     ),
     'params' => $params_config['params'],
     // application-level parameters that can be accessed
