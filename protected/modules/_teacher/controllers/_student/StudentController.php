@@ -532,17 +532,15 @@ class StudentController extends TeacherCabinetController
         $attribute = Yii::app()->request->getPost('attribute');
         $data = Yii::app()->request->getPost('data');
 
-        $actualDocuments=UserDocuments::model()->with('documentType','documentsFiles','idUser')->findAllByAttributes(array('id_user' => Yii::app()->user->getId(),'actual' => UserDocuments::ACTUAL));
+        $actualDocuments=UserDocuments::model()->with('documentType','documentsFiles','idUser')->findAllByAttributes(array('id_user'=>Yii::app()->user->getId(),'actual'=>UserDocuments::ACTUAL));
 
         foreach ($actualDocuments as $document){
-            if ($attribute === 'issued_date' && $document->hasAttribute($attribute)) {
-                $document->$attribute = date("Y-m-d", strtotime($data));
-            } else if(isset($document[$attribute]) && $document->type == $type){
-                $document->$attribute = $data;
+            if(isset($document[$attribute]) && $document->type==$type){
+                $document->$attribute=$data;
+                $document->updatedAt=new CDbExpression('NOW()');
+                $document->update();
+                return;
             }
-            $document->updatedAt = new CDbExpression('NOW()');
-            $document->update();
-            return;
         }
     }
 
