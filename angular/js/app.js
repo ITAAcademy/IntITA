@@ -12,7 +12,7 @@ var csrftoken =  (function() {
 })();
 
 /* App Module */
-var mainApp = angular
+angular
     .module('mainApp', [
         'mainApp.directives',
         'ui.bootstrap',
@@ -32,6 +32,3 @@ var mainApp = angular
     .config(function ($httpProvider) {
         $httpProvider.defaults.headers.post = { 'YII_CSRF_TOKEN': csrftoken }
     });
-
-
-// mainApp.constant('CSRF_TOKEN', csrftoken);
