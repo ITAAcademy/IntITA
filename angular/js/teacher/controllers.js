@@ -542,24 +542,35 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
         }
     };
     $scope.deleteMessage = function (idMessage, url, receiver) {
-        bootbox.confirm('Ти дійсно хочеш видалити повідомлення?', function (result) {
-            if (result)
-                $http({
-                    method: "POST",
-                    url: url,
-                    data: $jq.param({
-                        data: JSON.stringify({
-                            message: idMessage,
-                            receiver: receiver
-                        })
-                    }),
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
-                    cache: false
-                }).then(function successCallback() {
-                    $state.go('messages', {}, {reload: true});
-                }, function errorCallback() {
-                    bootbox.alert("Операцію не вдалося виконати.");
-                });
+        bootbox.confirm({
+            message: 'Ти дійсно хочеш видалити повідомлення?',
+            buttons: {
+                confirm: {
+                    label: 'Погоджуюсь',
+                },
+                cancel: {
+                    label: 'Відмінити',
+                }
+            },
+            callback: function (result) {
+                if (result)
+                    $http({
+                        method: "POST",
+                        url: url,
+                        data: $jq.param({
+                            data: JSON.stringify({
+                                message: idMessage,
+                                receiver: receiver
+                            })
+                        }),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        cache: false
+                    }).then(function successCallback() {
+                        $state.go('messages', {}, {reload: true});
+                    }, function errorCallback() {
+                        bootbox.alert("Операцію не вдалося виконати.");
+                    });
+            }
         });
     };
 
