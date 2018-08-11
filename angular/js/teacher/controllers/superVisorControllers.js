@@ -18,7 +18,10 @@ angular
     .controller('groupModulesAttributesCtrl', groupModulesAttributesCtrl)
     .controller('groupModulesTeachersFormCtrl', groupModulesTeachersFormCtrl)
     .controller('lecturesRatingTableCtrl', lecturesRatingTableCtrl)
-    .controller('modulesRatingTableCtrl', modulesRatingTableCtrl);
+    .controller('modulesRatingTableCtrl', modulesRatingTableCtrl)
+    .controller('offlineGroupStudentsCtrl', offlineGroupStudentsCtrl)
+    .controller('coursesAccessCtrl', coursesAccessCtrl)
+    .controller('modulesAccessCtrl', modulesAccessCtrl);
 
 function superVisorCtrl (){
     $scope.shifts = [{id:'1', title:'ранкова'},{id:'2', title:'вечірня'},{id:'3', title:'байдуже'}];
@@ -108,6 +111,21 @@ function offlineGroupSubgroupsTableCtrl ($scope, superVisorService, NgTableParam
 
 function offlineGroupCtrl ($scope, $state, $http, $stateParams, superVisorService, NgTableParams, typeAhead, $filter, chatIntITAMessenger, lodash){
     $scope.changePageHeader('Офлайн група');
+
+    $scope.tabs = [
+        { title: "Підгрупи", route: "offlineSubgroups"},
+        { title: "Студенти", route: "offlineStudents"},
+        { title: "Доступ до курсів", route: "coursesAccess"},
+        { title: "Доступ до модулів", route: "modulesAccess"},
+        { title: "Викладачі", route: "modulesTeachers"},
+    ];
+
+    $scope.tabs.forEach(function(item, i) {
+        if('supervisorGroup.'+item.route==$state.current.name) {
+            $scope.active=i;
+        }
+    });
+
     if($stateParams.id){
         $scope.shifts = [{id:'1', title:'ранкова'},{id:'2', title:'вечірня'},{id:'3', title:'байдуже'}];
         $scope.groupId=$stateParams.id;
@@ -254,7 +272,7 @@ function offlineGroupCtrl ($scope, $state, $http, $stateParams, superVisorServic
         }).then(function successCallback(response) {
             bootbox.alert(response.data, function(){
                 chatIntITAMessenger.updateGroup($stateParams.id).then(function () {
-                    $state.go("supervisor/offlineGroup/:id", {id:$stateParams.id}, {reload: true});
+                    $state.go("supervisorGroup/:id/offlineSubgroups", {id:$stateParams.id}, {reload: true});
                 });
             });
         }, function errorCallback() {
@@ -353,7 +371,6 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
     }
     if($stateParams.id) {
         $scope.shifts = [{id:'1', title:'ранкова'},{id:'2', title:'вечірня'},{id:'3', title:'байдуже'}];
-        $scope.types = [];
         $scope.subgroupId = $stateParams.id;
         $scope.offlineStudentsTableParams = new NgTableParams({'idSubgroup': $scope.subgroupId}, {
             getData: function (params) {
@@ -378,19 +395,6 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
                     });
             }
         });
-
-        $scope.types = usersService
-            .getCancelType()
-            .$promise
-            .then(function (data) {
-                var temp = data;
-                $scope.reason = [];
-                $scope.reason = $scope.reason.concat(temp);
-                return $scope.reason;
-            })
-            .catch(function(){
-                bootbox.alert('Помилка, зверніться до адміністратора');
-            });
     };
 
     $scope.sendFormSubgroup= function (scenario, name, groupId, subgroupData, selectedTrainer,subgroupId, journal, link) {
@@ -415,10 +419,10 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
             bootbox.alert(response.data.message, function(){
                 if(response.data.idSubgroup){
                     chatIntITAMessenger.updateSubgroup(response.data.idSubgroup).then(function () {
-                        $state.go("supervisor/offlineGroup/:id", {id:$scope.groupId}, {reload: true});
+                        $state.go("supervisorGroup/:id/offlineSubgroups", {id:$scope.groupId}, {reload: true});
                     });
                 }else{
-                    $state.go("supervisor/offlineGroup/:id", {id:$scope.groupId}, {reload: true});
+                    $state.go("supervisorGroup/:id/offlineSubgroups", {id:$scope.groupId}, {reload: true});
                 }
             });
         }, function errorCallback() {
@@ -450,7 +454,7 @@ function offlineSubgroupCtrl ($scope, $state, $http, $stateParams, superVisorSer
     };
     $scope.goBack= function () {
         if($stateParams.groupId) {
-            $state.go('supervisor/offlineGroup/:id', {id:$stateParams.groupId}, {reload: true});
+            $state.go('supervisorGroup.offlineSubgroups', {id:$stateParams.groupId}, {reload: true});
         } else if($stateParams.id) {
             $state.go('supervisor/offlineSubgroup/:id', {id:$stateParams.id}, {reload: true});
         }
@@ -819,7 +823,7 @@ function offlineStudentSubgroupCtrl ($scope, $http, superVisorService, $statePar
                     );
                     $jq('.apply-btn').prop('disabled', true);
 
-                    $jq('#selected_reason').on('change', function () {
+                    $jq('#selected_reason' && '#datepicker').on('change', function () {
                         $jq('.apply-btn').prop('disabled', false);
                     });
 
@@ -979,6 +983,56 @@ function modulesRatingTableCtrl($scope, superVisorService, NgTableParams) {
                 .$promise
                 .then(function (data) {
                     params.total(data.count);
+                    return data.rows;
+                });
+        }
+    });
+}
+
+function offlineGroupStudentsCtrl ($scope, $state, $stateParams, superVisorService, NgTableParams){
+    $scope.changePageHeader('Офлайн студенти');
+
+    $scope.offlineStudentsTableParams = new NgTableParams({'idGroup':$scope.groupId}, {
+        getData: function (params) {
+            return superVisorService
+                .offlineStudentsList(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    return data.rows;
+                });
+        }
+    });
+}
+
+function coursesAccessCtrl ($scope, $state, $stateParams, superVisorService, NgTableParams) {
+    $scope.changePageHeader('Доступ до курсів');
+
+    $scope.groupCoursesAccessParams = new NgTableParams({'idGroup': $scope.groupId}, {
+        getData: function (params) {
+            return superVisorService
+                .courseAccessList(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    $scope.courseServices = data.rows;
+                    return data.rows;
+                });
+        }
+    });
+}
+
+function modulesAccessCtrl ($scope, $state, $stateParams, superVisorService, NgTableParams) {
+    $scope.changePageHeader('Доступ до модулів');
+
+    $scope.groupModulesAccessParams = new NgTableParams({'idGroup':$scope.groupId}, {
+        getData: function (params) {
+            return superVisorService
+                .moduleAccessList(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    $scope.moduleServices=data.rows;
                     return data.rows;
                 });
         }

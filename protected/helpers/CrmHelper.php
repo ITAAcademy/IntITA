@@ -2,7 +2,7 @@
 
 class CrmHelper
 {
-    static function getUsersCrmTasks($user, $active=false, $role=false, $completed = false)
+    static function getUsersCrmTasks($user, $active=true, $role=false, $completed = false)
     {
         $tasksIds = CrmHelper::getIndividualUsersCrmTasks($user, $active, $role, $completed);
         $subgroupsTasksIds = CrmHelper::getSubgroupsCrmTasks($user, $active, $role, $completed);
@@ -43,7 +43,7 @@ class CrmHelper
         if($role) $role_sql=' and t.role=' . $role;
         if($completed) $completed_sql=' and ct.id_state!=' . CrmTaskStatus::COMPLETED;
         $sql_tasks="SELECT DISTINCT `id_task` FROM crm_subgroup_roles_tasks as t LEFT JOIN crm_tasks ct
-							ON ct.id = t.id_task WHERE id_subgroup in ".$userSubgroups.$active_user_sql.$role_sql.$completed_sql;
+							ON ct.id = t.id_task WHERE id_subgroup in ".$userSubgroups.$active_user_sql.$role_sql.$completed_sql.' and t.cancelled_date is null';
         $tasks=CrmSubgroupRolesTasks::model()->findAllBySql($sql_tasks);
 
         $ids=array();

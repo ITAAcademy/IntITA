@@ -1,0 +1,52 @@
+<div class="modal fade" id="logoModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Завантажити логотип</h4>
+            </div>
+            <div class="modal-body">
+                <div class="grid_group3">
+                    <div class="in_group3">
+                        <div class="intent">
+                            <p class="in_intent">Logo </p>
+                        </div>
+                    </div>
+                    <div class="in_group3">
+                        <a href="/">
+                            <img ng-if="settings.logo" class="preview" id="logo_img"
+                                 ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
+                        </a>
+                    </div>
+                    <div class="in_group3-1">
+                        <div class="intent">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-trash" title="Видалити" aria-hidden="true"
+                                   id="logo_clear"
+                                   ng-click="removeLogoCms(settings.id, settings.logo)"></i>
+                            </a>
+                        </div>
+
+                        <div class="logo">
+                            <input id="logoUpdate" enctype="multipart/form-data" type="file"
+                                   class="form-control image_update" ng-model="settings.logo"
+                                   value="settings.logo" placeholder="Лого компанії"
+                                   name="photo">
+                        </div>
+                    </div>
+                    <div class="in_group3">
+                        <div class="intent">
+                            <p class="logo-discription">Пропорції лого 9*16, розмір файла до 1
+                                МБ, формат файлу JPG, GIF, PNG, SVG</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        ng-click="updateSettings(settings, settings.logo )">Зберегти
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

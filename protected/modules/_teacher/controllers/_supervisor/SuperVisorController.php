@@ -60,9 +60,26 @@ class SuperVisorController extends TeacherCabinetController
         $this->renderPartial('/_supervisor/forms/_subgroupForm', array('scenario' => 'update'), false, true);
     }
 
+    public function actionOfflineGroupSubgroups()
+    {
+        $this->renderPartial('/_supervisor/tables/_offlineGroupSubgroups', array(), false, true);
+    }
+
     public function actionOfflineStudents()
     {
         $this->renderPartial('/_supervisor/tables/_offlineStudents', array(), false, true);
+    }
+    public function actionCoursesAccess()
+    {
+        $this->renderPartial('/_supervisor/tables/_coursesAccess', array(), false, true);
+    }
+    public function actionModulesAccess()
+    {
+        $this->renderPartial('/_supervisor/tables/_modulesAccess', array(), false, true);
+    }
+    public function actionModulesTeachers()
+    {
+        $this->renderPartial('/_supervisor/tables/_modulesTeachers', array(), false, true);
     }
 
     public function actionStudentsWithoutGroup()
@@ -217,11 +234,9 @@ class SuperVisorController extends TeacherCabinetController
             `user` u
         inner join user_student us on u.id = us.id_user
             left JOIN offline_students os ON u.id = os.id_user
-            left JOIN offline_subgroups osg ON osg.id = os.id_subgroup
-            left JOIN offline_groups og ON og.id = osg.group
         WHERE 
          u.cancelled=" . StudentReg::ACTIVE . " and os.id_user IS NULL and us.end_date IS NULL and u.educform=" . EducationForm::ONLINE_OFFLINE . " 
-         and og.id_organization = " . Yii::app()->user->model->getCurrentOrganizationId()."
+         and us.id_organization = " . Yii::app()->user->model->getCurrentOrganizationId()."
         UNION
         SELECT
             os.id_user
@@ -229,11 +244,9 @@ class SuperVisorController extends TeacherCabinetController
             `user` u
             inner join user_student us on u.id = us.id_user
             left JOIN offline_students os ON u.id = os.id_user
-            left JOIN offline_subgroups osg ON osg.id = os.id_subgroup
-            left JOIN offline_groups og ON og.id = osg.group
         WHERE 
          u.cancelled=" . StudentReg::ACTIVE . " and us.end_date IS NULL and u.educform=" . EducationForm::ONLINE_OFFLINE . "
-            and  os.id_user IS not NULL and og.id_organization = " . Yii::app()->user->model->getCurrentOrganizationId()."
+            and  os.id_user IS not NULL and us.id_organization = " . Yii::app()->user->model->getCurrentOrganizationId()."
         GROUP BY os.id_user
         HAVING count(os.id_user)=sum(if(os.end_date,1,0));";
 
@@ -492,7 +505,7 @@ class SuperVisorController extends TeacherCabinetController
             $groups = OfflineGroups::groupsByQuery($query);
             echo $groups;
         } else {
-            throw new \application\components\Exceptions\IntItaException('400');
+            throw new \application\components\Exceptions\IntItaException(400);
         }
     }
 
@@ -699,7 +712,7 @@ class SuperVisorController extends TeacherCabinetController
         $groupAccess = GroupAccess::model()->findByPk(array('group_id' => $idGroup, 'service_id' => $idService));
         $groupAccess->end_date = date('Y-m-d');
         if ($groupAccess->save()) return true;
-        else  throw new \application\components\Exceptions\IntItaException('500');
+        else  throw new \application\components\Exceptions\IntItaException(500);
     }
 
     public function actionAddTrainer($id)

@@ -7,7 +7,7 @@ class UsersController extends TeacherCabinetController
         $allowedDenySetActions = ['addAdmin', 'createAccountant'];
         $allowedUsersTables = ['users','getUsersList','getTrainersList','coworkers','getTeachersList','students','getStudentsList',
             'getEducationTime','getEducationForm','attachStudents','personalInfo','getPersonalInfo','careerInfo','getCareerInfo',
-            'getSpecializationGroup','getPayForm','contractInfo','visitInfo','getVisitInfo','getCancelType','getStudentsProjectList'];
+            'getSpecializationGroup','getPayForm','contractInfo','visitInfo','getVisitInfo','getCancelType','getStudentsProjectList', 'getGroupNumber', 'updateStudent' ];
         $allowedCMActions = ['contentAuthors','getAuthorsList','teacherConsultants','getTeacherConsultantsList'];
         $allowedGroups = ['offlineGroups','offlineGroup','offlineSubgroup'];
         $allowedForStudent = ['getGroupNumber'];
@@ -428,6 +428,21 @@ class UsersController extends TeacherCabinetController
         echo json_encode($result);
     }
 
+    public function actionGetAllActualTrainers()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->distinct = true;
+        $criteria->addCondition('end_date IS NULL');
+        $criteria->addCondition('id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
+        $criteria->select = 'id_user';
+        $trainers = UserTrainer::model()->findAll($criteria);
+        $result = array();
+        foreach($trainers as $item){
+            array_push($result, ['id'=>$item->id_user, 'fullName'=>$item->idUser->fullName]);
+        }
+        echo json_encode($result);
+    }
+
     public function actionExchangeTrainers()
     {
         $id_old_trainer = $_GET['id_old'];
@@ -533,8 +548,11 @@ class UsersController extends TeacherCabinetController
         echo json_encode($adapter->getData());
     }
 
-    public function actionExport($type)
+    public function actionExport($type, $start, $end)
     {
+        if ($start == '') { $start = '2000-01-01 00:00:00'; }
+        if ($end == '') { $end = date('Y-m-d H:i:s'); }
+
         $phpExcelPath = Yii::getPathOfAlias('ext.PHPExcel');
         spl_autoload_unregister(array('YiiBase','autoload'));
         include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
@@ -567,7 +585,7 @@ class UsersController extends TeacherCabinetController
                 $criteria =  new CDbCriteria();
                 $criteria->alias = 't';
                 $criteria->join = 'inner join user_student us on t.id = us.id_user';
-                $criteria->condition = 't.cancelled='.StudentReg::ACTIVE.' and us.end_date IS NULL';
+                $criteria->condition = 't.cancelled='.StudentReg::ACTIVE.' AND t.reg_time BETWEEN STR_TO_DATE(\''.$start.' 00:00:00\', \'%Y-%m-%d %H:%i:%s\') AND STR_TO_DATE(\''.$end.' 23:59:59\', \'%Y-%m-%d %H:%i:%s\') and us.end_date IS NULL';
                 $criteria->group = 't.id';
                 $exporter = new ExcelExporter('StudentReg', $fieldsToExport);
                 $exporter->setCriteria($criteria);

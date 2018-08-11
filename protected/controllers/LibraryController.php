@@ -28,7 +28,7 @@ class LibraryController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','libraryPay','getBook','liqpayStatus','getDemoBook'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -122,10 +122,10 @@ class LibraryController extends Controller
 	 */
 	public function actionIndex()
 	{
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('status=' . Library::ACTIVE);
 	    $dataProvider=new CActiveDataProvider('Library',array(
-	        'criteria'=>array(
-	            'with'=>array('libraryDependsBookCategories')
-            ),
+            'criteria' => $criteria,
         ));
 
         if (!Yii::app()->session['lg'] || Yii::app()->session['lg']=='ua')
@@ -179,4 +179,81 @@ class LibraryController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+    function actionLibraryPay($id, $order_id){
+        $library = Library::model()->findByPk($id);
+        $library->createPayment($order_id);
+        $library->sendTicket($order_id);
+        $this->redirect(Yii::app()->createUrl('/library/index'));
+    }
+
+    function actionLiqpayStatus($id, $order_id){
+        Yii::log('Liqpay id-'.$id,CLogger::LEVEL_INFO,'liqpay');
+        $library = Library::model()->findByPk($id);
+        $library->createPayment($order_id);
+        $library->sendTicket($order_id);
+    }
+
+//    public function actionGetBook($id){
+//        $book = Library::model()->findByPk($id);
+//        $userId = Yii::app()->user->getId();
+//        $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>1));
+//        if ($book && $payment){
+//         $bookFile = Yii::app()->getBasePath() . "/../files/library/buy/{$userId}/{$book->link}";
+//         if(file_exists($bookFile) && is_file($bookFile)){
+//          return   Yii::app()->request->xSendFile("/files/library/buy/{$userId}/{$book->link}",[
+//              'forceDownload'=>true,
+//              'xHeader'=>'X-Accel-Redirect',
+//              'terminate'=>false
+//          ]);
+//         }
+//        }
+//        else {
+//         throw new CHttpException(404,'Документ не знайдено');
+//        }
+//    }
+    public function actionGetBook($id){
+        $book = Library::model()->findByPk($id);
+        $payment = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$book->id, 'status'=>Library::SUCCESS_STATUS));
+        if ($book && $payment){
+            $file = "/files/library/{$book->id}/link/{$book->link}";
+            // todo
+            // $book->drawWatermark($userId);
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].$file)){
+                return   Yii::app()->request->xSendFile($file,[
+                    'forceDownload'=>true,
+                    'xHeader'=>'X-Accel-Redirect',
+                    'terminate'=>false
+                ]);
+            }
+            else{
+                throw new CHttpException(404,'Документ не знайдено');
+            }
+        }
+        else {
+            throw new CHttpException(404,'Документ не знайдено');
+        }
+    }
+
+    public function actionGetDemoBook($id){
+        $book = Library::model()->findByPk($id);
+
+        if ($book){
+            $file = "/files/library/{$book->id}/demo_link/{$book->demo_link}";
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].$file)){
+                return   Yii::app()->request->xSendFile($file,[
+                    'forceDownload'=>false,
+                    'xHeader'=>'X-Accel-Redirect',
+                    'terminate'=>false
+                ]);
+            }
+            else{
+
+                throw new CHttpException(404,'Документ не знайдено');
+            }
+        }
+        else {
+            throw new CHttpException(404,'Документ не знайдено');
+        }
+    }
 }

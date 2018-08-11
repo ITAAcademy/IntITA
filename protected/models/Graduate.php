@@ -159,13 +159,14 @@ class Graduate extends CActiveRecord
             $criteria->addSearchCondition('secondName', $string, true, "OR", "LIKE");
             $criteria->addSearchCondition('work_place', $string, true, "OR", "LIKE");
             $criteria->addSearchCondition('position', $string, true, "OR", "LIKE");
+            $criteria->addSearchCondition('email', $string, true, "OR", "LIKE");
         }
 
         if ($selector == 'az'){
             if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'en') {
-                $criteria->order = 'last_name_en COLLATE utf8_unicode_ci ASC';
+                $criteria->order = 'last_name_en COLLATE utf8_unicode_ci ASC, user.email COLLATE utf8_unicode_ci ASC';
             }else{
-                $criteria->order = 'user.secondName COLLATE utf8_unicode_ci ASC';
+                $criteria->order = 'user.secondName COLLATE utf8_unicode_ci ASC, user.email COLLATE utf8_unicode_ci ASC';
             }
         }
         if ($selector == 'date') $criteria->order = 'graduate_date DESC';
@@ -218,7 +219,7 @@ class Graduate extends CActiveRecord
             $row = array();
             $row["name"]["title"] = $record->first_name." ".$record->last_name;
 			$row["name"]["header"] = addslashes($record->first_name." ".$record->last_name);
-            $row["avatar"] = StaticFilesHelper::createPath('image', 'graduates', $record->avatar);
+            $row["avatar"] = StaticFilesHelper::createPath('image', 'avatars', $record->avatar);
             $row["position"] = CHtml::encode($record->position);
             $row["workPlace"] = CHtml::encode($record->work_place);
             $row["recall"] = mb_substr(CHtml::encode($record->recall),0,500,'UTF-8')."...";
@@ -261,14 +262,38 @@ class Graduate extends CActiveRecord
     }
 
     public function graduateName(){
+        $graduate = new Graduate;
         if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'en'){
-            $name = trim($this->first_name_en.' '.$this->last_name_en);
+            echo $graduate->prioritizingNameEn($this);
         }else if(isset(Yii::app()->session['lg']) && Yii::app()->session['lg'] == 'ru'){
-            $name = trim($this->first_name_ru.' '.$this->last_name_ru);
+            echo $graduate->prioritizingNameRu($this);
         }else{
-            $name=trim($this->user['firstName'].' '.$this->user['secondName']);
+            echo $graduate->prioritizingNameUa($this);
         }
-        echo $name? $name : $this->user['email'];
+    }
+
+    protected function prioritizingNameEn($data) {
+        $name = trim($data->first_name_en.' '.$data->last_name_en);
+        if (empty($name)) {
+            $name = trim($data->user['firstName'].' '.$data->user['secondName']);
+        }
+        return empty($name) ? $data->user['email'] : $name;
+    }
+
+    protected function prioritizingNameRu($data) {
+        $name = trim($data->first_name_ru.' '.$data->last_name_ru);
+        if (empty($name)) {
+            $name = trim($data->first_name_en.' '.$data->last_name_en);
+        }
+        return empty($name) ? $data->user['email'] : $name;
+    }
+
+    protected function prioritizingNameUa($data) {
+        $name = trim($data->user['firstName'].' '.$data->user['secondName']);
+        if (empty($name)) {
+            $name = trim($data->first_name_en.' '.$data->last_name_en);
+        }
+        return empty($name) ? $data->user['email'] : $name;
     }
 
     public static function addGraduate($request){

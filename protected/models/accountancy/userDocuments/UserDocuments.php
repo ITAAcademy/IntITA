@@ -215,7 +215,7 @@ class UserDocuments extends CActiveRecord
                     unlink($new_file);
             }
         }else{
-            throw new \application\components\Exceptions\IntItaException('500', 'Завантажити файл не вдалося');
+            throw new \application\components\Exceptions\IntItaException(500, 'Завантажити файл не вдалося');
         }
     }
 }

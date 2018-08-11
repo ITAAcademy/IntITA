@@ -5,6 +5,7 @@
     <div class="panel-body">
         <table ng-table="offlineStudentsTableParams" class="table table-bordered table-striped table-condensed">
             <colgroup>
+                <col width="4%"/>
                 <col width="20%"/>
                 <col width="20%"/>
                 <col/>
@@ -15,6 +16,7 @@
                 <col/>
             </colgroup>
             <tr ng-repeat="row in $data track by $index">
+                <td data-title="offlineStudentsTableParams.total()">{{ $index + 1 }}</td>
                 <td style="word-wrap:break-word" data-title="'Користувач'" filter="{'user.fullName': 'text'}" sortable="'user.fullName'">
                     <a ng-href="#/users/profile/{{row.id_user}}">{{row.user.fullName}}</a>
                 </td>

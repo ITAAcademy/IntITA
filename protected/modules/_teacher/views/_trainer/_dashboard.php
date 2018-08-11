@@ -27,6 +27,9 @@
                     <li>
                         <a href="#/trainerStudentsTable/studentsProjects">Затвердження курсової роботи</a>
                     </li>
+                    <li>
+                        <a href="#/trainer/students">Студенти та їх модулі (закріплення викладачів)</a>
+                    </li>
                 </ul>
             </div>
         </div>

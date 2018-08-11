@@ -105,7 +105,7 @@
                             { name: 'user', items : [ 'u_user_passport','u_user_passport_issued','u_user_passport_date','u_user_inn','u_user_data_address','u_name','u_user_phone','u_user_email'] },
                             // '/',
                             { name: 'corporate', items : [ 'c_title','c_representative_position','c_representative_position_accusative','c_representative_name_accusative','c_representative_short_name',
-                                'c_representative_name','c_edpnou','c_checking_account','c_bank_name', 'c_bank_code','c_legal_address','c_contacts',
+                                'c_representative_name','c_edpnou','c_checking_account','c_bank_name', 'c_bank_code','c_legal_address','c_contacts','c_kved',
                                 'c_license','c_license_issued','c_license_issued_date'] },
                         ],
                         toolbar_main: [ //jshint ignore:line

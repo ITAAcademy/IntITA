@@ -74,11 +74,15 @@
             </div>
             <div class="panel-body">
                 <ul>
-                    <li><a href="#/admin/subdomain">Субдомен</a></li>
-                    <li><a ng-href="#/admin/intita_cms">Конструктор сайту</a></li>
-                    <li><a ng-href="#/admin/cms_list">Меню ліст</a></li>
-                    <li><a ng-href="#/admin/cms_news">Меню новини</a></li>
-                    <li><a ng-href="#/admin/cms_main_settings">Головні налаштування</a></li>
+                    <li><a href="#/admin/intita_cms">Доменне ім'я сайту</a></li>
+                    <li><a ng-href="#/admin/cms_settings">Налаштування кольорів</a></li>
+                    <li><a ng-href="#/admin/cms_list">Список пунктів меню</a></li>
+                    <li><a ng-href="#/admin/cms_news">Редактор новин</a></li>
+                    <li><a ng-href="#/admin/cms_social_networks">Редактор соцмереж</a></li>
+                    <li><a ng-href="#/admin/cms_slider">Редактор cлайдера</a></li>
+
+
+
                 </ul>
             </div>
             <div class="panel-footer">

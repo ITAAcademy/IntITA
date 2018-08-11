@@ -37,12 +37,12 @@ angular
             $scope.changePageHeader('Завдання');
             var initializing = true;
             var isMobile = {
-                Android: () => navigator.userAgent.match(/Android/i),
-                BlackBerry: () => navigator.userAgent.match(/BlackBerry/i),
-                iOS: () => navigator.userAgent.match(/iPhone|iPad|iPod/i),
-                Opera: () => navigator.userAgent.match(/Opera Mini/i),
-                Windows: () => navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i),
-                any: () => (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()),
+                Android: function () { return navigator.userAgent.match(/Android/i); },
+                BlackBerry: function () {return navigator.userAgent.match(/BlackBerry/i); },
+                iOS: function () {return navigator.userAgent.match(/iPhone|iPad|iPod/i); },
+                Opera: function () {return navigator.userAgent.match(/Opera Mini/i); },
+                Windows: function () {return navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i); },
+                any: function () {return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); },
             };
             // deny drag&drop for mobile devices
             $scope.canDrag = isMobile.any() ? false : true;
@@ -57,38 +57,32 @@ angular
                     case 'tasks.executant':
                         $scope.changePageHeader('Мої завдання');
                         $rootScope.roleId = 1;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.collaborator':
                         $scope.changePageHeader('Завдання в яких допомагаю');
                         $rootScope.roleId = 3;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.producer':
                         $scope.changePageHeader('Завдання які доручив');
                         $rootScope.roleId = 2;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.observer':
                         $scope.changePageHeader('Завдання в яких спостерігаю');
                         $rootScope.roleId = 4;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     case 'tasks.all':
                         $scope.changePageHeader('Усі завдання зі мною');
                         $rootScope.roleId = 0;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                     default:
                         $scope.changePageHeader('Мої завдання');
                         $rootScope.roleId = 1;
-                        $scope.filter = {};
-                        $rootScope.loadTasks($rootScope.roleId);
+                        $scope.applyTasksFilter();
                         break;
                 }
             }
@@ -203,9 +197,9 @@ angular
                 }
             }
 
-            $rootScope.loadTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
+            $rootScope.loadTasks = function (idRole) {
                 if ($scope.board == 1) {
-                    return $scope.loadKanbanTasks(idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName).then(function (data) {
+                    return $scope.loadKanbanTasks(idRole).then(function (data) {
                         $scope.setKanbanHeight();
                     });
                 } else {
@@ -217,13 +211,7 @@ angular
                 if (!keyEvent || keyEvent.which === 13) {
                     $rootScope.loadTasks(
                         $rootScope.roleId,
-                        $scope.filter.name,
-                        $scope.filter.fullName,
-                        $scope.filter.id,
-                        $scope.filter.priority,
-                        $scope.filter.type,
-                        $scope.filter.parentType,
-                        $scope.filter.groupsNames
+                        $scope.filter
                     );
                 }
             },
@@ -246,7 +234,6 @@ angular
                 var promise = $scope.tasksTableParams = new NgTableParams({
                     sorting: {
                         'idTask.priority': 'desc',
-                        // assigned_date: 'desc',
                     },
                     id: idRole
                 }, {
@@ -263,19 +250,19 @@ angular
                 return promise;
             };
 
-            $scope.loadKanbanTasks = function (idRole, filterName, fullName, filterId, filterPriority, filterType, filterParentType, groupsName) {
+            $scope.loadKanbanTasks = function (idRole) {
                 var promise = $scope.crmCanbanTasksList =
                     crmTaskServices
                         .getTasks({
                             'sorting[idTask.priority]': 'desc',
                             id: idRole,
-                            'filter[idTask.name]': filterName,
-                            'filter[idUser.fullName]': fullName,
-                            'filter[idTask.id]': filterId,
-                            'filter[idTask.priority]': filterPriority,
-                            'filter[idTask.type]': filterType,
-                            'filter[idTask.parentType]': filterParentType,
-                            'filter[idTask.groupsNames]': groupsName,
+                            'filter[idTask.name]': $scope.filter.name,
+                            'filter[idUser.fullName]': $scope.filter.fullName,
+                            'filter[idTask.id]': $scope.filter.id,
+                            'filter[idTask.priority]': $scope.filter.priority,
+                            'filter[idTask.type]': $scope.filter.type,
+                            'filter[idTask.parentType]': $scope.filter.parentType,
+                            'filter[idTask.groupsNames]': $scope.filter.groupsNames,
                         })
                         .$promise
                         .then(function (data) {
@@ -283,25 +270,15 @@ angular
                                 return {
                                     id: item.idTask.id,
                                     title: item.idTask.name,
-                                    observers: item.idTask.observers,
+                                    observers: item.observers,
                                     producer: item.idTask.producerName.id,
-                                    producerName: item.idTask.producerName.fullName,
-                                    producerAvatar: basePath + '/images/avatars/' + item.idTask.producerName.avatar,
                                     executant: item.idTask.executantName.id,
-                                    executantName: item.idTask.executantName.fullName,
-                                    executantAvatar: basePath + '/images/avatars/' + item.idTask.executantName.avatar,
                                     description: $filter('limitTo')(item.idTask.body, 70),
-                                    changeDate: item.idTask.change_date,
                                     status: "concept",
                                     type: "task",
                                     stage_id: item.idTask.id_state,
-                                    lastChangeBy: item.lastChangeBy,
-                                    lastChangeByAvatar: item.lastChangeByAvatar,
-                                    lastChangeDate: item.lastChangeDate,
-                                    spent_time: item.spent_time,
                                     endTask: item.idTask.endTask,
                                     deadline: item.idTask.deadline,
-                                    createdBy: item.idTask.created_by,
                                     priorityTitle: item.idTask.priorityModel.title,
                                     priority: item.idTask.priorityModel.description
                                 }
@@ -371,7 +348,7 @@ angular
                 if (oldstate == 4 && !$scope.canComplete(task)) {
                     bootbox.alert('Співвиконавець не може виконувати дії з завершеними завданнями');
                 }else if (newstate == 4 && !$scope.canComplete(task)) {
-                    bootbox.alert('Співвиконавець не може завершити завдання');
+                    bootbox.alert('Співвиконавець не може завершити завдання222');
                 } else if (newstate == 1 && !$scope.canComplete(task)) {
                     bootbox.alert('Співвиконавець не може перенести завдання в статус очікування');
                 } else {
@@ -412,7 +389,7 @@ angular
             $scope.changeRouterState($state.$current.name);
 
             $scope.canComplete = function (task) {
-                if(task.producer==$scope.currentUser || task.executant==$scope.currentUser || _.isObject(_.find(task.observers, {id: String($scope.currentUser)}))){
+                if((task.producer || task.producerName.id)==$scope.currentUser || (task.executant || task.executantName.id)==$scope.currentUser || _.isObject(_.find(task.observers, {id_user: $scope.currentUser}))){
                     return true;
                 }else{
                     return false;

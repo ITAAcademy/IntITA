@@ -18,13 +18,6 @@ config(function ($stateProvider) {
             cache: false,
             templateUrl: basePath + "/_teacher/_supervisor/superVisor/offlineGroups",
         })
-        .state('supervisor/offlineGroup/:id', {
-            url: "/supervisor/offlineGroup/:id",
-            cache: false,
-            templateUrl: function ($stateParams) {
-                return basePath + "/_teacher/_supervisor/superVisor/offlineGroup/?id=" + $stateParams.id
-            }
-        })
         .state('supervisor/offlineSubgroups', {
             url: "/supervisor/offlineSubgroups",
             cache: false,
@@ -172,5 +165,62 @@ config(function ($stateProvider) {
             url: "/supervisor/modulesRating",
             cache: false,
             templateUrl: basePath + "/_teacher/_supervisor/superVisor/modulesRating",
+        })
+        .state('supervisorGroup', {
+            url: "/supervisorGroup/:id",
+            cache: false,
+            templateUrl: function ($stateParams) {
+                return basePath + "/_teacher/_supervisor/superVisor/offlineGroup/?id=" + $stateParams.id
+            },
+        })
+        .state('supervisorGroup.offlineSubgroups', {
+            url: "/offlineSubgroups",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/offlineGroupSubgroups"
+                    },
+                }
+            }
+        })
+        .state('supervisorGroup.offlineStudents', {
+            url: "/offlineStudents",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/offlineStudents/?id=" + $stateParams.id
+                    },
+                }
+            }
+        })
+        .state('supervisorGroup.coursesAccess', {
+            url: "/coursesAccess",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/coursesAccess"
+                    },
+                }
+            }
+        })
+        .state('supervisorGroup.modulesAccess', {
+            url: "/modulesAccess",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/modulesAccess"
+                    },
+                }
+            }
+        })
+        .state('supervisorGroup.modulesTeachers', {
+            url: "/modulesTeachers",
+            views: {
+                'supervisorTabs': {
+                    templateUrl: function ($stateParams) {
+                        return basePath + "/_teacher/_supervisor/superVisor/modulesTeachers"
+                    },
+                }
+            }
         })
 });

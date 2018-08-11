@@ -464,6 +464,8 @@ angular
                     cloneTask:function () {
                         if (self.isModelValid()){
                             delete self.data.id;
+                            delete self.data.cancelled_by;
+                            delete self.data.cancelled_date;
                             crmTaskServices.sendCrmTask({crmTask: angular.toJson(self.data)}).$promise
                                 .then(function (data) {
                                     if (data.message === 'OK') {
@@ -572,7 +574,7 @@ angular
                         }
                     },
                     canComplete: function () {
-                        if(self.data.producer || self.data.executant || _.isObject(_.find(self.data.roles['observer'], {id: String(self.currentUser)}))){
+                        if(self.data.roles.producer.id==self.currentUser || self.data.roles.executant.id==self.currentUser || _.isObject(_.find(self.data.roles['observer'], {id: String(self.currentUser)}))){
                             return true;
                         }else{
                             return false;

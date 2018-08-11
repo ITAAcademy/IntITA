@@ -320,7 +320,8 @@ class UserAgreements extends CActiveRecord {
         }
         try {
             $user = StudentReg::model()->findByPk($userId);
-            $serviceModel = $modelFactory::getService($param_id, $educForm);
+            $modFuctory = new $modelFactory;
+            $serviceModel = $modFuctory->getService($param_id, $educForm);
             if(!$serviceModel->checkServiceAccess()){
                 throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Статус сервісу: "В РОЗРОБЦІ"');
             }
@@ -361,7 +362,20 @@ class UserAgreements extends CActiveRecord {
 
                 //start date for offline service
                 $startDate = ($educForm->id==EducationForm::OFFLINE && $calculator->start_date)?new DateTime($calculator->start_date):new DateTime();
-                $startPaymentDate = clone $startDate;
+                $endPaymentDate = null;
+                if($educForm->id==EducationForm::OFFLINE && $calculator->start_date){
+                    if(new DateTime($calculator->start_date) < new DateTime()){
+                        $startDate = new DateTime($calculator->start_date);
+                        $startPaymentDate = new DateTime();
+                    }else {
+                        $startDate = new DateTime($calculator->start_date);
+                        $startPaymentDate = clone $startDate;
+                    }
+                }else{
+                    $startDate = new DateTime();
+                    $startPaymentDate = clone $startDate;
+                }
+
                 $model->summa = $calculator->getSumma($billableObjectUAH);
                 $model->start_date = $startPaymentDate->format('Y-m-d');
                 $model->close_date = $calculator->getCloseDate($billableObject, $startDate)->format(Yii::app()->params['dbDateFormat']);

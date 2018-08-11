@@ -296,6 +296,8 @@ modal .modal {
 }
 .openIco{
     fill:#4b75a4;
+    height: 33px;
+    height:auto !important;  
 }
 .openIco:hover{
     fill: #233ea4;
@@ -399,4 +401,9 @@ ul.comments li{
 }
 .comments ol{
     list-style-type: none;
+}
+.addCommentTasks{
+    margin-top: 10px;
+    display: block;
+    margin-bottom: 10px;
 }

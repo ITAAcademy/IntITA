@@ -98,22 +98,36 @@ class LibraryDependsBookCategory extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-	public static function addInfo($depends){
-        for($i=0;$i<count($depends["id_category"]);$i++){
-            $newDependency = new LibraryDependsBookCategory();
-            $newDependency->id_book = $depends["id_book"];
-            $newDependency->id_category = $depends["id_category"][$i]["id"];
-            $newDependency->save();
+
+    public function editLibraryCategory($categoriesList, Library $library) {
+        if(!$categoriesList) $categoriesList=array();
+        $currentCategories = [];
+        $newCategories = [];
+        $libraryCategories = $library->libraryDependsBookCategories;
+
+        foreach ($libraryCategories as $libraryCategory) {
+            array_push($currentCategories, $libraryCategory->id_category);
         }
-    }
-    public static function updateInfo($depends){
-	    $id = $depends["id_book"];
-	    LibraryDependsBookCategory::model()->deleteAllByAttributes(["id_book"=>$id]);
-        for($i=0;$i<count($depends["id_category"]);$i++){
-            $newDependency = new LibraryDependsBookCategory();
-            $newDependency->id_book = $depends["id_book"];
-            $newDependency->id_category = $depends["id_category"][$i]["id"];
-            $newDependency->save();
+        foreach ($categoriesList as $category) {
+            array_push($newCategories, $category);
+        }
+        $categoriesToAdd = array_diff($newCategories, $currentCategories);
+        $categoriesToRemove = array_diff($currentCategories, $newCategories);
+
+        try {
+            foreach ($categoriesToAdd as $idCategory){
+                $model = new LibraryDependsBookCategory();
+                $model->id_book = $library->id;
+                $model->id_category = $idCategory;
+                $model->save();
+            }
+            foreach ($categoriesToRemove as $idCategory){
+                $oldModel=LibraryDependsBookCategory::model()->findByPk(array('id_book'=>$library->id,'id_category'=>$idCategory));
+                $oldModel->delete();
+            }
+
+        } catch (Exception $e) {
+            throw $e;
         }
     }
 }

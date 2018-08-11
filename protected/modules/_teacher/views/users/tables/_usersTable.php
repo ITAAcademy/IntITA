@@ -17,9 +17,14 @@
         <tr ng-repeat="row in $data track by row.id">
             <td data-title="'ID'">{{row.id}}</td>
             <td style="word-wrap:break-word" data-title="'Користувач'" sortable="'fullName'" filter="{'fullName': 'text'}" >
-                <a ng-href="#/users/profile/{{row.id}}">{{row.fullName}}</a>
+                <a ng-href="#/users/profile/{{row.id}}" target="_blank">{{row.fullName}}</a>
             </td>
-            <td data-title="'Профіль'"><a ng-href="/profile/{{row.id}}" target="_blank">Профіль</a></td>
+            <td data-title="'Профіль'" align="center">
+                <a ng-href="/profile/{{row.id}}" target="_blank">Профіль</a>
+                <a href="<?= Config::getChatPath()?>{{row.id}}" target="_blank">
+                    <i class="fa fa-wechat fa-fw"></i>
+                </a>
+            </td>
             <td data-title="'Зареєстровано'" filter="{'reg_time': 'text'}" sortable="'reg_time'">{{row.reg_time=='0000-00-00 00:00:00'  ? "" : row.reg_time}}</td>
             <td data-title="'Країна'" filter="{'country0.title_ua': 'text'}" sortable="'country0.title_ua'">{{row.country0.title_ua}}</td>
             <td data-title="'Місто'" filter="{'city0.title_ua': 'text'}" sortable="'city0.title_ua'">{{row.city0.title_ua}}</td>

@@ -270,6 +270,7 @@
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/main_app/services/documentsServices.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/services/helpers/transformRequest.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/services/helpers/lodash.js'); ?>"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/teacher/services/liqpayService.js'); ?>"></script>
 
     <!-- ngCkeditor -->
     <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>

@@ -113,6 +113,9 @@ div.titleTeachers {
     line-height: 100%;
 }
 /*Filter*/
+.graduatesFilter {
+    width: 40%;
+}
 .graduatesFilter td a.selectedFilter{
     color:#999999;
     text-decoration: none;
@@ -122,6 +125,7 @@ table.graduatesFilter{
     vertical-align: middle;
 }
 .graduatesFilter td{
+    width: 30%;
     padding: 0 2% 0 2%;
     border-left: 1px solid #4b75a4;
 }
@@ -315,8 +319,13 @@ div.aboutMore{
     .teacherBlock {
         width: 98%;
     }
-    #joinTeamMaxButton {
-        display:none;
+    #maxTeacherForm{
+        position: absolute;
+        top: -10px;
+    }
+    #ajaxListTeacher{
+        position: relative;
+        padding-top: 54px;
     }
     .one.column #minTeacherForm:first-child {
         display: none;
@@ -346,6 +355,9 @@ div.aboutMore{
         float:left;
         width:50%;
         text-align: center;
+    }
+    .graduatesFilter {
+        width: 100%;
     }
 }
 /*celebre*/
@@ -386,9 +398,31 @@ div.aboutMore{
 #detailTeacherInfoLarge1,#detailTeacherInfoLarge0{
     margin-right: 110px;
 }
+@media only screen and (orientation: landscape)
+and (min-width: 954px) and (max-width: 1040px) {
+    .graduatesFilter {
+        width: 45%;
+    }
+}
+@media only screen and (orientation: landscape)
+and (min-width: 801px) and (max-width: 954px) {
+    .graduatesFilter {
+        width: 53%;
+    }
+}
 @media screen and (max-width:800px) {
     #minTeacherForm{
         display: block !important;
+    }
+    .graduatesFilter {
+        margin-right: 12px;
+        width: 100%;
+    }
+    .graduatesFilter td {
+        padding: 0 2% 0 1%;
+    }
+    #search_input {
+        width: 132px;
     }
 }
 @media screen and (min-width: 800px){

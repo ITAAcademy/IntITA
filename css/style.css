@@ -2,7 +2,7 @@
 a, div#button_border, a#enter_button{-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box;}
 body{margin:0 auto;}
 img{border-style:none;}
-html, body{margin:0;padding:0;height:100%;font-family:"MyriadPro";box-sizing:border-box;font-size:inherit!important;}
+html, body{margin:0;padding:0;height:100%;font-family:"MyriadPro";box-sizing:border-box;font-size:inherit!important;min-height:100%;position:relative;}
 a, button, input[type="submit"]{outline:none;}
 a:hover{color:#666666;}
 #main-wrapper{box-sizing:border-box;min-height:100%;}
@@ -234,7 +234,7 @@ div.modal-dialog {
     max-width: 50%\0/;
     margin: 10px auto\0/;
 }
-#share42{top:110px}
+#share42{top:110px; left:0;}
 /*adaptive*/
 @media only screen and (max-width: 800px) {
     #sharing{display:none}
@@ -445,7 +445,7 @@ ul[rn-carousel] {
     margin-top: 45px;
     padding-top: 4px;
     margin: 0 auto;
-    margin-bottom: 32px;
+    margin-bottom: 50px;
 }
 .buttonBeginInTeachers:hover,.buttonBeginInTeachers:focus{
     border-top-color: #454545;
@@ -475,4 +475,122 @@ ul[rn-carousel] {
     .buttonBeginInTeachers{
         width: 301px;
     }
+}
+#main-wrapper{
+    position: relative;
+    height: fit-content;
+}
+.clearfix::after {
+    content: " ";
+    display: table;
+    clear: both;
+}
+#graduateBlock #ajaxListView{
+    width: 70%;
+    display: inline-block;
+}
+.graduateSlider{
+    width: 30%;
+    float: right;
+}
+.graduatesBanner{
+    width: 320px;
+}
+ul.container{
+    text-align: center;
+    list-style-type: none outside none;
+    padding-left: 0px;
+    padding-right: 0;
+    overflow-y: scroll;
+    display: inline-block;
+    direction: rtl;
+    width: -webkit-fill-available;
+    height: auto;
+    max-height: 1442px;
+    overflow-x: hidden;
+}
+ul.container li
+{
+    list-style: none;
+    padding: 12px 20px;
+    transition: background-color 5s linear, color 2s;
+    border-bottom: 1px solid #a5bad1;
+}
+.graduatesBannerContent{
+    direction: ltr;
+    height: 150px;
+}
+.bannerForGraduatesImg{
+    max-width: 100%;
+    max-height: 100px;
+}
+.bannerForGraduatesWrapper {
+    display: inherit;
+    width: 22%;
+    float: right;
+}
+.bannerForGraduatesTitle{
+    background: #4b75a4;
+    height: 80px;
+    padding-top: 7%;
+    line-height: 1.2;
+}
+.bannerForGraduatesTitle p{
+    color: #fff;
+    font-family: MyriadPro;
+}
+.title-without-padding-banners-graduates{
+    padding-left: 3px;
+}
+.bannerForGraduatesTitleText{
+    font-family: MyriadPro;
+    color: #666;
+    text-align: left;
+    margin-left: -10px;
+}
+ul::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+ul::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+ul::-webkit-scrollbar-thumb {
+    background: #2c5179;
+}
+
+/* Handle on hover */
+ul::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+@media screen and (max-width: 1150px) {
+    .bannerForGraduatesWrapper{
+        width: 26%;
+    }
+}
+@media screen and (max-width: 991px){
+    .title-without-padding-banners-graduates {
+        padding-left: 28px;
+    }
+}
+@media screen and (max-width: 777px){
+    .bannerForGraduatesWrapper{
+        display: none;
+    }
+    #graduateBlock #ajaxListView{
+        width: 100%;
+        display: block;
+    }
+}
+@media screen and (max-width: 424px){
+    .ng-table-counts{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+.bannerForGraduatesWrapper .container{
+    max-width: 100%;
 }

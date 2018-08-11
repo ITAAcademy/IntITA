@@ -202,7 +202,7 @@ class TasksController extends TeacherCabinetController
         $params = $_GET;
         $criteria = new CDbCriteria();
         $criteria->alias = 't';
-        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName', 'idTask.observers'];
+        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName','idTask.observers'];
         $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
         $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, $params['id'] );
         if (isset($params['filter']['idTask.producerName.fullName'])) {
@@ -259,6 +259,8 @@ class TasksController extends TeacherCabinetController
 
         $date_now = new DateTime('now', new DateTimeZone(Config::getServerTimezone()));
         foreach ($rows['rows'] as $k => $row) {
+//            todo
+            $rows['rows'][$k]['observers'] =  ActiveRecordToJSON::toAssocArrayWithRelations(CrmTasks::model()->findByPk($row['id_task'])->observers);
             $models = CrmTaskStateHistory::model()->findAllByAttributes(array('id_task' => $row['id_task']), array('order' => 'change_date asc'));
             $lastIndex = count($models) - 1;
             $interval = 0;
@@ -274,17 +276,17 @@ class TasksController extends TeacherCabinetController
             }
 
             $rows['rows'][$k]['spent_time'] = $interval;
-            if (!empty($models)) {
-                $rows['rows'][$k]['lastChangeBy'] = $models[$lastIndex]->idUser->fullName;
-                $rows['rows'][$k]['lastChangeByAvatar'] = StaticFilesHelper::createPath('image', 'avatars', $models[$lastIndex]->idUser->avatar);
-                $rows['rows'][$k]['lastChangeDate'] = $models[$lastIndex]->change_date;
-            }
         }
         echo json_encode($rows);
     }
 
     public function actionGetCrmTask($id)
     {
+        $criteria = new CDbCriteria();
+        $criteria->alias = 't';
+        $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId());
+        if(!in_array($id, $ids)) throw new CException("У тебе немає доступу до завдання");
+
         $data = [];
         $collaborator = [];
         $observer = [];

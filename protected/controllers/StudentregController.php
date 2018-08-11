@@ -157,10 +157,10 @@ class StudentRegController extends Controller
             die();
         }
         if (Yii::app()->user->isGuest || $idUser == 0)
-            throw new \application\components\Exceptions\IntItaException('403', 'Гість не може проглядати профіль користувача');
+            throw new \application\components\Exceptions\IntItaException(403, 'Гість не може проглядати профіль користувача');
         $user = RegisteredUser::userById($idUser);
         if (!$user)
-            throw new \application\components\Exceptions\IntItaException('404', 'Такого користувача немає');
+            throw new \application\components\Exceptions\IntItaException(404, 'Такого користувача немає');
         $model = $user->registrationData;
         $addressString = $model->addressString();
 
@@ -168,8 +168,10 @@ class StudentRegController extends Controller
         $markProvider = $model->getMarkProviderData();
         
         $owner = false;
+        $library = [];
         if ($idUser == Yii::app()->user->getId()) {
             $owner = true;
+            $library = LibraryPayments::model()->findAllByAttributes(array('user_id' => Yii::app()->user->getId(), 'status' => Library::ACTIVE));
         }
 
         $this->render("profile", array(
@@ -178,7 +180,8 @@ class StudentRegController extends Controller
             'user' => $user,
             'markProvider' => $markProvider,
             'addressString' => $addressString,
-            'owner' => $owner
+            'owner' => $owner,
+            'library' => $library
         ));
     }
 
@@ -316,6 +319,7 @@ class StudentRegController extends Controller
     {
         $id = Yii::app()->request->getPost('id', 0);
         $model = RegisteredUser::userById($id);
+        unset($model->registrationData->email);
         $teacher_attributes = [];
         $graduate = [];
         if($model->trainer){

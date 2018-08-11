@@ -36,6 +36,7 @@ function companyCard($q, ngToast, cityService, companiesService) {
                 license_issued: response.license_issued,
                 license_issued_date: response.license_issued_date == '0000-00-00 00:00:00' ? '' : new Date(response.license_issued_date),
                 contacts: response.contacts,
+                kved: response.kved,
             }
         }
 

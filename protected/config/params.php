@@ -6,6 +6,18 @@
  * Time: 10:06
  */
 $webSocketServerParams = require_once(dirname(__FILE__) . '/webSocketServerParams.php');
+$mailParams = (file_exists(dirname(__FILE__) . '/mailParams.php')?
+              require_once(dirname(__FILE__) . '/mailParams.php'):
+              [
+                  'smtpHost' => '127.0.0.1',
+                  'smtpPort' => '25',
+                  'smtpAuth' => false,
+                  'smtpDebug' => 0,
+                  'smtpUsername' => '',
+                  'smtpPassword' => '',
+                  'smtpProtocol' => '',
+              ]
+);
 
 return array(
     'params' => array(
@@ -19,6 +31,7 @@ return array(
         'secretKey' => md5('test'),
         'dovecotPasswordScheme'=>'sha',
         'webSocketServer'=>$webSocketServerParams,
-        'versionsOfFile' =>  2
+        'mailParams'=>$mailParams,
+        'versionsOfFile' =>  4
     ),
 );

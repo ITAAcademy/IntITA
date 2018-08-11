@@ -40,13 +40,14 @@ if ($editMode){
         </div>
         <div>
             <div class="TeacherProfilename">
-                <?php echo $model->firstName()." ".$model->lastName();?>
+                <?php echo $model->firstName()." ".$model->lastName(); ?>
             </div>
             <div class="TeacherProfiletitles">
                 <?php echo Yii::t('teacher', '0065') ?>
             </div>
 
             <?php if($editMode){?>
+                <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
                 <div class="editTextButton" id="firstButtonEditProfileInfo">
                     <span>
                         <em>Натисніть для редагування профілю</em>
@@ -82,10 +83,8 @@ if ($editMode){
                 </script>
             <?php } ?>
 
-            <div <?php if ($editMode){ ?>  id="firstTextProfileInfo" <?php } ?>>
-                <p>
+            <div id="firstTextProfileInfo">
                    <?php if($model->profile_text_first != '') { echo $model->profile_text_first; } ?>
-                </p>
             </div>
             <?php $this->renderPartial('_courses', array('model' => $model));?>
 
@@ -123,12 +122,52 @@ if ($editMode){
                         ]
                     } );
                 </script>
+                <script type="text/javascript">
+                    function editingFomForTeachersProfile(editButton,editForm,saveButton,cancelButton,mainText) {
+                        document.getElementById(editButton).onclick = function () {
+                            document.getElementById(editForm).style.display = "block";
+                            document.getElementById(mainText).style.display = "none";
+                        };
+                        document.getElementById(cancelButton).onclick = function(){
+                            document.getElementById(editForm).style.display = "none";
+                            document.getElementById(mainText).style.display = "block";
+                        };
+                        document.getElementById(saveButton).onclick = function () {
+                            if(saveButton == "saveFirstBlockEditProfileInfo"){
+                                $.ajax({
+                                    url: "/profile/save",
+                                    method: "POST",
+                                    data: {block: "t1", content: document.getElementsByTagName("iframe")[0].contentDocument.getElementsByTagName("body")[0].innerHTML,id: <?php echo $model->user_id; ?>},
+                                    success: function (data) {
+                                        window.location.replace(data);
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                    },
+                                })
+                            }
+                            else if(saveButton == "saveSecondBlockEditProfileInfo"){
+                                $.ajax({
+                                    url: "/profile/save",
+                                    method: "POST",
+                                    data: {block: "t2", content: document.getElementsByTagName("iframe")[1].contentDocument.getElementsByTagName("body")[0].innerHTML,id: <?php echo $model->user_id; ?>},
+                                    success: function (data) {
+                                        window.location.replace(data);
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                    },
+                                })
+                            }
+                        }
+                    };
+                    editingFomForTeachersProfile("firstButtonEditProfileInfo","firstBlockEditProfileInfo","saveFirstBlockEditProfileInfo","cancelTeacherEditButton1","firstTextProfileInfo");
+                    editingFomForTeachersProfile("secondButtonEditProfileInfo","secondBlockEditProfileInfo","saveSecondBlockEditProfileInfo","cancelTeacherEditButton2","secondTextProfileInfo");
+                </script>
             <?php } ?>
 
-            <div  <?php if ($editMode){ ?> id="secondTextProfileInfo" <?php } ?>>
-                <p>
+            <div id="secondTextProfileInfo">
                     <?php if($model->profile_text_last != '') { echo $model->profile_text_last; } ?>
-                </p>
             </div>
             <br>
             <?php if(Yii::app()->user->hasFlash('success')):?>
@@ -181,45 +220,3 @@ if ($editMode) {
     ));
 }
 ?>
-<script type="text/javascript">
-    function editingFomForTeachersProfile(editButton,editForm,saveButton,cancelButton,mainText) {
-        document.getElementById(editButton).onclick = function () {
-            document.getElementById(editForm).style.display = "block";
-            document.getElementById(mainText).style.display = "none";
-        };
-        document.getElementById(cancelButton).onclick = function(){
-            document.getElementById(editForm).style.display = "none";
-            document.getElementById(mainText).style.display = "block";
-        };
-        document.getElementById(saveButton).onclick = function () {
-            if(saveButton == "saveFirstBlockEditProfileInfo"){
-                $.ajax({
-                    url: "/profile/save",
-                    method: "POST",
-                    data: {block: "t1", content: CKEDITOR.instances.editor1.getData(),id: <?php echo $model->user_id; ?>},
-                    success: function (data) {
-                        window.location.replace(data);
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    },
-                })
-            }
-            else if(saveButton == "saveSecondBlockEditProfileInfo"){
-                $.ajax({
-                    url: "/profile/save",
-                    method: "POST",
-                    data: {block: "t2", content: CKEDITOR.instances.editor2.getData(),id: <?php echo $model->user_id; ?>},
-                    success: function (data) {
-                        window.location.replace(data);
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    },
-                })
-            }
-        }
-    };
-    editingFomForTeachersProfile("firstButtonEditProfileInfo","firstBlockEditProfileInfo","saveFirstBlockEditProfileInfo","cancelTeacherEditButton1","firstTextProfileInfo");
-    editingFomForTeachersProfile("secondButtonEditProfileInfo","secondBlockEditProfileInfo","saveSecondBlockEditProfileInfo","cancelTeacherEditButton2","secondTextProfileInfo");
-</script>

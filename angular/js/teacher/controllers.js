@@ -342,6 +342,7 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
     var studentsWithoutTrainerTypeaheadUrl = basePath + '/_teacher/cabinet/studentsWithoutTrainerByQuery';
     var teacherConsultantsByQueryAndModuleTypeaheadUrl = basePath + '/_teacher/cabinet/teacherConsultantsByQueryAndModule';
     var groupTypeaheadUrl = basePath + '/_teacher/_supervisor/superVisor/groupsByQuery';
+    var libraryTypeaheadUrl = basePath + '/_teacher/library/library/libraryByQuery';
 
     $scope.getActiveUsers = function (value) {
         return typeAhead.getData(activeUsersTypeaheadUrl, {query: value});
@@ -391,13 +392,16 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
     $scope.getStudentsWithoutTrainer = function (value) {
         return typeAhead.getData(studentsWithoutTrainerTypeaheadUrl, {query: value});
     };
+    $scope.getLibraryList = function (value) {
+        return typeAhead.getData(libraryTypeaheadUrl, {query: value});
+    };
 
     $scope.updateRolesChat = function () {
         chatIntITAMessenger.updateRoles();
     };
 }
 
-function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource, $filter) {
+function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource, $filter, $location) {
 
     $scope.checkboxes = {'checked': false, items: {}};
 
@@ -496,18 +500,27 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
         });
     };
 
+    $scope.onBlurHandler = function () {
+        var typeahead = $jq("#typeahead").val();
+        if (typeahead.length <= 0) {
+            $jq("#receiverId").val('0');
+        }
+    }
+
     $scope.sendMessage = function (url) {
         receiver = $jq("#receiverId").val();
-        if (receiver == "0") {
-            bootbox.alert('Виберіть отримувача повідомлення.');
+        var subject = $jq("input[name=subject]").val();
+        var textField =  $jq("#text").val();
+        if (receiver == "0" || subject.length <= 0 || textField.length <= 0) {
+            bootbox.alert('Всі поля повинні бути заповнені.');
         } else {
             $http({
                 method: "POST",
                 url: url,
                 data: $jq.param({
                     receiver: receiver,
-                    subject: $jq("input[name=subject]").val(),
-                    text: $jq("#text").val(),
+                    subject: subject,
+                    text: textField,
                     scenario: "new"
                 }),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
@@ -529,24 +542,35 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
         }
     };
     $scope.deleteMessage = function (idMessage, url, receiver) {
-        bootbox.confirm('Ти дійсно хочеш видалити повідомлення?', function (result) {
-            if (result)
-                $http({
-                    method: "POST",
-                    url: url,
-                    data: $jq.param({
-                        data: JSON.stringify({
-                            message: idMessage,
-                            receiver: receiver
-                        })
-                    }),
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
-                    cache: false
-                }).then(function successCallback() {
-                    $state.go('messages', {}, {reload: true});
-                }, function errorCallback() {
-                    bootbox.alert("Операцію не вдалося виконати.");
-                });
+        bootbox.confirm({
+            message: 'Ти дійсно хочеш видалити повідомлення?',
+            buttons: {
+                confirm: {
+                    label: 'Погоджуюсь',
+                },
+                cancel: {
+                    label: 'Відмінити',
+                }
+            },
+            callback: function (result) {
+                if (result)
+                    $http({
+                        method: "POST",
+                        url: url,
+                        data: $jq.param({
+                            data: JSON.stringify({
+                                message: idMessage,
+                                receiver: receiver
+                            })
+                        }),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        cache: false
+                    }).then(function successCallback() {
+                        $state.go('messages', {}, {reload: true});
+                    }, function errorCallback() {
+                        bootbox.alert("Операцію не вдалося виконати.");
+                    });
+            }
         });
     };
 
@@ -639,6 +663,10 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
 
     $scope.collapse = function (el) {
         $jq(el).toggle("medium");
+    }
+
+    $scope.isDeleted = function () {
+        return $state.current.url === '/deletedmessage/:idMessage' ? false : true;
     }
 }
 

@@ -34,7 +34,7 @@ class AdvancePaymentSchema implements IPaymentCalculator{
     public function getSumma(IBillableObject $payObject){
         $basePrice = $payObject->getBasePrice() * $this->educForm->getCoefficient();
         $coeff =  pow((1 + $this->loanValue/100), $this->payCount/12);
-        return round($basePrice * (1 - $this->discount/100)*$coeff);
+        return round($basePrice * (1 - $this->discount/100)*$coeff, 2);
     }
 
     public function getCloseDate(IBillableObject $payObject,  DateTime $startDate){

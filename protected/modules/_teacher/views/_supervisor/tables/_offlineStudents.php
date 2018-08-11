@@ -6,6 +6,7 @@
         <br>
         <table ng-table="offlineStudentsTableParams" class="table table-bordered table-striped table-condensed">
             <colgroup>
+                <col width="4%"/>
                 <col width="20%"/>
                 <col/>
                 <col width="10%"/>
@@ -16,6 +17,7 @@
                 <col/>
             </colgroup>
             <tr ng-repeat="row in $data track by $index">
+                <td data-title="offlineStudentsTableParams.total()">{{ $index + 1 }}</td>
                 <td style="word-wrap:break-word" data-title="'Студент'" filter="{'user.fullName': 'text'}" sortable="'user.fullName'">
                     <a ng-href="#/users/profile/{{row.id_user}}">{{row.user.fullName}}</a>
                 </td>
@@ -28,7 +30,7 @@
                     <span ng-if="row.user.education_shift==3">байдуже</span>
                 </td>
                 <td data-title="'Група'" filter="{'group.name': 'text'}" sortable="'group.name'">
-                    <a ng-href="#/supervisor/offlineGroup/{{row.group.id}}">{{row.group.name}}</a>
+                    <a ng-href="#/supervisorGroup/{{row.group.id}}/offlineSubgroups">{{row.group.name}}</a>
                 </td>
                 <td data-title="'Підгрупа'" sortable="'subgroupName.name'" filter="{'subgroupName.name': 'text'}" >
                     <a ng-href="#/supervisor/offlineSubgroup/{{row.subgroupName.id}}">{{row.subgroupName.name}}</a>

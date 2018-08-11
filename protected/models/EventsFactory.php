@@ -4,7 +4,7 @@
 class EventsFactory
 {
 
-	public  function trackEvent($string)
+	public function trackEvent($string)
 	{
 
         switch($string) {
@@ -22,7 +22,6 @@ class EventsFactory
                 return new TrackTrueQuizModel();
             case 'FalseAnswer':
                 return new TrackFalseQuizModel();
-
-    }
+        }
 	}
 }

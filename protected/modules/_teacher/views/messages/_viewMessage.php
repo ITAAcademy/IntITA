@@ -14,7 +14,7 @@ $url = Yii::app()->createUrl('/_teacher/messages/form');
         <div class="pull-right">
             <em><?= CommonHelper::formatMessageDate($message->message0->create_date);?></em>
             <?php if (!$deleted) { ?>
-            <div class="btn-group">
+            <div class="btn-group" ng-show="isDeleted()">
                 <button type="button" class="btn btn-default btn-xs dropdown-toggle"
                         data-toggle="dropdown">
                     Дії
@@ -39,13 +39,15 @@ $url = Yii::app()->createUrl('/_teacher/messages/form');
                             Переслати</a>
                     </li>
                     <?php }?>
-                        <li>
-                            <a href="" ng-click="deleteMessage('<?= $message->id_message; ?>',
-                                            '<?=Yii::app()->createUrl("/_teacher/messages/delete");?>','<?=Yii::app()->user->model->id;?>')">
-                                Видалити це повідомлення
-                            </a>
-                        </li>
-
+                    <?php 
+                        $receiver = Yii::app()->db->createCommand()->select("id_receiver")->from("message_receiver")->where("id_message=:id_message",array(":id_message"=>$message->id_message))->queryAll();
+                    ?>
+                    <li>
+                        <a href="" ng-click="deleteMessage('<?= $message->id_message; ?>',
+                                        '<?=Yii::app()->createUrl("/_teacher/messages/delete");?>','<?= $receiver[0]["id_receiver"]; ?>')">
+                            Видалити це повідомлення
+                        </a>
+                    </li>
                     <!--                                    <li class="divider"></li>-->
                     <!--                                    <li><a href="#" data-toggle="modal" data-target="#deleteDialog">Видалити діалог</a>-->
                     <!--                                    </li>-->

@@ -1,54 +1,116 @@
 <div class="form-group form-link" ng-controller="cmsNewsCtrl">
     <p>Повернутися до <a class="text-right" href="#/admin/intita_cms">Конструктора сайту</a></p>
-    <label>Список новин</label>
-    <div ng-repeat="list in lists track by $index" class="row">
-        <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Заголовок" ng-model="list.title">
+
+
+    <div class="news_box" >
+        <div class="row box_inside"   >
+            <div class="col-md-3 col-sm-4 img_out" >
+                <div class="img_news_box">
+                    <input id="photo" enctype="multipart/form-data" type="file"  class="form-control photoUpdate" placeholder="Фото новини" name="photo">
+                </div>
+            </div>
+            <div class=" col-md-9 col-sm-8 text_out">
+                <div class="title_news box_new">
+                    <div class=" display_inl_bl  ">
+                        <input type="text" class="form-control" placeholder="Заголовок" ng-model="newNews.title">
+                    </div>
+                </div>
+
+                <div   class="box_new ">
+                    <div class=" box_text " >
+                        <textarea class="form-control" placeholder="Текст новини" ng-model="newNews.text" style="resize: none"></textarea>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-            <img class="preview"  ng-src='{{list.id && domainPathNews+list.img || list.img}}'>
-            <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
+        <div class="edit_line box row">
+            <div class="safe_new">
+                <button  class="btn btn-primary"  title="Зберегти" data-dismiss="modal" aria-hidden="true" ng-click="updateNews(newNews)" >Зберегти</button>
+            </div>
+        </div>
     </div>
-        <div class="col-md-4">
-            <textarea class="form-control" placeholder="Текст новини" ng-model="list.text" style="resize: none"></textarea>
-        </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Дата" ng-model="list.date">
-        </div>
-        <div class="col-md-1">
-            <a href="javascript:void(0)">
-                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(list,$index,list.img)"></i>
-            </a>
-            <a href="javascript:void(0)">
-                <i class="fa fa-trash" title="Видалити" aria-hidden="true" ng-click="removeNews(list.id,list.img)"></i>
-            </a>
-        </div>
-        <div class="col-md-12">
-            <hr>
-        </div>
+    <div class="">
+        <hr>
     </div>
 
-    <div class="row">
-        <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Заголовок" ng-model="newNews.title">
+    <label>Список новин</label>
+    <div ng-repeat="new in news track by $index" >
+        <div class="news_box" >
+            <div class="row box_inside"  >
+                <div class="col-md-3 col-sm-4 img_out" >
+                    <div class="img_news_box">
+                        <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news preview"  >
+                        <input id="photoUpdate{{$index}}" enctype="multipart/form-data" type="file" class="form-control photoUpdate" placeholder="Фото новин" name="photo">
+                    </div>
+                </div>
+                <div class=" col-md-9 col-sm-8 text_out">
+                    <div class="title_news box_new">
+                        <div class="display_inl_bl">
+                            <input type="text" class="form-control" placeholder="Заголовок" ng-model="new.title">
+                        </div>
+                    </div>
+                    <div class="text-date box_new">
+                        <input type="text" class="form-control" placeholder="Дата" ng-model="new.date">
+                    </div>
+                    <div   class="box_new ">
+                        <div class=" box_text " >
+                            <textarea class="form-control news_textarea" placeholder="Текст новини" ng-model="new.text" style="resize: none"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="edit_line box row">
+                <div class="delete_new ">
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-trash " title="Видалити" aria-hidden="true" ng-click="removeNews(new.id,new.img)"></i>
+                    </a>
+                </div >
+                <div class="safe_new">
+                    <button  class="btn btn-primary"  title="Зберегти" aria-hidden="true" ng-click="updateNews(new,$index,new.img)" >Зберегти</button>
+
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-            <input id="photo" enctype="multipart/form-data" type="file" class="form-control" placeholder="Фото новини" name="photo">
-        </div>
-        <div class="col-md-4">
-            <textarea class="form-control" placeholder="Текст новини" ng-model="newNews.text" style="resize: none"></textarea>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-1">
-            <a href="javascript:void(0)">
-                <i class="fa fa-floppy-o" title="Зберегти" aria-hidden="true" ng-click="updateNews(newNews)"></i>
-            </a>
+        <div class="">
+            <hr>
         </div>
     </div>
 </div>
 
 <style>
     .preview{
-        width: 110px;
+        width: 200px;
+    }
+    .img_news {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .photoUpdate{
+        width: 121px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        height: 23px;
+        margin-top: 5px;
+    }
+    .edit_line {
+        padding-right: 50px;
+        float: right;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .delete_new, .safe_new{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .news_box{
+        margin-bottom: 45px;
+    }
+    .news_box:nth-child(odd){
+        background: red;
+    }
+    .box_new{
+        margin-bottom: 10px;
     }
 </style>

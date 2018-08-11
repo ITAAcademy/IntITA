@@ -90,7 +90,7 @@ function studentsTableCtrl ($scope, usersService, NgTableParams, $attrs){
     $scope.changePageHeader('Закріплені студенти');
     $jq(function() {
         $jq( "#from" ).datepicker({
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'yy-mm-dd',
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 1,
@@ -340,6 +340,18 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             });
         $jq('#apply-btn').prop('disabled', true);
     };
+    $scope.getTrainers();
+
+    $scope.getAllTrainers = function() {
+        usersService
+            .allActualTrainers()
+            .$promise
+            .then(function (data) {
+                $scope.allTrainers = data;
+            });
+        $jq('#apply-btn').prop('disabled', true);
+    };
+    $scope.getAllTrainers();
 
     $jq('#selectNewTrainer, #selectOldTrainer').on('change', function(){
         setTimeout(function(){
@@ -357,10 +369,15 @@ function changeTrainersCtrl($scope, usersService, roleService, $attrs) {
             .exchangeTrainers({'id_old':id_old, 'id_new':id_new})
             .$promise
             .then(function () {
+                    $scope.id_oldTrainer = undefined;
+		            $scope.id_newTrainer = undefined;
+                    $scope.getTrainers();
                     console.info('success, exchanged trainers');
+		            $scope.addUIHandlers('Операцію успішно виконано');
                 },
                 function (error) {
                     console.error(error);
+	                bootbox.alert("Операцію не вдалося виконати");
                 });
     };
 }
@@ -608,7 +625,22 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
             if (day.length < 2) day = '0' + day;
             return [year, month, day].join('-');
         }
-        dateInSubgroup = formatDate(dateInSubgroup);
+        function currentDate() {
+            var d = new Date();
+            var curr_date = d.getDate();
+            var curr_month = d.getMonth() + 1;
+            var curr_year = d.getFullYear();
+            if (curr_month < 10){
+                curr_month = "0" + curr_month;
+            }
+            return curr_year + "-" + curr_month + "-" + curr_date;
+        }
+        if (dateInSubgroup == undefined){
+               dateInSubgroup = currentDate();
+        }
+        else{
+            dateInSubgroup = formatDate(dateInSubgroup);
+        }
         $http({
             method: 'POST',
             url: basePath+'/_teacher/_supervisor/superVisor/addStudentToSubgroup',
@@ -647,7 +679,8 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
                             title: "Вибери, будь ласка, причину виключення:",
                             message: '<div class="panel-body"><div class="row"><form role="form" name="rejectMessage"><div class="form-group col-md-12">'+
                             '<select class="form-control" id="selected_reason">'+$scope.option_str+'</select>'+
-                            '<input type="text" id="datepicker" class="form-control" placeholder="Виберіть дату" style="margin-top: 25px;">'+
+                            '<div style="margin-top: 25px;"><div id="simple_box" style="display: none; color: green; margin-left: 6px;" >Виберіть дату!</div></div>'+
+                            '<input type="text" id="datepicker" class="form-control" placeholder="Виберіть дату *" >'+
                             '<textarea class="form-control custom-control" id="comment" rows="7" cols="45" name="text" placeholder="Ваш коментар ..." style="margin-top: 25px;"></textarea>'+
                             '</div></form></div></div>',
                             buttons: {
@@ -689,8 +722,20 @@ function userProfileCtrl ($http, $scope, $stateParams, roleService, $rootScope, 
                     $jq('.apply-btn').prop('disabled', true);
 
                     $jq('#selected_reason').on('change', function () {
+                        if ($jq('#datepicker').val()  === '') {
+                            var box = '#simple_box';
+	                        $jq(box).show(400);
+	                        $jq(box).delay(2000);
+	                        $jq(box).hide(400);
+                            return ;
+                        }
                         $jq('.apply-btn').prop('disabled', false);
                     });
+
+		            $jq('#datepicker').on('change', function () {
+			            if ($jq('#selected_reason').val()  === null) { return ; }
+			            $jq('.apply-btn').prop('disabled', false);
+		            });
 
                     $jq(function () {
                         var firstday = new Date();
@@ -1147,7 +1192,23 @@ function studentsInfoCtrl($scope, $state, trainerService, usersService, NgTableP
     });
 
     $scope.updateStudentList=function(organization, startDate, endDate){
-        $scope.studentsTableParams = new NgTableParams({}, {
+        if (startDate === undefined) { $scope.startDate = '2000-01-01 00:00:00'; }
+            else { $scope.startDate = startDate; }
+        if (endDate === undefined || endDate === ' 23:59:59') {
+            var cur_date = new Date();
+            cur_date = new Date(cur_date.getTime() - 3000000);
+            $scope.endDate = cur_date.getFullYear().toString()+"-"+((cur_date.getMonth()+1).toString().length==2?(cur_date.getMonth()+1).toString():"0"+(cur_date.getMonth()+1).toString())+"-"+(cur_date.getDate().toString().length==2?cur_date.getDate().toString():"0"+cur_date.getDate().toString())+" "+(cur_date.getHours().toString().length==2?cur_date.getHours().toString():"0"+cur_date.getHours().toString())+":"+((parseInt(cur_date.getMinutes()/5)*5).toString().length==2?(parseInt(cur_date.getMinutes()/5)*5).toString():"0"+(parseInt(cur_date.getMinutes()/5)*5).toString())+":00";
+            $scope.to = cur_date.getFullYear().toString()+"-"+((cur_date.getMonth()+1).toString().length==2?(cur_date.getMonth()+1).toString():"0"+(cur_date.getMonth()+1).toString())+"-"+(cur_date.getDate().toString().length==2?cur_date.getDate().toString():"0"+cur_date.getDate().toString());
+        }
+        else { $scope.endtDate = endDate; }
+
+        $scope.studentsTableParams = new NgTableParams({
+            organization:$scope.organization,
+            trainersScope:$scope.trainer,
+            sorting: {
+                "start_date": 'desc'
+            },
+        }, {
             getData: function (params) {
                 $scope.params=params.url();
                 $scope.params.startDate=startDate;

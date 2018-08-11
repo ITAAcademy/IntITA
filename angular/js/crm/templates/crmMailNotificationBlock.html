@@ -52,7 +52,7 @@
     <div class="row form-group form-inline">
         <div class="col-md-4">
             <label>Час оповіщення</label>
-            <span uib-timepicker ng-model="crmTask.data.notification.time" ng-change="changed()" hour-step=1
+            <span uib-timepicker ng-model="crmTask.data.notification.time" mousewheel="false" ng-change="changed()" hour-step=1
                   minute-step=1 show-meridian="false" ng-required="crmTask.data.notification.notify">></span>
             <div class="errorMessage" ng-show="crmTask.data.notification.error.time">
                 {{crmTask.data.notification.error.time}}
