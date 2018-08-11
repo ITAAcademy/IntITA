@@ -33,6 +33,18 @@ class m180811_105849_add_translations_985 extends CDbMigration
                 'ru' => 'Show the payment plan (offline payment scheme)',
                 'en' => 'Цена за весь курс наперед (схемы проплат оффлайн)'
             ]);
+        $this->addTranslate(987, 'module', '0987',
+            [
+                'ua' => 'Натисніть для редагування короткого опису',
+                'ru' => 'Нажмите для редактирования краткого описания',
+                'en' => 'Click to edit a short description'
+            ]);
+        $this->addTranslate(988, 'module', '0988',
+            [
+                'ua' => 'Натисніть для редагування біографії',
+                'ru' => 'Нажмите для редактирования биографии',
+                'en' => 'Click to edit the biography'
+            ]);
 
     }
 
@@ -42,5 +54,9 @@ class m180811_105849_add_translations_985 extends CDbMigration
         $this->delete('sourcemessages', 'id=0985');
         $this->delete('translate', 'id=0986');
         $this->delete('sourcemessages', 'id=0986');
+        $this->delete('translate', 'id=0987');
+        $this->delete('sourcemessages', 'id=0987');
+        $this->delete('translate', 'id=0988');
+        $this->delete('sourcemessages', 'id=0988');
     }
 }
