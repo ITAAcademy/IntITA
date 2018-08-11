@@ -463,27 +463,23 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
     };
     $scope.getWrittenAgreementRequestStatus($stateParams.agreementId);
 
-    $scope.updateUserAgreementData = function(type, data, attributes){
-        var helperData = updateUserAgreementDataHelper(data, attributes);
+    $scope.updateUserAgreementData = function(type, data,attributes){
         bootbox.dialog({
                 title: "Змінити дані",
                 message: '<div class="panel-body"><div class="row"><form role="form" name="commentMessage"><div class="form-group col-md-12">'+
                 '<textarea class="form-control" style="resize: none" rows="6" id="dataText" ' +
-                'placeholder='+helperData.placeholder+'>' +helperData.data+ '</textarea>'+'</div></form></div></div>',
+                'placeholder="тут можна ввести нові дані">' +data+ '</textarea>'+'</div></form></div></div>',
                 buttons:
                     {success:
                         {label: "Підтвердити", className: "btn btn-primary",
                             callback: function () {
                                 var data = $jq('#dataText').val();
-                                data = userAgreementDataValidate(type, data, attributes);
-                                if (data !== undefined && data !== null) {
-                                    studentService
-                                        .updateUserAgreementData({type:type,attribute: attributes,data: data})
-                                        .$promise
-                                        .then(function (data) {
-                                            $scope.writtenAgreementPreview($stateParams.agreementId);
-                                        });
-                                }
+                                studentService
+                                    .updateUserAgreementData({type:type,attribute: attributes,data: data})
+                                    .$promise
+                                    .then(function (data) {
+                                        $scope.writtenAgreementPreview($stateParams.agreementId);
+                                    });
                             }
                         },
                         cancel:
@@ -495,68 +491,6 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
             }
         );
     }
-
-    function updateUserAgreementDataHelper(data, attributes) {
-        var placeholder = 'тут можна ввести нові дані';
-        if (attributes === 'issued_date') {
-            placeholder = '11.11.2011';
-            data = parseDate(data);
-        }
-        return {
-            data: data,
-            placeholder: placeholder
-        };
-    }
-
-    $scope.regexpDocumentsForm = {
-        userFullName: /^[а-еж-щьюяієїґА-ЕЖ-ЩЬЮЯІЇЄҐ\-\'’]*$/,
-        pasportNumber: /^([а-еж-щьюяієїґ]{2}\d{6})$|^(\d{6})$/i,
-        issued: /^[а-еж-щьюяієїґ\-\s\'’]*$/i,
-        issuedDate: /^[0-3]?[0-9][.]{1}[0-3]?[0-9][.]{1}(?:[0-9]{2})?[0-9]{2}$/,
-        innNumber: /^\d{10}$/
-    }
-
-    function userAgreementDataValidate(type, data, attributes) {
-        switch(Number(type)) {
-            case 1:
-                return documentTypeOneValidate(attributes, data);
-            case 2:
-                return validationResponse(data.match($scope.regexpDocumentsForm.innNumber), attributes);
-            default:
-                return data;
-        }
-    }
-
-    function documentTypeOneValidate(attributes, data) {
-        switch(attributes) {
-            case 'last_name':
-            case 'first_name':
-            case 'middle_name':
-                return validationResponse(data.match($scope.regexpDocumentsForm.userFullName), attributes);
-            case 'number':
-                return validationResponse(data.match($scope.regexpDocumentsForm.pasportNumber), attributes);
-            case 'issued':
-                return validationResponse(data.match($scope.regexpDocumentsForm.issued), attributes);
-            case 'issued_date':
-                return validationResponse(data.match($scope.regexpDocumentsForm.issuedDate), attributes);
-            default:
-                return null;
-        }
-    }
-
-    function validationResponse(data, attributes) {
-        if (data) {
-            return data[0];
-        } else {
-            bootbox.alert(`Введено неприпустимий символ в поле ${attributes}`);
-        }
-    }
-
-    function parseDate(date) {
-        date = new Date(date);
-        return date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
-    }
-
 
     $scope.phoneMask = '(093)888-8888';
 

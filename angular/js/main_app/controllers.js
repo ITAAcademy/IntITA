@@ -46,6 +46,7 @@ function editProfileController($scope, $http, countryCity, careerService, specia
     $scope.avatar=avatar;
     $scope.cityTitleUA = false;
     $scope.cityTitleUARegexp = /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/;
+    $scope.innRegexp = /^\d{10}$/;
     if (avatar == 'noname.png') {
         $scope.progress--;
     }
@@ -544,12 +545,6 @@ function editProfileController($scope, $http, countryCity, careerService, specia
                     bootbox.alert("Виникла помилка при видалені документу.");
                 });
         });
-    }
-    $scope.regexpDocumentsForm = {
-        userFullName: /^[а-еж-щьюяієїґА-ЕЖ-ЩЬЮЯІЇЄҐ\-\'’]*$/,
-        pasportNumber: /^([а-еж-щьюяієїґ]{2}\d{6})$|^(\d{6})$/i,
-        issued: /^[а-еж-щьюяієїґ\-\s\'’]*$/i,
-        innNumber: /^\d{10}$/
     }
 
 }
