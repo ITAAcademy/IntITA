@@ -45,6 +45,18 @@ class m180811_105849_add_translations_985 extends CDbMigration
                 'ru' => 'Нажмите для редактирования биографии',
                 'en' => 'Click to edit the biography'
             ]);
+        $this->addTranslate(989, 'header', '0989',
+            [
+                'ua' => 'Школа хакерів',
+                'ru' => 'Школа хакеров',
+                'en' => 'Hackers` school'
+            ]);
+        $this->addTranslate(990, 'header', '0990',
+            [
+                'ua' => 'Бібліотека',
+                'ru' => 'Библиотека',
+                'en' => 'Library'
+            ]);
 
     }
 
@@ -58,5 +70,9 @@ class m180811_105849_add_translations_985 extends CDbMigration
         $this->delete('sourcemessages', 'id=0987');
         $this->delete('translate', 'id=0988');
         $this->delete('sourcemessages', 'id=0988');
+        $this->delete('translate', 'id=0989');
+        $this->delete('sourcemessages', 'id=0989');
+        $this->delete('translate', 'id=0990');
+        $this->delete('sourcemessages', 'id=0990');
     }
 }

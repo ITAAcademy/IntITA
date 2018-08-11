@@ -128,7 +128,7 @@ $header = new Header();
                                 <a href="<?php echo Config::getBaseUrl() . '/forPartners' ?>"><?php echo Yii::t('header', '0981'); ?></a>
                             </li>
                             <li>
-                                <a href="<?php echo Config::getBaseUrl() . '/library'; ?>">Бібліотека</a>
+                                <a href="<?php echo Config::getBaseUrl() . '/library'; ?>"><?php echo Yii::t('header', '0990'); ?></a>
                             </li>
                         </ul>
                     </td>

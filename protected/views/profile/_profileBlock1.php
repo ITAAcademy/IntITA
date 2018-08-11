@@ -57,9 +57,11 @@ if ($editMode){
                 <div id="firstBlockEditProfileInfo">
                     <textarea name="editor1" ><?php echo $model->profile_text_first; ?></textarea>
                     <button type="button" class="btn btn-success" id="saveFirstBlockEditProfileInfo">
-                        Зберегти
+                        <?php echo addslashes(Yii::t('lecture', '0771')); ?>
                     </button>
-                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton1">Відміна</button>
+                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton1">
+                        <?php echo addslashes(Yii::t('lecture', '0730')); ?>
+                    </button>
                 </div>
 
                 <script>
@@ -98,9 +100,11 @@ if ($editMode){
                 <div id="secondBlockEditProfileInfo">
                     <textarea name="editor2" ><?php echo $model->profile_text_last; ?></textarea>
                     <button type="button" class="btn btn-success" id="saveSecondBlockEditProfileInfo">
-                        Зберегти
+                        <?php echo addslashes(Yii::t('lecture', '0771')); ?>
                     </button>
-                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton2">Відміна</button>
+                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton2">
+                        <?php echo addslashes(Yii::t('lecture', '0730')); ?>
+                    </button>
                 </div>
 
                 <script>
