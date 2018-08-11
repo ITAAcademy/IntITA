@@ -1,13 +1,13 @@
 [
   {
     "position": 1,
-    "src": "slide.jpg",
+    "src": "slide0.jpg",
     "title": "Слайд 1",
     "description": "Опис слайду"
   },
   {
     "position": 2,
-    "src": "slide.jpg",
+    "src": "slide1.jpg",
     "title": "Слайд 2",
     "description": "Опис слайду"
   }

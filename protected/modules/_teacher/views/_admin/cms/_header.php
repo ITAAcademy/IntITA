@@ -8,7 +8,9 @@
             <div class="col-md-3 ">
                 <div class=" navbar-header_logo">
                     <a href="">
-                        <img id="logo" ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
+                        <span id="logoBlock">
+                            <span ng-include="templateUrl('/partial/logo.html')"></span>
+                        </span>
                         <img class="edit hide_edit" data-toggle="modal" data-target="#logoModal"
                              src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/cms/pen.png') ?>">
                     </a>

@@ -14,6 +14,12 @@ class CmsController extends TeacherCabinetController
         return Yii::app()->user->model->isAdmin();
     }
 
+    public function actionSubdomainName()
+    {
+        $subdomain_name = array_shift((explode('.', $_SERVER['HTTP_HOST'])));
+        echo $_GET['base_path'] . '/domains/' . $subdomain_name . '.' . 'localhost';
+    }
+
     public function actionIndex()
     {
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
@@ -26,7 +32,6 @@ class CmsController extends TeacherCabinetController
 
     public function actionGetSubdomain()
     {
-        var_dump(Yii::app()->user->model->getCurrentOrganizationId());die;
         $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
         return $subdomain;
     }
@@ -39,8 +44,41 @@ class CmsController extends TeacherCabinetController
     public function actionGetMenuList()
     {
         $subdomain = array_shift((explode('.', $_SERVER['HTTP_HOST'])));
-        var_dump($subdomain);die;
         echo  CJSON::encode(CmsMenuList::model()->findAllByAttributes(array('id_organization' => Yii::app()->user->model->getCurrentOrganizationId())));
+    }
+
+    public function actionUpdateSettings()
+    {
+        function valueNull($value) {
+            return !$value?null:$value;
+        }
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $params = array_map("valueNull", (array)json_decode($_POST['data']));
+            $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
+            if(!empty($_POST['copy_img'])){
+                $link = CrmImageUploadHelper::copyImageFromMainToSubdomain($settings->logo, $_POST['copy_img'], 'logo');
+            } else {
+                $link = CrmImageUploadHelper::uploadImage($settings->logo,"logo",key($_FILES));
+            }
+            $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $settings->attributes = $params;
+            if($link){
+                $settings->logo = $link;
+            }
+            if (!$settings->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
     public function actionUpdateMenuLink()
@@ -51,7 +89,11 @@ class CmsController extends TeacherCabinetController
         try {
             $params = array_filter((array)json_decode($_POST['data']));
             $menuLink = isset($params['id']) ? CmsMenuList::model()->findByPk($params['id']) : new CmsMenuList();
-            $link = CrmImageUploadHelper::uploadImage($menuLink->image,"lists",key($_FILES));
+            if(!empty($_POST['copy_img'])){
+                $link = CrmImageUploadHelper::copyImageFromMainToSubdomain($menuLink->image, $_POST['copy_img'], 'lists');
+            } else {
+                $link = CrmImageUploadHelper::uploadImage($menuLink->image,"lists",key($_FILES));
+            }
             $menuLink->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $menuLink->attributes = $params;
             if($link){
@@ -69,6 +111,39 @@ class CmsController extends TeacherCabinetController
 
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
+
+    public function actionUpdateNews()
+    {
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $params = array_filter((array)json_decode($_POST['data']));
+            $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
+            if(!empty($_POST['copy_img'])){
+                $link = CrmImageUploadHelper::copyImageFromMainToSubdomain($new->img, $_POST['copy_img'], 'news');
+            } else {
+                $link = CrmImageUploadHelper::uploadImage($new->img,"news",key($_FILES));
+            }
+            $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
+            $new->date = date("Y-m-d H:i:s");
+            $new->attributes = $params;
+            if($link){
+                $new->img = $link;
+            }
+            if (!$new->save()) {
+                throw new \application\components\Exceptions\IntItaException(500, $new->getValidationErrors());
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
+
     public function actionUpdateSocialNetworks()
     {
         $result = ['message' => 'OK'];
@@ -119,40 +194,12 @@ class CmsController extends TeacherCabinetController
 
     public function actionGetNews()
     {
-        echo CJSON::encode(CmsNews::model()->findAllByAttributes(['id_organization' =>  Yii::app()->user->model->getCurrentOrganizationId()]));
+        echo CJSON::encode(CmsNews::model()->findAllByAttributes(array('id_organization' =>  Yii::app()->user->model->getCurrentOrganizationId()), array('order' => 'date DESC')));
     }
 
     public function actionGetOneNews()
     {
         echo CJSON::encode(CmsNews::model()->findByPk( $_POST['id'])) ;
-    }
-
-    public function actionUpdateNews()
-    {
-        $result = ['message' => 'OK'];
-        $statusCode = 201;
-        $transaction = Yii::app()->db->beginTransaction();
-        try {
-            $params = array_filter((array)json_decode($_POST['data']));
-            $new = isset($params['id']) ? CmsNews::model()->findByPk($params['id']) : new CmsNews();
-            $link = CrmImageUploadHelper::uploadImage($new->img,"news",key($_FILES));
-            $new->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-            $new->date = date("Y-m-d H:i:s");
-            $new->attributes = $params;
-            if($link){
-                $new->img = $link;
-            }
-            if (!$new->save()) {
-                throw new \application\components\Exceptions\IntItaException(500, $new->getValidationErrors());
-            }
-            $transaction->commit();
-        } catch (Exception $error) {
-            $transaction->rollback();
-            $statusCode = 500;
-            $result = ['message' => 'error', 'reason' => $error->getMessage()];
-        }
-
-        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
     public function actionRemoveNews()
@@ -222,37 +269,6 @@ class CmsController extends TeacherCabinetController
         $path = $address . '/index.php';
         file_put_contents($path, $_POST["data"], FILE_USE_INCLUDE_PATH);
     }
-
-    public function actionUpdateSettings()
-    {
-        function valueNull($value) {
-            return !$value?null:$value;
-        }
-        $result = ['message' => 'OK'];
-        $statusCode = 201;
-        $transaction = Yii::app()->db->beginTransaction();
-        try {
-            $params = array_map("valueNull", (array)json_decode($_POST['data']));
-            $settings = isset($params['id']) ? CmsGeneralSettings::model()->findByPk($params['id']) : new CmsGeneralSettings();
-            $link = CrmImageUploadHelper::uploadImage($settings->logo,"logo",key($_FILES));
-            $settings->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
-            $settings->attributes = $params;
-            if($link){
-                $settings->logo = $link;
-            }
-            if (!$settings->save()) {
-                throw new \application\components\Exceptions\IntItaException(500, $settings->getValidationErrors());
-            }
-            $transaction->commit();
-        } catch (Exception $error) {
-            $transaction->rollback();
-            $statusCode = 500;
-            $result = ['message' => 'error', 'reason' => $error->getMessage()];
-        }
-
-        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
-    }
-
 
     public function actionRemoveLogo()
 {
@@ -324,7 +340,11 @@ class CmsController extends TeacherCabinetController
         try {
             $params = array_filter((array)json_decode($_POST['data']));
             $menuSlider = isset($params['id']) ? CmsCarousel::model()->findByPk($params['id']) : new CmsCarousel();
-            $link = CrmImageUploadHelper::uploadImage($menuSlider->src,"carousel",key($_FILES));
+            if(!empty($_POST['copy_img'])){
+                $link = CrmImageUploadHelper::copyImageFromMainToSubdomain($menuSlider->src, $_POST['copy_img'], 'carousel');
+            } else {
+                $link = CrmImageUploadHelper::uploadImage($menuSlider->src,"carousel",key($_FILES));
+            }
             $menuSlider->id_organization = Yii::app()->user->model->getCurrentOrganizationId();
             $menuSlider->attributes = $params;
 

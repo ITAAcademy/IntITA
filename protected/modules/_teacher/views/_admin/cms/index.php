@@ -50,6 +50,10 @@
             <link rel="stylesheet"
                   href="<?php echo StaticFilesHelper::fullPathTo('css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'); ?>">
             <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'); ?>"></script>
+            <script>
+                basePath = '<?=Config::getBaseUrl()?>';
+                subdomainPath = '<? echo Yii::app()->basePath ."/../domains/" . Subdomains::model()->findByAttributes(array("organization" => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . "." . Config::getBaseUrlWithoutSchema()?>';
+            </script>
             <div ng-controller="mainCmsCtrl">
                 <?php
                 $this->renderPartial('_header', array());

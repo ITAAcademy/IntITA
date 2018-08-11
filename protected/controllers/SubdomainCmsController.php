@@ -8,6 +8,12 @@ class SubdomainCmsController extends TeacherCabinetController
         return true;
     }
 
+    public function actionSubdomainName()
+    {
+        $subdomain_name = array_shift((explode('.', $_SERVER['HTTP_HOST'])));
+        echo $_GET['base_path'] . '/domains/' . $subdomain_name . '.' . 'localhost';
+    }
+
     private function getSubdomainName()
     {
         return $subdomain_name = array_shift((explode('.', $_SERVER['HTTP_HOST'])));
@@ -26,7 +32,6 @@ class SubdomainCmsController extends TeacherCabinetController
 
     public function actionGetMenuList()
     {
-//        var_dump($this->getSubdomainName());die;
         $organization = Subdomains::model()->findByAttributes(array('domain_name' => $this->getSubdomainName()))->organization;
         echo  CJSON::encode(CmsMenuList::model()->findAllByAttributes(array('id_organization' => $organization)));
     }
@@ -107,7 +112,8 @@ class SubdomainCmsController extends TeacherCabinetController
 
     public function actionGetNews()
     {
-        echo CJSON::encode(CmsNews::model()->findAllByAttributes(['id_organization' =>  Yii::app()->user->model->getCurrentOrganizationId()]));
+        $organization = Subdomains::model()->findByAttributes(array('domain_name' => $this->getSubdomainName()))->organization;
+        echo CJSON::encode(CmsNews::model()->findAllByAttributes(array('id_organization' =>  $organization), array('order' => 'date DESC')));
     }
 
     public function actionGetOneNews()
@@ -180,8 +186,9 @@ class SubdomainCmsController extends TeacherCabinetController
     }
 
     public function actionGetSettings()
-{       $id_org = Yii::app()->user->model->getCurrentOrganizationId();
-        $model = CJSON::encode(CmsGeneralSettings::model()->findByAttributes(['id_organization' => $id_org]));
+    {
+        $organization = Subdomains::model()->findByAttributes(array('domain_name' => $this->getSubdomainName()))->organization;
+        $model = CJSON::encode(CmsGeneralSettings::model()->findByAttributes(['id_organization' => $organization]));
         echo $model;
     }
 
@@ -302,7 +309,8 @@ class SubdomainCmsController extends TeacherCabinetController
 
     public function actionGetMenuSlider()
     {
-        echo  CJSON::encode( CmsCarousel::model()->findAllByAttributes(array('id_organization' => Yii::app()->user->model->getCurrentOrganizationId())) );
+        $organization = Subdomains::model()->findByAttributes(array('domain_name' => $this->getSubdomainName()))->organization;
+        echo  CJSON::encode( CmsCarousel::model()->findAllByAttributes(array('id_organization' => $organization)) );
     }
     public function actionUpdateMenuSlider()
     {

@@ -11,7 +11,7 @@
     <div class="row box_inside" ng-style="{color:settings.text_color}"
          style="box-shadow: 0 0 5px {{settings.news_text_border_color}}">
         <div class="img_news_box col-md-4 col-sm-6 col-xs-6">
-            <img src='{{new.id && domainPathNews+ new.img || new.img}}' class="img_news"
+            <img src='{{new.id && subDomainPath + "/news/" + new.img || new.img}}' class="img_news"
                  ng-style="{'border-color':settings.news_image_border_color, 'border-style': 'solid', 'border-width': '2px'}">
         </div>
         <img class="edit hide_edit" data-toggle="modal"

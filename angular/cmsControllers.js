@@ -1,10 +1,12 @@
 angular
     .module('cmsDomainApp', ['ui.bootstrap', 'ngResource'])
-    .filter('isNotLink', function() {
-        return function (input) {
-            return input.indexOf("https://")==-1 && input.indexOf("http://")==-1
-        };
-    })
+    .run(['$rootScope','$http',
+        function ($rootScope, $http) {
+            $http.get(basePath + '/subdomainCms/subdomainName',{params: {base_path: basePath}}).success(function (response) {
+                $rootScope.subDomainPath = response;
+            });
+        }
+    ])
     .factory('transformRequest', ['$filter', function ($filter) {
         /* https://github.com/knowledgecode/jquery-param/blob/master/jquery-param.js */
         return function transformRequest(a) {
@@ -54,39 +56,40 @@ angular
         }
 
     }])
-    .controller('mainCmsCtrl', ['$scope', '$http','cmsDomainService','$rootScope' , function ($scope, $http,cmsDomainService,$rootScope) {
-        // basePath = window.location.protocol + "//" + window.location.host;
-        basePath = window.location.protocol + "//" + window.location.host + '/IntITA';
-        cmsDomainService.menuList().$promise
-            .then(function successCallback(response) {
-                console.log(response)
-                $scope.listsItemMenu = response;
-            }, function errorCallback(error) {
+    .controller('mainCmsCtrl', ['$scope', '$http','cmsDomainService','$q', function ($scope, $http,cmsDomainService, $q) {
+        $scope.myInterval = 3000;
+        $scope.active = 0;
+
+        $q.all([
+            cmsDomainService.settingList(),
+            cmsDomainService.menuList(),
+            cmsDomainService.newsList(),
+            cmsDomainService.menuSlider(),
+        ])
+            .then(function (response) {
+                console.log(response);
+                $scope.settings = response[0];
+                $scope.listsItemMenu = response[1];
+                $scope.news = response[2];
+                $scope.slides = response[3];
+            })
+            .catch(function (error) {
                 console.log(error)
-                alert("Отримати дані списку меню не вдалося");
+                alert('Помилка завантаження данних')
             });
-        // $http.get(basePath + '/angular/js/teacher/templates/cms/defaultMenu.json').success(function (response) {
-        //     $scope.listsItemMenu = response;
-        // });
-        $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSettings.json').success(function (response) {
-            $scope.settings = response;
-        });
-        $http.get(basePath + '/angular/js/teacher/templates/cms/defaultNews.json').success(function (response) {
-            $scope.news = response;
-        });
     }])
     .controller('sliderCtrl', ['$scope', '$http',
         function ($scope, $http) {
             $scope.myInterval = 3000;
             $scope.active = 0;
 
-            // cmsService.domainPath().$promise
-            //     .then(function successCallback(response) {
-            //         $scope.domainPath = response.domainPath+'/carousel/';
             $http.get(basePath + '/_teacher/_admin/cms/getMenuSlider').then(function successCallback(response) {
                 if (response.data.length == 0) {
                     $http.get(basePath + '/angular/js/teacher/templates/cms/defaultSlider.json').success(function (response) {
                         $scope.slides = response;
+                        for (var i = 0; i < $scope.slides.length; i++) {
+                            $scope.slides[i].src = generateRelativePath($scope.slides[i].src);
+                        }
                     });
                 } else {
                     $scope.slides = response;
@@ -99,3 +102,7 @@ angular
             });
         }
     ])
+
+function generateRelativePath(src) {
+    return basePath + '/domains/' + src;
+}

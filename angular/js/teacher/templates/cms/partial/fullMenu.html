@@ -1,6 +1,6 @@
 <div class="block_about card" ng-repeat="item in listsItemMenu track by $index">
     <div class="icon_about card-img-top">
-        <img class="image_about" ng-src='{{item.id && domainPath+item.image || item.image}}'>
+        <img class="image_about" ng-src='{{item.id && subDomainPath + "/lists/" + item.image || item.image}}'>
     </div>
     <div class="title_about card-body" ng-style="{color:settings.subtitle_color}">{{item.title}}<p
             class="card-text"
