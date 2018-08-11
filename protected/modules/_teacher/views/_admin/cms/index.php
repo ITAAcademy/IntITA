@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="news_box" ng-repeat="new in news track by $index">
-        <div ng-include="templateUrl('/modal/newsModalLeft.html')" ng-init="index = $index"></div>
+        <div ng-include="templateUrl('/modal/newsModal.html')" ng-init="index = $index"></div>
     </div>
     <div ng-include="templateUrl('/modal/logoModal.html')"></div>
     <div ng-include="templateUrl('/modal/menuListModal.html')"></div>

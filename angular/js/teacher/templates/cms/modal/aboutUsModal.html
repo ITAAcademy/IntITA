@@ -22,7 +22,7 @@
                         <div class="second_line box row">
                             <div class="col-md-2">
                                 <img class="preview"
-                                     ng-src='{{item.id && domainPath+item.image || item.image}}'>
+                                     ng-src='{{item.id && subDomainPath + "/lists/" + item.image || item.image}}'>
                                 <input id="img_menu_list_Update{{$index}}"
                                        enctype="multipart/form-data" type="file"
                                        class=" img_menu_list_Update  img_menu_list_style "
