@@ -100,7 +100,7 @@ class ProfileController extends Controller
                 }
             }
         }
-        Yii::app()->user->setFlash('success', "Ваш профіль оновлено!");
+        Yii::app()->user->setFlash('success', Yii::t('profile', '1011'));
     }
 
     public function getCourses()

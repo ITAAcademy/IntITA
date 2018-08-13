@@ -50,16 +50,18 @@ if ($editMode){
                 <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
                 <div class="editTextButton" id="firstButtonEditProfileInfo">
                     <span>
-                        <em>Натисніть для редагування профілю</em>
+                        <em><?php echo Yii::t('module', '0987') ?></em>
                         <i class="fas fa-pencil-alt"></i>
                     </span>
                 </div>
                 <div id="firstBlockEditProfileInfo">
                     <textarea name="editor1" ><?php echo $model->profile_text_first; ?></textarea>
                     <button type="button" class="btn btn-success" id="saveFirstBlockEditProfileInfo">
-                        Зберегти
+                        <?php echo addslashes(Yii::t('lecture', '0771')); ?>
                     </button>
-                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton1">Відміна</button>
+                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton1">
+                        <?php echo addslashes(Yii::t('lecture', '0730')); ?>
+                    </button>
                 </div>
 
                 <script>
@@ -91,16 +93,18 @@ if ($editMode){
             <?php if($editMode){?>
                 <div class="editTextButton" id="secondButtonEditProfileInfo">
                     <span>
-                        <em>Натисніть для редагування профілю</em>
+                        <em><?php echo Yii::t('module', '0988') ?></em>
                         <i class="fas fa-pencil-alt"></i>
                     </span>
                 </div>
                 <div id="secondBlockEditProfileInfo">
                     <textarea name="editor2" ><?php echo $model->profile_text_last; ?></textarea>
                     <button type="button" class="btn btn-success" id="saveSecondBlockEditProfileInfo">
-                        Зберегти
+                        <?php echo addslashes(Yii::t('lecture', '0771')); ?>
                     </button>
-                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton2">Відміна</button>
+                    <button type="button" class="btn btn-default" id="cancelTeacherEditButton2">
+                        <?php echo addslashes(Yii::t('lecture', '0730')); ?>
+                    </button>
                 </div>
 
                 <script>
