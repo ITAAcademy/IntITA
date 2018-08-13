@@ -16,7 +16,7 @@ $this->widget('application.components.ColumnListView', array(
             class="showMore"
             align="right"
             onclick="showMore()"
-        ><?php echo Yii::t("pagination", "0998"); ?>&#32;&hellip;</div>',
+        >'.Yii::t('pagination', '0998').'&#32;&hellip;</div>',
         'maxButtonCount' => 6,
         'cssFile' => Config::getBaseUrl() . '/css/pager.css'
     ),
