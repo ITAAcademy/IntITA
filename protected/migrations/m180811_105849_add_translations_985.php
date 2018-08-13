@@ -117,6 +117,132 @@ class m180811_105849_add_translations_985 extends CDbMigration
                 'ru' => 'ПРИСОЕДИНИТЬСЯ К КОМАНДЕ',
                 'en' => 'JOIN TO TEAM'
             ]);
+        $this->addTranslate(1001, 'profile', '1001',
+            [
+                'ua' => 'Додати проект',
+                'ru' => 'Добавить проект',
+                'en' => 'Add project'
+            ]);
+        $this->addTranslate(1002, 'profile', '1002',
+            [
+                'ua' => 'Якщо твій проект знаходиться на gitlab, виконай',
+                'ru' => 'Если твой проект находится на gitlab, делай следующее',
+                'en' => 'If your project is on gitlab, next steps are'
+            ]);
+        $this->addTranslate(1003, 'profile', '1003',
+            [
+                'ua' => 'Дочекайся затвердження проекта тренером',
+                'ru' => 'Дождись утверждения проекта тренером',
+                'en' => 'Wait for approving the project by trainer'
+            ]);
+        $this->addTranslate(1004, 'profile', '1004',
+            [
+                'ua' => 'Завантажуйте лише веб проекти. У корені проекту має знаходитися файл index.html.',
+                'ru' => 'Загружайте только веб проекты. В корне проекта должен находиться файл index.html.',
+                'en' => 'Download only web projects. The file index.html should be located at the root of the project.'
+            ]);
+        $this->addTranslate(1005, 'profile', '1005',
+            [
+                'ua' => 'Проект повинен вміщувати лише файли з розширенням html, css, js та медіа контент.',
+                'ru' => 'Проект должен содержать только файлы с расширением html, css, js и медиа контент.',
+                'en' => 'The project should contain files only with extensions html, css, js and media content.'
+            ]);
+        $this->addTranslate(1006, 'profile', '1006',
+            [
+                'ua' => 'Кожен новий проект повинен містити назву відмінну від попередніх.',
+                'ru' => 'Каждый новый проект должен содержать название отличающееся от предыдущих.',
+                'en' => 'Each new project should contain a name different from the previous ones.'
+            ]);
+        $this->addTranslate(1007, 'profile', '1007',
+            [
+                'ua' => 'Проект',
+                'ru' => 'Проект',
+                'en' => 'Project'
+            ]);
+        $this->addTranslate(1008, 'profile', '1008',
+            [
+                'ua' => 'Змінити',
+                'ru' => 'Изменить',
+                'en' => 'Change'
+            ]);
+        $this->addTranslate(1009, 'profile', '1009',
+            [
+                'ua' => 'Запит на перевірку',
+                'ru' => 'Запрос на проверку',
+                'en' => 'Verification request'
+            ]);
+        $this->addTranslate(1010, 'profile', '1010',
+            [
+                'ua' => 'Резюме',
+                'ru' => 'Резюме',
+                'en' => 'Resume'
+            ]);
+        $this->addTranslate(1011, 'profile', '1011',
+            [
+                'ua' => 'Ваш профіль оновлено!',
+                'ru' => 'Ваш профиль обновлен!',
+                'en' => 'Your profile has been updated!'
+            ]);
+        $this->addTranslate(1012, 'profile', '1012',
+            [
+                'ua' => 'Документи',
+                'ru' => 'Документы',
+                'en' => 'Documents'
+            ]);
+        $this->addTranslate(1013, 'profile', '1013',
+            [
+                'ua' => 'Виберіть тип',
+                'ru' => 'Выберите тип',
+                'en' => 'Choose a type'
+            ]);
+        $this->addTranslate(1014, 'profile', '1014',
+            [
+                'ua' => 'затверджено - за документом закріплений договір',
+                'ru' => 'утвержден - за документом закреплен договор',
+                'en' => 'approved - the document is fixed by the contract'
+            ]);
+        $this->addTranslate(1015, 'profile', '1015',
+            [
+                'ua' => 'деактивований',
+                'ru' => 'деактивирован',
+                'en' => 'deactivated'
+            ]);
+        $this->addTranslate(1016, 'profile', '1016',
+            [
+                'ua' => 'Прописка',
+                'ru' => 'Прописка',
+                'en' => 'Registration'
+            ]);
+        $this->addTranslate(1017, 'profile', '1017',
+            [
+                'ua' => 'По батькові',
+                'ru' => 'Отчество',
+                'en' => 'Middle name'
+            ]);
+        $this->addTranslate(1018, 'profile', '1018',
+            [
+                'ua' => 'Переглянути',
+                'ru' => 'Отчество',
+                'en' => 'Middle name'
+            ]);
+        $this->addTranslate(1019, 'profile', '1019',
+            [
+                'ua' => 'Введіть 10-значний ідентифікаційний номер',
+                'ru' => 'Введите 10-значный идентификационный номер',
+                'en' => 'Input a 10-digit ID number'
+            ]);
+        $this->addTranslate(1020, 'profile', '1020',
+            [
+                'ua' => 'Видалити',
+                'ru' => 'Удалить',
+                'en' => 'Remove'
+            ]);
+        $this->addTranslate(1021, 'profile', '1021',
+            [
+                'ua' => 'Деактивувати',
+                'ru' => 'Деактивировать',
+                'en' => 'Deactivate'
+            ]);
     }
 
     public function safeDown()
@@ -153,5 +279,47 @@ class m180811_105849_add_translations_985 extends CDbMigration
         $this->delete('sourcemessages', 'id=0999');
         $this->delete('translate', 'id=1000');
         $this->delete('sourcemessages', 'id=1000');
+        $this->delete('translate', 'id=1001');
+        $this->delete('sourcemessages', 'id=1001');
+        $this->delete('translate', 'id=1002');
+        $this->delete('sourcemessages', 'id=1002');
+        $this->delete('translate', 'id=1003');
+        $this->delete('sourcemessages', 'id=1003');
+        $this->delete('translate', 'id=1004');
+        $this->delete('sourcemessages', 'id=1004');
+        $this->delete('translate', 'id=1005');
+        $this->delete('sourcemessages', 'id=1005');
+        $this->delete('translate', 'id=1006');
+        $this->delete('sourcemessages', 'id=1006');
+        $this->delete('translate', 'id=1007');
+        $this->delete('sourcemessages', 'id=1007');
+        $this->delete('translate', 'id=1008');
+        $this->delete('sourcemessages', 'id=1008');
+        $this->delete('translate', 'id=1009');
+        $this->delete('sourcemessages', 'id=1009');
+        $this->delete('translate', 'id=1010');
+        $this->delete('sourcemessages', 'id=1010');
+        $this->delete('translate', 'id=1011');
+        $this->delete('sourcemessages', 'id=1011');
+        $this->delete('translate', 'id=1012');
+        $this->delete('sourcemessages', 'id=1012');
+        $this->delete('translate', 'id=1013');
+        $this->delete('sourcemessages', 'id=1013');
+        $this->delete('translate', 'id=1014');
+        $this->delete('sourcemessages', 'id=1014');
+        $this->delete('translate', 'id=1015');
+        $this->delete('sourcemessages', 'id=1015');
+        $this->delete('translate', 'id=1016');
+        $this->delete('sourcemessages', 'id=1016');
+        $this->delete('translate', 'id=1017');
+        $this->delete('sourcemessages', 'id=1017');
+        $this->delete('translate', 'id=1018');
+        $this->delete('sourcemessages', 'id=1018');
+        $this->delete('translate', 'id=1019');
+        $this->delete('sourcemessages', 'id=1019');
+        $this->delete('translate', 'id=1020');
+        $this->delete('sourcemessages', 'id=1020');
+        $this->delete('translate', 'id=1021');
+        $this->delete('sourcemessages', 'id=1021');
     }
 }
