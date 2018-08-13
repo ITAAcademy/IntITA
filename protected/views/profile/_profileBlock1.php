@@ -50,7 +50,7 @@ if ($editMode){
                 <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
                 <div class="editTextButton" id="firstButtonEditProfileInfo">
                     <span>
-                        <em><?php echo Yii::t('teacher', '0987') ?></em>
+                        <em><?php echo Yii::t('module', '0987') ?></em>
                         <i class="fas fa-pencil-alt"></i>
                     </span>
                 </div>
@@ -93,7 +93,7 @@ if ($editMode){
             <?php if($editMode){?>
                 <div class="editTextButton" id="secondButtonEditProfileInfo">
                     <span>
-                        <em><?php echo Yii::t('teacher', '0988') ?></em>
+                        <em><?php echo Yii::t('module', '0988') ?></em>
                         <i class="fas fa-pencil-alt"></i>
                     </span>
                 </div>

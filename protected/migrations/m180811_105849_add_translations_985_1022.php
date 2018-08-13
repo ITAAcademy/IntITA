@@ -1,6 +1,6 @@
 <?php
 
-class m180811_105849_add_translations_985 extends CDbMigration
+class m180811_105849_add_translations_985_1022 extends CDbMigration
 {
 	private function addTranslate($id, $category, $message, $translates) {
         $this->insert('sourcemessages', [
@@ -243,6 +243,12 @@ class m180811_105849_add_translations_985 extends CDbMigration
                 'ru' => 'Деактивировать',
                 'en' => 'Deactivate'
             ]);
+        $this->addTranslate(1022, 'library', '1022',
+            [
+                'ua' => 'Сплатити',
+                'ru' => 'Оплатить',
+                'en' => 'Pay'
+            ]);
     }
 
     public function safeDown()
@@ -321,5 +327,7 @@ class m180811_105849_add_translations_985 extends CDbMigration
         $this->delete('sourcemessages', 'id=1020');
         $this->delete('translate', 'id=1021');
         $this->delete('sourcemessages', 'id=1021');
+        $this->delete('translate', 'id=1022');
+        $this->delete('sourcemessages', 'id=1022');
     }
 }
