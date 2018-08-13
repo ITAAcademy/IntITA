@@ -57,6 +57,48 @@ class m180811_105849_add_translations_985 extends CDbMigration
                 'ru' => 'Библиотека',
                 'en' => 'Library'
             ]);
+        $this->addTranslate(991, 'library', '0991',
+            [
+                'ua' => 'Опис',
+                'ru' => 'Описание',
+                'en' => 'Description'
+            ]);
+        $this->addTranslate(992, 'library', '0992',
+            [
+                'ua' => 'Ціна за паперовий примірник',
+                'ru' => 'Цена за бумажный экземпляр',
+                'en' => 'Price per paper copy'
+            ]);
+        $this->addTranslate(993, 'library', '0993',
+            [
+                'ua' => 'Ціна за електронний примірник',
+                'ru' => 'Цена за электронный экземпляр',
+                'en' => 'Price per digital copy'
+            ]);
+        $this->addTranslate(994, 'library', '0994',
+            [
+                'ua' => 'Категорії',
+                'ru' => 'Категории',
+                'en' => 'Categories'
+            ]);
+        $this->addTranslate(995, 'library', '0995',
+            [
+                'ua' => 'Демо версія',
+                'ru' => 'Демо версия',
+                'en' => 'Demo version'
+            ]);
+        $this->addTranslate(996, 'library', '0996',
+            [
+                'ua' => 'переглянути',
+                'ru' => 'просмотреть',
+                'en' => 'look through'
+            ]);
+        $this->addTranslate(997, 'library', '0997',
+            [
+                'ua' => 'Для купівлі авторизуйся',
+                'ru' => 'Для покупки авторизуйся',
+                'en' => 'Log in to purchase'
+            ]);
 
     }
 
@@ -74,5 +116,20 @@ class m180811_105849_add_translations_985 extends CDbMigration
         $this->delete('sourcemessages', 'id=0989');
         $this->delete('translate', 'id=0990');
         $this->delete('sourcemessages', 'id=0990');
+        $this->delete('translate', 'id=0991');
+        $this->delete('sourcemessages', 'id=0991');
+        $this->delete('translate', 'id=0992');
+        $this->delete('sourcemessages', 'id=0992');
+        $this->delete('translate', 'id=0993');
+        $this->delete('sourcemessages', 'id=0993');
+        $this->delete('translate', 'id=0994');
+        $this->delete('sourcemessages', 'id=0994');
+        $this->delete('translate', 'id=0995');
+        $this->delete('sourcemessages', 'id=0995');
+        $this->delete('translate', 'id=0996');
+        $this->delete('sourcemessages', 'id=0996');
+        $this->delete('translate', 'id=0997');
+        $this->delete('sourcemessages', 'id=0997');
+
     }
 }
