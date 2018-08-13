@@ -16,7 +16,7 @@ $this->widget('application.components.ColumnListView', array(
             class="showMoreGraduate"
             align="right"
             onclick="showMoreGraduate()"
-        >Показати ще ...</div>',
+        ><?php echo Yii::t("pagination", "0998"); ?>&#32;&hellip;</div>',
         'cssFile' => Config::getBaseUrl() . '/css/pager.css'
     ),
     'id'=>'ajaxListView',

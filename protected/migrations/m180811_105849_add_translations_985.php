@@ -99,7 +99,24 @@ class m180811_105849_add_translations_985 extends CDbMigration
                 'ru' => 'Для покупки авторизуйся',
                 'en' => 'Log in to purchase'
             ]);
-
+        $this->addTranslate(998, 'pagination', '0998',
+            [
+                'ua' => 'Показати ще',
+                'ru' => 'Показать еще',
+                'en' => 'Show more'
+            ]);
+        $this->addTranslate(999, 'graduates', '0999',
+            [
+                'ua' => 'Компанії, де працюють наші випускники',
+                'ru' => 'Компании, где работают наши выпускники',
+                'en' => 'Companies where our graduates work'
+            ]);
+        $this->addTranslate(1000, 'team', '1000',
+            [
+                'ua' => 'ПРИЄДНАТИСЯ ДО КОМАНДИ',
+                'ru' => 'ПРИСОЕДИНИТЬСЯ К КОМАНДЕ',
+                'en' => 'JOIN TO TEAM'
+            ]);
     }
 
     public function safeDown()
@@ -130,6 +147,11 @@ class m180811_105849_add_translations_985 extends CDbMigration
         $this->delete('sourcemessages', 'id=0996');
         $this->delete('translate', 'id=0997');
         $this->delete('sourcemessages', 'id=0997');
-
+        $this->delete('translate', 'id=0998');
+        $this->delete('sourcemessages', 'id=0998');
+        $this->delete('translate', 'id=0999');
+        $this->delete('sourcemessages', 'id=0999');
+        $this->delete('translate', 'id=1000');
+        $this->delete('sourcemessages', 'id=1000');
     }
 }

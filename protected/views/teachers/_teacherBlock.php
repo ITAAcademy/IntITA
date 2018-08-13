@@ -8,7 +8,7 @@ $roles = $data->getRoles();
     if($widget->dataProvider->pagination->currentPage == 0 && $index == 1)  {
 ?>
 <div class="teacherForm" id="maxTeacherForm">
-        <a id="joinTeamMaxButton" data-toggle="modal" data-target="#joinTeamMax" class="buttonBeginInTeachers" href="#form">ПРИЄДНАТИСЯ ДО КОМАНДИ  /&gt;</a>
+        <a id="joinTeamMaxButton" data-toggle="modal" data-target="#joinTeamMax" class="buttonBeginInTeachers" href="#form"><?php echo Yii::t('team', '1000'); ?>&#32;&#32;&#47;&gt;</a>
 
         <!-- Modal -->
         <div class="modal fade" id="joinTeamMax" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -16,7 +16,7 @@ $roles = $data->getRoles();
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Приєднатися до команди</h4>
+                        <h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('team', '1000'); ?></h4>
                     </div>
                     <?php $this->renderPartial('_ifYouTeachers', array('teacherletter'=>$teacherletter,'index'=>$index)); ?>
                 </div>
