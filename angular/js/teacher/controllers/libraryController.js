@@ -67,7 +67,9 @@ angular
                 category: '',
                 status: '',
                 link: '',
-                logo: ''
+                logo: '',
+                position: '',
+                publication_year: ''
             };
         };
         $scope.getLibrary = function () {
@@ -75,6 +77,8 @@ angular
             .then(function successCallback(response) {
                 response.data.price =  Number(response.data.price);
                 response.data.paper_price =  Number(response.data.paper_price);
+                response.data.position =  Number(response.data.position);
+                response.data.publication_year =  Number(response.data.publication_year);
                 $scope.formData = response.data;
             }, function errorCallback() {
                 bootbox.alert("Отримати дані категорії не вдалося");
@@ -207,6 +211,45 @@ angular
                     bootbox.alert(error.data.reason);
                 });
         };
+
+        $scope.yearPicker = function ($event) {
+            // $jq($event.currentTarget).removeClass('datepicker').datepicker().focus();
+            $jq($event.currentTarget).monthYearPicker();
+        }
+
+        $jq.fn.monthYearPicker = function(options) {
+            options = $jq.extend({
+                dateFormat: 'yy',
+                changeYear: true,
+                showButtonPanel: true,
+                showAnim: '',
+                beforeShow: function(input, inst) {
+                    $jq('.ui-datepicker-header, .ui-datepicker-year').css({color: '#000'});
+                    setTimeout(function () {
+                        var offsets = $jq(input).offset();
+                        var top = offsets.top + 35;
+                        inst.dpDiv.css({
+                            top: top,
+                            left: offsets.left,
+                        });
+                    }, 0);
+                }
+            }, options);
+            function hideDaysFromCalendar() {
+                var thisCalendar = $jq(this);
+                $jq('.ui-datepicker-month, .ui-datepicker-prev, .ui-datepicker-next').css({display: 'none'});
+                $jq('.ui-datepicker-header, .ui-datepicker-year').css({color: '#000'});
+                $jq('.ui-datepicker-calendar').detach();
+                // Also fix the click event on the Done button.
+                $jq('.ui-datepicker-close').unbind('click').click(function() {
+                    var year = $jq('#ui-datepicker-div .ui-datepicker-year :selected').val();
+                    $jq('#publication_year').val(year);
+                    thisCalendar.datepicker('setDate', new Date(year, 1));
+                    $jq('#ui-datepicker-div').hide();
+                });
+            }
+            $jq(this).datepicker(options).focus(hideDaysFromCalendar);
+        }
     }])
     .controller('addCategoryCtrl', ['$scope', 'libraryService','ngToast', function ($scope, libraryService,ngToast) {
         $scope.changePageHeader('Категорія бібліотеки');

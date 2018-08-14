@@ -46,13 +46,14 @@
      // NOTE: you should only define rules for those attributes that
      // will receive user inputs.
      return array(
-         array('title, description, price, language, status, author, status', 'required'),
+         array('title, description, price, language, status, author, status, position', 'required'),
          array('title, language', 'length', 'max' => 50),
          array('description, link, logo,author', 'length', 'max' => 256),
          array('price, paper_price', 'length', 'max' => 8),
+         array('publication_year', 'length', 'min' => 4),
          // The following rule is used by search().
          // @todo Please remove those attributes that should not be searched.
-         array('id, title, description, price, language, status, link, logo, author, status, paper_price, demo_link', 'safe', 'on' => 'search'),
+         array('id, title, description, price, language, status, link, logo, author, status, paper_price, demo_link, position, publication_year', 'safe', 'on' => 'search'),
      );
     }
 
@@ -86,6 +87,8 @@
          'author'      => 'Author',
          'paper_price' => 'Paper Price',
          'demo_link'   => 'Demo Link',
+         'publication_year' => 'Publication Year',
+         'position'    => 'Position',
      );
     }
 
@@ -118,6 +121,8 @@
      $criteria->compare('author', $this->author, true);
      $criteria->compare('paper_price', $this->paper_price, true);
      $criteria->compare('demo_link', $this->demo_link, true);
+     $criteria->compare('publication_year', $this->publication_year, true);
+     $criteria->compare('position', $this->position, true);
 
      return new CActiveDataProvider($this, array(
          'criteria' => $criteria,

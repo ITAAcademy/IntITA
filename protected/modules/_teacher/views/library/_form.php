@@ -53,6 +53,14 @@
             </select>
         </div>
         <div class="form-group">
+            <label for="publication_year">Рік Публікації:</label>
+            <input type="number" readonly ng-click="yearPicker($event)" class="form-control" id="publication_year" placeholder="Рік Публікації" name="publication_year" ng-model="formData.publication_year">
+        </div>
+        <div class="form-group">
+            <label for="position">Позиція:</label>
+            <input type="number" min="1" class="form-control" id="position" placeholder="Позиція" name="position" ng-model="formData.position" required>
+        </div>
+        <div class="form-group">
             <a ng-if="formData.link" ng-href="/_teacher/library/library/getBook?id={{formData.id}}">Книга</a>
             <br>
             <label for="link">Виберіть файл книги:</label>
