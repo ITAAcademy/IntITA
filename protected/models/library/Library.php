@@ -47,8 +47,10 @@
      // will receive user inputs.
      return array(
          array('title, description, price, language, status, author, status, position', 'required'),
-         array('title, language', 'length', 'max' => 50),
-         array('description, link, logo,author', 'length', 'max' => 256),
+         array('language', 'length', 'max' => 50),
+         array('title', 'length', 'max' => 512),
+         array('description', 'length', 'max' => 1512),
+         array('link, logo, author', 'length', 'max' => 256),
          array('price, paper_price', 'length', 'max' => 8),
          array('publication_year', 'length', 'min' => 4),
          // The following rule is used by search().
