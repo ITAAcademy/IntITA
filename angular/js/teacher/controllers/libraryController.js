@@ -243,7 +243,7 @@ angular
                 // Also fix the click event on the Done button.
                 $jq('.ui-datepicker-close').unbind('click').click(function() {
                     var year = $jq('#ui-datepicker-div .ui-datepicker-year :selected').val();
-                    $jq('#publication_year').val(year);
+                    $scope.formData.publication_year = year;
                     thisCalendar.datepicker('setDate', new Date(year, 1));
                     $jq('#ui-datepicker-div').hide();
                 });

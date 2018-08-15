@@ -5,9 +5,9 @@
  * Date: 2/23/2018
  * Time: 5:42 PM
  */
+
 class LibraryController extends TeacherCabinetController {
 
-    private $temporaryBookPosition = 9999;
     public function hasRole() {
             return Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isDirector());
     }
@@ -37,34 +37,6 @@ class LibraryController extends TeacherCabinetController {
         echo json_encode($adapter->getData());
     }
 
-    private function changeBookPosition($book, $position)
-    {
-        $bookByPosition = Library::model()->find('position=:position', array(':position'=>$position));
-        if (!empty($bookByPosition->id) && $book->id !== $bookByPosition->id) {
-            if ($book->position === null) {
-                $lastBook = Library::model()->find(['order'=>'id DESC']);
-                $this->temporaryBookPosition = $lastBook->id + 1;
-                $this->storeBookByPosition($bookByPosition);
-            } else {
-                if ($this->storeBookByPosition($bookByPosition)) {
-                    $this->temporaryBookPosition = $book->position;
-                }
-            }
-            return $bookByPosition;
-        }
-        return 'noChanging';
-    }
-
-    private function storeBookByPosition($book)
-    {
-        if ($book === 'noChanging') {
-            return true;
-        } else {
-            $book->position = $this->temporaryBookPosition;
-            return $book->save();
-        }
-    }
-
     public function actionAddBook(){
         $statusCode = 201;
         $id = null;
@@ -73,7 +45,8 @@ class LibraryController extends TeacherCabinetController {
         try {
             $data = $_POST;
             $book = isset($data['id'])?Library::model()->findByPk($data['id']):new Library();
-            $bookByPosition = $this->changeBookPosition($book, $data['position']);
+            $libraryHelper = new LibraryHelper();
+            $bookByPosition = $libraryHelper->changeBookPosition($book, $data['position']);
             $book->attributes = $data;
             $categories = [];
             if (isset($data['category']) && !empty($data['category'])) {
@@ -81,8 +54,8 @@ class LibraryController extends TeacherCabinetController {
                     array_push($categories, $category['id']);
                 }
             }
-            if($book->save() && $this->storeBookByPosition($bookByPosition)){
-                $this->temporaryBookPosition = 9999;
+            if($book->save() && $libraryHelper->storeBookByPosition($bookByPosition)){
+                $libraryHelper->temporaryBookPosition = 9999;
                 $result = ['message' => 'OK', 'id' => $book->id];
                 LibraryDependsBookCategory::model()->editLibraryCategory($categories, $book);
             }else{
