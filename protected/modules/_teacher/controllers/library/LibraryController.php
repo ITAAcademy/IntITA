@@ -5,9 +5,7 @@
  * Date: 2/23/2018
  * Time: 5:42 PM
  */
-
 class LibraryController extends TeacherCabinetController {
-
     public function hasRole() {
             return Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isDirector());
     }
@@ -36,7 +34,6 @@ class LibraryController extends TeacherCabinetController {
         $adapter->mergeCriteriaWith($criteria);
         echo json_encode($adapter->getData());
     }
-
     public function actionAddBook(){
         $statusCode = 201;
         $id = null;
