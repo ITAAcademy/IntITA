@@ -54,7 +54,13 @@
         </div>
         <div class="form-group">
             <label for="publication_year">Рік Публікації:</label>
-            <input type="number" readonly ng-click="yearPicker($event)" class="form-control" id="publication_year" placeholder="Рік Публікації" name="publication_year" ng-model="formData.publication_year">
+                <input type="text"
+                    readonly
+                    class="form-control"
+                    id="publication_year"
+                    placeholder="Рік Публікації"
+                    name="publication_year"
+                    ng-model="formData.publication_year" />
         </div>
         <div class="form-group">
             <label for="position">Позиція:</label>

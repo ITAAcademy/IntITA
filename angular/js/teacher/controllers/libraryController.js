@@ -212,44 +212,55 @@ angular
                 });
         };
 
-        $scope.yearPicker = function ($event) {
-            // $jq($event.currentTarget).removeClass('datepicker').datepicker().focus();
-            $jq($event.currentTarget).monthYearPicker();
-        }
+        // $scope.formats = ['yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        // $scope.format = $scope.formats[0];
+        // $scope.altInputFormats = ['yyyy'];
+        // $scope.initPickerDate = function() {
+        //     var date = new Date();
+        //     return date.getTime();
+        // };
+        // $scope.pickerPopup = {
+        //     opened: false
+        // };
+        // $scope.publicationYearOptions = {
 
-        $jq.fn.monthYearPicker = function(options) {
-            options = $jq.extend({
-                dateFormat: 'yy',
-                changeYear: true,
-                showButtonPanel: true,
-                showAnim: '',
-                beforeShow: function(input, inst) {
-                    $jq('.ui-datepicker-header, .ui-datepicker-year').css({color: '#000'});
-                    setTimeout(function () {
-                        var offsets = $jq(input).offset();
-                        var top = offsets.top + 35;
-                        inst.dpDiv.css({
-                            top: top,
-                            left: offsets.left,
-                        });
-                    }, 0);
-                }
-            }, options);
-            function hideDaysFromCalendar() {
-                var thisCalendar = $jq(this);
-                $jq('.ui-datepicker-month, .ui-datepicker-prev, .ui-datepicker-next').css({display: 'none'});
-                $jq('.ui-datepicker-header, .ui-datepicker-year').css({color: '#000'});
-                $jq('.ui-datepicker-calendar').detach();
-                // Also fix the click event on the Done button.
-                $jq('.ui-datepicker-close').unbind('click').click(function() {
-                    var year = $jq('#ui-datepicker-div .ui-datepicker-year :selected').val();
-                    $scope.formData.publication_year = year;
-                    thisCalendar.datepicker('setDate', new Date(year, 1));
-                    $jq('#ui-datepicker-div').hide();
+        // };
+        // // Disable weekend selection
+        // function disabled(data) {
+        //     var date = data.date,
+        //         mode = data.mode;
+        //     return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        // }
+        // $scope.getPublicationYear = function() {
+        //     $scope.pickerPopup.opened = true;
+        // };
+
+        $jq( '#publication_year' ).datepicker({
+            dateFormat: 'yy',
+            changeYear: true,
+            showButtonPanel: false,
+            showAnim: 'slideDown',
+            beforeShow: function(input, inst) {
+                $jq('#ui-datepicker-div').addClass('hide-calendar');
+                $jq('.ui-widget-content').css({
+                    background: 'unset',
+                    border: 'none'
                 });
+                setTimeout(function () {
+                    var offsets = $jq(input).offset();
+                    var top = offsets.top + 35;
+                    inst.dpDiv.css({
+                        top: top,
+                        left: offsets.left,
+                    });
+                }, 0);
+            },
+            onChangeMonthYear: function(year, month, inst) {
+                $scope.formData.publication_year = year;
+                inst.input.val(year);
+                inst.input.datepicker( "hide" );
             }
-            $jq(this).datepicker(options).focus(hideDaysFromCalendar);
-        }
+        });
     }])
     .controller('addCategoryCtrl', ['$scope', 'libraryService','ngToast', function ($scope, libraryService,ngToast) {
         $scope.changePageHeader('Категорія бібліотеки');
