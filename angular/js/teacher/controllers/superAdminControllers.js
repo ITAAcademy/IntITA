@@ -25,6 +25,19 @@ function mainSuperAdminCtrl($scope, $rootScope, $http) {
         })
     };
     $scope.getNewResponses();
+    $rootScope.vacationTypes = null;
+    $scope.getVacationType = function() {
+        $http({
+            method:'POST',
+            url: basePath + '/_teacher/vacation/vacation/getVacationTypes',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(response){
+            $rootScope.vacationTypes = response;
+        }).error(function(){
+            console.log("Отримати типи вакансій не вдалося");
+        })
+    }
+    $scope.getVacationType();
 }
 
 function bannersCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast) {

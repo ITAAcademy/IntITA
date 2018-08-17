@@ -561,6 +561,12 @@ angular
                         }
                     }
                 })
+                .state('vacations', {
+                    url: '/vacations?vacation_type_id',
+                    templateUrl: function($stateParams) {
+                        return basePath+"/_teacher/vacation/vacation/vacationList?vacation_type_id="+$stateParams.vacation_type_id;
+                    }
+                })
     }
     );
 
