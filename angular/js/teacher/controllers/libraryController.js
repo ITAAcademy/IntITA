@@ -67,7 +67,9 @@ angular
                 category: '',
                 status: '',
                 link: '',
-                logo: ''
+                logo: '',
+                position: '',
+                publication_year: ''
             };
         };
         $scope.getLibrary = function () {
@@ -75,6 +77,8 @@ angular
             .then(function successCallback(response) {
                 response.data.price =  Number(response.data.price);
                 response.data.paper_price =  Number(response.data.paper_price);
+                response.data.position =  Number(response.data.position);
+                response.data.publication_year =  Number(response.data.publication_year);
                 $scope.formData = response.data;
             }, function errorCallback() {
                 bootbox.alert("Отримати дані категорії не вдалося");
@@ -207,6 +211,56 @@ angular
                     bootbox.alert(error.data.reason);
                 });
         };
+
+        // $scope.formats = ['yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        // $scope.format = $scope.formats[0];
+        // $scope.altInputFormats = ['yyyy'];
+        // $scope.initPickerDate = function() {
+        //     var date = new Date();
+        //     return date.getTime();
+        // };
+        // $scope.pickerPopup = {
+        //     opened: false
+        // };
+        // $scope.publicationYearOptions = {
+
+        // };
+        // // Disable weekend selection
+        // function disabled(data) {
+        //     var date = data.date,
+        //         mode = data.mode;
+        //     return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        // }
+        // $scope.getPublicationYear = function() {
+        //     $scope.pickerPopup.opened = true;
+        // };
+
+        $jq( '#publication_year' ).datepicker({
+            dateFormat: 'yy',
+            changeYear: true,
+            showButtonPanel: false,
+            showAnim: 'slideDown',
+            beforeShow: function(input, inst) {
+                $jq('#ui-datepicker-div').addClass('hide-calendar');
+                $jq('.ui-widget-content').css({
+                    background: 'unset',
+                    border: 'none'
+                });
+                setTimeout(function () {
+                    var offsets = $jq(input).offset();
+                    var top = offsets.top + 35;
+                    inst.dpDiv.css({
+                        top: top,
+                        left: offsets.left,
+                    });
+                }, 0);
+            },
+            onChangeMonthYear: function(year, month, inst) {
+                $scope.formData.publication_year = year;
+                inst.input.val(year);
+                inst.input.datepicker( "hide" );
+            }
+        });
     }])
     .controller('addCategoryCtrl', ['$scope', 'libraryService','ngToast', function ($scope, libraryService,ngToast) {
         $scope.changePageHeader('Категорія бібліотеки');
