@@ -9,7 +9,7 @@
 ?>
 <div class="navbar-header">
     <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand logo">
-        <img src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'hamburgerlogo.png') ?>"/>
+        <img src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'hamburgerlogo.svg') ?>"/>
     </a>
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 

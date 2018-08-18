@@ -29,16 +29,16 @@
         $app = Yii::app();
         switch ($app->session['lg']){
             case 'ua':
-                echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_bigUA.png');
+                echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_bigUA.svg');
                 break;
             case 'en':
-                echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_bigEN.png');
+                echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_bigEN.svg');
                 break;
             case 'ru':
-                echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_bigRU.png');
+                echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_bigRU.svg');
                 break;
             default:
-                echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_bigUA.png');
+                echo StaticFilesHelper::createPath('image', 'mainpage', 'Logo_bigUA.svg');
                 break;
         }
         ?>";
