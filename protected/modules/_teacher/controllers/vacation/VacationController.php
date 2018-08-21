@@ -70,8 +70,12 @@ class VacationController extends TeacherCabinetController
         try {
             $data = $_POST;
             $vacationType = isset($data['id'])?VacationType::model()->findByPk($data['id']):new VacationType();
+            $positionHelper = new PositionHelper();
+            $vacationTypeByPosition = $positionHelper->changePosition($vacationType, $data['position'], 'VacationType');
             $vacationType->attributes = $data;
-            if(!$vacationType->save()){
+            if($vacationType->save() && $positionHelper->storePosition($vacationTypeByPosition)){
+                $positionHelper->temporaryPosition = 9999;
+            } else {
                 throw new Exception(json_encode(ValidationMessages::getValidationErrors($vacationType)));
             }
         } catch (Exception $error) {

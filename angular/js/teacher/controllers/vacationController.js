@@ -102,8 +102,8 @@ angular
         }
     ])
     .controller('vacationTypeFormCtrl',
-        ['$scope', '$stateParams', 'vacationService', 'ngToast',
-        function ($scope, $stateParams, vacationService, ngToast) {
+        ['$scope', '$stateParams', 'vacationService', 'ngToast', '$state',
+        function ($scope, $stateParams, vacationService, ngToast, $state) {
             $scope.changePageHeader('Відпустка');
             $scope.newTypeInit = function(){
                 $scope.newType = {
@@ -116,6 +116,7 @@ angular
             $scope.getVacation = function () {
                 vacationService.getVacation({'id':$stateParams.vacation_type_id}).$promise
                 .then(function successCallback(response) {
+                    response.data.position =  Number(response.data.position);
                     $scope.newType = response.data;
                 }, function errorCallback() {
                     bootbox.alert("Отримати дані відпустки не вдалося");
@@ -126,6 +127,11 @@ angular
             }else{
                 $scope.newTypeInit();
             }
+            $scope.regex = {
+                titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/,
+                titleRu: /^[А-ГДЕЖЗИЙ-Яа-гдежзий-я\-\s]+$/,
+                titleEn: /^[A-Za-z\'\-\s]+$/,
+            };
             $scope.submitType = function () {
                 vacationService
                     .addVacationType($scope.newType)
@@ -137,6 +143,7 @@ angular
                             content: 'Тип відпустки оновлено',
                             timeout: 3000
                         });
+                        $state.go('vacationsTypes', {}, {reload: true});
                     }, function errorCallback(response) {
                         bootbox.alert(response.data.reason);
                     });
