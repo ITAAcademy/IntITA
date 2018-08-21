@@ -665,6 +665,10 @@ div.loader > div {
 div.form-group.row.ng-scope > label{
     word-break: break-all;
 }
+.yellow-list a {
+    color: #f0ad4e;
+    cursor: pointer;
+}
 @media screen and (max-width: 1200px) {
     table{
         table-layout: auto;

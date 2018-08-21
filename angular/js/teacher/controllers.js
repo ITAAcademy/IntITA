@@ -75,7 +75,6 @@ angular
             })
         }])
 
-
 function addGraduateCtrl($scope, $http, $timeout, $httpParamSerializerJQLike, $ngBootbox) {
     $scope.myImage = '';
     $timeout(function () {

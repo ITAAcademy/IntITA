@@ -12,12 +12,72 @@ class VacationController extends TeacherCabinetController
 		$vacationTypeId = $requestParam['vacation_type_id'];
 		// $vacations = Vacation::::model()->find('vacation_type_id=:vacation_type_id', array(':vacation_type_id'=>$vacationTypeId));
 		$vacationType = VacationType::model()->findByPk($vacationTypeId);
-		// var_dump($vacationType);die;
-		$this->renderPartial('/vacation/index', ['vacationType' => $vacationType], false, true);
+		$this->renderPartial('/vacation/index', ['vacationType' => $vacationType]);
 	}
 
 	public function actionGetVacationTypes()
 	{
-		echo CJSON::encode(VacationType::model()->findAll());
+		$requestParam = $_GET;
+		if(empty($requestParam)) {
+			echo CJSON::encode(VacationType::model()->findAll());
+		} else {
+	        $adapter = new NgTableAdapter('VacationType', $requestParam);
+	        echo CJSON::encode($adapter->getData());
+		}
 	}
+	
+	public function actionVacationTypesList()
+	{
+		$this->renderPartial('/vacation/_typesIndex', array(), false, true);
+	}
+
+	public function actionVacationTypeRemove()
+	{
+		$result = ['message' => 'OK'];
+        $statusCode = 201;
+        $id = $_POST['id'];
+        try{
+        	VacationType::model()->deleteByPk($id);	
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+	}
+
+	public function actionGetVacationData()
+    {
+        $result = [];
+        $id = Yii::app()->request->getParam('id');
+        $result['data'] = ActiveRecordToJSON::toAssocArray(VacationType::model()->findByPk($id));
+        echo CJSON::encode($result);
+    }
+
+    public function actionVacationTypeCreate()
+    {
+        $this->renderPartial('/vacation/create', array(), false, true);
+    }
+
+    public function actionVacationTypeUpdate()
+    {
+        $this->renderPartial('/vacation/update', array(), false, true);
+    }
+    
+    public function actionAddVacationType()
+    {
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            $data = $_POST;
+            $vacationType = isset($data['id'])?VacationType::model()->findByPk($data['id']):new VacationType();
+            $vacationType->attributes = $data;
+            if(!$vacationType->save()){
+                throw new Exception(json_encode(ValidationMessages::getValidationErrors($vacationType)));
+            }
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
 }

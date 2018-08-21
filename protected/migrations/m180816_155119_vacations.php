@@ -8,6 +8,7 @@ class m180816_155119_vacations extends CDbMigration
             'id' => 'INT PRIMARY KEY AUTO_INCREMENT',
             'vacation_type_id' => 'INT(10) NOT NULL',
             'user_id' => 'INT(10) NOT NULL',
+            'organisation_id' => 'INT(10) NOT NULL',
             'start_date' => 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'end_date' => 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'task_name' => 'VARCHAR(128) NOT NULL',

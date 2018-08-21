@@ -11,7 +11,7 @@ angular
     .controller('bannersForGraduatesCtrl',bannersForGraduatesCtrl)
     .controller('bannersForGraduatesBootboxCtrl',bannersForGraduatesBootboxCtrl)
 
-function mainSuperAdminCtrl($scope, $rootScope, $http) {
+function mainSuperAdminCtrl($scope, $rootScope, $http, vacationService) {
     $scope.getNewResponses=function(){
         $http({
             method:'POST',
@@ -25,7 +25,6 @@ function mainSuperAdminCtrl($scope, $rootScope, $http) {
         })
     };
     $scope.getNewResponses();
-    $rootScope.vacationTypes = null;
     $scope.getVacationType = function() {
         $http({
             method:'POST',
@@ -34,7 +33,7 @@ function mainSuperAdminCtrl($scope, $rootScope, $http) {
         }).success(function(response){
             $rootScope.vacationTypes = response;
         }).error(function(){
-            console.log("Отримати типи вакансій не вдалося");
+            console.log("Отримати типи відпусток не вдалося");
         })
     }
     $scope.getVacationType();

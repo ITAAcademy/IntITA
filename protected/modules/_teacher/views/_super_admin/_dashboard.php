@@ -153,25 +153,15 @@
                     </li>
                 </ul>
             </div>
-            <div class="panel-footer">
-                <em>Замовлення відпусток</em>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                Корисні посилання
-            </div>
-            <div class="panel-body">
+            <div class="panel-body yellow-list">
                 <ul>
-                    <li><a href="#/allShareLinks">Корисні посилання</a>
+                    <li>
+                        <a ui-sref="vacationsTypes">Налаштування типів вакансій</a>
                     </li>
                 </ul>
             </div>
             <div class="panel-footer">
-                <em>Корисні посилання для співробітників з усіх організацій</em>
+                <em>Замовлення відпусток</em>
             </div>
         </div>
     </div>
@@ -190,6 +180,26 @@
                 </ul>
             </div>
             <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Корисні посилання
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><a href="#/allShareLinks">Корисні посилання</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <em>Корисні посилання для співробітників з усіх організацій</em>
             </div>
         </div>
     </div>

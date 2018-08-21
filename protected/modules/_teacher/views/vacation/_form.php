@@ -1,8 +1,19 @@
-<div class="addBookWrap">
-    <form enctype="multipart/form-data" novalidate ng-submit="submitFormAddBook();" name="myForm" >
+<div class="">
+    <form enctype="multipart/form-data" novalidate ng-submit="submitFormAddVacation();" name="myForm" >
         <div class="form-group">
-            <label for="name">Назва:</label>
-            <input type="text" class="form-control" id="name" placeholder="Введіть назву книги" name="name" ng-model="formData.title">
+            <label for="vacation_type_id">Тип відпустки:</label>
+            <select
+                class="form-control"
+                id="vacation_type"
+                name="vacation_type_id"
+                ng-model="formData.vacation_type_id"
+                ng-options="type as type.title_ua for type in vacationTypes track by type.id"
+            >
+            </select>
+        </div>
+        <div class="form-group" ng-show="isBenefitsOrOvertime(<?php echo $vacationType->id ?>)">
+            <label for="name">Назва завдання:</label>
+            <input type="text" class="form-control" id="task_name" placeholder="Введіть назву завдання" name="task_name" ng-model="formData.task_name">
         </div>
         <div class="form-group">
             <label for="description">Опис:</label>
@@ -19,14 +30,6 @@
         <div class="form-group">
             <label for="description">Автор:</label>
             <input class="form-control" id="author" name="author" ng-model="formData.author" placeholder="Автор книги">
-        </div>
-        <div class="form-group">
-            <label for="language">Мова:</label>
-            <select class="form-control" id="language" name="language" ng-model="formData.language">
-                <option>Українська</option>
-                <option>Російська</option>
-                <option>Англійська</option>
-            </select>
         </div>
         <div class="form-group">
             <label>Категорія:</label>
