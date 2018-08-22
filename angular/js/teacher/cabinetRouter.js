@@ -561,10 +561,10 @@ angular
                         }
                     }
                 })
-                .state('vacations', {
-                    url: '/vacations?vacation_type_id',
+                .state('vacationCreate', {
+                    url: '/vacationCreate?vacation_type_id',
                     templateUrl: function($stateParams) {
-                        return basePath+"/_teacher/vacation/vacation/vacationList?vacation_type_id="+$stateParams.vacation_type_id;
+                        return basePath+"/_teacher/vacation/vacation/vacationCreate?vacation_type_id="+$stateParams.vacation_type_id;
                     }
                 })
                 .state('vacationsTypes', {
@@ -580,6 +580,16 @@ angular
                 .state('vacationTypeCreate', {
                     url: '/vacationTypeCreate',
                     templateUrl: basePath+"/_teacher/vacation/vacation/vacationTypeCreate",
+                })
+                .state('getVacation', {
+                    url: '/getVacation?id',
+                    templateUrl: function($stateParams) {
+                        return basePath+"/_teacher/vacation/vacation/getVacation?id="+$stateParams.id;
+                    },
+                })
+                .state('vacationsList', {
+                    url: '/vacationsList',
+                    templateUrl: basePath+"/_teacher/vacation/vacation/vacationList",
                 })
 
     }

@@ -4,6 +4,13 @@ angular
         ['$scope', '$http', 'NgTableParams', '$resource', '$stateParams', 'FileUploader','$rootScope',
         function ($scope, $http, NgTableParams, $resource, $stateParams, FileUploader, $rootScope) {
             $scope.changePageHeader('Відпустки');
+            
+        }
+    ])
+    .controller('vacationFormCtrl',
+        ['$scope', '$http', 'NgTableParams', '$resource', '$stateParams', 'FileUploader','$rootScope', 'vacationService',
+        function ($scope, $http, NgTableParams, $resource, $stateParams, FileUploader, $rootScope, vacationService) {
+            $scope.changePageHeader('Відпустка');
             function getSelectedVacationId() {
                 var element = angular.element(document.querySelector( '#vacationIndex'));
                 return Number(element.data('selected-vacation')) - 1;
@@ -25,15 +32,76 @@ angular
                     console.log("Отримати типи відпусток не вдалося");
                 })
             };
-            $scope.formData = {
-                task_name: '',
-                description: '',
-                logo: '',
-                vacation_type_id: $rootScope.vacationTypes !== undefined ? $rootScope.vacationTypes[getSelectedVacationId()] : $scope.getVacationType(),
-                // vacation_type_id: function(selectedVacationId) {
-                //     console.log($rootScope.vacationTypes[selectedTypeId]);
-                //     return $rootScope.vacationTypes[selectedTypeId];
-                // },
+            $scope.statusSelect = [
+                {
+                    id: '0',
+                    value: 'Відхилено',
+                },
+                {
+                    id: '1',
+                    value: 'Затвердженно',
+                },
+                {
+                    id: '2',
+                    value: 'Новий',
+                },
+            ];
+            
+            $scope.newTypeInit = function(){
+                $scope.formData = {
+                    task_name: '',
+                    description: '',
+                    status: $scope.statusSelect[2],
+                    vacation_type_id: $rootScope.vacationTypes !== undefined ? $rootScope.vacationTypes[getSelectedVacationId()] : $scope.getVacationType(),
+                    
+                };
+            };
+            $scope.getVacation = function () {
+                vacationService.getVacation({'id':$stateParams.id}).$promise
+                .then(function successCallback(response) {
+                    $scope.formData = response.data;
+                }, function errorCallback() {
+                    bootbox.alert("Отримати дані відпустки не вдалося");
+                });
+            };
+            if($stateParams.id){
+                $scope.getVacation();
+            }else{
+                $scope.newTypeInit();
+            }
+            //files
+            $scope.vacationId = null;
+            var vacationUploader = $scope.vacationUploader = new FileUploader({
+                url: basePath+'/_teacher/vacation/vacation/uploadVacationFile',
+                removeAfterUpload: true
+            });
+            vacationUploader.onBeforeUploadItem = function(item) {
+                item.url = basePath+'/_teacher/vacation/vacation/uploadVacationFile?id=' + $scope.vacationId + '&type=link';
+            };
+            vacationUploader.onCompleteAll = function() {
+                location.reload();
+            };
+            vacationUploader.onErrorItem = function(item, response, status, headers) {
+                if(status==500)
+                    bootbox.alert("Виникла помилка при завантажені скан-копії відпустки.");
+            };
+            vacationUploader.filters.push({
+                name: 'imageFilter',
+                fn: function(item /*{File|FileLikeObject}*/, options) {
+                    return true;
+                }
+            });
+            // datepickers options
+            $scope.dateFrom = new DateOptions();
+            $scope.dateTo = new DateOptions();
+            function DateOptions() {
+                this.popupOpened = false;
+                this.maxDate = new Date(2020, 5, 22);
+                this.minDate = new Date();
+                this.startingDay = 1;
+            }
+            DateOptions.prototype.open = function () {
+                this.popupOpened = true;
             };
             $scope.submitFormAddVacation = function () {
             libraryService
@@ -58,8 +126,9 @@ angular
                 .catch(function (error) {
                     bootbox.alert(error.data.reason);
                 });
-        };
-    }])
+            };
+        }
+    ])
     .controller('vacationTypesCtrl',
         ['$scope', '$http', 'NgTableParams', 'vacationService',
         function ($scope, $http, NgTableParams, vacationService) {
@@ -104,7 +173,7 @@ angular
     .controller('vacationTypeFormCtrl',
         ['$scope', '$stateParams', 'vacationService', 'ngToast', '$state',
         function ($scope, $stateParams, vacationService, ngToast, $state) {
-            $scope.changePageHeader('Відпустка');
+            $scope.changePageHeader('Тип відпустки');
             $scope.newTypeInit = function(){
                 $scope.newType = {
                     title_ua: '',
@@ -113,8 +182,8 @@ angular
                     position: '',
                 };
             };
-            $scope.getVacation = function () {
-                vacationService.getVacation({'id':$stateParams.vacation_type_id}).$promise
+            $scope.getVacationType = function () {
+                vacationService.getVacationType({'id':$stateParams.vacation_type_id}).$promise
                 .then(function successCallback(response) {
                     response.data.position =  Number(response.data.position);
                     $scope.newType = response.data;
@@ -123,7 +192,7 @@ angular
                 });
             };
             if($stateParams.vacation_type_id){
-                $scope.getVacation();
+                $scope.getVacationType();
             }else{
                 $scope.newTypeInit();
             }

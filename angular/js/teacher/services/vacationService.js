@@ -12,8 +12,8 @@ angular
                         url: basePath + '/_teacher/vacation/vacation/getVacationTypes',
                         method: 'GET',
                     },
-                    getVacation: {
-                        url: basePath + '/_teacher/vacation/vacation/getVacationData',
+                    getVacationType: {
+                        url: basePath + '/_teacher/vacation/vacation/getVacationTypeData',
                         method: 'GET',
                     },
                     addVacationType : {

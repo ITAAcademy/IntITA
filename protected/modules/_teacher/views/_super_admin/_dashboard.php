@@ -149,7 +149,7 @@
             <div class="panel-body">
                 <ul>
                     <li ng-repeat="type in vacationTypes">
-                        <a ui-sref="vacations({'vacation_type_id': type.id})">{{type.title_ua}}</a>
+                        <a ui-sref="vacationCreate({'vacation_type_id': type.id})">{{type.title_ua}}</a>
                     </li>
                 </ul>
             </div>

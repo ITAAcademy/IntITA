@@ -1,4 +1,9 @@
-<div class="">
+<div class="" ng-controller="vacationFormCtrl">
+    <div class="">
+        <a type="button" class="btn btn-primary" ui-sref="vacationsList">
+            Список відпусток
+        </a>
+    </div>
     <form enctype="multipart/form-data" novalidate ng-submit="submitFormAddVacation();" name="myForm" >
         <div class="form-group">
             <label for="vacation_type_id">Тип відпустки:</label>
@@ -12,78 +17,80 @@
             </select>
         </div>
         <div class="form-group" ng-show="isBenefitsOrOvertime(<?php echo $vacationType->id ?>)">
-            <label for="name">Назва завдання:</label>
-            <input type="text" class="form-control" id="task_name" placeholder="Введіть назву завдання" name="task_name" ng-model="formData.task_name">
+            <label for="name">Назва задачі:</label>
+            <input type="text" class="form-control" id="task_name" placeholder="Введіть назву задачі" name="task_name" ng-model="formData.task_name">
+        </div>
+        <div class="form-group" ng-show="isBenefitsOrOvertime(<?php echo $vacationType->id ?>)">
+            <label for="description">Опис задачі:</label>
+            <textarea maxlength="256" class="form-control" rows="5" id="description" name="description" ng-model="formData.description" placeholder="Опис задачі"></textarea>
         </div>
         <div class="form-group">
-            <label for="description">Опис:</label>
-            <textarea maxlength="256" class="form-control" rows="5" id="description" name="description" ng-model="formData.description" placeholder="Опис книги"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="price">Ціна:</label>
-            <input type="number" class="form-control" id="price" placeholder="Ціна" name="price" ng-model="formData.price">
-        </div>
-        <div class="form-group">
-            <label for="price">Ціна за паперовий примірник:</label>
-            <input type="number" class="form-control" id="paper_price" placeholder="Ціна за паперовий примірник" name="paper_price" ng-model="formData.paper_price">
-        </div>
-        <div class="form-group">
-            <label for="description">Автор:</label>
-            <input class="form-control" id="author" name="author" ng-model="formData.author" placeholder="Автор книги">
-        </div>
-        <div class="form-group">
-            <label>Категорія:</label>
-            <oi-select
-                    oi-options="category.title_ua for category in allCategory() track by category.id"
-                    ng-model="formData.category"
-                    multiple
-                    multiple-placeholder="Додати категорію"
-                    list-placeholder="Даної категорії не існує"
-            ></oi-select>
+            <label for="comment">Коментар:</label>
+            <textarea maxlength="256" class="form-control" rows="5" id="comment" name="comment" ng-model="formData.comment" placeholder="Коментар від бухгалтера" ng-disabled="<?php echo !$isAccountant ?>"></textarea>
         </div>
         <div class="form-group">
             <label for="status">Статус:</label>
-            <select class="form-control" id="status" name="status" ng-model="formData.status">
-                <option value="1">Активна</option>
-                <option value="0">Неактивна</option>
+            <select
+                class="form-control"
+                id="status"
+                name="status"
+                ng-model="formData.status"
+                ng-disabled="<?php echo !$isAccountant ?>"
+                ng-options="status as status.value for status in statusSelect track by status.id"
+            >
             </select>
         </div>
-        <div class="form-group">
-            <a ng-if="formData.link" ng-href="/_teacher/library/library/getBook?id={{formData.id}}">Книга</a>
-            <br>
-            <label for="link">Виберіть файл книги:</label>
-            <input type="file" nv-file-select="" uploader="bookUploader">
-            <div ng-if="bookUploader.getNotUploadedItems().length">
-                <div class="progress" style="margin-bottom:0">
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': bookUploader.progress + '%' }"
-                         style="width: 0%;"></div>
+        <div class="col-md-12 form-group vacation-date">
+            <div class="col-md-6 vacation-date">
+                <label class="col-md-6" style="line-height: 30px">Початкова дата відпустки</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-default" ng-click="dateFrom.open()">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                    </span>
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup
+                           ng-model="formData.start_date"
+                           is-open="dateFrom.popupOpened"
+                           datepicker-options="dateFrom"
+                           clear-text='Очистити'
+                           close-text='Закрити'
+                           current-text='Сьогодні'>
+                </div>
+            </div>
+            <div class="col-md-6 vacation-date">
+                <label class="col-md-6" style="line-height: 30px">Кінцева дата відпустки</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-default" ng-click="dateTo.open()">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                    </span>
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup
+                           ng-model="formData.end_date"
+                           is-open="dateTo.popupOpened"
+                           datepicker-options="dateTo"
+                           clear-text='Очистити'
+                           close-text='Закрити'
+                           current-text='Сьогодні'>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <a ng-if="formData.demo_link" ng-href="/_teacher/library/library/getBook?id={{formData.id}}">Демо книги</a>
+            <a ng-if="formData.link" ui-sref="getVacation({'id': formData.id})">Скан-копія відпустки</a>
             <br>
-            <label for="link">Виберіть демо файл книги:</label>
-            <input type="file" nv-file-select="" uploader="demoBookUploader">
-            <div ng-if="demoBookUploader.getNotUploadedItems().length">
+            <label for="link">Виберіть файл відпустки:</label>
+            <input type="file" nv-file-select="" uploader="vacationUploader">
+            <div ng-if="vacationUploader.getNotUploadedItems().length">
                 <div class="progress" style="margin-bottom:0">
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': demoBookUploader.progress + '%' }"
-                         style="width: 0%;"></div>
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': vacationUploader.progress + '%' }" style="width: 0%;"></div>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <img style="width: 100px" ng-if="formData.logo" src="/files/library/{{formData.id}}/logo/{{formData.logo}}">
-            <br>
-            <label for="link">Виберіть фото книги:</label>
-            <input type="file" nv-file-select="" uploader="logoUploader">
-            <div ng-if="logoUploader.getNotUploadedItems().length">
-                <div class="progress" style="margin-bottom:0">
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': logoUploader.progress + '%' }"
-                         style="width: 0%;"></div>
-                </div>
-            </div>
-        </div>
-        <input type="submit" class="btn btn-default" ng-disabled="myForm.$invalid" value="Зберегти книгу">
+        <input type="submit" class="btn btn-default" ng-disabled="myForm.$invalid" value="Зберегти відпустку">
     </form>
 </div>
