@@ -1,6 +1,6 @@
 <div ng-controller="vacationCtrl">
     <table class="table table-condensed table-striped" ng-table="vacationTable">
-        <tr ng-repeat="item in vacations track by item.id"  style="text-align: center">
+        <tr ng-repeat="item in $data track by $index"  style="text-align: center">
             <td title="'Номер'" sortable="'id'">
                 {{item.id}}
             </td>

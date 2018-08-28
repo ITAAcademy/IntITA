@@ -32,10 +32,9 @@ angular
                         url: basePath + '/_teacher/vacation/vacation/addVacation',
                         transformRequest : transformRequest.bind(null)
                     },
-                    getVacationList: {
+                    list: {
                         url: basePath + '/_teacher/vacation/vacation/getVacationList',
-                        method: 'GET',
-                        isArray: false,
+                        method: 'GET'
                     },
                 });
         }]);

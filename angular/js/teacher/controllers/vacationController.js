@@ -1,19 +1,24 @@
 angular
     .module('teacherApp')
     .controller('vacationCtrl',
-        ['$scope', 'vacationService',
-        function ($scope, vacationService) {
+        ['$scope', 'vacationService', 'NgTableParams',
+        function ($scope, vacationService, NgTableParams) {
             $scope.changePageHeader('Відпустки');
-            $scope.vacations = null;
-            $scope.getVacationList = function () {
-                vacationService.getVacationList().$promise
-                .then(function successCallback(response) {
-                    $scope.vacations = response.data;
-                }, function errorCallback() {
-                    bootbox.alert("Отримати список відпусток не вдалося");
-                });
-            };
-            $scope.getVacationList();
+            $scope.vacationTable = new NgTableParams({
+                sorting: {
+                    'id': 'desc',
+                },
+            }, {
+                getData: function (params) {
+                    return vacationService
+                        .list(params.url())
+                        .$promise
+                        .then(function (data) {
+                            params.total(data.count);
+                            return data.rows;
+                        });
+                }
+            });
             var statusSelect = [
                 {
                     id: '0',

@@ -59,13 +59,17 @@ class VacationController extends TeacherCabinetController
 
     public function actionGetVacationList()
     {
+        $requestParam = $_GET;
+        $criteria=new CDbCriteria;
+        $criteria->with = ['vacationType'];
         if (Yii::app()->user->model->isAccountant()) {
-            $result['data'] = ActiveRecordToJSON::toAssocArray(Vacation::model()->with('vacationType')->findAll());
         } else {
             $userId = Yii::app()->user->model->registrationData->id;
-            $result['data'] = ActiveRecordToJSON::toAssocArray(Vacation::model()->with('vacationType')->find('user_id=:user_id', array(':user_id'=>$userId)));
+            $criteria->addCondition('user_id='.$userId);
         }
-        echo CJSON::encode($result);
+        $adapter = new NgTableAdapter('Vacation',$requestParam);
+        $adapter->mergeCriteriaWith($criteria);
+        echo CJSON::encode($adapter->getData());
     }
 
     public function actionVacationList()
