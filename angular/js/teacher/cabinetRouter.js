@@ -584,7 +584,7 @@ angular
                 .state('getVacation', {
                     url: '/getVacation?id',
                     templateUrl: function($stateParams) {
-                        return basePath+"/_teacher/vacation/vacation/getVacation?id="+$stateParams.id;
+                        return basePath+"/_teacher/vacation/vacation/getVacationData?id="+$stateParams.id;
                     },
                 })
                 .state('vacationsList', {

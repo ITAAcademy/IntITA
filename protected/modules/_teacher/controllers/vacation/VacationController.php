@@ -15,10 +15,62 @@ class VacationController extends TeacherCabinetController
 		$this->renderPartial('/vacation/index', ['vacationType' => $vacationType, 'isAccountant' => $isAccountant]);
 	}
 
+    public function actionGetVacationData()
+    {
+        $result = [];
+        $result['data'] = ActiveRecordToJSON::toAssocArrayWithRelations(Vacation::model()->with('vacationType')->findByPk(Yii::app()->request->getParam('id')));
+        echo json_encode($result);
+    }
+
+    public function actionUploadVacationFile()
+    {
+        $requestParam = $_GET;
+        Vacation::model()->uploadVacationFile($requestParam['id']);
+    }
+
+    public function actionAddVacation(){
+        $statusCode = 201;
+        $id = null;
+        $connection = Yii::app()->db;
+        $transaction = $connection->beginTransaction();
+        try {
+            $data = $_POST;
+            $vacation = isset($data['id']) ? Vacation::model()->findByPk($data['id']) : new Vacation();
+            $vacation->user_id = Yii::app()->user->model->registrationData->id;
+            $vacation->organisation_id = Yii::app()->user->model->getCurrentOrganizationId();
+            $startDate = new DateTime($data['start_date']);
+            $vacation->start_date = date_format($startDate, 'Y-m-d');
+            $endDate = new DateTime($data['end_date']);
+            $vacation->end_date = date_format($endDate, 'Y-m-d');
+            $vacation->attributes = $data;
+            if($vacation->save()){
+                $result = ['message' => 'OK', 'id' => $vacation->id];
+            }else{
+                throw new Exception(CJSON::encode(ValidationMessages::getValidationErrors($vacation)));
+            }
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => CJSON::encode($result)]);
+    }
+
+    public function actionGetVacationList()
+    {
+        if (Yii::app()->user->model->isAccountant()) {
+            $result['data'] = ActiveRecordToJSON::toAssocArray(Vacation::model()->with('vacationType')->findAll());
+        } else {
+            $userId = Yii::app()->user->model->registrationData->id;
+            $result['data'] = ActiveRecordToJSON::toAssocArray(Vacation::model()->with('vacationType')->find('user_id=:user_id', array(':user_id'=>$userId)));
+        }
+        echo CJSON::encode($result);
+    }
+
     public function actionVacationList()
     {
-        // $vacations = Vacation::::model()->find('vacation_type_id=:vacation_type_id', array(':vacation_type_id'=>$vacationTypeId));
-        $this->renderPartial('/vacation/_list', ['vacations' => $vacations]);
+        $this->renderPartial('/vacation/_list');
     }
 
 	public function actionGetVacationTypes()

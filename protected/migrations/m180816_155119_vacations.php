@@ -11,7 +11,7 @@ class m180816_155119_vacations extends CDbMigration
             'organisation_id' => 'INT(10) NOT NULL',
             'start_date' => 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'end_date' => 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
-            'task_name' => 'VARCHAR(128) NOT NULL',
+            'task_name' => 'VARCHAR(128) DEFAULT NULL',
             'description' => 'TEXT DEFAULT NULL',
             'comment' => 'TEXT DEFAULT NULL',
             'file_src' => 'VARCHAR(256) DEFAULT NULL',

@@ -1,32 +1,32 @@
 <div ng-controller="vacationCtrl">
     <table class="table table-condensed table-striped" ng-table="vacationTable">
-        <tr  style="text-align: center">
+        <tr ng-repeat="item in vacations track by item.id"  style="text-align: center">
             <td title="'Номер'" sortable="'id'">
-                as;dlfkj;
+                {{item.id}}
             </td>
-            <td  title="'Назва'" filter="{'title': 'text'}" sortable="'title'">
-                <a href="#/library/update/">asdfasdf</a>
+            <td  title="'Тип відпустки'" filter="{'title': 'text'}" sortable="'title'">
+                <a href="#/library/update/">{{item.vacationType.title_ua}}</a>
             </td>
-            <td title="'Опис'">
-                adsfasdfasd
+            <td title="'Початкова дата відпустки'">
+                {{item.start_date}}
             </td>
-            <td title="'Автор'">
-                asdfasdf
+            <td title="'Кінцева дата відпустки'">
+                {{item.end_date}}
             </td>
-            <td title="'Ціна'"  sortable="'price'">
-                sadfsadf
+            <td title="'Назва задачі'">
+                {{item.task_name}}
             </td>
-            <td title="'Мова'" sortable="'language'">
-                ssdfsadfsdaf
+            <td title="'Опис задачі'">
+                {{item.description}}
             </td>
-            <td title="'Категорія'">
-                <span ng-repeat="vacation in vacationType">{{vacationType.title_ua}}<br></span>
+            <td title="'Коментар'">
+                {{item.comment}}
             </td>
-            <td title="'Фото'">
-                <img class="bookPreview" ng-if="book.logo" src="/files/library/{{book.id}}/logo/{{book.logo}}">
+            <td title="'Статус'">
+                {{getStatusName(item.status)}}
             </td>
-            <td title="'Посилання'">
-                <a ng-if="book.link" ng-href="/_teacher/library/library/getBook?id={{book.id}}">Книга</a>
+            <td title="'Скан-копія відпустки'">
+                <img class="bookPreview" ng-if="book.logo" src="/files/vacation/{{item.id}}/{{item.file_src}}">
             </td>
             <td>
                 <a ng-href="#/library/update/{{book.id}}"><i class="fa fa-edit"></i></a><br>

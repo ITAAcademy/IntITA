@@ -1,15 +1,44 @@
 angular
     .module('teacherApp')
     .controller('vacationCtrl',
-        ['$scope', '$http', 'NgTableParams', '$resource', '$stateParams', 'FileUploader','$rootScope',
-        function ($scope, $http, NgTableParams, $resource, $stateParams, FileUploader, $rootScope) {
+        ['$scope', 'vacationService',
+        function ($scope, vacationService) {
             $scope.changePageHeader('Відпустки');
-            
+            $scope.vacations = null;
+            $scope.getVacationList = function () {
+                vacationService.getVacationList().$promise
+                .then(function successCallback(response) {
+                    $scope.vacations = response.data;
+                }, function errorCallback() {
+                    bootbox.alert("Отримати список відпусток не вдалося");
+                });
+            };
+            $scope.getVacationList();
+            var statusSelect = [
+                {
+                    id: '0',
+                    value: 'Відхилено',
+                },
+                {
+                    id: '1',
+                    value: 'Затвердженно',
+                },
+                {
+                    id: '2',
+                    value: 'Новий',
+                },
+            ];
+            $scope.getStatusName = function (statusId) {
+                var status = statusSelect.filter(function(item) {
+                    return item.id === statusId;
+                });
+                return status[0].value;
+            }
         }
     ])
     .controller('vacationFormCtrl',
-        ['$scope', '$http', 'NgTableParams', '$resource', '$stateParams', 'FileUploader','$rootScope', 'vacationService',
-        function ($scope, $http, NgTableParams, $resource, $stateParams, FileUploader, $rootScope, vacationService) {
+        ['$scope', '$http', '$stateParams', 'FileUploader','$rootScope', 'vacationService', 'ngToast', '$state',
+        function ($scope, $http, $stateParams, FileUploader, $rootScope, vacationService, ngToast, $state) {
             $scope.changePageHeader('Відпустка');
             function getSelectedVacationId() {
                 var element = angular.element(document.querySelector( '#vacationIndex'));
@@ -53,7 +82,10 @@ angular
                     description: '',
                     status: $scope.statusSelect[2],
                     vacation_type_id: $rootScope.vacationTypes !== undefined ? $rootScope.vacationTypes[getSelectedVacationId()] : $scope.getVacationType(),
-                    
+                    start_date: '',
+                    end_date: '',
+                    comment: '',
+                    file_src: '',
                 };
             };
             $scope.getVacation = function () {
@@ -76,7 +108,7 @@ angular
                 removeAfterUpload: true
             });
             vacationUploader.onBeforeUploadItem = function(item) {
-                item.url = basePath+'/_teacher/vacation/vacation/uploadVacationFile?id=' + $scope.vacationId + '&type=link';
+                item.url = basePath+'/_teacher/vacation/vacation/uploadVacationFile?id=' + $scope.vacationId;
             };
             vacationUploader.onCompleteAll = function() {
                 location.reload();
@@ -103,15 +135,20 @@ angular
             DateOptions.prototype.open = function () {
                 this.popupOpened = true;
             };
+            function preparingDataToStore (formData) {
+                formData.vacation_type_id = formData.vacation_type_id.id;
+                formData.status = formData.status.id;
+                return formData;
+            }
             $scope.submitFormAddVacation = function () {
-            libraryService
-                .create($scope.formData)
+            vacationService
+                .create(preparingDataToStore($scope.formData))
                 .$promise
                 .then(function (data) {
                     if (data.message === 'OK') {
-                        if(logoUploader.queue.length){
-                            $scope.libraryId = data.id;
-                            logoUploader.uploadAll();
+                        if(vacationUploader.queue.length){
+                            $scope.vacationId = data.id;
+                            vacationUploader.uploadAll();
                         }
                         ngToast.create({
                             dismissButton: true,
@@ -119,6 +156,7 @@ angular
                             content: 'Операцію успішно виконано',
                             timeout: 3000
                         });
+                        $state.go('vacationsList', {}, {reload: true});
                     } else {
                         bootbox.alert('Виникла помилка:'+'<br>'+data.reason);
                     }
@@ -127,6 +165,9 @@ angular
                     bootbox.alert(error.data.reason);
                 });
             };
+            $scope.onVacationTypeChange = function (vacationType) {
+                $scope.isBenefitsOrOvertime(vacationType.id);
+            }
         }
     ])
     .controller('vacationTypesCtrl',

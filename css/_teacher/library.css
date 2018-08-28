@@ -76,6 +76,14 @@
     padding: 0px;
 }
 
+#file_src {
+    display: none;
+}
+
+.vacation-file-upload {
+    list-style-type: none;
+}
+
 @media only screen and (max-width: 800px) {
     .one,.two{
         width:99%;

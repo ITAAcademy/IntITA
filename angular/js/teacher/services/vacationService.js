@@ -22,5 +22,20 @@ angular
                         url: basePath + '/_teacher/vacation/vacation/addVacationType',
                         transformRequest : transformRequest.bind(null)
                     },
+                    getVacation: {
+                        url: basePath + '/_teacher/vacation/vacation/getVacationData',
+                        method: 'GET',
+                    },
+                    create: {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        url: basePath + '/_teacher/vacation/vacation/addVacation',
+                        transformRequest : transformRequest.bind(null)
+                    },
+                    getVacationList: {
+                        url: basePath + '/_teacher/vacation/vacation/getVacationList',
+                        method: 'GET',
+                        isArray: false,
+                    },
                 });
         }]);

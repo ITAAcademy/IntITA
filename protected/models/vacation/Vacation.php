@@ -19,7 +19,7 @@
  * The followings are the available model relations:
  * @property Vacation $vacation_type_id
  */
-class VacationType extends CActiveRecord
+class Vacation extends CActiveRecord
 {
 	/**
    * @return string the associated database table name
@@ -38,11 +38,12 @@ class VacationType extends CActiveRecord
      // will receive user inputs.
      return array(
          array('start_date, end_date, status, organisation_id, user_id, vacation_type_id', 'required'),
-         array('status', 'in','range'=>range(0,2));
+         array('status', 'in','range'=>range(0,2)),
          array('task_name', 'length', 'max' => 256),
          array('description, comment', 'length', 'max' => 1512),
          array('file_src', 'length', 'max' => 256),
-         array('start_date, end_date', 'type', 'type' => 'date', 'message' => '{attribute}: is not a date!'),
+         // array('start_date, end_date', 'type', 'type' => 'date', 'message' => '{attribute}: is not a date!'),
+         array('start_date, end_date', 'safe'),
          // The following rule is used by search().
          // @todo Please remove those attributes that should not be searched.
          array('id, vacation_type_id, user_id, organisation_id, description, start_date, end_date, status, task_name, comment, file_src', 'safe', 'on' => 'search'),
@@ -57,7 +58,7 @@ class VacationType extends CActiveRecord
      // NOTE: you may need to adjust the relation name and the related
      // class name for the relations automatically generated below.
      return array(
-         'vacationType' => array(self::HAS_MANY, 'VacationType', 'vacation_type_id'),
+         'vacationType'=>array(self::BELONGS_TO, 'VacationType', ['vacation_type_id' => 'id']),
      );
     }
 
@@ -125,5 +126,19 @@ class VacationType extends CActiveRecord
    public static function model($className = __CLASS__)
     {
      return parent::model($className);
+    }
+   public function uploadVacationFile($id)
+   {
+		$model = Vacation::model()->findByPk($id);
+		if (!empty($_FILES['file']))
+		{
+			$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+			$image = uniqid() . '.' . $ext;
+			move_uploaded_file($_FILES['file']['name'], Yii::getpathOfAlias('webroot') . '/files/vacation/' . $id . '/' . $image);
+			$model->file_src = $image;
+			$model->save();
+		} else {
+			throw new \application\components\Exceptions\IntItaException(500, 'Завантажити файл не вдалося');
+		}
     }
 }

@@ -42,14 +42,14 @@ class VacationType extends CActiveRecord
 		/**
 	 * @return array relational rules.
 	 */
-	// public function relations()
-	// {
-	// 	// NOTE: you may need to adjust the relation name and the related
-	// 	// class name for the relations automatically generated below.
-	// 	return array(
-	// 		'idBook' => array(self::BELONGS_TO, 'Vacation', 'vacation_type_id'),
-	// 	);
-	// }
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+			'vacationType' => array(self::HAS_MANY, 'Vacation', 'vacation_type_id'),
+		);
+	}
 
 	/**
 	 * @return array customized attribute labels (name=>label)
