@@ -58,7 +58,8 @@ class Vacation extends CActiveRecord
      // NOTE: you may need to adjust the relation name and the related
      // class name for the relations automatically generated below.
      return array(
-         'vacationType'=>array(self::BELONGS_TO, 'VacationType', ['vacation_type_id' => 'id']),
+        'vacationType'=>array(self::BELONGS_TO, 'VacationType', 'vacation_type_id'),
+        'idUser' => array(self::BELONGS_TO, 'StudentReg', 'user_id'),
      );
     }
 

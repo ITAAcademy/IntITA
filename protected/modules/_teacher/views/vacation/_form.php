@@ -56,8 +56,8 @@
                            class="form-control"
                            uib-datepicker-popup
                            ng-model="formData.start_date"
-                           is-open="dateFrom.popupOpened"
-                           datepicker-options="dateFrom"
+                           is-open="start_date.popupOpened"
+                           datepicker-options="start_date"
                            clear-text='Очистити'
                            close-text='Закрити'
                            current-text='Сьогодні'
@@ -77,8 +77,8 @@
                            class="form-control"
                            uib-datepicker-popup
                            ng-model="formData.end_date"
-                           is-open="dateTo.popupOpened"
-                           datepicker-options="dateTo"
+                           is-open="end_date.popupOpened"
+                           datepicker-options="end_date"
                            clear-text='Очистити'
                            close-text='Закрити'
                            current-text='Сьогодні'

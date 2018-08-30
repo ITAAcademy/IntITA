@@ -25,18 +25,6 @@ function mainSuperAdminCtrl($scope, $rootScope, $http, vacationService) {
         })
     };
     $scope.getNewResponses();
-    $scope.getVacationType = function() {
-        $http({
-            method:'POST',
-            url: basePath + '/_teacher/vacation/vacation/getVacationTypes',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).success(function(response){
-            $rootScope.vacationTypes = response;
-        }).error(function(){
-            console.log("Отримати типи відпусток не вдалося");
-        })
-    }
-    $scope.getVacationType();
 }
 
 function bannersCtrl($scope, $rootScope, $http, NgTableDataService, NgTableParams, $ngBootbox, ngToast) {

@@ -17,6 +17,7 @@ class m180816_155119_vacations extends CDbMigration
             'file_src' => 'VARCHAR(256) DEFAULT NULL',
             'status' => 'INT(1) NOT NULL DEFAULT 2',
             'CONSTRAINT `FK_vacations_vacation_type` FOREIGN KEY (`vacation_type_id`) REFERENCES `vacation_type` (`id`)',
+            'CONSTRAINT `FK_vacations_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)',
         ], "COLLATE='utf8_general_ci' ENGINE=InnoDB;");
 	}
 

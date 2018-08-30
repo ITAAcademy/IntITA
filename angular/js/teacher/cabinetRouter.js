@@ -591,6 +591,12 @@ angular
                     url: '/vacationsList',
                     templateUrl: basePath+"/_teacher/vacation/vacation/vacationList",
                 })
+                .state('vacationUpdate', {
+                    url: '/vacation/update?vacation_id',
+                    templateUrl: function($stateParams) {
+                        return basePath+"/_teacher/vacation/vacation/vacationUpdate?id="+$stateParams.vacation_id;
+                    },
+                })
 
     }
     );

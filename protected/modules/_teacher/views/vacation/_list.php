@@ -4,14 +4,17 @@
             <td title="'Номер'" sortable="'id'">
                 {{item.id}}
             </td>
-            <td  title="'Тип відпустки'" filter="{'title': 'text'}" sortable="'title'">
-                <a href="#/library/update/">{{item.vacationType.title_ua}}</a>
+            <td  title="'Тип відпустки'" filter="{'vacationType.title_ua': 'text'}" sortable="'vacationType.title_ua'">
+                <a ui-sref="vacationUpdate({'vacation_id': item.id})">{{item.vacationType.title_ua}}</a>
             </td>
-            <td title="'Початкова дата відпустки'">
+            <td title="'Початкова дата відпустки'" filter="{'start_date': 'text'}" >
                 {{item.start_date}}
             </td>
-            <td title="'Кінцева дата відпустки'">
+            <td title="'Кінцева дата відпустки'" filter="{'end_date': 'text'}">
                 {{item.end_date}}
+            </td>
+            <td title="'Співробітник'" filter="{'idUser.fullName': 'text'}" sortable="'idUser.fullName'">
+                {{item.idUser.fullName}}
             </td>
             <td title="'Назва задачі'">
                 {{item.task_name}}
@@ -26,10 +29,10 @@
                 {{getStatusName(item.status)}}
             </td>
             <td title="'Скан-копія відпустки'">
-                <img class="bookPreview" ng-if="book.logo" src="/files/vacation/{{item.id}}/{{item.file_src}}">
+                <img class="bookPreview" ng-if="item.file_src" src="" alt="Скан-копія відпустки">
             </td>
             <td>
-                <a ng-href="#/library/update/{{book.id}}"><i class="fa fa-edit"></i></a><br>
+                <a ui-sref="vacationUpdate({'vacation_id': item.id})"><i class="fa fa-edit"></i></a><br>
                 <a ng-click="removeBook(book.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
             </td>
         </tr>

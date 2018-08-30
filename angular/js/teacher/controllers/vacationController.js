@@ -94,14 +94,19 @@ angular
                 };
             };
             $scope.getVacation = function () {
-                vacationService.getVacation({'id':$stateParams.id}).$promise
+                vacationService.getVacation({'id':$stateParams.vacation_id}).$promise
                 .then(function successCallback(response) {
                     $scope.formData = response.data;
+                    $scope.formData.status = $scope.statusSelect[Number(response.data.status)];
+                    $scope.formData.vacation_type_id = $rootScope.vacationTypes !== undefined ? $rootScope.vacationTypes[Number(response.data.vacation_type_id) - 1] : $scope.getVacationType();
+                    $scope.formData.start_date = new Date(response.data.start_date);
+                    $scope.formData.end_date = new Date(response.data.end_date);
                 }, function errorCallback() {
                     bootbox.alert("Отримати дані відпустки не вдалося");
                 });
             };
-            if($stateParams.id){
+
+            if($stateParams.vacation_id){
                 $scope.getVacation();
             }else{
                 $scope.newTypeInit();
@@ -129,8 +134,8 @@ angular
                 }
             });
             // datepickers options
-            $scope.dateFrom = new DateOptions();
-            $scope.dateTo = new DateOptions();
+            $scope.start_date = new DateOptions();
+            $scope.end_date = new DateOptions();
             function DateOptions() {
                 this.popupOpened = false;
                 this.maxDate = new Date(2020, 5, 22);

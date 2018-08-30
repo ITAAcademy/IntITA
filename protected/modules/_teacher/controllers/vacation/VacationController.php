@@ -2,7 +2,8 @@
 
 class VacationController extends TeacherCabinetController
 {
-	public function hasRole() {
+	public function hasRole()
+    {
             return Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isDirector() || Yii::app()->user->model->isAccountant() || Yii::app()->user->model->isTrainer() || Yii::app()->user->model->isTeacherConsultant() || Yii::app()->user->model->isTenant() || Yii::app()->user->model->isConsultant() || Yii::app()->user->model->isAuthorModule() || Yii::app()->user->model->isTeacherConsultantModule() || Yii::app()->user->model->isSuperVisor() || Yii::app()->user->model->isSuperAdmin());
     }
 	
@@ -15,11 +16,26 @@ class VacationController extends TeacherCabinetController
 		$this->renderPartial('/vacation/index', ['vacationType' => $vacationType, 'isAccountant' => $isAccountant]);
 	}
 
+    public function actionVacationUpdate()
+    {
+        $isAccountant = Yii::app()->user->model->isAccountant();
+        $this->renderPartial('/vacation/_update', ['isAccountant' => $isAccountant]);
+    }
+    // public function actionVacationUpdate()
+    // {
+    //     $requestParam = $_GET;
+    //     $vacationId = $requestParam['vacation_id'];
+    //     $vacation = Vacation::model()->with('vacationType')->findByPk($vacationId);
+    //     $isAccountant = Yii::app()->user->model->isAccountant();
+    //     $this->renderPartial('/vacation/index', ['vacation' => $vacation, 'isAccountant' => $isAccountant]);
+    // }
+
     public function actionGetVacationData()
     {
         $result = [];
         $result['data'] = ActiveRecordToJSON::toAssocArrayWithRelations(Vacation::model()->with('vacationType')->findByPk(Yii::app()->request->getParam('id')));
-        echo json_encode($result);
+        $result['isAccountant'] = Yii::app()->user->model->isAccountant();
+        echo CJSON::encode($result);
     }
 
     public function actionUploadVacationFile()
@@ -28,7 +44,8 @@ class VacationController extends TeacherCabinetController
         Vacation::model()->uploadVacationFile($requestParam['id']);
     }
 
-    public function actionAddVacation(){
+    public function actionAddVacation()
+    {
         $statusCode = 201;
         $id = null;
         $connection = Yii::app()->db;
@@ -60,14 +77,13 @@ class VacationController extends TeacherCabinetController
     public function actionGetVacationList()
     {
         $requestParam = $_GET;
+        $adapter = new NgTableAdapter('Vacation', $requestParam);
         $criteria=new CDbCriteria;
-        $criteria->with = ['vacationType'];
-        if (Yii::app()->user->model->isAccountant()) {
-        } else {
-            $userId = Yii::app()->user->model->registrationData->id;
-            $criteria->addCondition('user_id='.$userId);
+        $criteria->with = ['vacationType', 'idUser'];
+        if (!Yii::app()->user->model->isAccountant()) {
+            $userId = Yii::app()->user->getId();
+            $criteria->compare('user_id', $userId);
         }
-        $adapter = new NgTableAdapter('Vacation',$requestParam);
         $adapter->mergeCriteriaWith($criteria);
         echo CJSON::encode($adapter->getData());
     }

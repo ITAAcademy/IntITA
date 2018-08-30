@@ -34,6 +34,26 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-4"></div>
+
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Відпустки
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li ng-repeat="type in vacationTypes">
+                        <a ui-sref="vacationCreate({'vacation_type_id': type.id})">{{type.title_ua}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <em>Замовлення відпусток</em>
+            </div>
+        </div>
+    </div>
 </div>
 
 
