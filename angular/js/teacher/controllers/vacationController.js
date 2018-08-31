@@ -1,8 +1,22 @@
 angular
     .module('teacherApp')
+    .constant('vacationStatuses', [
+        {
+            id: '1',
+            value: 'Відхилено',
+        },
+        {
+            id: '2',
+            value: 'Затвердженно',
+        },
+        {
+            id: '3',
+            value: 'Новий',
+        },
+    ])
     .controller('vacationCtrl',
-        ['$scope', 'vacationService', 'NgTableParams',
-        function ($scope, vacationService, NgTableParams) {
+        ['$scope', 'vacationService', 'NgTableParams', 'vacationStatuses', '$http',
+        function ($scope, vacationService, NgTableParams, vacationStatuses, $http) {
             $scope.changePageHeader('Відпустки');
             $scope.vacationTable = new NgTableParams({
                 sorting: {
@@ -11,7 +25,7 @@ angular
             }, {
                 getData: function (params) {
                     return vacationService
-                        .list(params.url())
+                        .vacationList(params.url())
                         .$promise
                         .then(function (data) {
                             params.total(data.count);
@@ -19,31 +33,40 @@ angular
                         });
                 }
             });
-            var statusSelect = [
-                {
-                    id: '0',
-                    value: 'Відхилено',
-                },
-                {
-                    id: '1',
-                    value: 'Затвердженно',
-                },
-                {
-                    id: '2',
-                    value: 'Новий',
-                },
-            ];
             $scope.getStatusName = function (statusId) {
-                var status = statusSelect.filter(function(item) {
+                var status = vacationStatuses.filter(function(item) {
                     return item.id === statusId;
                 });
                 return status[0].value;
-            }
+            };
+            $scope.removeVacation = function (id) {
+                var url = basePath + '/_teacher/vacation/vacation';
+                bootbox.confirm('Ви впевнені, що бажаєте видалити відпустку?', function (result) {
+                    if (result) {
+                        $http({
+                            method: 'POST',
+                            url: url + '/removeVacation',
+                            data: $jq.param({id: id}),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                        })
+                        .then(
+                            function successCallback() {
+                                if(bootbox.alert("Відпустку видалено.")){
+                                    $scope.vacationTable.reload();
+                                }
+                            },
+                            function errorCallback(response) {
+                                bootbox.alert(response.data.reason);
+                            }
+                        );
+                    }
+                });
+            };
         }
     ])
     .controller('vacationFormCtrl',
-        ['$scope', '$http', '$stateParams', 'FileUploader','$rootScope', 'vacationService', 'ngToast', '$state',
-        function ($scope, $http, $stateParams, FileUploader, $rootScope, vacationService, ngToast, $state) {
+        ['$scope', '$http', '$stateParams', 'FileUploader','$rootScope', 'vacationService', 'ngToast', '$state', 'vacationStatuses',
+        function ($scope, $http, $stateParams, FileUploader, $rootScope, vacationService, ngToast, $state, vacationStatuses) {
             $scope.changePageHeader('Відпустка');
             function getSelectedVacationId() {
                 var element = angular.element(document.querySelector( '#vacationIndex'));
@@ -66,26 +89,12 @@ angular
                     console.log("Отримати типи відпусток не вдалося");
                 })
             };
-            $scope.statusSelect = [
-                {
-                    id: '0',
-                    value: 'Відхилено',
-                },
-                {
-                    id: '1',
-                    value: 'Затвердженно',
-                },
-                {
-                    id: '2',
-                    value: 'Новий',
-                },
-            ];
-            
+            $scope.statusSelect = vacationStatuses;
             $scope.newTypeInit = function(){
                 $scope.formData = {
                     task_name: '',
                     description: '',
-                    status: $scope.statusSelect[2],
+                    status: vacationStatuses[2],
                     vacation_type_id: $rootScope.vacationTypes !== undefined ? $rootScope.vacationTypes[getSelectedVacationId()] : $scope.getVacationType(),
                     start_date: '',
                     end_date: '',
@@ -97,7 +106,7 @@ angular
                 vacationService.getVacation({'id':$stateParams.vacation_id}).$promise
                 .then(function successCallback(response) {
                     $scope.formData = response.data;
-                    $scope.formData.status = $scope.statusSelect[Number(response.data.status)];
+                    $scope.formData.status = vacationStatuses[Number(response.data.status) - 1];
                     $scope.formData.vacation_type_id = $rootScope.vacationTypes !== undefined ? $rootScope.vacationTypes[Number(response.data.vacation_type_id) - 1] : $scope.getVacationType();
                     $scope.formData.start_date = new Date(response.data.start_date);
                     $scope.formData.end_date = new Date(response.data.end_date);

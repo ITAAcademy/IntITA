@@ -38,7 +38,7 @@ class Vacation extends CActiveRecord
      // will receive user inputs.
      return array(
          array('start_date, end_date, status, organisation_id, user_id, vacation_type_id', 'required'),
-         array('status', 'in','range'=>range(0,2)),
+         array('status', 'in','range'=>range(1,3)),
          array('task_name', 'length', 'max' => 256),
          array('description, comment', 'length', 'max' => 1512),
          array('file_src', 'length', 'max' => 256),

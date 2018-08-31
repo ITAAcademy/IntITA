@@ -93,6 +93,29 @@ class VacationController extends TeacherCabinetController
         $this->renderPartial('/vacation/_list');
     }
 
+    public function actionRemoveVacation(){
+        $result = ['message' => 'OK'];
+        $statusCode = 202;
+        $id = $_POST['id'];
+        $connection = Yii::app()->db;
+        $transaction = $connection->beginTransaction();
+        try {
+            $vacation = Vacation::model()->findByPk($id);
+            if ($vacation['file_src'] !== ''){
+                if (file_exists(Yii::getPathOfAlias('webroot')."/files/vacation/".$id."/".$vacation['file_src'])){
+                    unlink(Yii::getPathOfAlias('webroot')."/files/vacation/".$id."/".$vacation['file_src']);
+                }
+            };
+            Vacation::model()->deleteByPk($id);
+            $transaction->commit();
+        } catch (Exception $error) {
+            $transaction->rollback();
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
+
 	public function actionGetVacationTypes()
 	{
 		$requestParam = $_GET;

@@ -33,7 +33,7 @@
             </td>
             <td>
                 <a ui-sref="vacationUpdate({'vacation_id': item.id})"><i class="fa fa-edit"></i></a><br>
-                <a ng-click="removeBook(book.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                <a ng-click="removeVacation(item.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
             </td>
         </tr>
     </table>    

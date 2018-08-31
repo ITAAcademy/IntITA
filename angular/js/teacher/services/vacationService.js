@@ -32,7 +32,7 @@ angular
                         url: basePath + '/_teacher/vacation/vacation/addVacation',
                         transformRequest : transformRequest.bind(null)
                     },
-                    list: {
+                    vacationList: {
                         url: basePath + '/_teacher/vacation/vacation/getVacationList',
                         method: 'GET'
                     },

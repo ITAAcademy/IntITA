@@ -48,7 +48,7 @@
                 <label class="col-md-6" style="line-height: 30px">Початкова дата відпустки:</label>
                 <div class="input-group">
                     <span class="input-group-btn">
-                        <span class="btn btn-default" ng-click="dateFrom.open()">
+                        <span class="btn btn-default" ng-click="start_date.open()">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
                     </span>
@@ -69,7 +69,7 @@
                 <label class="col-md-6" style="line-height: 30px">Кінцева дата відпустки:</label>
                 <div class="input-group">
                     <span class="input-group-btn">
-                        <span class="btn btn-default" ng-click="dateTo.open()">
+                        <span class="btn btn-default" ng-click="end_date.open()">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
                     </span>
