@@ -16,7 +16,7 @@ class CmsController extends TeacherCabinetController
 
     public function actionIndex()
     {
-        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => ``));
         if($subdomain){
             $this->renderPartial('index', array(), false, true);
         }else{

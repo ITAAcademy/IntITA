@@ -5,21 +5,20 @@ class RequestsList
     public static function listAllActiveRequests()
     {
         $organization=Yii::app()->user->model->getCurrentOrganization()->id;
-        $authorRequests = MessagesAuthorRequest::model()->with('idModule')->findAll(
-            'date_approved IS NULL and t.cancelled = '.MessagesAuthorRequest::ACTIVE.' and idModule.id_organization='.$organization);
-        $consultantRequests = MessagesTeacherConsultantRequest::model()->with('idModule')->findAll(
-            'date_approved IS NULL and t.cancelled = '.MessagesTeacherConsultantRequest::ACTIVE.' and idModule.id_organization='.$organization);
+        $authorRequests = AuthorRequest::model()->with('module')->findAll(
+            'action = 0  and id_organization='.$organization);
+        $consultantRequests = TeacherConsultantRequest::model()->with('idModule')->findAll(
+            'action = 0  and id_organization='.$organization);
         $requests = array_merge($authorRequests, $consultantRequests);
         if(Yii::app()->user->model->isAdmin()){
-            //            todo for organization
-//            $coworkerRequests = MessagesCoworkerRequest::model()->findAll('date_approved IS NULL and cancelled = '.MessagesCoworkerRequest::ACTIVE);
-//            $requests = array_merge($requests, $coworkerRequests);
+          $coworkerRequests = CoworkerRequests::model()->findAll('action = 0  and id_organization='.$organization);
+          $requests = array_merge($requests, $coworkerRequests);
         }
         if(Yii::app()->user->model->isContentManager()){
-            $revisionRequests = MessagesRevisionRequest::model()->with('idRevision.module')->findAll(
-                'date_approved IS NULL and date_rejected IS NULL  and t.cancelled = '.MessagesRevisionRequest::ACTIVE.' and module.id_organization='.$organization);
-            $moduleRevisionRequests = MessagesModuleRevisionRequest::model()->with('idRevision.module')->findAll(
-                'date_approved IS NULL and date_rejected IS NULL  and t.cancelled = '.MessagesModuleRevisionRequest::ACTIVE.' and module.id_organization='.$organization);
+            $revisionRequests = LectureRevisionRequest::model()->with('idRevision.module')->findAll(
+                'type = 4 AND action = 0 id_organization='.$organization);
+            $moduleRevisionRequests = ModuleRevisionRequest::model()->with('idRevision.module')->findAll(
+                'type = 3 AND action = 0 id_organization='.$organization);
             $requests = array_merge($requests, $revisionRequests, $moduleRevisionRequests);
         }
 
@@ -43,23 +42,23 @@ class RequestsList
     public static function listAllApprovedRequests()
     {
         $organization=Yii::app()->user->model->getCurrentOrganization()->id;
-        $authorRequests = MessagesAuthorRequest::model()->with('idModule')->findAll(
-            'date_approved IS NOT NULL and t.cancelled = '.MessagesAuthorRequest::ACTIVE.' and idModule.id_organization='.$organization);
-        $consultantRequests = MessagesTeacherConsultantRequest::model()->with('idModule')->findAll(
-            'date_approved IS NOT NULL and t.cancelled = '.MessagesTeacherConsultantRequest::ACTIVE.' and idModule.id_organization='.$organization);
+        $authorRequests = AuthorRequest::model()->with('module')->findAll(
+            'action = 2 and id_organization='.$organization);
+        $consultantRequests = TeacherConsultantRequest::model()->with('idModule')->findAll(
+            'action = 2 and id_organization='.$organization);
 
         $requests = array_merge($authorRequests, $consultantRequests);
 
         if(Yii::app()->user->model->isAdmin()){
             //            todo for organization
-//            $coworkerRequests = MessagesCoworkerRequest::model()->findAll('date_approved IS NOT NULL and cancelled = '.MessagesCoworkerRequest::ACTIVE);
-//            $requests = array_merge($requests, $coworkerRequests);
+            $coworkerRequests = CoworkerRequests::model()->findAll('action = 2  and id_organization='.$organization);
+            $requests = array_merge($requests, $coworkerRequests);
         }
         if(Yii::app()->user->model->isContentManager()){
-            $revisionRequests = MessagesRevisionRequest::model()->with('idRevision.module')->findAll(
-                'date_approved IS NOT NULL and t.cancelled = '.MessagesRevisionRequest::ACTIVE.' and module.id_organization='.$organization);
-            $moduleRevisionRequests = MessagesModuleRevisionRequest::model()->with('idRevision.module')->findAll(
-                'date_approved IS NOT NULL and t.cancelled = '.MessagesModuleRevisionRequest::ACTIVE.' and module.id_organization='.$organization);
+            $revisionRequests = LectureRevisionRequest::model()->with('idRevision.module')->findAll(
+                'type = 4 AND action = 2 AND id_organization='.$organization);
+            $moduleRevisionRequests = ModuleRevisionRequest::model()->with('idRevision.module')->findAll(
+                'type = 3 AND action = 2 id_organization='.$organization);
             $requests = array_merge($requests, $revisionRequests, $moduleRevisionRequests);
         }
 
@@ -83,19 +82,18 @@ class RequestsList
     public static function listAllDeletedRequests()
     {
         $organization=Yii::app()->user->model->getCurrentOrganization()->id;
-        $authorRequests = MessagesAuthorRequest::model()->with('idModule')->findAll('t.cancelled = '.MessagesAuthorRequest::DELETED.' and idModule.id_organization='.$organization);
-        $consultantRequests = MessagesTeacherConsultantRequest::model()->with('idModule')->findAll('t.cancelled = '.MessagesTeacherConsultantRequest::DELETED.' and idModule.id_organization='.$organization);
+        $authorRequests = AuthorRequest::model()->with('module')->findAll('t.deleted = 1 and id_organization='.$organization);
+        $consultantRequests = TeacherConsultantRequest::model()->with('idModule')->findAll('t.deleted = 1 and id_organization='.$organization);
 
         $requests = array_merge($authorRequests, $consultantRequests);
 
         if(Yii::app()->user->model->isAdmin()){
-            //            todo for organization
-//            $coworkerRequests = MessagesCoworkerRequest::model()->findAll('cancelled = '.MessagesCoworkerRequest::DELETED);
-//            $requests = array_merge($requests, $coworkerRequests);
+            $coworkerRequests = CoworkerRequests::model()->findAll('deleted = 1  and id_organization='.$organization);
+            $requests = array_merge($requests, $coworkerRequests);
         }
         if(Yii::app()->user->model->isContentManager()){
-            $revisionRequests = MessagesRevisionRequest::model()->with('idRevision.module')->findAll('t.cancelled = '.MessagesRevisionRequest::DELETED.' and module.id_organization='.$organization);
-            $moduleRevisionRequests = MessagesModuleRevisionRequest::model()->with('idRevision.module')->findAll('t.cancelled = '.MessagesModuleRevisionRequest::DELETED.' and module.id_organization='.$organization);
+            $revisionRequests = LectureRevisionRequest::model()->with('idRevision.module')->findAll('deleted = 1 and id_organization='.$organization);
+            $moduleRevisionRequests = ModuleRevisionRequest::model()->with('idRevision.module')->findAll('deleted = 1 and id_organization='.$organization);
             $requests = array_merge($requests, $revisionRequests, $moduleRevisionRequests);
         }
 
@@ -121,8 +119,8 @@ class RequestsList
         $organization=Yii::app()->user->model->getCurrentOrganization()->id;
         $return = array('data' => array());
         if(Yii::app()->user->model->isContentManager()){
-            $revisionRequests = MessagesRevisionRequest::model()->with('idRevision.module')->findAll('date_rejected IS NOT NULL and t.cancelled = '.MessagesRevisionRequest::ACTIVE.' and module.id_organization='.$organization);
-            $moduleRevisionRequests = MessagesModuleRevisionRequest::model()->with('idRevision.module')->findAll('date_rejected IS NOT NULL and t.cancelled = '.MessagesModuleRevisionRequest::ACTIVE.' and module.id_organization='.$organization);
+            $revisionRequests = LectureRevisionRequest::model()->with('idRevision.module')->findAll('type = 4 AND action = 1 AND id_organization='.$organization);
+            $moduleRevisionRequests = ModuleRevisionRequest::model()->with('idRevision.module')->findAll('type = 3 AND action = 1 AND id_organization='.$organization);
             $requests = array_merge($revisionRequests, $moduleRevisionRequests);
             foreach ($requests as $record) {
                 $row = array();

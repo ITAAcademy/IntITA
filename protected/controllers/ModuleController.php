@@ -152,20 +152,10 @@ class ModuleController extends Controller
         $model = StudentReg::model()->findByPk($user);
 
         if($model && $module){
-            $transaction = Yii::app()->db->beginTransaction();
-            try {
-                $message = new MessagesAuthorRequest();
-                $message->build($module, $model);
-                $message->create();
-                $sender = new MailTransport();
-
-                $message->send($sender);
-                $transaction->commit();
-                echo "Запит на редагування модуля успішно відправлено. Зачекайте, поки адміністратор сайта підтвердить запит.";
-            } catch (Exception $e){
-                $transaction->rollback();
-                throw new \application\components\Exceptions\IntItaException(500, "Запит на редагування модуля не вдалося надіслати.");
-            }
+                $request = new AuthorRequest();
+                $request->request_model_id = $module->module_ID;
+                $request->request_user = $model->id;
+                $request->save();
         }
     }
 
@@ -286,21 +276,13 @@ class ModuleController extends Controller
         ModuleTags::model()->editModuleTags($moduleTags,$module->module_ID);
 
         if($author != 0){
-            $transaction = Yii::app()->db->beginTransaction();
-            try {
-                $message = new MessagesAuthorRequest();
-                $model = StudentReg::model()->findByPk($author);
-                $message->build($module, $model);
-                $message->create();
-                $sender = new MailTransport();
-
-                $message->send($sender);
-                $transaction->commit();
-            } catch (Exception $e){
-                $transaction->rollback();
-                echo "Запит на редагування модуля не вдалося надіслати.";
-                Yii::app()->end();
-            }
+         $model = StudentReg::model()->findByPk($author);
+         $request = new AuthorRequest();
+         $request->request_user = $model->id;
+         $request->request_model_id = $module->module_ID;
+         if(!$request->save());
+         echo "Запит на редагування модуля не вдалося надіслати.";
+         Yii::app()->end();
         }
     }
 

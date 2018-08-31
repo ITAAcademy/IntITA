@@ -15,9 +15,10 @@ class RequestController extends TeacherCabinetController
 
     public function actionRequest($message)
     {
-        $messageModel = Messages::model()->findByPk($message);
-        $messageModel->accessForOrganization();
-        $model = RequestFactory::getInstance($messageModel);
+
+        $requestModel = Request::model()->find('id=:requestId AND organization=:organization',
+                                               ['requestId'=>$message,'organization'=>Yii::app()->user->model->getCurrentOrganization()->id]);
+        $model = RequestFactory::getInstance($requestModel);
         if ($model) {
             $this->renderPartial('request', array(
                 'model' => $model
@@ -95,6 +96,7 @@ class RequestController extends TeacherCabinetController
 
         $comment=Yii::app()->request->getPost('comment','');
         if($messageModel->type==MessagesType::REVISION_REQUEST){
+
             $message = new MessagesRejectRevision();
             $message->sendRevisionRejectMessage(RevisionLecture::model()->findByPk($model->id_revision), $comment);
         }

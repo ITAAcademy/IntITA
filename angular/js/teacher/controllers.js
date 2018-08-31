@@ -433,7 +433,7 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
     });
 
     $scope.receivedMessagesTable = new NgTableParams({
-        sorting: {'message.create_date': "desc"},
+        sorting: {'create_date': "desc"},
     }, {
         getData: function (params) {
             delete $scope.deleteReceivedMessages;
@@ -446,7 +446,7 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
     });
 
     $scope.sentMessagesTable = new NgTableParams({
-        sorting: {'message.create_date': "desc"}
+        sorting: {'create_date': "desc"}
 
     }, {
         getData: function (params) {
@@ -458,7 +458,7 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
     });
 
     $scope.deletedMessagesTable = new NgTableParams({
-        sorting: {'message.create_date': "desc"}
+        sorting: {'create_date': "desc"}
     }, {
         getData: function (params) {
             return $resource(basePath + '/_teacher/messages/getUserDeletedMessages').get(params.url()).$promise.then(function (data) {

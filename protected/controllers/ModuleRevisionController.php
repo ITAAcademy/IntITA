@@ -444,10 +444,7 @@ class ModuleRevisionController extends Controller {
         }
         $moduleRev->state->changeTo('rejected', Yii::app()->user);
 
-        $message = new MessagesRejectModuleRevision();
-        $message->sendModuleRevisionRejectMessage($moduleRev, $comment);
-        
-        $revisionRequest=MessagesModuleRevisionRequest::model()->findByAttributes(array('id_module_revision'=>$moduleRev->id_module_revision,'cancelled'=>0, 'user_rejected'=> null));
+        $revisionRequest=ModuleRevisionRequest::model()->findByAttributes(array('model_id'=>$moduleRev->id_module_revision));
         if($revisionRequest){
             $revisionRequest->setRejected();
         }
