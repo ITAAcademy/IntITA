@@ -39,4 +39,5 @@ angular
                     return url+"/vacation/vacationUpdate?id="+$stateParams.vacation_id;
                 },
             })
+
 });

@@ -75,6 +75,7 @@ class VacationController extends TeacherCabinetController
         if (!Yii::app()->user->model->isAccountant()) {
             $userId = Yii::app()->user->getId();
             $criteria->compare('user_id', $userId);
+            $criteria->compare('organisation_id', Yii::app()->user->model->getCurrentOrganizationId());
         }
         $adapter->mergeCriteriaWith($criteria);
         echo CJSON::encode($adapter->getData());
