@@ -561,43 +561,5 @@ angular
                         }
                     }
                 })
-                .state('vacationCreate', {
-                    url: '/vacationCreate?vacation_type_id',
-                    templateUrl: function($stateParams) {
-                        return basePath+"/_teacher/vacation/vacation/vacationCreate?vacation_type_id="+$stateParams.vacation_type_id;
-                    }
-                })
-                .state('vacationsTypes', {
-                    url: '/vacationsTypes',
-                    templateUrl: basePath+"/_teacher/vacation/vacation/vacationTypesList",
-                })
-                .state('vacationTypeUpdate', {
-                    url: '/vacationTypeUpdate?vacation_type_id',
-                    templateUrl: function($stateParams) {
-                        return basePath+"/_teacher/vacation/vacation/vacationTypeUpdate?vacation_type_id="+$stateParams.vacation_type_id;
-                    },
-                })
-                .state('vacationTypeCreate', {
-                    url: '/vacationTypeCreate',
-                    templateUrl: basePath+"/_teacher/vacation/vacation/vacationTypeCreate",
-                })
-                .state('getVacation', {
-                    url: '/getVacation?id',
-                    templateUrl: function($stateParams) {
-                        return basePath+"/_teacher/vacation/vacation/getVacationData?id="+$stateParams.id;
-                    },
-                })
-                .state('vacationsList', {
-                    url: '/vacationsList',
-                    templateUrl: basePath+"/_teacher/vacation/vacation/vacationList",
-                })
-                .state('vacationUpdate', {
-                    url: '/vacation/update?vacation_id',
-                    templateUrl: function($stateParams) {
-                        return basePath+"/_teacher/vacation/vacation/vacationUpdate?id="+$stateParams.vacation_id;
-                    },
-                })
-
-    }
-    );
+    });
 

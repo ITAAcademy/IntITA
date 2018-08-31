@@ -51,6 +51,7 @@ angular
         'cmsApp',
         'libraryRouter',
         'documents',
+        'vacationRouter',
     ])
     .filter('shortDate', [
             '$filter', function($filter) {

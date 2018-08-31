@@ -4,7 +4,7 @@ class VacationController extends TeacherCabinetController
 {
 	public function hasRole()
     {
-            return Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isDirector() || Yii::app()->user->model->isAccountant() || Yii::app()->user->model->isTrainer() || Yii::app()->user->model->isTeacherConsultant() || Yii::app()->user->model->isTenant() || Yii::app()->user->model->isConsultant() || Yii::app()->user->model->isAuthorModule() || Yii::app()->user->model->isTeacherConsultantModule() || Yii::app()->user->model->isSuperVisor() || Yii::app()->user->model->isSuperAdmin());
+        return Yii::app()->user->model->getCurrentOrganizationId()==Organization::MAIN_ORGANIZATION && (Yii::app()->user->model->isContentManager() || Yii::app()->user->model->isAdmin() || Yii::app()->user->model->isAuditor() || Yii::app()->user->model->isDirector() || Yii::app()->user->model->isAccountant() || Yii::app()->user->model->isTrainer() || Yii::app()->user->model->isTeacherConsultant() || Yii::app()->user->model->isTenant() || Yii::app()->user->model->isConsultant() || Yii::app()->user->model->isAuthorModule() || Yii::app()->user->model->isTeacherConsultantModule() || Yii::app()->user->model->isSuperVisor() || Yii::app()->user->model->isSuperAdmin());
     }
 	
 	public function actionVacationCreate()
@@ -21,14 +21,6 @@ class VacationController extends TeacherCabinetController
         $isAccountant = Yii::app()->user->model->isAccountant();
         $this->renderPartial('/vacation/_update', ['isAccountant' => $isAccountant]);
     }
-    // public function actionVacationUpdate()
-    // {
-    //     $requestParam = $_GET;
-    //     $vacationId = $requestParam['vacation_id'];
-    //     $vacation = Vacation::model()->with('vacationType')->findByPk($vacationId);
-    //     $isAccountant = Yii::app()->user->model->isAccountant();
-    //     $this->renderPartial('/vacation/index', ['vacation' => $vacation, 'isAccountant' => $isAccountant]);
-    // }
 
     public function actionGetVacationData()
     {

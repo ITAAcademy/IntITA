@@ -175,7 +175,7 @@ angular
                             content: 'Операцію успішно виконано',
                             timeout: 3000
                         });
-                        $state.go('vacationsList', {}, {reload: true});
+                        $state.go(basePath + '/_teacher/vacation/vacation/vacationList', {}, {reload: true});
                     } else {
                         bootbox.alert('Виникла помилка:'+'<br>'+data.reason);
                     }
