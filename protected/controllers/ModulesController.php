@@ -47,20 +47,10 @@ class ModulesController extends Controller{
         }
 
         if($author != 0){
-            $transaction = Yii::app()->db->beginTransaction();
-            try {
-                $message = new MessagesAuthorRequest();
-                $model = StudentReg::model()->findByPk($author);
-                $message->build($module, $model);
-                $message->create();
-                $sender = new MailTransport();
-
-                $message->send($sender);
-                $transaction->commit();
-            } catch (Exception $e){
-                $transaction->rollback();
-                throw new \application\components\Exceptions\IntItaException(500, "Запит на редагування модуля не вдалося надіслати.");
-            }
+            $request = new AuthorRequest();
+            $request->request_user = $author;
+            $request->request_model_id = $module->module_ID;
+            $request->save();
         }
         
         $this->redirect(Yii::app()->request->urlReferrer);

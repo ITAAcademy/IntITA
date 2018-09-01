@@ -147,23 +147,14 @@ class TrainerController extends TeacherCabinetController
         $userModel = StudentReg::model()->findByPk($user);
 
         if ($teacherModel && $moduleModel && $userModel) {
-            $message = new MessagesTeacherConsultantRequest();
-            if ($message->isRequestOpen(array($moduleModel->module_ID, $teacherModel->id))) {
+            $request = TeacherConsultantRequest::model()->findByAttributes(['request_model_id'=>$teacherModel->id,'comment'=>$moduleModel->module_ID]);
+            if ($request != null && $request->isRequestOpen()) {
                 echo "Такий запит вже надіслано. Ви не можете надіслати запит на призначення викладача-консультанта для модуля двічі.";
             } else {
-                $transaction = Yii::app()->db->beginTransaction();
-                try {
-                    $message->build($moduleModel, $userModel, $teacherModel);
-                    $message->create();
-                    $sender = new MailTransport();
-
-                    $message->send($sender);
-                    $transaction->commit();
-                    echo "Запит на призначення викладача-консультанта модуля успішно відправлено. Зачекайте, поки адміністратор сайта підтвердить запит.";
-                } catch (Exception $e) {
-                    $transaction->rollback();
-                    throw new \application\components\Exceptions\IntItaException(500, "Запит на редагування модуля не вдалося надіслати.");
-                }
+               $request = new TeacherConsultantRequest();
+               $request->request_model_id = $teacherModel->id;
+               $request->comment = $moduleModel->module_ID;
+               $request->save();
             }
         } else {
             throw new \application\components\Exceptions\IntItaException(400);

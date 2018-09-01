@@ -60,14 +60,14 @@ class NgTableRequestsAdapter
         $data = [];
         foreach ($arrayOfModels as $record) {
             $row = array();
-            $row["user"] = $record->sender()->userNameWithEmail();
+            $row["user"] = $record->user()->userNameWithEmail();
             if($record->module()){
                 $row["module"] = $record->module()->getTitle();
             } else {
                 $row["module"] = "не вказано";
             }
-            $row["link"] = "/requests/message/".$record->getMessageId();
-            $row["dateCreated"] = date("d.m.Y", strtotime($record->message0->create_date));
+            $row["link"] = "/requests/message/".$record->id;
+            $row["dateCreated"] = date("d.m.Y", strtotime($record->action_date));
             $row["type"] = $record->title();
             array_push($data, $row);
         }
@@ -80,20 +80,19 @@ class NgTableRequestsAdapter
     private function getUsersRequests(){
         $criteria = new CDbCriteria();
         $criteria->with ='idModule';
-        $criteria->addCondition('idModule.id_organization='.$this->organization);
         switch ($this->_typeOfRequest){
             case $this::NEWREQUESTS:
-                $criteria->addCondition('date_approved IS NULL and t.cancelled = 0');
+                $criteria->addCondition('action = 0');
                 break;
             case $this::APPROWEDREQUESTS:
-                $criteria->addCondition('date_approved IS NOT NULL and t.cancelled = 0');
+                $criteria->addCondition('action = 2');
                 break;
             case $this::DELETEDREQUESTS:
-                $criteria->addCondition('t.cancelled = 1');
+                $criteria->addCondition('deleted = 1');
                 break;
         }
-        $authorRequests = MessagesAuthorRequest::model()->findAll($criteria);
-        $consultantRequests = MessagesTeacherConsultantRequest::model()->findAll($criteria);
+        $authorRequests = (new AuthorRequest)->findAll($criteria);
+        $consultantRequests = (new TeacherConsultantRequest)->findAll($criteria);
         $requests = array_merge($authorRequests, $consultantRequests);
         return $requests;
     }
@@ -106,23 +105,22 @@ class NgTableRequestsAdapter
         if(Yii::app()->user->model->isContentManager()){
             $criteria = new CDbCriteria();
             $criteria->with ='idRevision.module';
-            $criteria->addCondition('module.id_organization='.$this->organization);
             switch ($this->_typeOfRequest){
                 case $this::NEWREQUESTS:
-                    $criteria->addCondition('date_approved IS NULL and date_rejected NULL  and t.cancelled = 0');
+                    $criteria->addCondition('action = 0');
                     break;
                 case $this::APPROWEDREQUESTS:
-                    $criteria->addCondition('date_approved IS NOT NULL and date_rejected IS NULL and t.cancelled = 0');
+                    $criteria->addCondition('action = 2');
                     break;
                 case $this::REJECTEDEQUESTS:
-                    $criteria->addCondition('date_rejected IS NOT NULL');
+                    $criteria->addCondition('action = 1');
                     break;
                 case $this::DELETEDREQUESTS:
-                    $criteria->addCondition('t.cancelled = 1');
+                    $criteria->addCondition('deleted = 1');
                     break;
             }
-            $revisionRequests = MessagesRevisionRequest::model()->findAll($criteria);
-            $moduleRevisionRequests = MessagesModuleRevisionRequest::model()->findAll($criteria);
+            $revisionRequests = (new LectureRevisionRequest)->findAll($criteria);
+            $moduleRevisionRequests = (new ModuleRevisionRequest)->findAll($criteria);
             $requests = array_merge($revisionRequests, $moduleRevisionRequests);
         }
 

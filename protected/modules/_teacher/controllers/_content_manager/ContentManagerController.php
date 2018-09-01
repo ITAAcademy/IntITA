@@ -82,26 +82,12 @@ class ContentManagerController extends TeacherCabinetController
         $userModel = StudentReg::model()->findByPk($user);
 
         if ($teacherModel && $userModel) {
-            $message = new MessagesCoworkerRequest();
-            if ($message->isRequestOpen(array($teacherModel->id))) {
+            if (CoworkerRequests::model()->find('request_model_id = :teacher_id',['teacher_id'=>$teacherModel->id])) {
                 echo "Такий запит вже надіслано. Ви не можете надіслати запит на призначення співробітника двічі.";
             } else {
-                $transaction = Yii::app()->db->beginTransaction();
-                try {
-                    $message->build($userModel, $teacherModel);
-                    $message->create();
-                    $sender = new MailTransport();
-
-                    if ($message->send($sender)) {
-                        $transaction->commit();
-                        echo "Запит на призначення співробітника успішно відправлено. Зачекайте, поки адміністратор сайта підтвердить запит.";
-                    } else {
-                        echo "Запит на призначення співробітника не вдалося надіслати.";
-                    }
-                } catch (Exception $e) {
-                    $transaction->rollback();
-                    throw new \application\components\Exceptions\IntItaException(500, "Запит на призначення співробітника не вдалося надіслати.");
-                }
+                $request = new CoworkerRequests();
+                $request->request_model_id = $teacherModel->id;
+                $request->save();
             }
         } else {
             throw new \application\components\Exceptions\IntItaException(400);

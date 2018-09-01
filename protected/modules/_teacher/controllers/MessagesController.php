@@ -11,21 +11,14 @@ class MessagesController extends TeacherCabinetController
         $params =$_GET;
         if (isset($params['filter']['name']))
         {
-            $criteria->addSearchCondition('receiver.email',urldecode($params['filter']['name']),true,'AND');
-            $criteria->addSearchCondition('receiver.firstName',urldecode($params['filter']['name']),true,'OR');
-            $criteria->addSearchCondition('receiver.secondName',urldecode($params['filter']['name']),true,'OR');
+            $criteria->addSearchCondition('userReceiver.email',urldecode($params['filter']['name']),true,'AND');
+            $criteria->addSearchCondition('userReceiver.firstName',urldecode($params['filter']['name']),true,'OR');
+            $criteria->addSearchCondition('userReceiver.secondName',urldecode($params['filter']['name']),true,'OR');
             unset($params['filter']['name']);
         }
-        if (isset($params['filter']['subject']))
-        {
-            $criteria->addSearchCondition('userMessages.subject',urldecode($params['filter']['subject']),true,'AND');
-            $criteria->addSearchCondition('notificationMessages.subject',urldecode($params['filter']['subject']),true,'OR');
-            unset($params['filter']['subject']);
-        }
-        $criteria->compare('sender.id',Yii::app()->user->getId(),false,'AND');
-        $criteria->addCondition('message.type =1 AND deleted IS NULL');
-        $criteria->with = ['message','sender','userMessages','paymentMessage','approveRevisionMessages','rejectRevisionMessages','notificationMessages','rejectModuleRevisionMessages','payCourse','payModule'];
-        $adapter = new NgTableAdapter('MessageReceiver',$params);
+        $criteria->compare('sender',Yii::app()->user->getId(),false,'AND');
+        $criteria->with = ['userReceiver'];
+        $adapter = new NgTableAdapter('Messages',$params);
         $adapter->mergeCriteriaWith($criteria);
         echo  json_encode($adapter->getData());
     }
@@ -36,22 +29,20 @@ class MessagesController extends TeacherCabinetController
 
         if (isset($params['filter']['name']))
         {
-            $criteria->addSearchCondition('sender.email',urldecode($params['filter']['name']),true,'AND');
-            $criteria->addSearchCondition('sender.firstName',urldecode($params['filter']['name']),true,'OR');
-            $criteria->addSearchCondition('sender.secondName',urldecode($params['filter']['name']),true,'OR');
+            $criteria->addSearchCondition('userSender.email',urldecode($params['filter']['name']),true,'AND');
+            $criteria->addSearchCondition('userSender.firstName',urldecode($params['filter']['name']),true,'OR');
+            $criteria->addSearchCondition('userSender.secondName',urldecode($params['filter']['name']),true,'OR');
             unset($params['filter']['name']);
         }
         if (isset($params['filter']['subject']))
         {
-            $criteria->addSearchCondition('userMessages.subject',urldecode($params['filter']['subject']),true,'AND');
-            $criteria->addSearchCondition('notificationMessages.subject',urldecode($params['filter']['subject']),true,'OR');
+            $criteria->addSearchCondition('subject',urldecode($params['filter']['subject']),true,'AND');
             unset($params['filter']['subject']);
         }
-        $criteria->compare('id_receiver',Yii::app()->user->getId(),false,'AND');
-        $criteria->addInCondition('message.type',[1,2,6,7,9,12],'AND');
-        $criteria->addCondition('deleted IS NULL');
-        $criteria->with = ['message','sender','userMessages','paymentMessage','approveRevisionMessages','rejectRevisionMessages','notificationMessages','rejectModuleRevisionMessages','payCourse','payModule'];
-        $adapter = new NgTableAdapter('MessageReceiver',$params);
+        $criteria->compare('receiver',Yii::app()->user->getId(),false,'AND');
+        $criteria->addCondition('receiver_delete_date IS NULL');
+        $criteria->with = ['userSender'];
+        $adapter = new NgTableAdapter('Messages',$params);
         $adapter->mergeCriteriaWith($criteria);
         echo  json_encode($adapter->getData());
     }
@@ -61,42 +52,27 @@ class MessagesController extends TeacherCabinetController
         $criteria = new CDbCriteria();
         if (isset($params['filter']['name']))
         {
-            $criteria->addSearchCondition('sender.email',urldecode($params['filter']['name']),true,'AND');
-            $criteria->addSearchCondition('sender.firstName',urldecode($params['filter']['name']),true,'OR');
-            $criteria->addSearchCondition('sender.secondName',urldecode($params['filter']['name']),true,'OR');
+            $criteria->addSearchCondition('userSender.email',urldecode($params['filter']['name']),true,'AND');
+            $criteria->addSearchCondition('userSender.firstName',urldecode($params['filter']['name']),true,'OR');
+            $criteria->addSearchCondition('userSender.secondName',urldecode($params['filter']['name']),true,'OR');
             unset($params['filter']['name']);
         }
         if (isset($params['filter']['subject']))
         {
-            $criteria->addSearchCondition('userMessages.subject',urldecode($params['filter']['subject']),true,'AND');
-            $criteria->addSearchCondition('notificationMessages.subject',urldecode($params['filter']['subject']),true,'OR');
+            $criteria->addSearchCondition('subject',urldecode($params['filter']['subject']),true,'AND');
             unset($params['filter']['subject']);
         }
-        $criteria->compare('id_receiver',Yii::app()->user->getId(),false,'AND');
-        $criteria->addInCondition('message.type',[1,2,6,7,9,12],'AND');
-        $criteria->addCondition('deleted IS NOT NULL');
-        $criteria->with = ['message','sender','userMessages','paymentMessage','approveRevisionMessages','rejectRevisionMessages','notificationMessages','rejectModuleRevisionMessages','payCourse','payModule'];
-        $adapter = new NgTableAdapter('MessageReceiver',$params);
+        $criteria->addCondition('(receiver = :user AND receiver_delete_date IS NOT NULL ) 
+                                           OR (sender = :user AND sender_delete_date IS NOT NULL)');        $criteria->with = ['userSender'];
+        $criteria->params = ['user' => Yii::app()->user->getId()];
+
+        $adapter = new NgTableAdapter('Messages',$params);
         $adapter->mergeCriteriaWith($criteria);
         echo  json_encode($adapter->getData());
     }
 
     public function actionIndex()
     {
-//        $id = Yii::app()->user->getId();
-//        $model = StudentReg::model()->findByPk($id);
-//        $message = new UserMessages();
-//        $sentMessages = $model->sentMessages();
-//        $receivedMessages = $model->receivedMessages();
-//        $deletedMessages = $model->deletedMessages();
-//
-//        $this->renderPartial('index', array(
-//            'model' => $model,
-//            'message' => $message,
-//            'sentMessages' => $sentMessages,
-//            'receivedMessages' => $receivedMessages,
-//            'deletedMessages' => $deletedMessages,
-//        ));
 
        $this->renderPartial('indexNg');
 
@@ -119,16 +95,16 @@ class MessagesController extends TeacherCabinetController
         ), false, true);
     }
 
-    public function actionDialog($user1, $user2)
+    public function actionDialog($messageId)
     {
-        $user1 = StudentReg::model()->findByPk($user1);
-        $user2 = StudentReg::model()->findByPk($user2);
-        $dialog = new Dialog($user1, $user2);
-        $dialog->read();
+        $message = Messages::model()->with(['userSender','userReceiver'])->find((int)$messageId);
+        if($message){
+         $dialog = $message->buildDialog();
+         $this->renderPartial('_dialogTree', array(
+             'dialog' => $dialog,
+         ), false, true);
+        }
 
-        $this->renderPartial('_dialogTree', array(
-            'dialog' => $dialog,
-        ), false, true);
     }
 
     public function actionForm()
@@ -148,17 +124,15 @@ class MessagesController extends TeacherCabinetController
         $jsonObj = json_decode($_POST['data']);
         if (isset($jsonObj->messages)) {
             foreach ($jsonObj->messages as $item) {
-
-                    $message = MessagesFactory::getInstance(Messages::model()->findByPk($item));
-                    $message->deleteMessage(StudentReg::model()->findByPk(Yii::app()->user->id));
+                    $message = Messages::model()->findByPk($item);
+                    $message->delete();
 
             }
             echo 'success';
         }
         else {
-            $message = MessagesFactory::getInstance(Messages::model()->findByPk($jsonObj->message));
-            $receiver = StudentReg::model()->findByPk($jsonObj->receiver);
-            if ($message->deleteMessage($receiver))
+            $message = Messages::model()->findByPk($jsonObj->message);
+            if ($message->delete())
                 echo 'success';
             else
                 echo 'error';
@@ -179,28 +153,15 @@ class MessagesController extends TeacherCabinetController
     {
         $subject = Yii::app()->request->getPost('subject', '');
         $text = Yii::app()->request->getPost('text', '');
-        $user = Yii::app()->user->model->registrationData;
-
-        $transaction = Yii::app()->db->beginTransaction();
-        try {
-            $message = new UserMessages();
-            $receiverId = Yii::app()->request->getPost('receiver', '0');
-            if ($receiverId == 0) {
-                throw new \application\components\Exceptions\IntItaException(400, 'Неправильно вибраний адресат повідомлення.');
-            }
-            $receiver = StudentReg::model()->findByPk($receiverId);
-            $message->build($subject, $text, array($receiver), $user);
-            $message->create();
-            $sender = new MailTransport();
-
-            $sender->renderBodyTemplate('_newMessage', array($user));
-            $message->send($sender);
-            $transaction->commit();
-        } catch (Exception $e){
-            $transaction->rollback();
-            throw new \application\components\Exceptions\IntItaException(500, "Повідомлення не вдалося надіслати.");
+        $receiver = Yii::app()->request->getPost('receiver', '0');
+        $message = new Messages();
+        if($message->sendMessage($receiver,$subject,$text)){
+         $message->notify();
+         echo "success";
+         Yii::app()->end();
         }
-        echo "success";
+        throw new \application\components\Exceptions\IntItaException(500, "Повідомлення не вдалося надіслати.");
+
     }
 
     public function actionUsersByQuery($query, $id)
@@ -215,11 +176,11 @@ class MessagesController extends TeacherCabinetController
 
     public function actionMessage($id)
     {
-        $message = MessagesFactory::getInstance(Messages::model()->findByPk($id));
-        //$message = UserMessages::model()->findByAttributes(array('id_message' => $id));
-        $deleted = $message->isDeleted(StudentReg::model()->findByPk(Yii::app()->user->id));
-        if (!$message->isRead(StudentReg::model()->findByPk(Yii::app()->user->id)))
-            $message->read(StudentReg::model()->findByPk(Yii::app()->user->id));
+        $message =Messages::model()->with(['userSender'])->findByPk($id);
+        $deleted = $message->isDeleted();
+
+        if (!$message->isRead())
+            $message->read();
 
         $this->renderPartial('_viewMessage', array(
             'message' => $message, 'deleted'=>$deleted
@@ -228,31 +189,18 @@ class MessagesController extends TeacherCabinetController
 
     public function actionReply()
     {
-        $subject = Yii::app()->request->getPost('subject', '');
-        $text = Yii::app()->request->getPost('text', '');
-        $parentId = Yii::app()->request->getPost('parent', 0);
-        $receiverId = Yii::app()->request->getPost('receiver', 0);
 
-        $user = Yii::app()->user->model->registrationData;
+     $subject = Yii::app()->request->getPost('subject', '');
+     $text = Yii::app()->request->getPost('text', '');
+     $receiver = Yii::app()->request->getPost('receiver', '0');
+     $parentId = Yii::app()->request->getPost('parent', 0);
+     $message = new Messages();
+     if($message->sendMessage($receiver,$subject,$text,$parentId)){
+      echo "success";
+      Yii::app()->end();
+     }
+     throw new \application\components\Exceptions\IntItaException(500, "Повідомлення не вдалося надіслати.");
 
-        $transaction = Yii::app()->db->beginTransaction();
-        try {
-            $message = new UserMessages();
-            $receiver = StudentReg::model()->findByPk($receiverId);
-            $message->build($subject, $text, array($receiver), $user);
-            $message->parent = $parentId;
-            $message->create();
-
-            $sender = new MailTransport();
-            $sender->renderBodyTemplate('_newMessage', array($user));
-            $message->reply($receiver);
-            $message->send($sender);
-            $transaction->commit();
-        } catch (Exception $e) {
-            $transaction->rollback();
-            throw new \application\components\Exceptions\IntItaException(500, "Повідомлення не вдалося надіслати.");
-        }
-        echo "success";
     }
 
     public function actionForward()
@@ -261,27 +209,12 @@ class MessagesController extends TeacherCabinetController
         $forwardToId = Yii::app()->request->getPost('forwardToId', 0);
         $subject = Yii::app()->request->getPost('subject', '');
         $text = Yii::app()->request->getPost('text', '');
-
-        $user = Yii::app()->user->model->registrationData;
-        
-        $transaction = Yii::app()->db->beginTransaction();
-        try {
-            $sender = Yii::app()->user->model->registrationData;
-            $message = UserMessages::model()->findByPk($parentId);
-            $receiver = StudentReg::model()->findByPk($forwardToId);
-            $message->newSubject = $subject;
-            $message->newText = $text;
-            $message->newSender = $sender;
-            $forwardedMessage = $message->forward($receiver);
-
-            $sender = new MailTransport();
-            $sender->renderBodyTemplate('_newMessage', array($user));
-            $forwardedMessage->send($sender);
-            $transaction->commit();
-        } catch (Exception $e) {
-            $transaction->rollback();
-            throw new \application\components\Exceptions\IntItaException(500, "Повідомлення не вдалося переслати.");
+        $message = new Messages();
+        if($message->sendMessage($forwardToId,$subject,$text,$parentId)){
+          echo "success";
+          Yii::app()->end();
         }
-        echo "success";
+        throw new \application\components\Exceptions\IntItaException(500, "Повідомлення не вдалося надіслати.");
+
     }
 }
