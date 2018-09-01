@@ -42,8 +42,8 @@ class LibraryController extends TeacherCabinetController {
         try {
             $data = $_POST;
             $book = isset($data['id'])?Library::model()->findByPk($data['id']):new Library();
-            $libraryHelper = new LibraryHelper();
-            $bookByPosition = $libraryHelper->changeBookPosition($book, $data['position']);
+            $positionHelper = new PositionHelper();
+            $bookByPosition = $positionHelper->changePosition($book, $data['position'], 'Library');
             $book->attributes = $data;
             $categories = [];
             if (isset($data['category']) && !empty($data['category'])) {
@@ -51,8 +51,8 @@ class LibraryController extends TeacherCabinetController {
                     array_push($categories, $category['id']);
                 }
             }
-            if($book->save() && $libraryHelper->storeBookByPosition($bookByPosition)){
-                $libraryHelper->temporaryBookPosition = 9999;
+            if($book->save() && $positionHelper->storePosition($bookByPosition)){
+                $positionHelper->temporaryPosition = 9999;
                 $result = ['message' => 'OK', 'id' => $book->id];
                 LibraryDependsBookCategory::model()->editLibraryCategory($categories, $book);
             }else{

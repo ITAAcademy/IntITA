@@ -665,6 +665,31 @@ div.loader > div {
 div.form-group.row.ng-scope > label{
     word-break: break-all;
 }
+/*Vacation style*/
+.vacation-date {
+    padding: 0px;
+}
+#file_src {
+    display: none;
+}
+.vacation-file-upload {
+    list-style-type: none;
+}
+.yellow-list,
+.green-list {
+    margin-left: 15px;
+}
+.yellow-list a {
+    color: #f0ad4e;
+}
+.green-list a {
+    color: #5cb85c;
+}
+.yellow-list a,
+.green-list a,
+.panel-vacation a {
+    cursor: pointer;
+}
 @media screen and (max-width: 1200px) {
     table{
         table-layout: auto;

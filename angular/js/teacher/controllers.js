@@ -75,7 +75,6 @@ angular
             })
         }])
 
-
 function addGraduateCtrl($scope, $http, $timeout, $httpParamSerializerJQLike, $ngBootbox) {
     $scope.myImage = '';
     $timeout(function () {
@@ -399,6 +398,18 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
     $scope.updateRolesChat = function () {
         chatIntITAMessenger.updateRoles();
     };
+    getVacationType = function() {
+        $http({
+            method:'POST',
+            url: basePath + '/_teacher/vacation/vacation/getVacationTypes',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(response){
+            $rootScope.vacationTypes = response;
+        }).error(function(){
+            console.log("Отримати типи відпусток не вдалося");
+        })
+    }
+    getVacationType();
 }
 
 function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource, $filter, $location) {
