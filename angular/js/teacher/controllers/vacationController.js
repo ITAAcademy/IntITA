@@ -257,9 +257,9 @@ angular
                 $scope.newTypeInit();
             }
             $scope.regex = {
-                titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/,
-                titleRu: /^[А-ГДЕЖЗИЙ-Яа-гдежзий-я\-\s]+$/,
-                titleEn: /^[A-Za-z\'\-\s]+$/,
+                titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ()\'\-\s]+$/,
+                titleRu: /^[А-ГДЕЖЗИЙ-ЯЁа-гдежзий-яё()\-\s]+$/,
+                titleEn: /^[A-Za-z()\'\-\s]+$/,
             };
             $scope.submitType = function () {
                 vacationService
