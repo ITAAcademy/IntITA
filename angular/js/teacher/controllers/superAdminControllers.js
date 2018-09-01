@@ -11,7 +11,7 @@ angular
     .controller('bannersForGraduatesCtrl',bannersForGraduatesCtrl)
     .controller('bannersForGraduatesBootboxCtrl',bannersForGraduatesBootboxCtrl)
 
-function mainSuperAdminCtrl($scope, $rootScope, $http) {
+function mainSuperAdminCtrl($scope, $rootScope, $http, vacationService) {
     $scope.getNewResponses=function(){
         $http({
             method:'POST',

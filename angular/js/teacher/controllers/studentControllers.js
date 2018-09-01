@@ -492,37 +492,83 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
         );
     }
 
+    $scope.phoneMask = '(093)888-8888';
+
     $scope.updateUserData = function(data,attributes){
+        var isPhone = attributes === 'phone';
         if(!data){
             data='';
-            var placeholder='Введіть атрибут '+attributes;
+            var placeholder='Введіть атрибут '+ attributes;
         }
+        isPhone ? setPrompt(data, attributes) : setDialog(data, placeholder, attributes);
+    }
+
+    function setPrompt(data, attributes) {
+        var placeholder='Введіть номер телефону '+ $scope.phoneMask;
+        bootbox.prompt({
+            title: "Змінити дані",
+            placeholder: placeholder,
+            value: data,
+            buttons: {
+                confirm: {
+                    label: 'Підтвердити',
+                    className: "btn btn-primary"
+                }
+            },
+            callback: function (data) {
+                data = userPhoneValidation(data);
+                if (data !== undefined && data !== null) {
+                    setStudenService(data, attributes)
+                }
+            }
+
+        });
+    }
+
+    function setDialog(data, placeholder, attributes) {
         bootbox.dialog({
-                title: "Змінити дані",
-                message: '<div class="panel-body"><div class="row"><form role="form" name="commentMessage"><div class="form-group col-md-12">'+
+            title: "Змінити дані",
+            message: '<div class="panel-body"><div class="row"><form role="form" name="commentMessage"><div class="form-group col-md-12">'+
                 '<textarea class="form-control" style="resize: none" rows="6" id="dataText" ' +
                 'placeholder="'+placeholder+'">' +data+ '</textarea>'+'</div></form></div></div>',
-                buttons:
-                    {success:
-                        {label: "Підтвердити", className: "btn btn-primary",
+            buttons:
+                {success:
+                    {label: "Підтвердити", className: "btn btn-primary",
+                        callback: function () {
+                            var data = $jq('#dataText').val();
+                            setStudenService(data, attributes);
+                        }
+                    },
+                    cancel:
+                        {label: "Скасувати", className: "btn btn-default",
                             callback: function () {
-                                var data = $jq('#dataText').val();
-                                studentService
-                                    .updateUserData({attribute: attributes,data: data})
-                                    .$promise
-                                    .then(function (data) {
-                                        $scope.writtenAgreementPreview($stateParams.agreementId);
-                                    });
                             }
-                        },
-                        cancel:
-                            {label: "Скасувати", className: "btn btn-default",
-                                callback: function () {
-                                }
-                            }
-                    }
+                        }
+                }
             }
         );
+    }
+
+    function setStudenService(data, attributes) {
+        studentService
+            .updateUserData({attribute: attributes,data: data})
+            .$promise
+            .then(function (data) {
+                $scope.writtenAgreementPreview($stateParams.agreementId);
+        });
+    }
+
+    function userPhoneValidation(data) {
+        if (data !== null) {
+            var phoneRegex = /^[+]{0,1}[3]{0,1}[8]{0,1}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
+            var isPhone = data.match(phoneRegex);
+            if (isPhone) {
+                return isPhone[0];
+            } else {
+                bootbox.alert('Ви ввели невалідний номер телефону!<br>Приклад номеру телефону - '+ $scope.phoneMask);
+            }
+        }
+        return null;
     }
 
     $scope.checkWrittenAgreementRequestByUser = function (data) {

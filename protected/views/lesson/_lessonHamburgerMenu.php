@@ -26,7 +26,7 @@
         $header = new Header();
         ?>
         <a href="<?php echo Yii::app()->homeUrl; ?>" class="logo">
-            <img src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'hamburgerlogo.png') ?>"/>
+            <img src="<?php echo StaticFilesHelper::createPath('image', 'mainpage', 'hamburgerlogo.svg') ?>"/>
         </a>
 
         <div class="humblang">

@@ -34,12 +34,14 @@
 
    }
 
-   public function sendmail($from, $fromName = "IntITA", $to, $subject, $message)
+   public function sendmail($from=null, $fromName = null, $to, $subject, $message)
     {
      $this->loadSender();
      $this->configureSender();
-     $this->sender->setFrom($from, $fromName);
-     $this->sender->addReplyTo($from);
+     $senderEmail = (is_null($from)?Config::getNotifyEmail():$from);
+     $senderName = (is_null($fromName)?'IntITA':$fromName);
+     $this->sender->setFrom($senderEmail,$senderName);
+     $this->sender->addReplyTo($senderEmail);
      $this->sender->addAddress($to);
      $this->sender->SMTPAutoTLS = false;
      $this->sender->isHTML(true);

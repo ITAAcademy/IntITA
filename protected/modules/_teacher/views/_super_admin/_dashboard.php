@@ -144,19 +144,35 @@
     <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Корисні посилання
+                Відпустки
             </div>
-            <div class="panel-body">
+            <div class="panel-body panel-vacation">
                 <ul>
-                    <li><a href="#/allShareLinks">Корисні посилання</a>
+                    <li ng-repeat="type in vacationTypes">
+                        <a ui-sref="vacationCreate({'vacation_type_id': type.id})">{{type.title_ua}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="green-list">
+                <ul>
+                    <li>
+                        <a ui-sref="vacationsList">Список відпусток</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="yellow-list">
+                <ul>
+                    <li>
+                        <a ui-sref="vacationsTypes">Налаштування типів вакансій</a>
                     </li>
                 </ul>
             </div>
             <div class="panel-footer">
-                <em>Корисні посилання для співробітників з усіх організацій</em>
+                <em>Замовлення відпусток</em>
             </div>
         </div>
     </div>
+
 </div>
 
 <div class="row">
@@ -171,6 +187,26 @@
                 </ul>
             </div>
             <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Корисні посилання
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><a href="#/allShareLinks">Корисні посилання</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <em>Корисні посилання для співробітників з усіх організацій</em>
             </div>
         </div>
     </div>

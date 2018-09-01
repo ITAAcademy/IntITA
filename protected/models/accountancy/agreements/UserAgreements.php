@@ -320,7 +320,8 @@ class UserAgreements extends CActiveRecord {
         }
         try {
             $user = StudentReg::model()->findByPk($userId);
-            $serviceModel = $modelFactory::getService($param_id, $educForm);
+            $modFuctory = new $modelFactory;
+            $serviceModel = $modFuctory->getService($param_id, $educForm);
             if(!$serviceModel->checkServiceAccess()){
                 throw new \application\components\Exceptions\IntItaException(500, 'Договір не вдалося створити. Статус сервісу: "В РОЗРОБЦІ"');
             }
@@ -830,7 +831,7 @@ class UserAgreements extends CActiveRecord {
         if($agreement){
             $model = UserAgreements::model()->findByPk($agreement);
         }elseif($request){
-            $model = MessagesWrittenAgreementRequest::model()->findByPk($request)->agreement;
+            $model = WrittenAgreementRequest::model()->findByPk($request)->agreement;
         }elseif($writtenAgreement){
             $model = UserWrittenAgreement::model()->findByPk($writtenAgreement)->agreement;
         }

@@ -14,24 +14,24 @@ $param = Yii::app()->session["lg"] ? "title_" . Yii::app()->session["lg"] : "tit
         <br/>
         <span class="titleBook"><?php echo CHtml::encode($data->title); ?></span>
         <br/>
-        Опис:
+        <?php echo Yii::t('library', '0991'); ?>&#58;
         <?php echo CHtml::encode($data->description); ?>
         <?php if ($data->paper_price) { ?>
             <br/>
-            Ціна за паперовий примірник:
-            <b><?php echo CHtml::encode($data->paper_price); ?>грн.</b>
+            <?php echo Yii::t('library', '0992'); ?>&#58;
+            <b><?php echo CHtml::encode($data->paper_price); ?><?php echo Yii::t('profile', '0259'); ?>&#46;</b>
         <?php } ?>
         <br/>
-        Ціна за електронний примірник:
-        <b><?php echo CHtml::encode($data->price); ?>грн.</b>
+        <?php echo Yii::t('library', '0993'); ?>&#58;
+        <b><?php echo CHtml::encode($data->price); ?><?php echo Yii::t('profile', '0259'); ?>&#46;</b>
         <br/>
-        Автор:
+        <?php echo Yii::t('lecture', '0775'); ?>&#58;
         <?php echo CHtml::encode($data->author); ?>
         <br/>
-        Мова:
+        <?php echo Yii::t('course', '0400'); ?>&#58;
         <?php echo CHtml::encode($data->language); ?>
         <br/>
-        Категорії:
+        <?php echo Yii::t('library', '0994'); ?>&#58;
         <?php foreach ($data->libraryDependsBookCategories as $category) { ?>
             <span class="label label-info" style="margin-right: 2px">
             <?php echo $category->idCategory->$param; ?>
@@ -39,13 +39,13 @@ $param = Yii::app()->session["lg"] ? "title_" . Yii::app()->session["lg"] : "tit
         <?php } ?>
         <br/>
         <?php if ($data->demo_link) { ?>
-            Демо версія:
-            <a href="" ng-click="getDocument('<?php echo $data->id ?>')">переглянути</a>
+            <?php echo Yii::t('library', '0995'); ?>&#58;
+            <a href="" ng-click="getDocument('<?php echo $data->id ?>')"><?php echo Yii::t('library', '0996'); ?></a>
         <?php } ?>
         <br/>
         <?php
         if (Yii::app()->user->isGuest) {
-            echo '<em>Для купівлі авторизуйся</em>';
+            echo "<em><?php echo Yii::t('library', '0997'); ?></em>";
         } else {
             echo $data->getPaymentButton();
         }

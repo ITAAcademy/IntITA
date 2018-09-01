@@ -47,7 +47,6 @@ class CabinetController extends TeacherCabinetController
         }
         $newReceivedMessages = $model->newReceivedMessages();
         $countNewMessages = count($newReceivedMessages);
-        $newReceivedMessages = $model->newMessages($newReceivedMessages);
         $requests = $model->requests();
 
         $this->render('index', array(
@@ -64,10 +63,8 @@ class CabinetController extends TeacherCabinetController
 
     public function actionGetNewMessages(){
         $model = Yii::app()->user->model;
-        $newReceivedMessages = $model->newReceivedMessages();
-        $newReceivedMessages = $model->newMessages($newReceivedMessages);
-        $requests = $model->requests();
-        $newRequests = [];
+        $newReceivedMessages = Messages::model()->with(['userSender'])->findAll('receiver = :receiver AND read_date IS NULL',['receiver'=>Yii::app()->user->getId()]);
+        $newRequests = $model->requests();
         $newMessages =[];
         $imapMessages = 0;
         if ($model->isTeacher()) {
@@ -86,25 +83,13 @@ class CabinetController extends TeacherCabinetController
             }
         }
 
-        foreach ($requests as $key=>$request){
-            $req['id'] = $request->getMessageId();
-            $req['sender'] = $request->sender()->userName()==""?$request->sender()->email:$request->sender()->userName();
-            $req['title']=$request->title();
-            if ($request->module()){
-                $req['module'] ='Модуль: '. $request->module()->getTitle();
-            }
-            array_push($newRequests,$req);
-        }
-        foreach ($newReceivedMessages as $key=>$record) {
-            if($record){
-                $message = $record->message();
-                $mes['senderId'] = $message->sender0->id;
-                $mes['userId'] = $model->id;
-                ($message->sender0->userName() == "")?$mes['user'] = $message->sender0->email:$mes['user'] = $message->sender0->userName();
+        foreach ($newReceivedMessages as $message) {
+                $mes['senderId'] = $message->sender;
+                $mes['userId'] = $message->receiver;
+                ($message->userSender->userName() == "")?$mes['user'] = $message->userSender->email:$mes['user'] = $message->userSender->userName();
                 $mes['date'] = date("h:m, d F", strtotime($message->create_date));
-                $mes['subject'] = $record->subject();
+                $mes['subject'] = $message->subject;
                 array_push($newMessages,$mes);
-            }
         }
         if ($model->isTeacher())
             echo json_encode(['requests' => ['countOfRequests' => count($newRequests), 'newRequests' => $newRequests], 'messages' => ['countOfNewMessages' => count($newMessages), 'newMessages' => $newMessages, 'imapMessages'=>$imapMessages]]);

@@ -62,6 +62,7 @@ return array(
         'application.models.quiz.TaskMarks.php',
         'ext.yii-pdf.*', // html to pdf
         'application.models.cms.*',
+        'application.models.vacation.*',
     ),
 
     'modules' => array(
@@ -259,6 +260,10 @@ return array(
                     )
                 ),
             ),
+        ),
+        'request' => array(
+            'class' => 'application.components.HttpRequest',
+            'enableCsrfValidation' => true,
         ),
     ),
     'params' => $params_config['params'],

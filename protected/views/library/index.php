@@ -3,13 +3,13 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Бібліотека',
+    Yii::t('header', '0990')
 );
 ?>
 
     <link type="text/css" rel="stylesheet" href="<?php echo StaticFilesHelper::fullPathTo('css', '_teacher/library.css') ?>"/>
 <div class="container" ng-controller="libraryCtrl">
-<h1>Бібліотека</h1>
+<h1><?php echo Yii::t('header', '0990'); ?></h1>
 <?php
 $this->widget('application.components.ColumnListView', array(
     'dataProvider' => $dataProvider,

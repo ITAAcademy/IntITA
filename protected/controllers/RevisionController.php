@@ -388,7 +388,7 @@ class RevisionController extends Controller {
         }
 
         $lectureRev->state->changeTo('editable', Yii::app()->user);
-        $revisionRequest=MessagesRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'cancelled'=>0));
+        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('model_id'=>$lectureRev->id_revision,'action'=>2));
         if($revisionRequest){
             $revisionRequest->setDeleted();
         }
@@ -405,10 +405,7 @@ class RevisionController extends Controller {
 
         $lectureRev->state->changeTo('rejected', Yii::app()->user);
         
-        $message = new MessagesRejectRevision();
-        $message->sendRevisionRejectMessage($lectureRev, $comment);
-
-        $revisionRequest=MessagesRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'cancelled'=>0, 'user_rejected'=> null));
+        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('model_id'=>$lectureRev->id_revision,'action'=>0));
         if($revisionRequest){
             $revisionRequest->setRejected();
         }
@@ -440,7 +437,7 @@ class RevisionController extends Controller {
 
         $lectureRev->state->changeTo('approved', Yii::app()->user);
         
-        $revisionRequest=MessagesRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'cancelled'=>0, 'user_approved'=> null));
+        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'action'=>0,));
         if($revisionRequest){
             $revisionRequest->setApproved();
         }
@@ -1283,7 +1280,7 @@ class RevisionController extends Controller {
 
     private function sendRevisionRequest(RevisionLecture $revision){
         if($revision){
-            $message = new MessagesRevisionRequest();
+            $message = new LectureRevisionRequest();
             if($message->isRequestOpen(array($revision))) {
                 echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії лекції двічі.";
             } else {

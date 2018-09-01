@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             <label for="description">Опис:</label>
-            <textarea maxlength="256" class="form-control" rows="5" id="description" name="description" ng-model="formData.description" placeholder="Опис книги"></textarea>
+            <textarea maxlength="1512" class="form-control" rows="5" id="description" name="description" ng-model="formData.description" placeholder="Опис книги"></textarea>
         </div>
         <div class="form-group">
             <label for="price">Ціна:</label>
@@ -51,6 +51,20 @@
                 <option value="1">Активна</option>
                 <option value="0">Неактивна</option>
             </select>
+        </div>
+        <div class="form-group">
+            <label for="publication_year">Рік Публікації:</label>
+                <input type="text"
+                    readonly
+                    class="form-control"
+                    id="publication_year"
+                    placeholder="Рік Публікації"
+                    name="publication_year"
+                    ng-model="formData.publication_year" />
+        </div>
+        <div class="form-group">
+            <label for="position">Позиція:</label>
+            <input type="number" min="1" class="form-control" id="position" placeholder="Позиція" name="position" ng-model="formData.position" required>
         </div>
         <div class="form-group">
             <a ng-if="formData.link" ng-href="/_teacher/library/library/getBook?id={{formData.id}}">Книга</a>

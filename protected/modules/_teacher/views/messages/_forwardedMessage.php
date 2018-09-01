@@ -6,7 +6,7 @@
 ?>
 <blockquote>
     <p>  <?php
-        if($forwarded->type() == MessagesType::USER){
+        if($forwarded->type() == Messages::USER_MESSAGE){
             echo CHtml::encode($forwarded->text());
         } else {
             echo $forwarded->text();

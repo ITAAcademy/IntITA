@@ -1,39 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "messages_type".
+ * This is the model class for table "vacation_type".
  *
- * The followings are the available columns in table 'messages_type':
+ * The followings are the available columns in table 'vacation_type':
  * @property integer $id
- * @property string $type
- * @property string $description
+ * @property string $title_ua
+ * @property string $title_ru
+ * @property string $title_en
+ * @property integer $position
  *
  * The followings are the available model relations:
- * @property Messages[] $messages
+ * @property Vacation $vacation_type_id
  */
-class MessagesType extends CActiveRecord
+class VacationType extends CActiveRecord
 {
-	const USER = 1;
-	const PAYMENT = 2;
-	const AUTHOR_REQUEST = 3;
-	const TEACHER_CONSULTANT_REQUEST = 4;
-	const COWORKER_REQUEST = 5;
-	const APPROVE_REVISION = 6;
-	const REJECT_REVISION = 7;
-	const APPROVE_REVISION_REQUEST = 8;
-	const NOTIFICATION = 9;
-	const REVISION_REQUEST = 10;
-	const MODULE_REVISION_REQUEST = 11;
-	const REJECT_MODULE_REVISION = 12;
-	const SERVICE_SCHEMES_REQUEST = 13;
-    const WRITTEN_AGREEMENT_REQUEST = 14;
-
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'messages_type';
+		return 'vacation_type';
 	}
 
 	/**
@@ -44,16 +31,15 @@ class MessagesType extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('type, description', 'required'),
-			array('type', 'length', 'max'=>50),
-			array('description', 'length', 'max'=>255),
+			array('title_ua, title_ru, title_en, position', 'required'),
+			array('title_ua, title_ru, title_en', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, type, description', 'safe', 'on'=>'search'),
+			array('id, title_ua, title_ru, title_en, position', 'safe', 'on'=>'search'),
 		);
 	}
 
-	/**
+		/**
 	 * @return array relational rules.
 	 */
 	public function relations()
@@ -61,7 +47,7 @@ class MessagesType extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'messages' => array(self::HAS_MANY, 'Messages', 'type'),
+			// 'vacationType' => array(self::HAS_MANY, 'Vacation', 'vacation_type_id'),
 		);
 	}
 
@@ -71,9 +57,11 @@ class MessagesType extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'type' => 'Type',
-			'description' => 'Description',
+            'id' => 'ID',
+            'title_ua' => 'Title ua',
+            'title_ru' => 'Title ru',
+            'title_en' => 'Title en',
+            'position' => 'Position',
 		);
 	}
 
@@ -96,8 +84,10 @@ class MessagesType extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('type',$this->type,true);
-		$criteria->compare('description',$this->description,true);
+		$criteria->compare('title_ua',$this->title_ua,true);
+		$criteria->compare('title_ru',$this->title_ru,true);
+		$criteria->compare('title_en',$this->title_en,true);
+		$criteria->compare('position', $this->position, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -108,10 +98,14 @@ class MessagesType extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return MessagesType the static model class
+	 * @return VacationType the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
+
+    public function getTypesName($vacation_type_id){
+        return CJSON::encode(VacationType::model()->findByPk($vacation_type_id));
+    }
 }

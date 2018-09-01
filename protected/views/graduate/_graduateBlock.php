@@ -63,14 +63,16 @@
                                         <?php echo Yii::t('graduates', '0319')?>
                                         <?php echo CommonHelper::getRating(((double)$course->rating*Config::getRatingScale())); ?>
                                     </div>
-                                    <a href="" onclick="renderDiploma('<?= $course->id?>','1'); return false">Диплом</a>
+                                    <a href="" onclick="renderDiploma('<?= $course->id?>','1'); return false">
+                                        <?php echo Yii::t('graduates', '1023')?>
+                                    </a>
                                 </li>
                             <?php } ?>
                         </ul>
                     <?php } ?>
                     <?php if(!empty($data->modules)) { ?>
                         <div>
-                            <?php echo 'Модуль закінчив:' ?>
+                            <?php echo Yii::t('graduates', '1024')?>
                         </div>
                         <ul>
                         <?php foreach ($data->modules as $module) {?>
@@ -81,7 +83,9 @@
                                     <?php echo Yii::t('graduates', '0319')?>
                                     <?php echo CommonHelper::getRating(((double)$module->rating*Config::getRatingScale())); ?>
                                 </div>
-                                <a href="" onclick="renderDiploma('<?= $module->id?>','2'); return false">Диплом</a>
+                                <a href="" onclick="renderDiploma('<?= $module->id?>','2'); return false">
+                                    <?php echo Yii::t('graduates', '1023')?>
+                                </a>
                             </li>
                         <?php } ?>
                         </ul>

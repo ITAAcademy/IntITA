@@ -374,18 +374,18 @@ class RegisteredUser
 
     private function loadRequests()
     {
-        $authorRequests = MessagesAuthorRequest::notApprovedRequests();
-        $consultantRequests = MessagesTeacherConsultantRequest::notApprovedRequests();
+        $authorRequests = (new AuthorRequest)->notApprovedRequests();
+        $consultantRequests =  (new TeacherConsultantRequest)->notApprovedRequests();
 
         $result = array_merge($authorRequests, $consultantRequests);
 
         if($this->isAdmin()){
-            $assignCoworkerRequests = MessagesCoworkerRequest::notApprovedRequests();
+            $assignCoworkerRequests = (new CoworkerRequests)->notApprovedRequests();
             $result = array_merge($result, $assignCoworkerRequests);
         }
         if($this->isContentManager()){
-            $revisionRequests = MessagesRevisionRequest::notApprovedRequests();
-            $moduleRevisionRequests = MessagesModuleRevisionRequest::notApprovedRequests();
+            $revisionRequests = (new LectureRevisionRequest)->notApprovedRequests();
+            $moduleRevisionRequests = (new ModuleRevisionRequest)->notApprovedRequests();
             $result = array_merge($result, $revisionRequests, $moduleRevisionRequests);
         }
 
@@ -402,7 +402,7 @@ class RegisteredUser
         if (!$this->isTeacher())
             return false;
         else {
-            $request = new MessagesAuthorRequest();
+            $request = new AuthorRequest();
             return !$request->isRequestOpen(array($module, $this->registrationData->id));
         }
     }
