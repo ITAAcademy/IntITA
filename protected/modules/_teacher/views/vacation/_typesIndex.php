@@ -23,6 +23,7 @@
 		    <td title="'Позиція'" sortable="'position'">
 		        {{type.position}}
 		    </td>
+		    <td title="'Розширена форма'" sortable="'extension_form'" ng-bind-html="extensionFormValue(type.extension_form)"></td>
 		    <td>
 		        <a ui-sref="vacationTypeUpdate({'vacation_type_id': type.id})"><i class="fa fa-edit"></i></a><br>
 		        <a ng-click="vacationTypeRemove(type.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>

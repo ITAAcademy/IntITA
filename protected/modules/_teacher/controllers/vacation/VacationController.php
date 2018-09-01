@@ -113,7 +113,8 @@ class VacationController extends TeacherCabinetController
 	{
 		$requestParam = $_GET;
 		if(empty($requestParam)) {
-			echo CJSON::encode(VacationType::model()->findAll());
+            $result['data'] = ActiveRecordToJSON::toAssocArray(VacationType::model()->findAll());
+			echo CJSON::encode($result);
 		} else {
 	        $adapter = new NgTableAdapter('VacationType', $requestParam);
 	        echo CJSON::encode($adapter->getData());

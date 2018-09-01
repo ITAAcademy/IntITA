@@ -28,6 +28,8 @@
             ></city-validation>
             <label for="position">Позиція</label>
             <input type="number" min="1" class="form-control" id="position" placeholder="Введіть позицію" name="position" ng-model="newType.position" required>
+            <label for="position">Розширена форма</label>
+            <input type="checkbox" id="extension_form" name="extension_form" ng-model="newType.extension_form" ng-checked="newType.extension_form">
         </div>
         <input type="submit" class="btn btn-default" ng-disabled="myForm.$invalid" value="Додати відпустку">
     </form>

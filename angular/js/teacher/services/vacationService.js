@@ -4,36 +4,37 @@ angular
     .module('teacherApp')
     .service('vacationService', ['$resource', 'transformRequest', '$http',
         function ($resource, transformRequest) {
+            var url = basePath + "/_teacher/vacation";
             return $resource(
                 '',
                 {},
                 {
                     list: {
-                        url: basePath + '/_teacher/vacation/vacation/getVacationTypes',
+                        url: url + '/vacation/getVacationTypes',
                         method: 'GET',
                     },
                     getVacationType: {
-                        url: basePath + '/_teacher/vacation/vacation/getVacationTypeData',
+                        url: url + '/vacation/getVacationTypeData',
                         method: 'GET',
                     },
                     addVacationType : {
                         method: 'POST',
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
-                        url: basePath + '/_teacher/vacation/vacation/addVacationType',
+                        url: url + '/vacation/addVacationType',
                         transformRequest : transformRequest.bind(null)
                     },
                     getVacation: {
-                        url: basePath + '/_teacher/vacation/vacation/getVacationData',
+                        url: url + '/vacation/getVacationData',
                         method: 'GET',
                     },
                     create: {
                         method: 'POST',
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
-                        url: basePath + '/_teacher/vacation/vacation/addVacation',
+                        url: url + '/vacation/addVacation',
                         transformRequest : transformRequest.bind(null)
                     },
                     vacationList: {
-                        url: basePath + '/_teacher/vacation/vacation/getVacationList',
+                        url: url + '/vacation/getVacationList',
                         method: 'GET'
                     },
                 });

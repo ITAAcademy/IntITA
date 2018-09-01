@@ -116,7 +116,7 @@ function addGraduateCtrl($scope, $http, $timeout, $httpParamSerializerJQLike, $n
     };
 }
 
-function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, typeAhead, chatIntITAMessenger) {
+function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, typeAhead, chatIntITAMessenger, vacationService) {
     audio = new Audio(basePath + '/angular/audio/notification.wav');
     //function back() redirect to prev link
     $rootScope.back = function () {
@@ -398,17 +398,15 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
     $scope.updateRolesChat = function () {
         chatIntITAMessenger.updateRoles();
     };
-    getVacationType = function() {
-        $http({
-            method:'POST',
-            url: basePath + '/_teacher/vacation/vacation/getVacationTypes',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).success(function(response){
-            $rootScope.vacationTypes = response;
-        }).error(function(){
+    
+    function getVacationType() {
+        vacationService.list().$promise
+        .then(function successCallback(response) {
+            $rootScope.vacationTypes = response.data;
+        }, function errorCallback() {
             console.log("Отримати типи відпусток не вдалося");
-        })
-    }
+        });
+    };
     getVacationType();
 }
 
