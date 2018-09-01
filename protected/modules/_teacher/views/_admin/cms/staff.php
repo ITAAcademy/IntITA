@@ -65,7 +65,7 @@
             </div>
         </div>
         <div>
-            <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generatePage('index')"
+            <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generatePage('staff')"
                    class="btn btn-primary hide_edit">
         </div>
     </div>

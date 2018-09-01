@@ -79,6 +79,21 @@ angular
             cache: false,
             templateUrl: basePath+"/_teacher/_admin/cms/index",
         })
+        .state('admin/about', {
+            url: "/admin/about",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_admin/cms/about",
+        })
+        .state('admin/staff', {
+            url: "/admin/staff",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_admin/cms/staff",
+        })
+        .state('admin/faq', {
+            url: "/admin/faq",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_admin/cms/faq",
+        })
         .state('admin/cms_list', {
             url: "/admin/cms_list",
             cache: false,

@@ -116,6 +116,11 @@ class StaticFilesHelper {
         return 'content/audio/'.$subDir.'/';
     }
 
+    public static function pathToCmsImages($folder){
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        return 'domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema(). "/" . $folder . "/";
+    }
+
     public static function documentsDirectoryPath(){
         return 'documents/';
     }

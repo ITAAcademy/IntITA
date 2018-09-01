@@ -54,31 +54,35 @@
                 basePath = '<?=Config::getBaseUrl()?>';
                 subdomainPath = '<? echo Yii::app()->basePath ."/../domains/" . Subdomains::model()->findByAttributes(array("organization" => Yii::app()->user->model->getCurrentOrganizationId()))->domain_name . "." . Config::getBaseUrlWithoutSchema()?>';
             </script>
-            <div ng-controller="mainCmsCtrl">
+            <div ng-controller="aboutCmsCtrl">
                 <?php
                 $this->renderPartial('_header', array());
                 $this->renderPartial('_slider', array());
-                $this->renderPartial('_about_us', array());
-                $this->renderPartial('_news', array());
+                ?>
+                <div id="mainContent" style="overflow: hidden;clear: both;" data-ng-bind-html="trustAsHtml(settings.about_us)"></div>
+                <div class="hide_edit">
+                    <textarea id="CKE" ng-cloak ckeditor="cms" name="html_block" ng-model="settings.about_us" required></textarea>
+                </div>
+                <?php
                 $this->renderPartial('_footer', array());
                 ?>
             </div>
         </div>
         <div>
-            <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generatePage('index')"
+            <input id="save_cms " name="save" value="Згенерувати сторінку" type="submit" ng-click="generateAboutPage('about')"
                    class="btn btn-primary hide_edit">
         </div>
     </div>
-    <div class="news_box" ng-repeat="new in news track by $index">
-        <div ng-include="templateUrl('/modal/newsModal.html')" ng-init="index = $index"></div>
-    </div>
-    <div ng-include="templateUrl('/modal/logoModal.html')"></div>
-    <div ng-include="templateUrl('/modal/menuListModal.html')"></div>
-    <div ng-include="templateUrl('/modal/headerModal.html')"></div>
-    <div ng-include="templateUrl('/modal/titlesModal.html')"></div>
-    <div ng-include="templateUrl('/modal/aboutUsModal.html')"></div>
-    <div ng-include="templateUrl('/modal/newsModal.html')"></div>
-    <div ng-include="templateUrl('/modal/socialNetworksModal.html')"></div>
+<!--    <div class="news_box" ng-repeat="new in news track by $index">-->
+<!--        <div ng-include="templateUrl('/modal/newsModal.html')" ng-init="index = $index"></div>-->
+<!--    </div>-->
+<!--    <div ng-include="templateUrl('/modal/logoModal.html')"></div>-->
+<!--    <div ng-include="templateUrl('/modal/menuListModal.html')"></div>-->
+<!--    <div ng-include="templateUrl('/modal/headerModal.html')"></div>-->
+<!--    <div ng-include="templateUrl('/modal/titlesModal.html')"></div>-->
+<!--    <div ng-include="templateUrl('/modal/aboutUsModal.html')"></div>-->
+<!--    <div ng-include="templateUrl('/modal/newsModal.html')"></div>-->
+<!--    <div ng-include="templateUrl('/modal/socialNetworksModal.html')"></div>-->
 </div>
 
 

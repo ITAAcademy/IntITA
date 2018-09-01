@@ -6,7 +6,7 @@ angular
     .module('cmsDomainApp')
     .factory('cmsDomainService', ['$resource','transformRequest',
         function ($resource, transformRequest) {
-            var url = 'subdomainCms';
+            var url = basePath+'/subdomainCms';
             return $resource(
                 '',
                 {},

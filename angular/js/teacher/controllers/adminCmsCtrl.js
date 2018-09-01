@@ -7,14 +7,14 @@ angular
             });
         }
     ])
-    .controller('cmsCtrl', ['$scope', 'cmsService', '$http', 'ngToast','$q',
-        function ($scope, cmsService, $http, ngToast, $q) {
+    .controller('cmsCtrl', ['$scope', 'cmsService', '$http', 'ngToast','$q','$sce',
+        function ($scope, cmsService, $http, ngToast, $q, $sce) {
             $scope.changePageHeader('Конструктор сайту');
 
             $scope.pathToCmsTemplates = basePath + "/angular/js/teacher/templates/cms/";
             $scope.templateUrl = function (template) {
                 return $scope.pathToCmsTemplates + template;
-            }
+            };
 
             $scope.getSettings = function () {
                 cmsService.settingList().$promise
@@ -254,7 +254,7 @@ angular
                     });
             };
 
-            $scope.generatePage = function () {
+            $scope.generatePage = function (page) {
                 console.log("CMS controller");
                 if($scope.domainListsItemMenuEmpty){
                     $scope.listsItemMenu.forEach(function(item, i) {
@@ -293,7 +293,7 @@ angular
                                 method: "POST",
                                 url: basePath + '/_teacher/_admin/cms/generatePage',
                                 dataType: 'html',
-                                data: {data: content.innerHTML},
+                                data: {data: content.innerHTML, page:page},
                                 success: function () {
                                     location.reload();
                                 }
@@ -304,6 +304,65 @@ angular
                             alert('Помилка завантаження данних')
                         });
                 }
+            };
+
+            $scope.generateAboutPage = function (page) {
+                var uploadSettings = new FormData(); // для того щоб передати дані з файлу в БД використовується  FormData()
+                uploadSettings.append("data", angular.toJson($scope.settings));  //.append Вставляет содержимое, заданное параметром, в конец каждого элемента в наборе соответствующих элементов
+                $http.post(basePath + '/_teacher/_admin/cms/updateSettings', uploadSettings, {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                }).success(function () {
+                    $scope.getSettings();
+                    ngToast.create({
+                        content: 'Дані успішно збережені!',
+                        className: 'success',
+                        dismissOnTimeout: true,
+                        timeout: 2000
+                    });
+                }, function errorCallback(response) {
+                    bootbox.alert(response.data.reason);
+                });
+
+                var content = document.getElementById("cms_content_generate");
+                $jq(".hide_edit").hide();
+                if (content != null) {
+                    $q.all([
+                        $http.get($scope.templateUrl('/partial/menu.html')),
+                        $http.get($scope.templateUrl('/partial/slider.html')),
+                        $http.get($scope.templateUrl('/partial/logo.html'))
+                    ])
+                        .then(function (response) {
+                            $jq("#menuBlock").html(response[0].data);
+                            $jq("#footerMenu").html(response[0].data);
+                            $jq("#sliderBlock").html(response[1].data);
+                            $jq("#logoBlock").html(response[2].data);
+                            $jq("#footerLogo").html(response[2].data);
+                            $jq("#mainContent").removeAttr("data-ng-bind-html");
+                            $jq.ajax({
+                                method: "POST",
+                                url: basePath + '/_teacher/_admin/cms/generatePage',
+                                dataType: 'html',
+                                data: {data: content.innerHTML, page:page},
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
+                        })
+                        .catch(function (error) {
+                            console.log(error)
+                            alert('Помилка завантаження данних')
+                        });
+                }
+            };
+
+            $scope.trustAsHtml = function(string) {
+                return $sce.trustAsHtml(string);
+            };
+            $scope.cms = {
+                toolbar: 'cms',
+                filebrowserImageUploadUrl: basePath + '/_teacher/_admin/cms/imageUpload?folder=about',
             };
         }
     ])

@@ -34,6 +34,8 @@
  * @property string $subtitle_color
  * @property string $text_color
  * @property string $icon_shadow_color
+ * @property string $about_us
+ * @property string $faq
  *
  * The followings are the available model relations:
  * @property Organization $idOrganization
@@ -65,12 +67,13 @@ class CmsGeneralSettings extends CActiveRecord
 			array('footer_background_color, header_background_color, news_background_color, about_us_background_color, footer_link_color, header_link_color,
 			 general_link_color, footer_hover_color, header_hover_color, general_hover_color, footer_border_color, header_border_color, news_image_border_color,
 			  news_text_border_color, title_color, subtitle_color, text_color, icon_shadow_color, news_date_color', 'length', 'max'=>32),
+            array('about_us, faq', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, id_organization, logo, mobile_phone, mobile_phone_2, email, twitter, youtube, google, facebook, linkedin, instagram,
 			 footer_background_color, header_background_color, news_background_color, about_us_background_color, footer_link_color, header_link_color,
 			  general_link_color, footer_hover_color, header_hover_color, general_hover_color, footer_border_color, header_border_color, news_image_border_color,
-			   news_text_border_color, title_color, subtitle_color, text_color, icon_shadow_color, title, subtitle, title_2, subtitle_2, news_date_color',
+			   news_text_border_color, title_color, subtitle_color, text_color, icon_shadow_color, title, subtitle, title_2, subtitle_2, news_date_color, about_us, faq',
                 'safe', 'on'=>'search'),
 		);
 	}
@@ -127,7 +130,9 @@ class CmsGeneralSettings extends CActiveRecord
             'subtitle' => 'Subtitle',
             'title_2' => 'Title 2',
             'subtitle_2' => 'Subtitle 2',
-            'news_date_color' => 'News Date Color'
+            'news_date_color' => 'News Date Color',
+            'about_us' => 'About us content',
+            'faq' => 'FAQ content'
 		);
 	}
 
@@ -184,7 +189,8 @@ class CmsGeneralSettings extends CActiveRecord
         $criteria->compare('title_2',$this->title_2,true);
         $criteria->compare('subtitle_2',$this->subtitle_2,true);
         $criteria->compare('news_date_color',$this->news_date_color,true);
-
+        $criteria->compare('about_us',$this->about_us,true);
+        $criteria->compare('faq',$this->faq,true);
 
         return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

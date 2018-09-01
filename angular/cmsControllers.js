@@ -78,6 +78,25 @@ angular
                 alert('Помилка завантаження данних')
             });
     }])
+    .controller('aboutCmsCtrl', ['$scope', '$http','cmsDomainService','$q', function ($scope, $http,cmsDomainService, $q) {
+        $scope.myInterval = 3000;
+        $scope.active = 0;
+
+        $q.all([
+            cmsDomainService.settingList(),
+            cmsDomainService.menuList(),
+            cmsDomainService.menuSlider(),
+        ])
+            .then(function (response) {
+                $scope.settings = response[0];
+                $scope.listsItemMenu = response[1];
+                $scope.slides = response[2];
+            })
+            .catch(function (error) {
+                console.log(error)
+                alert('Помилка завантаження данних')
+            });
+    }])
     .controller('sliderCtrl', ['$scope', '$http',
         function ($scope, $http) {
             $scope.myInterval = 3000;
