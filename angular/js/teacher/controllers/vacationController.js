@@ -72,10 +72,8 @@ angular
                 var element = angular.element(document.querySelector( '#vacationIndex'));
                 return Number(element.data('selected-vacation')) - 1;
             };
-            $scope.isBenefitsOrOvertime = function(selectedTypeId) {
-                var benefits = 7;
-                var overtime = 6;
-                return Number(benefits) === Number(selectedTypeId) || Number(overtime) === Number(selectedTypeId);
+            $scope.isBenefitsOrOvertime = function(extentionForm) {
+                return Boolean(Number(extentionForm));
             };
             $scope.getVacationType = function() {
                 $http({
@@ -184,9 +182,6 @@ angular
                     bootbox.alert(error.data.reason);
                 });
             };
-            $scope.onVacationTypeChange = function (vacationType) {
-                $scope.isBenefitsOrOvertime(vacationType.id);
-            }
         }
     ])
     .controller('vacationTypesCtrl',
