@@ -15,7 +15,7 @@
                     <div class="in_group3">
                         <a href="/">
                             <img ng-if="settings.logo" class="preview" id="logo_img"
-                                 ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
+                                 ng-src='{{settings.id && subDomainPath + "/logo/" + settings.logo || settings.logo}}'>
                         </a>
                     </div>
                     <div class="in_group3-1">
@@ -44,7 +44,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
-                        ng-click="updateSettings(settings, settings.logo )">Зберегти
+                        ng-click="updateSettings(settings)">Зберегти
                 </button>
             </div>
         </div>

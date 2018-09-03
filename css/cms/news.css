@@ -30,6 +30,7 @@ html{font-family:"MyriadPro";}
 }
 .news_wrapper{
     padding-top: 60px;
+    padding-bottom: 1px;
 }
 .box_new .box_text{
     margin-right: 0px;
@@ -128,6 +129,7 @@ margin-left: 0px;
     }
 }
 .edit4{
+    cursor: pointer;
     position: absolute;
     right: 4px;
     top: 5px;

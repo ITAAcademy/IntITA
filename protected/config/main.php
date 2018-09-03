@@ -145,6 +145,9 @@ return array(
                 'profile/edit' => 'studentreg/edit',
                 'agreement/<id:\d+>' => 'payments/showAgreement',
                 'cms' => 'cms/cms/index',
+                'cms/about' => 'cms/cms/about',
+                'cms/staff' => 'cms/cms/staff',
+                'cms/faq' => 'cms/cms/faq',
 
                 array('class' => 'CourseRule'),//rules for course page ($routes: 'course/index', 'module/index', 'lesson/index')
                 '<module:\w+>/<controller:\w+>/<id:\d+>' => '<module>/<controller>/view',

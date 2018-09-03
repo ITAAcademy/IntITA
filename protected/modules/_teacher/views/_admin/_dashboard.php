@@ -75,6 +75,9 @@
             <div class="panel-body">
                 <ul>
                     <li><a href="#/admin/intita_cms">Доменне ім'я сайту</a></li>
+                    <li><a href="#/admin/about">Сторінка про нас</a></li>
+                    <li><a href="#/admin/staff">Сторінка співробітники</a></li>
+                    <li><a href="#/admin/faq">Сторінка FAQ</a></li>
                     <li><a ng-href="#/admin/cms_settings">Налаштування кольорів</a></li>
                     <li><a ng-href="#/admin/cms_list">Список пунктів меню</a></li>
                     <li><a ng-href="#/admin/cms_news">Редактор новин</a></li>

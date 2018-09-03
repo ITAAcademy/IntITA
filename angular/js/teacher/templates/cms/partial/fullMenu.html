@@ -1,0 +1,15 @@
+<div class="block_about card" ng-repeat="item in listsItemMenu track by $index">
+    <div class="icon_about card-img-top">
+        <img class="image_about" ng-src='{{item.id && subDomainPath + "/lists/" + item.image || item.image}}'>
+    </div>
+    <div class="title_about card-body" ng-style="{color:settings.subtitle_color}">{{item.title}}<p
+            class="card-text"
+            ng-style="{color:settings.text_color}">{{item.description}}</p>
+    </div>
+    <div class="card-footer" data-hover="{{settings.general_hover_color}}"
+         data-link="{{settings.general_link_color}}"
+         onmouseenter="changeColorOn(this)" onmouseleave="changeColorOff(this)">
+        <a href="{{item.link}}" ng-style="{color:settings.general_link_color}">детальніше ...</a>
+    </div>
+</div>
+<div class="col-md-2 col-xs-3"></div>

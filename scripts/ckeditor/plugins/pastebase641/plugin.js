@@ -52,17 +52,24 @@
         var reader = new FileReader();
 
         reader.onload = function (evt) {
-            var element = editor.document.createElement('img', {
-                attributes: {
-                    src: evt.target.result
+            $.ajax({
+                type: "POST",
+                url: "/lesson/UploadBase64ToImage",
+                data: {'base64': evt.target.result},
+                success: function (result) {
+                    var element = editor.document.createElement('img', {
+                        attributes: {
+                            src: result
+                        }
+                    });
+
+                    // We use a timeout callback to prevent a bug where insertElement inserts at first caret
+                    // position
+                    setTimeout(function () {
+                        editor.insertElement(element);
+                    }, 10);
                 }
             });
-
-            // We use a timeout callback to prevent a bug where insertElement inserts at first caret
-            // position
-            setTimeout(function () {
-                editor.insertElement(element);
-            }, 10);
         };
 
         reader.readAsDataURL(file);
