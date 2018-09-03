@@ -13,18 +13,18 @@
                 name="vacation_type_id"
                 ng-model="formData.vacation_type_id"
                 required
-                ng-change="onVacationTypeChange(formData.vacation_type_id)"
+                ng-change="isBenefitsOrOvertime(formData.vacation_type_id.extension_form)"
                 ng-options="type as type.title_ua for type in vacationTypes track by type.id"
             >
             </select>
         </div>
-        <div class="form-group" ng-show="isBenefitsOrOvertime(formData.vacation_type_id.id)">
+        <div class="form-group" ng-show="isBenefitsOrOvertime(formData.vacation_type_id.extension_form)">
             <label for="name">Назва задачі:</label>
-            <input type="text" class="form-control" id="task_name" placeholder="Введіть назву задачі" name="task_name" ng-model="formData.task_name" ng-required="isBenefitsOrOvertime(formData.vacation_type_id.id)">
+            <input type="text" class="form-control" id="task_name" placeholder="Введіть назву задачі" name="task_name" ng-model="formData.task_name" ng-required="isBenefitsOrOvertime(formData.vacation_type_id.extension_form)">
         </div>
-        <div class="form-group" ng-show="isBenefitsOrOvertime(formData.vacation_type_id.id)">
+        <div class="form-group" ng-show="isBenefitsOrOvertime(formData.vacation_type_id.extension_form)">
             <label for="description">Опис задачі:</label>
-            <textarea maxlength="256" class="form-control" rows="5" id="description" name="description" ng-model="formData.description" placeholder="Опис задачі" ng-required="isBenefitsOrOvertime(formData.vacation_type_id.id)"></textarea>
+            <textarea maxlength="256" class="form-control" rows="5" id="description" name="description" ng-model="formData.description" placeholder="Опис задачі" ng-required="isBenefitsOrOvertime(formData.vacation_type_id.extension_form)"></textarea>
         </div>
         <div class="form-group">
             <label for="comment">Коментар:</label>

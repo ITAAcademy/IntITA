@@ -72,22 +72,17 @@ angular
                 var element = angular.element(document.querySelector( '#vacationIndex'));
                 return Number(element.data('selected-vacation')) - 1;
             };
-            $scope.isBenefitsOrOvertime = function(selectedTypeId) {
-                var benefits = 7;
-                var overtime = 6;
-                return Number(benefits) === Number(selectedTypeId) || Number(overtime) === Number(selectedTypeId);
+            $scope.isBenefitsOrOvertime = function(extentionForm) {
+                return Boolean(Number(extentionForm));
             };
             $scope.getVacationType = function() {
-                $http({
-                    method:'POST',
-                    url: basePath + '/_teacher/vacation/vacation/getVacationTypes',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                }).success(function(response){
-                    $rootScope.vacationTypes = response;
+                vacationService.list().$promise
+                .then(function successCallback(response) {
+                    $rootScope.vacationTypes = response.data;
                     $scope.formData.vacation_type_id = $rootScope.vacationTypes[getSelectedVacationId()];
-                }).error(function(){
+                }, function errorCallback() {
                     console.log("Отримати типи відпусток не вдалося");
-                })
+                });
             };
             $scope.statusSelect = vacationStatuses;
             $scope.newTypeInit = function(){
@@ -184,9 +179,6 @@ angular
                     bootbox.alert(error.data.reason);
                 });
             };
-            $scope.onVacationTypeChange = function (vacationType) {
-                $scope.isBenefitsOrOvertime(vacationType.id);
-            }
         }
     ])
     .controller('vacationTypesCtrl',
@@ -228,11 +220,14 @@ angular
                     }
                 });
             };
+            $scope.extensionFormValue = function (data) {
+                return Number(data) === 1 ? `&cuvee;` : null;
+            }
         }
     ])
     .controller('vacationTypeFormCtrl',
-        ['$scope', '$stateParams', 'vacationService', 'ngToast', '$state',
-        function ($scope, $stateParams, vacationService, ngToast, $state) {
+        ['$scope', '$stateParams', 'vacationService', 'ngToast', '$state', '$rootScope',
+        function ($scope, $stateParams, vacationService, ngToast, $state, $rootScope) {
             $scope.changePageHeader('Тип відпустки');
             $scope.newTypeInit = function(){
                 $scope.newType = {
@@ -240,12 +235,14 @@ angular
                     title_ru: '',
                     title_en: '',
                     position: '',
+                    extension_form: '',
                 };
             };
             $scope.getVacationType = function () {
                 vacationService.getVacationType({'id':$stateParams.vacation_type_id}).$promise
                 .then(function successCallback(response) {
                     response.data.position =  Number(response.data.position);
+                    response.data.extension_form = Boolean(Number(response.data.extension_form));
                     $scope.newType = response.data;
                 }, function errorCallback() {
                     bootbox.alert("Отримати дані відпустки не вдалося");
@@ -257,15 +254,28 @@ angular
                 $scope.newTypeInit();
             }
             $scope.regex = {
-                titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ\'\-\s]+$/,
-                titleRu: /^[А-ГДЕЖЗИЙ-Яа-гдежзий-я\-\s]+$/,
-                titleEn: /^[A-Za-z\'\-\s]+$/,
+                titleUa: /^[А-ЕЖ-ЩЬЮЯІЄЇҐа-еж-щьюяієїґ()\'\-\s]+$/,
+                titleRu: /^[А-ГДЕЖЗИЙ-ЯЁа-гдежзий-яё()\-\s]+$/,
+                titleEn: /^[A-Za-z()\'\-\s]+$/,
+            };
+            function preparingDataToStore(formData) {
+                formData.extension_form = formData.extension_form === true ? '1' : '0';
+                return formData;
+            }
+            function getVacationType() {
+                vacationService.list().$promise
+                .then(function successCallback(response) {
+                    $rootScope.vacationTypes = response.data;
+                }, function errorCallback() {
+                    console.log("Отримати типи відпусток не вдалося");
+                });
             };
             $scope.submitType = function () {
                 vacationService
-                    .addVacationType($scope.newType)
+                    .addVacationType(preparingDataToStore($scope.newType))
                     .$promise
                     .then(function successCallback() {
+                        getVacationType();
                         ngToast.create({
                             dismissButton: true,
                             className: 'success',

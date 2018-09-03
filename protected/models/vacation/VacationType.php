@@ -9,6 +9,7 @@
  * @property string $title_ru
  * @property string $title_en
  * @property integer $position
+ * @property boolean $extension_form
  *
  * The followings are the available model relations:
  * @property Vacation $vacation_type_id
@@ -31,11 +32,11 @@ class VacationType extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title_ua, title_ru, title_en, position', 'required'),
+			array('title_ua, title_ru, title_en, position, extension_form', 'required'),
 			array('title_ua, title_ru, title_en', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title_ua, title_ru, title_en, position', 'safe', 'on'=>'search'),
+			array('id, title_ua, title_ru, title_en, position, extension_form', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,6 +63,7 @@ class VacationType extends CActiveRecord
             'title_ru' => 'Title ru',
             'title_en' => 'Title en',
             'position' => 'Position',
+            'extension_form' => 'Extension form',
 		);
 	}
 
@@ -88,6 +90,7 @@ class VacationType extends CActiveRecord
 		$criteria->compare('title_ru',$this->title_ru,true);
 		$criteria->compare('title_en',$this->title_en,true);
 		$criteria->compare('position', $this->position, true);
+		$criteria->compare('extension_form', $this->extension_form, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
