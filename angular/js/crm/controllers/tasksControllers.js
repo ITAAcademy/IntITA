@@ -266,6 +266,7 @@ angular
                         })
                         .$promise
                         .then(function (data) {
+                            console.log(data.rows.pages);
                             $scope.crmCards = data.rows.map(function (item) {
                                 return {
                                     id: item.idTask.id,
@@ -284,6 +285,8 @@ angular
                                 }
                             });
 
+                            setScrollEventToKanban();
+
                             $scope.initCrmKanban($scope.crmCards);
 
                             $timeout(function () {
@@ -294,6 +297,18 @@ angular
                         });
                 return promise;
             };
+
+            function setScrollEventToKanban () {
+                var windowElement = $jq(window);
+                windowElement.scroll(function() {
+                    if(windowElement.scrollTop() + windowElement.height() >= $jq(document).height()){
+                        console.log('herer');
+
+                        windowElement.unbind('scroll');
+                    }
+                });
+
+            }
 
             $scope.setKanbanHeight = function () {
                 var heights = angular.element(".kanban-column").map(function () {

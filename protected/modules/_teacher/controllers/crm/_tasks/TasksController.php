@@ -202,6 +202,7 @@ class TasksController extends TeacherCabinetController
         $params = $_GET;
         $criteria = new CDbCriteria();
         $criteria->alias = 't';
+        // $criteria->limit = '20';
         $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName','idTask.observers'];
         $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
         $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, $params['id'] );
@@ -252,6 +253,10 @@ class TasksController extends TeacherCabinetController
         $criteria->addCondition("idTask.cancelled_date is NULL");
         $criteria->addInCondition('t.id_task', $ids);
         $criteria->group = 't.id_task';
+        $count=CrmRolesTasks::model()->count($criteria);
+        $pages=new CPagination(count($ids));
+        $pages->pageSize=10;
+        $pages->applyLimit($criteria);
         $adapter = new NgTableAdapter('CrmRolesTasks', $params);
         $adapter->mergeCriteriaWith($criteria);
         $rows = $adapter->getData();
@@ -277,6 +282,7 @@ class TasksController extends TeacherCabinetController
 
             $rows['rows'][$k]['spent_time'] = $interval;
         }
+        $rows['pages'] = $pages;
         echo json_encode($rows);
     }
 
