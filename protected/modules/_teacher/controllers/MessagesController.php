@@ -156,7 +156,7 @@ class MessagesController extends TeacherCabinetController
         $receiver = Yii::app()->request->getPost('receiver', '0');
         $message = new Messages();
         if($message->sendMessage($receiver,$subject,$text)){
-         $message->notify();
+         $message->notify('_newMessage',[$message->userSender]);
          echo "success";
          Yii::app()->end();
         }

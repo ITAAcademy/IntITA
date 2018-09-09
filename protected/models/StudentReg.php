@@ -1139,13 +1139,14 @@ class StudentReg extends CActiveRecord {
             $transaction = $connection->beginTransaction();
         }
         try {
-            $message = new MessagesNotifications();
-            $sender = new MailTransport();
-            $sender->renderBodyTemplate($template, $params);
-            $message->build($subject, $sender->template(), array($this), $senderModel);
-            $message->create();
-
-            $message->send($sender);
+            $message = new Messages();
+            $message->type = Messages::SYSTEM_MESSAGE;
+            $message->sender = $senderModel->id;
+            $message->receiver = $this->id;
+            $message->subject = $subject;
+            $message->message_text = $message->renderNotifyMessage($template,$params);
+            $message->save();
+            $message->notify($template,$params);
             if ($transaction != null) {
                 $transaction->commit();
             }
