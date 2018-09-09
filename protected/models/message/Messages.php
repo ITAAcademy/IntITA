@@ -21,8 +21,10 @@ class Messages extends CActiveRecord
 {
 
  use mailSender;
+
  const SYSTEM_MESSAGE = 2;
  const USER_MESSAGE = 1;
+ protected $viewPath = 'application.views.mail';
 
 	/**
 	 * @return string the associated database table name
@@ -173,8 +175,8 @@ class Messages extends CActiveRecord
 	   $this->parent_id = $parent_id;
 	   $this->sender = Yii::app()->user->getId();
     $this->message_text = $text;
+    $this->create_date = date("Y-m-d H:i:s");
 
-     $this->create_date = date("Y-m-d H:i:s");
 	   return $this->save();
   }
 
@@ -189,15 +191,21 @@ class Messages extends CActiveRecord
    return $this->save(false);
   }
 
-  public function notify(){
-	   $message = Yii::app()->controller->renderFile(Yii::app()->viewPath . DIRECTORY_SEPARATOR . 'mail'. DIRECTORY_SEPARATOR .'templates' . DIRECTORY_SEPARATOR . '_newMessage.php', array(
-        'params' => [$this->userSender],
-    ), true);
-   $this->sendmail(null,
-               null,
-                        $this->userReceiver->email,
-                        'Нове приватне повідомлення',
-                                $message);
+  public function renderNotifyMessage($template,$params){
+   $this->viewPath = ($dir = Yii::getPathOfAlias($this->viewPath)) ? $dir : Yii::app()->viewPath . DIRECTORY_SEPARATOR . 'mail';
+   return Yii::app()->controller->renderFile($this->viewPath . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $template . '.php', array(
+       'params' => $params,
+   ), true);
   }
 
+  public function notify($template, $params = [])
+   {
+     if ($this->type == self::USER_MESSAGE)
+      $this->subject = 'Нове приватне повідомлення';
+     $receiverUser = StudentReg::model()->findByPk($this->receiver);
+     $mailSender = new MailTransport();
+     $mailText = $this->renderNotifyMessage($template,$params);
+     $mailSender->send($receiverUser->email,'IntITA',$this->subject(),$mailText);
+
+   }
 }
