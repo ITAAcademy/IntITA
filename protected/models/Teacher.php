@@ -652,11 +652,15 @@ class Teacher extends CActiveRecord
     }
     
     public function notifyAssignCoworker(StudentReg $user, $organization=null){
-        $user->notify('_assignCoworker', array($organization), 'Призначено права співробітника',Yii::app()->user->getId());
+        $request = new CoworkerRequests();
+        $request->request_user = $user->id;
+        $request->notify('_assignCoworker', array($organization), true);
     }
 
     public function notifyCancelCoworker(StudentReg $user, $organization=null){
-        $user->notify('_cancelCoworker', array($organization), 'Скасовано права співробітника',Yii::app()->user->getId());
+     $request = new CoworkerRequests();
+     $request->request_user = $user->id;
+     $request->notify('_cancelCoworker', array($organization), true);
     }
 
     public function isPrint(){

@@ -5,6 +5,9 @@ class CoworkerRequests extends Request implements IRequest
     protected $template =  'coworker'. DIRECTORY_SEPARATOR . '_newCoworkerRequest';
     protected $approveTemplate = 'coworker'. DIRECTORY_SEPARATOR . '_approveCoworkerRequest';
     protected $cancelTemplate = 'coworker'. DIRECTORY_SEPARATOR . '_cancelCoworkerRequest';
+    protected $assignCoworkerTemplate = '_assignCoworker';
+    protected $cancelCoworkerTemplate = '_assignCoworker';
+
     protected $requestType =  2;
 
   public static function model($className=__CLASS__)

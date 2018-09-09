@@ -150,15 +150,15 @@ class Messages extends CActiveRecord
 
   public function isDeleted(){
 	   if ($this->receiver == Yii::app()->user->getId()){
-	    return is_null($this->receiver_delete_date);
+	    return !is_null($this->receiver_delete_date);
     }
    if ($this->sender == Yii::app()->user->getId()){
-    return is_null($this->sender_delete_date);
+    return !is_null($this->sender_delete_date);
    }
   }
 
   public function isRead(){
-    return is_null($this->read_date);
+    return !is_null($this->read_date);
   }
 
   public function read(){
@@ -172,9 +172,9 @@ class Messages extends CActiveRecord
 	   $this->subject = $subject;
 	   $this->parent_id = $parent_id;
 	   $this->sender = Yii::app()->user->getId();
-   $this->message_text = $text;
+    $this->message_text = $text;
 
-   $this->create_date = date("Y-m-d H:i:s");
+     $this->create_date = date("Y-m-d H:i:s");
 	   return $this->save();
   }
 

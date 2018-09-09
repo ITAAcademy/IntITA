@@ -279,7 +279,7 @@ class Request extends CActiveRecord
   public function notify($template, $params, $emailNotify = false)
    {
     $message = new Messages();
-    $message->sender = Yii::app()->user->id;
+    $message->sender = Yii::app()->user->getId();
     $message->subject = $this->subject();
     $message->receiver = $this->request_user;
     $message->message_text = $this->renderNotifyMessage($template,$params);
@@ -287,7 +287,7 @@ class Request extends CActiveRecord
     if ($emailNotify){
      $receiverUser = StudentReg::model()->findByPk($this->request_user);
      $mailSender = new MailTransport();
-     $mailText = $this->renderNotifyMessage($this->template,[]);
+     $mailText = $this->renderNotifyMessage($template,$params);
      $mailSender->send($receiverUser->email,'IntITA',$this->subject(),$mailText);
     }
    }

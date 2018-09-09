@@ -77,6 +77,7 @@ class TeachersController extends TeacherCabinetController{
             $teacher->save();
             $this->activeTeacher($id);
             $transaction->commit();
+
             Teacher::model()->notifyAssignCoworker($user,$organizationId);
             echo $teacher->id_user;
         } catch (Exception $e) {
