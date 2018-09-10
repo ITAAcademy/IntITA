@@ -250,11 +250,18 @@ angular
                 return promise;
             };
 
+            var paginationPage = 1;
+            $scope.crmCards = [];
             $scope.loadKanbanTasks = function (idRole) {
+                console.log('herer', paginationPage);
+                console.log('idRole', idRole);
+                console.log('rootScope_idRole', $rootScope.roleId);
                 var promise = $scope.crmCanbanTasksList =
                     crmTaskServices
                         .getTasks({
                             'sorting[idTask.priority]': 'desc',
+                            'page': paginationPage,
+                            'count': 20,
                             id: idRole,
                             'filter[idTask.name]': $scope.filter.name,
                             'filter[idUser.fullName]': $scope.filter.fullName,
@@ -266,9 +273,8 @@ angular
                         })
                         .$promise
                         .then(function (data) {
-                            console.log(data.rows.pages);
-                            $scope.crmCards = data.rows.map(function (item) {
-                                return {
+                            data.rows.map(function (item) {
+                                $scope.crmCards.push({
                                     id: item.idTask.id,
                                     title: item.idTask.name,
                                     observers: item.observers,
@@ -282,11 +288,11 @@ angular
                                     deadline: item.idTask.deadline,
                                     priorityTitle: item.idTask.priorityModel.title,
                                     priority: item.idTask.priorityModel.description
-                                }
+                                });
                             });
-
                             setScrollEventToKanban();
-
+                            // $scope.crmCards = groupTasks($scope.crmCards, 'id');
+                            // console.log($scope.crmCards);
                             $scope.initCrmKanban($scope.crmCards);
 
                             $timeout(function () {
@@ -298,12 +304,22 @@ angular
                 return promise;
             };
 
+            function groupTasks (items, propertyName) {
+                var obj = {};
+                for ( var i = 0, len = items.length; i < len; i++ ){
+                    if(!obj[items[i][propertyName]]) obj[items[i][propertyName]] = items[i];
+                }
+                var newArr = [];
+                for ( var key in obj ) newArr.push(obj[key]);
+                return newArr;
+            };
+
             function setScrollEventToKanban () {
                 var windowElement = $jq(window);
                 windowElement.scroll(function() {
                     if(windowElement.scrollTop() + windowElement.height() >= $jq(document).height()){
-                        console.log('herer');
-
+                        $scope.loadKanbanTasks($rootScope.roleId);
+                        paginationPage++;
                         windowElement.unbind('scroll');
                     }
                 });
