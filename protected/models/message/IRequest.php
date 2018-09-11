@@ -12,4 +12,5 @@
    public function cancel();
    public function subject();
    public function title();
+   public function newRequest($requestedModel);
   }

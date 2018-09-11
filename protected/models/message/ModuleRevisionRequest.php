@@ -79,5 +79,15 @@ class ModuleRevisionRequest extends Request implements IRequest
         return "Запит на призначення викладача-консультанта для модуля";
     }
 
+  public function newRequest($requestedModel)
+   {
+    $this->request_model_id = $requestedModel;
+    $this->action = Request::STATUS_NEW;
+    if ($this->save()){
+     $this->notify($this->template,[$this->requestUser,$this->idRevision],true);
+    }
+    return false;
+   }
+
 }
 

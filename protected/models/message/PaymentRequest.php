@@ -114,4 +114,13 @@ class PaymentRequest extends Request implements IRequest
    {
     // TODO: Implement title() method.
    }
+   public function newRequest($requestedModel)
+    {
+     $this->request_model_id = $requestedModel;
+     $this->action = Request::STATUS_NEW;
+     if ($this->save()){
+      $this->notify($this->template,[$this->requestUser,$this->idRevision],true);
+     }
+     return false;
+    }
  }

@@ -15,7 +15,7 @@ class LectureRevisionRequest extends Request implements IRequest
     $table = parent::getTableSchema();
 
     $table->columns['request_model_id']->isForeignKey = true;
-    $table->foreignKeys['request_model_id'] = array('RevisionLecture', 'module_ID');
+    $table->foreignKeys['request_model_id'] = array('RevisionLecture', 'id_revision');
     $table->columns['action_user']->isForeignKey = true;
     $table->foreignKeys['action_user'] = array('StudentReg', 'id');
     $table->columns['request_user']->isForeignKey = true;
@@ -80,4 +80,13 @@ class LectureRevisionRequest extends Request implements IRequest
    return $this->idRevision->module;
   }
 
+  public function newRequest($requestedModel)
+   {
+    $this->request_model_id = $requestedModel;
+    $this->action = Request::STATUS_NEW;
+    if ($this->save()){
+     $this->notify($this->template,[$this->requestUser,$this->idRevision],true);
+    }
+     return false;
+   }
  }

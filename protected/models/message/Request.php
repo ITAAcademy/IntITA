@@ -181,7 +181,7 @@ class Request extends CActiveRecord
 
   public function read(){
     date_default_timezone_set(Config::getServerTimezone());
-	   $this->checked_date = date("Y-m-d H:i:s");;
+	   $this->checked_date = date("Y-m-d H:i:s");
 	   $this->save();
   }
 
@@ -311,8 +311,9 @@ class Request extends CActiveRecord
      $this->request_user = Yii::app()->user->id;
      $this->type = $this->requestType;
      $this->organization = Yii::app()->user->model->getCurrentOrganizationId();
-     $this->notify($this->template,array($this->module, $this->request_user));
     }
+    date_default_timezone_set(Config::getServerTimezone());
+    $this->action_date = date("Y-m-d H:i:s");
     return parent::save($runValidation, $attributes);
    }
 
@@ -325,13 +326,32 @@ class Request extends CActiveRecord
    if ($condition instanceof CDbCriteria){
     $condition->addCondition('type = '.$this->requestType);
    }
+   elseif (is_array($condition)){
+    $condition['type'] = $this->requestType;
+   }
    elseif($condition == ''){
     $condition = 'type = '.$this->requestType;
    }
    else{
     $condition = 'type = '.$this->requestType.' AND '.$condition;
    }
-   return parent::findAll($condition,$params=array());
+   return parent::findAll($condition,$params);
+  }
+
+  public function find($condition='',$params=array()){
+   if ($condition instanceof CDbCriteria){
+    $condition->addCondition('type = '.$this->requestType);
+   }
+   elseif (is_array($condition)){
+    $condition['type'] = $this->requestType;
+   }
+   elseif($condition == ''){
+    $condition = 'type = '.$this->requestType;
+   }
+   else{
+    $condition = 'type = '.$this->requestType.' AND '.$condition;
+   }
+   return parent::find($condition,$params);
   }
 
   public static function model($className=__CLASS__)
