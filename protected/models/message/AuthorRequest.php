@@ -84,4 +84,13 @@ class AuthorRequest extends Request implements IRequest
         return "Запит на редагування модуля";
     }
 
+  public function newRequest($requestedModel)
+   {
+    $this->request_model_id = $requestedModel;
+    $this->action = Request::STATUS_NEW;
+    if ($this->save()){
+     $this->notify($this->template,[$this->requestUser,$this->idModule],true);
+    }
+    return false;
+   }
  }

@@ -1279,28 +1279,29 @@ class RevisionController extends Controller {
     }
 
     private function sendRevisionRequest(RevisionLecture $revision){
-        if($revision){
-            $message = new LectureRevisionRequest();
-            if($message->isRequestOpen(array($revision))) {
-                echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії лекції двічі.";
-            } else {
-                $transaction = Yii::app()->db->beginTransaction();
-                try {
-                    $message->build($revision, Yii::app()->user->model->registrationData);
-                    $message->create();
-                    $sender = new MailTransport();
+        if($revision)
+         {
+          $request = LectureRevisionRequest::model()->find('request_model_id = :revision' ,['revision'=> $revision->id_revision]);
+          if ($request)
+           {
+            if ($request->isRequestOpen())
+             echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії лекції двічі.";
+            Yii::app()->end();
+           } else
+           {
+            $request = new LectureRevisionRequest();
+            if ($request->newRequest($revision->id_revision))
+             {
+              echo "Запит на затвердження ревізії лекції успішно відправлено. Зачекайте, поки контент менеджер підтвердить запит.";
+              Yii::app()->end();
+             } else
+             {
+              throw new \application\components\Exceptions\IntItaException(500, "Запит на затвердження ревізії лекції не вдалося надіслати.");
+             }
+           }
+         }
 
-                    $message->send($sender);
-                    $transaction->commit();
-                    echo "Запит на затвердження ревізії лекції успішно відправлено. Зачекайте, поки контент менеджер підтвердить запит.";
-                } catch (Exception $e) {
-                    $transaction->rollback();
-                    throw new \application\components\Exceptions\IntItaException(500, "Запит на затвердження ревізії лекції не вдалося надіслати.");
-                }
-            }
-        } else {
-            throw new \application\components\Exceptions\IntItaException(400);
-        }
+       throw new \application\components\Exceptions\IntItaException(400, "Некоректний запит!");
     }
 
     public function actionRevisionsAuthors() {

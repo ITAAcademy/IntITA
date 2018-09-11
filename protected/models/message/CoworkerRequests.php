@@ -63,4 +63,14 @@ class CoworkerRequests extends Request implements IRequest
             return "Операцію не вдалося виконати.";
         }
     }
+
+  public function newRequest($requestedModel)
+   {
+    $this->request_model_id = $requestedModel;
+    $this->action = Request::STATUS_NEW;
+    if ($this->save()){
+     $this->notify($this->template,[$this->idTeacher,$this->userApproved],true);
+    }
+    return false;
+   }
 }

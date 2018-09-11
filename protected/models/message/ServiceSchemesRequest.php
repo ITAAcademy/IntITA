@@ -67,4 +67,14 @@ class ServiceSchemesRequest extends Request implements IRequest
         }
     }
 
+  public function newRequest($requestedModel)
+   {
+    $this->request_model_id = $requestedModel;
+    $this->action = Request::STATUS_NEW;
+    if ($this->save()){
+     $this->notify($this->template,[$this->service,$this->user,$this->schemesTemplate],true);
+    }
+    return false;
+   }
+
 }

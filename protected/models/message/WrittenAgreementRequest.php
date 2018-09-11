@@ -20,6 +20,8 @@ class WrittenAgreementRequest extends Request implements IRequest
             'agreement' => array(self::BELONGS_TO, 'UserAgreements', ['request_model_id'=>'id']),
             'coworkerChecked' => array(self::BELONGS_TO, 'StudentReg', ['action_user'=>'id']),
             'service' => [self::BELONGS_TO, 'Service', ['service_id' => 'service_id'], 'through' => 'agreement'],
+            'requestUser' => array(self::BELONGS_TO, 'StudentReg', 'request_user'),
+
         );
     }
 
@@ -76,5 +78,15 @@ class WrittenAgreementRequest extends Request implements IRequest
             return "Операцію не вдалося виконати.";
         }
     }
+
+  public function newRequest($requestedModel)
+   {
+    $this->request_model_id = $requestedModel;
+    $this->action = Request::STATUS_NEW;
+    if ($this->save()){
+     $this->notify($this->template,[$this->agreement,$this->requestUser],true);
+    }
+    return false;
+   }
 
 }
