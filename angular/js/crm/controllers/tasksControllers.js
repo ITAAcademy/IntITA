@@ -207,7 +207,14 @@ angular
                 }
             };
 
+            function removeEmptyProperty (filterObject) {
+                for(var item in filterObject) {
+                    if (!filterObject[item].length) {delete filterObject[item]}
+                }
+            }
+
             $scope.applyTasksFilter = function (keyEvent) {
+                removeEmptyProperty($scope.filter);
                 if (!keyEvent || keyEvent.which === 13) {
                     $rootScope.loadTasks(
                         $rootScope.roleId,
@@ -251,11 +258,9 @@ angular
             };
 
             var paginationPage = 1;
-            $scope.crmCards = [];
+
+            // $scope.crmCards = [];
             $scope.loadKanbanTasks = function (idRole) {
-                console.log('herer', paginationPage);
-                console.log('idRole', idRole);
-                console.log('rootScope_idRole', $rootScope.roleId);
                 var promise = $scope.crmCanbanTasksList =
                     crmTaskServices
                         .getTasks({
@@ -273,26 +278,39 @@ angular
                         })
                         .$promise
                         .then(function (data) {
-                            data.rows.map(function (item) {
-                                $scope.crmCards.push({
-                                    id: item.idTask.id,
-                                    title: item.idTask.name,
-                                    observers: item.observers,
-                                    producer: item.idTask.producerName.id,
-                                    executant: item.idTask.executantName.id,
-                                    description: $filter('limitTo')(item.idTask.body, 70),
+                            $scope.crmCards = data.rows.map(function (item) {
+                                return {
+                                    id: item.id_task,
+                                    title: item.title,
+                                         // observers: item.observers,
+                                    producer: 'item.idTask.producerName.id',
+                                    executant: 'item.idTask.executantName.id',
+                                    description: $filter('limitTo')(item.task_description, 70),
                                     status: "concept",
                                     type: "task",
-                                    stage_id: item.idTask.id_state,
-                                    endTask: item.idTask.endTask,
-                                    deadline: item.idTask.deadline,
-                                    priorityTitle: item.idTask.priorityModel.title,
-                                    priority: item.idTask.priorityModel.description
-                                });
+                                    stage_id: item.idState,
+                                    endTask: item.endTask,
+                                    deadline: item.deadline,
+                                    priorityTitle: item.priorityTitle,
+                                    priority: item.priorityDescription
+                                    // id: item.idTask.id,
+                                    // title: item.idTask.name,
+                                    // observers: item.observers,
+                                    // producer: item.idTask.producerName.id,
+                                    // executant: item.idTask.executantName.id,
+                                    // description: $filter('limitTo')(item.idTask.body, 70),
+                                    // status: "concept",
+                                    // type: "task",
+                                    // stage_id: item.idTask.id_state,
+                                    // endTask: item.idTask.endTask,
+                                    // deadline: item.idTask.deadline,
+                                    // priorityTitle: item.idTask.priorityModel.title,
+                                    // priority: item.idTask.priorityModel.description
+                                };
                             });
-                            setScrollEventToKanban();
+                            // setScrollEventToKanban();
                             // $scope.crmCards = groupTasks($scope.crmCards, 'id');
-                            // console.log($scope.crmCards);
+                            console.log($scope.crmCards);
                             $scope.initCrmKanban($scope.crmCards);
 
                             $timeout(function () {

@@ -181,7 +181,6 @@ class TasksController extends TeacherCabinetController
         $transaction = Yii::app()->db->beginTransaction();
         try {
             $params = json_decode($_POST['crmTask'], true);
-
             $task = CrmTasks::model()->findByPk($params['id']);
             $task->body = $params['body'];
             $task->change_date = new CDbExpression('NOW()');
@@ -200,83 +199,135 @@ class TasksController extends TeacherCabinetController
     public function actionGetTasks()
     {
         $params = $_GET;
-        $criteria = new CDbCriteria();
-        $criteria->alias = 't';
-        $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName','idTask.observers'];
-        $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
-        $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, $params['id'] );
-        if (isset($params['filter']['idTask.producerName.fullName'])) {
-            $criteria->addSearchCondition('producerName.firstName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
-            $criteria->addSearchCondition('producerName.secondName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
-            $criteria->addSearchCondition('producerName.middleName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
-            $criteria->addSearchCondition('producerName.email', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
-            unset($params['filter']['idTask.producerName.fullName']);
-        }
-        if (isset($params['filter']['idTask.executantName.fullName'])) {
-            $criteria->addSearchCondition('executantName.firstName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
-            $criteria->addSearchCondition('executantName.secondName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
-            $criteria->addSearchCondition('executantName.middleName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
-            $criteria->addSearchCondition('executantName.email', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
-            unset($params['filter']['idTask.executantName.fullName']);
-        }
-        if (isset($params['filter']['idTask.parentType'])) {
-            if($params['filter']['idTask.parentType']==CrmTasks::SUBTASK){
-                $criteria->addCondition("idTask.id_parent is not NULL");
-            }else if($params['filter']['idTask.parentType']==CrmTasks::MAIN_TASK){
-                $mainIds = CrmHelper::getMainTasksIds();
-                $criteria->addInCondition('t.id_task', $mainIds);
-            }
+        $crmHelper = new CrmHelper();
+        $userId = Yii::app()->user->getId();
+
+        if (isset($params['filter']['idUser.fullName'])) {
+            $whereCondition = $crmHelper->getTasksByUserName($params, $userId)['whereCondition'];
+            $whereConditionParams = $crmHelper->getTasksByUserName($params, $userId)['whereConditionParams'];
+            unset($params['filter']['idUser.fullName']);
+        } else if (isset($params['filter']['idTask.name'])) {
+            $whereCondition = $crmHelper->getTasksByName($params, $userId)['whereCondition'];
+            $whereConditionParams = $crmHelper->getTasksByName($params, $userId)['whereConditionParams'];
+            unset($params['filter']['idTask.name']);
+        } else if (isset($params['filter']['idTask.id'])) {
+            $whereCondition = $crmHelper->getTasksById($params, $userId)['whereCondition'];
+            $whereConditionParams = $crmHelper->getTasksById($params, $userId)['whereConditionParams'];
+            unset($params['filter']['idTask.id']);
+        } else if (isset($params['filter']['idTask.priority'])) {
+            $whereCondition = $crmHelper->getTasksByPriority($params, $userId)['whereCondition'];
+            $whereConditionParams = $crmHelper->getTasksByPriority($params, $userId)['whereConditionParams'];
+            unset($params['filter']['idTask.priority']);
+        } else if (isset($params['filter']['idTask.type'])) {
+            $whereCondition = $crmHelper->getTasksByType($params, $userId)['whereCondition'];
+            $whereConditionParams = $crmHelper->getTasksByType($params, $userId)['whereConditionParams'];
+            unset($params['filter']['idTask.type']);
+        } else if (isset($params['filter']['idTask.parentType'])) {
+            $whereCondition = $crmHelper->getTasksByParentType($params, $userId)['whereCondition'];
+            $whereConditionParams = $crmHelper->getTasksByParentType($params, $userId)['whereConditionParams'];
             unset($params['filter']['idTask.parentType']);
-        }
-        if (isset($params['filter']['idTask.groupsNames']) && $params['filter']['idTask.groupsNames']) {
-            $mainIds = CrmHelper::getSubgroupTaskIds($params['filter']['idTask.groupsNames']);
-            $criteria->addInCondition('t.id_task', $mainIds);
+        } else if (isset($params['filter']['idTask.groupsNames'])) {
+            $whereCondition = $crmHelper->getTasksByGroupName($params, $userId)['whereCondition'];
+            $whereConditionParams = $crmHelper->getTasksByGroupName($params, $userId)['whereConditionParams'];
             unset($params['filter']['idTask.groupsNames']);
+        } else {
+            $whereCondition = $crmHelper->getTasksSimpleCondition($params, $userId)['whereCondition'];
+            $whereConditionParams = $crmHelper->getTasksSimpleCondition($params, $userId)['whereConditionParams'];
         }
-        if (isset($params['filter']['crmStates.id'])) {
-            $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
-            $criteria->join .= ' LEFT JOIN crm_task_status cts ON ct.id_state=cts.id';
-            $criteria->addCondition("cts.id=" . $params['filter']['crmStates.id']);
-            unset($params['filter']['crmStates.id']);
-        }
-        if (isset($params['filter']['crmPriority.id'])) {
-            $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
-            $criteria->addCondition("ct.priority=" . $params['filter']['crmPriority.id']);
-            unset($params['filter']['crmPriority.id']);
-        }
-        if (isset($params['filter']['crmType.id'])) {
-            $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
-            $criteria->addCondition("ct.type=" . $params['filter']['crmType.id']);
-            unset($params['filter']['crmType.id']);
-        }
-        $criteria->addCondition("idTask.cancelled_date is NULL");
-        $criteria->addInCondition('t.id_task', $ids);
-        $criteria->group = 't.id_task';
-        $adapter = new NgTableAdapter('CrmRolesTasks', $params);
-        $adapter->mergeCriteriaWith($criteria);
-        $rows = $adapter->getData();
 
-        $date_now = new DateTime('now', new DateTimeZone(Config::getServerTimezone()));
-        foreach ($rows['rows'] as $k => $row) {
-//            todo
-            $rows['rows'][$k]['observers'] =  ActiveRecordToJSON::toAssocArrayWithRelations(CrmTasks::model()->findByPk($row['id_task'])->observers);
-            $models = CrmTaskStateHistory::model()->findAllByAttributes(array('id_task' => $row['id_task']), array('order' => 'change_date asc'));
-            $lastIndex = count($models) - 1;
-            $interval = 0;
-            foreach ($models as $key => $model) {
-                if ($model->id_state == CrmTaskStatus::EXECUTED && isset($models[$key + 1])) {
-                    $start_time = strtotime($model->change_date);
-                    $end_time = strtotime($models[$key + 1]->change_date);
-                    $interval = $interval + ($end_time - $start_time);
-                } else if ($model->id_state == CrmTaskStatus::EXECUTED && !isset($models[$key + 1])) {
-                    $start_time = strtotime($model->change_date);
-                    $interval = $interval + ($date_now->getTimestamp() + $date_now->getOffset() - $start_time);
-                }
-            }
+        $crmQuery = Yii::app()->db->createCommand()
+        ->select('ct.id as id_task, ct.name as title, ct.body as task_description, ct.id_state as idState, ct.endTask as endTask, ct.deadline as deadline, ctp.title as priorityTitle, ctp.description as priorityDescription')
+        ->from('crm_roles_tasks as crt')
+        ->join('crm_tasks ct', 'ct.id = crt.id_task')
+        ->join('crm_task_type ctt', 'ctt.id = ct.type')
+        // ->join('user', 'user.id = crt.id_user')
+        ->join('crm_task_priority as ctp', 'ctp.id = ct.priority')
+        // ->join('crm_roles cr', 'cr.id = crt.role')
 
-            $rows['rows'][$k]['spent_time'] = $interval;
-        }
         
+        ->where($whereCondition, $whereConditionParams)
+        ->group('crt.id_task')
+        ->order('priority desc')
+        ->queryAll();
+
+        // $criteria = new CDbCriteria();
+        // $criteria->alias = 't';
+        // $criteria->with = ['idTask.taskState', 'idTask.priorityModel', 'idTask.taskType', 'idUser','idTask.executantName','idTask.producerName','idTask.observers'];
+        // $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
+        // $ids = CrmHelper::getUsersCrmTasks(Yii::app()->user->getId(), true, $params['id'] );
+        // if (isset($params['filter']['idTask.producerName.fullName'])) {
+        //     $criteria->addSearchCondition('producerName.firstName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
+        //     $criteria->addSearchCondition('producerName.secondName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
+        //     $criteria->addSearchCondition('producerName.middleName', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
+        //     $criteria->addSearchCondition('producerName.email', $params['filter']['idTask.producerName.fullName'], true, "OR", "LIKE");
+        //     unset($params['filter']['idTask.producerName.fullName']);
+        // }
+        // if (isset($params['filter']['idTask.executantName.fullName'])) {
+        //     $criteria->addSearchCondition('executantName.firstName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
+        //     $criteria->addSearchCondition('executantName.secondName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
+        //     $criteria->addSearchCondition('executantName.middleName', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
+        //     $criteria->addSearchCondition('executantName.email', $params['filter']['idTask.executantName.fullName'], true, "OR", "LIKE");
+        //     unset($params['filter']['idTask.executantName.fullName']);
+        // }
+        // if (isset($params['filter']['idTask.parentType'])) {
+        //     if($params['filter']['idTask.parentType']==CrmTasks::SUBTASK){
+        //         $criteria->addCondition("idTask.id_parent is not NULL");
+        //     }else if($params['filter']['idTask.parentType']==CrmTasks::MAIN_TASK){
+        //         $mainIds = CrmHelper::getMainTasksIds();
+        //         $criteria->addInCondition('t.id_task', $mainIds);
+        //     }
+        //     unset($params['filter']['idTask.parentType']);
+        // }
+        // if (isset($params['filter']['idTask.groupsNames']) && $params['filter']['idTask.groupsNames']) {
+        //     $mainIds = CrmHelper::getSubgroupTaskIds($params['filter']['idTask.groupsNames']);
+        //     $criteria->addInCondition('t.id_task', $mainIds);
+        //     unset($params['filter']['idTask.groupsNames']);
+        // }
+        // if (isset($params['filter']['crmStates.id'])) {
+        //     $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
+        //     $criteria->join .= ' LEFT JOIN crm_task_status cts ON ct.id_state=cts.id';
+        //     $criteria->addCondition("cts.id=" . $params['filter']['crmStates.id']);
+        //     unset($params['filter']['crmStates.id']);
+        // }
+        // if (isset($params['filter']['crmPriority.id'])) {
+        //     $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
+        //     $criteria->addCondition("ct.priority=" . $params['filter']['crmPriority.id']);
+        //     unset($params['filter']['crmPriority.id']);
+        // }
+        // if (isset($params['filter']['crmType.id'])) {
+        //     $criteria->join = 'LEFT JOIN crm_tasks ct ON ct.id = t.id_task';
+        //     $criteria->addCondition("ct.type=" . $params['filter']['crmType.id']);
+        //     unset($params['filter']['crmType.id']);
+        // }
+        // $criteria->addCondition("idTask.cancelled_date is NULL");
+        // $criteria->addInCondition('t.id_task', $ids);
+        // $criteria->group = 't.id_task';
+        // $adapter = new NgTableAdapter('CrmRolesTasks', $params);
+        // $adapter->mergeCriteriaWith($criteria);
+        // $rows = $adapter->getData();
+
+        $rows['rows'] = $crmQuery;
+
+        // $date_now = new DateTime('now', new DateTimeZone(Config::getServerTimezone()));
+        // foreach ($rows['rows'] as $k => $row) {
+        //    // todo
+        //     $rows['rows'][$k]['observers'] =  ActiveRecordToJSON::toAssocArrayWithRelations(CrmTasks::model()->findByPk($row['id_task'])->observers);
+        //     $models = CrmTaskStateHistory::model()->findAllByAttributes(array('id_task' => $row['id_task']), array('order' => 'change_date asc'));
+        //     $lastIndex = count($models) - 1;
+        //     $interval = 0;
+        //     foreach ($models as $key => $model) {
+        //         if ($model->id_state == CrmTaskStatus::EXECUTED && isset($models[$key + 1])) {
+        //             $start_time = strtotime($model->change_date);
+        //             $end_time = strtotime($models[$key + 1]->change_date);
+        //             $interval = $interval + ($end_time - $start_time);
+        //         } else if ($model->id_state == CrmTaskStatus::EXECUTED && !isset($models[$key + 1])) {
+        //             $start_time = strtotime($model->change_date);
+        //             $interval = $interval + ($date_now->getTimestamp() + $date_now->getOffset() - $start_time);
+        //         }
+        //     }
+
+        //     $rows['rows'][$k]['spent_time'] = $interval;
+        // }
         echo json_encode($rows);
     }
 

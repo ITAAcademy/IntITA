@@ -79,4 +79,112 @@ class CrmHelper
         return $ids;
     }
 
+    public function getTasksSimpleCondition($params, $userId)
+    {
+        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null';
+        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null';
+        $allUserTasksCondidtionParams = [':id_user' => $userId];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id']];
+        $isAllTasks = intval($params['id']) === 0;
+        return [
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
+            'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
+        ];
+    }
+
+    public function getTasksByUserName($params, $userId)
+    {
+        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and firstName LIKE :userName';
+        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and firstName LIKE :userName';
+        $allUserTasksCondidtionParams = [':id_user' => $userId, ':userName' => $params['filter']['idUser.fullName']];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':userName' => $params['filter']['idUser.fullName']];
+        $isAllTasks = intval($params['id']) === 0;
+        return [
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
+            'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
+        ];      
+    }
+
+    public function getTasksByName($params, $userId)
+    {
+        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ct.name LIKE :taskName';
+        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ct.name LIKE :taskName';
+        $allUserTasksCondidtionParams = [':id_user' => $userId, ':taskName' => '%'.$params['filter']['idTask.name'].'%'];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':taskName' => '%'.$params['filter']['idTask.name'].'%'];
+        $isAllTasks = intval($params['id']) === 0;
+        return [
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
+            'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
+        ];   
+    }
+
+    public function getTasksById($params, $userId)
+    {
+        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ct.id = :taskId';
+        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ct.id = :taskId';
+        $allUserTasksCondidtionParams = [':id_user' => $userId, ':taskId' => $params['filter']['idTask.id']];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':taskId' => $params['filter']['idTask.id']];
+        $isAllTasks = intval($params['id']) === 0;
+        return [
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
+            'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
+        ];   
+    }
+
+    public function getTasksByPriority($params, $userId)
+    {
+        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ctp.id = :priorityId';
+        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ctp.id = :priorityId';
+        $allUserTasksCondidtionParams = [':id_user' => $userId, ':priorityId' => $params['filter']['idTask.priority']];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':priorityId' => $params['filter']['idTask.priority']];
+        $isAllTasks = intval($params['id']) === 0;
+        return [
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
+            'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
+        ];   
+    }
+
+    public function getTasksByType($params, $userId)
+    {
+        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ctt.id = :typeId';
+        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ctt.id = :typeId';
+        $allUserTasksCondidtionParams = [':id_user' => $userId, ':typeId' => $params['filter']['idTask.type']];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':typeId' => $params['filter']['idTask.type']];
+        $isAllTasks = intval($params['id']) === 0;
+        return [
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
+            'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
+        ];
+    }
+
+    public function getTasksByParentType($params, $userId)
+    {
+        $parentType = intval($params['filter']['idTask.parentType']) === 1 ? ' and ct.id_parent is null' : ' and ct.id_parent is not null';
+        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null'.$parentType;
+        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null'.$parentType;
+        $allUserTasksCondidtionParams = [':id_user' => $userId];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id']];
+        $isAllTasks = intval($params['id']) === 0;
+        return [
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
+            'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
+        ];   
+    }
+
+    public function getTasksByGroupName($params, $userId)
+    {
+        $subQuery = 'SELECT id_task FROM intita.crm_subgroup_roles_tasks as csrt
+                    join intita.offline_subgroups as os on os.id = csrt.id_subgroup
+                    join intita.offline_groups as og on og.id = os.group 
+                    where og.id = '.$params['filter']['idTask.groupsNames'];
+        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ct.id = :taskId';
+        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ct.id = :taskId';
+        $allUserTasksCondidtionParams = [':id_user' => $userId, ':taskId' => $subQuery];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':taskId' => $subQuery];
+        $isAllTasks = intval($params['id']) === 0;
+        return [
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
+            'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
+        ];
+    }
 }
