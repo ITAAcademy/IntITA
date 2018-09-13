@@ -314,7 +314,7 @@ class PaymentSchemaController extends TeacherCabinetController
         $criteria->join .= ' left join acc_course_service cs on cs.service_id=s.service_id';
         $criteria->join .= ' left join course c on c.course_ID=cs.course_id';
         if(isset($requestParams['filter']['status']) && $requestParams['filter']['status']=='4'){
-            $criteria->condition = 't.status='.ServiceSchemesRequest::NEW_REQUEST.' or t.status='.ServiceSchemesRequest::IN_PROCESS;
+            $criteria->condition = 't.status='.ServiceSchemesRequest::STATUS_NEW;
             unset($requestParams['filter']);
         }
         $criteria->addCondition('c.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
@@ -706,12 +706,13 @@ class PaymentSchemaController extends TeacherCabinetController
 
     public function actionGetActualSchemesRequestsCount()
     {
+        var_dump(ServiceSchemesRequest::model()->with('service')->findAll());die;
         $modulesRequestsCount=count(ServiceSchemesRequest::model()->with('service.moduleServices.moduleModel')->findAll(
             'moduleModel.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
-            and t.status='.ServiceSchemesRequest::NEW_REQUEST));
+            and t.status='.ServiceSchemesRequest::STATUS_NEW));
         $coursesRequestsCount=count(ServiceSchemesRequest::model()->with('service.courseServices.courseModel')->findAll(
             'courseModel.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
-            and t.status='.ServiceSchemesRequest::NEW_REQUEST));
+            and t.status='.ServiceSchemesRequest::STATUS_NEW));
 
          echo $modulesRequestsCount+$coursesRequestsCount;
     }
