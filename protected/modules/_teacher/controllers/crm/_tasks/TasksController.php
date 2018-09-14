@@ -240,10 +240,7 @@ class TasksController extends TeacherCabinetController
         ->from('crm_roles_tasks as crt')
         ->join('crm_tasks ct', 'ct.id = crt.id_task')
         ->join('crm_task_type ctt', 'ctt.id = ct.type')
-        // ->join('user', 'user.id = crt.id_user')
         ->join('crm_task_priority as ctp', 'ctp.id = ct.priority')
-        // ->join('crm_roles cr', 'cr.id = crt.role')
-
         
         ->where($whereCondition, $whereConditionParams)
         ->group('crt.id_task')
