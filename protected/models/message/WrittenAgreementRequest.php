@@ -63,7 +63,7 @@ class WrittenAgreementRequest extends Request implements IRequest
 
     public function isApprovable()
     {
-        return $this->status == self::NEW_REQUEST;
+        return $this->status == self::STATUS_NEW;
     }
 
     public function cancel()

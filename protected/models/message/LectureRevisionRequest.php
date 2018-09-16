@@ -86,6 +86,7 @@ class LectureRevisionRequest extends Request implements IRequest
     $this->action = Request::STATUS_NEW;
     if ($this->save()){
      $this->notify($this->template,[$this->requestUser,$this->idRevision],true);
+     return true;
     }
      return false;
    }

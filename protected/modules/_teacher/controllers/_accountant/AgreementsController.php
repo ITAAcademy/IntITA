@@ -148,7 +148,7 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionGetActualWrittenAgreementRequestsCount()
     {
-        echo count(MWrittenAgreementRequest::model()->with('agreement','agreement.organization')->findAll(
+        echo count(WrittenAgreementRequest::model()->with('agreement','agreement.organization')->findAll(
             'id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' and t.action = 0 '));
     }
 

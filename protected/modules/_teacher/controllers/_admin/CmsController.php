@@ -58,7 +58,6 @@ class CmsController extends TeacherCabinetController
 
     public function actionGetMenuList()
     {
-        $subdomain = array_shift((explode('.', $_SERVER['HTTP_HOST'])));
         echo CJSON::encode(CmsMenuList::model()->findAllByAttributes(array('id_organization' => Yii::app()->user->model->getCurrentOrganizationId())));
     }
 
