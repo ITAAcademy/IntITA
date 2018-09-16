@@ -10,6 +10,18 @@ class CoworkerRequests extends Request implements IRequest
 
     protected $requestType =  2;
 
+  public function getTableSchema()
+   {
+    $table = parent::getTableSchema();
+
+    $table->columns['request_model_id']->isForeignKey = true;
+    $table->foreignKeys['request_model_id'] = array('StudentReg', 'id_teacher');
+    $table->columns['request_user']->isForeignKey = true;
+    $table->foreignKeys['request_user'] = array('StudentReg', 'id');
+    $table->columns['action_user']->isForeignKey = true;
+    $table->foreignKeys['action_user'] = array('StudentReg', 'id');
+    return $table;
+   }
   public static function model($className=__CLASS__)
    {
     return parent::model($className);

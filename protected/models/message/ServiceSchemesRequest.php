@@ -8,6 +8,21 @@ class ServiceSchemesRequest extends Request implements IRequest
     protected $requestType = 8;
     private $schema_template;
 
+  public function getTableSchema()
+   {
+    $table = parent::getTableSchema();
+
+    $table->columns['request_model_id']->isForeignKey = true;
+    $table->foreignKeys['request_model_id'] = array('Service', 'service_id');
+    $table->columns['action_user']->isForeignKey = true;
+    $table->foreignKeys['action_user'] = array('StudentReg', 'id');
+    $table->columns['request_user']->isForeignKey = true;
+    $table->foreignKeys['request_user'] = array('StudentReg', 'id');
+    $table->columns['comment']->isForeignKey = true;
+    $table->foreignKeys['comment'] = array('PaymentSchemeTemplate', 'id');
+
+    return $table;
+   }
   public static function model($className=__CLASS__)
    {
     return parent::model($className);
@@ -21,10 +36,10 @@ class ServiceSchemesRequest extends Request implements IRequest
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'service' => array(self::BELONGS_TO, 'Service', ['requested_model_id' => 'id']),
+            'service' => array(self::BELONGS_TO, 'Service', ['request_model_id' => 'service_id']),
             'coworkerChecked' => array(self::BELONGS_TO, 'StudentReg', ['action_user'=>'id']),
-            'user' => array(self::BELONGS_TO, 'StudentReg', ['requested_user'=>'id']),
-            'schemesTemplate' => array(self::BELONGS_TO, 'PaymentSchemeTemplate', ['id_schema_template'=>'id']),
+            'user' => array(self::BELONGS_TO, 'StudentReg', ['request_user'=>'id']),
+            'schemesTemplate' => array(self::BELONGS_TO, 'PaymentSchemeTemplate', ['comment'=>'id']),
         );
     }
 
