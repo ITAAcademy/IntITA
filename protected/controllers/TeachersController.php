@@ -136,6 +136,8 @@ class TeachersController extends Controller
         ->union($teachersWithModulesByAuthor)
         ->queryAll();
         
+        $userHelper = new UserHelper();
+        $teachers = $userHelper->prepareTeachersWithModules($teachers);
         echo CJSON::encode($teachers);
     }
 }
