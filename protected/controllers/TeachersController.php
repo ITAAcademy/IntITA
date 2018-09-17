@@ -113,29 +113,8 @@ class TeachersController extends Controller
 
     public function actionApiGetAllTeacherData()
     {
-        $teachersWithModulesByAuthor = Yii::app()->db->createCommand()
-        ->select('u.id, u.firstName, u.middleName, u.secondName, u.email, CONCAT(ava.value, \'/\', u.avatar) as avatar, null as moduleByAuthor, m1.title_ua as moduleByConsultant')
-        ->from('teacher_consultant_module tcm')
-        ->join('teacher t', 't.user_id = tcm.id_teacher')
-        ->join('module m1', 'm1.module_ID = tcm.id_module')
-        ->join('teacher_organization tor', 'tor.id_user = t.user_id')
-        ->join('user u', 'u.id = t.user_id')
-        ->join('config ava', 'ava.id = 6')
-        ->where('t.cancelled=:cancelled and tor.end_date IS NULL and tor.isPrint=:isPrint and tor.id_organization=:organization', array(':cancelled'=>Teacher::ACTIVE, 'isPrint'=>TeacherOrganization::SHOW, ':organization'=>Organization::MAIN_ORGANIZATION))
-        ->getText();
-
-        $teachers = Yii::app()->db->createCommand()
-        ->select('u.id, u.firstName, u.middleName, u.secondName, u.email, CONCAT(ava.value, \'/\', u.avatar) as avatar, m.title_ua as moduleByAuthor, null as moduleByConsultant')
-        ->from('teacher_module tm')
-        ->join('teacher t', 't.user_id = tm.idTeacher')
-        ->join('module m', 'm.module_ID = tm.idModule')
-        ->join('teacher_organization tor', 'tor.id_user = t.user_id')
-        ->join('user u', 'u.id = t.user_id')
-        ->join('config ava', 'ava.id = 6')
-        ->where('t.cancelled=:cancelled and tor.end_date IS NULL and tor.isPrint=:isPrint and tor.id_organization=:organization', array(':cancelled'=>Teacher::ACTIVE, 'isPrint'=>TeacherOrganization::SHOW, ':organization'=>Organization::MAIN_ORGANIZATION))
-        ->union($teachersWithModulesByAuthor)
-        ->queryAll();
-        
+        $teacher = new Teacher();
+        $teachers = $teacher->teacherDataWithModulesAPI();
         $userHelper = new UserHelper();
         $teachers = $userHelper->prepareTeachersWithModules($teachers);
         echo CJSON::encode($teachers);

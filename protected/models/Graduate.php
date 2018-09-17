@@ -368,4 +368,15 @@ class Graduate extends CActiveRecord
         return 'done';
     }
 
+    public function alumniDataAPI()
+    {
+        return Yii::app()->db->createCommand()
+        ->select('u.id, u.firstName, u.middleName, u.secondName, u.email, CONCAT(ava.value, \'/\', u.avatar) as avatar, g.position, g.work_place, g.graduate_date')
+        ->from('graduate g')
+        ->join('user u', 'u.id = g.id_user')
+        ->join('config ava', 'ava.id = 6')
+        ->group('u.id')
+        ->queryAll();
+    }
+
 }
