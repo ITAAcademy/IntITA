@@ -110,4 +110,13 @@ class TeachersController extends Controller
             'teacherletter' => $teacherLetter
         ));
     }
+
+    public function actionApiGetAllTeacherData()
+    {
+        $teacher = new Teacher();
+        $teachers = $teacher->teacherDataWithModulesAPI();
+        $userHelper = new UserHelper();
+        $teachers = $userHelper->prepareTeachersWithModules($teachers);
+        echo CJSON::encode($teachers);
+    }
 }
