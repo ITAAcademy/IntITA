@@ -79,63 +79,125 @@ class CrmHelper
         return $ids;
     }
 
-    protected $idTasksByUser = '(SELECT id_task
-            FROM intita.crm_subgroup_roles_tasks as csrt
-            join intita.crm_tasks as ct on ct.id = csrt.id_task
-            where id_subgroup in (
-                SELECT id_subgroup FROM intita.offline_students
-                where id_user = :id_user
-            ) and ct.cancelled_date is null
-            group by id_task) or ct.id in (
-                select id_task 
-                from intita.crm_roles_tasks
-                where id_user = :id_user
-            group by id_task)';
+    // raw DB query
 
-    protected $idTasksByUserWithRoles = '(SELECT ct.id
-            FROM intita.crm_subgroup_roles_tasks as csrt
-            join intita.crm_tasks as ct on ct.id = csrt.id_task
-            join intita.crm_roles_tasks as crt3 on crt3.id_task = ct.id
-            where id_subgroup in (
-                SELECT id_subgroup FROM intita.offline_students
-                where id_user = :id_user
-            ) and ct.cancelled_date is null and crt3.role = :id_role
-            group by ct.id) or ct.id in (
-                select id_task 
-                from intita.crm_roles_tasks as crt2
-                where id_user = :id_user and crt2.role = :id_role
-            group by id_task)';
+    protected $idTasksByGroup = '(SELECT csrtByGroup.id_task
+            FROM crm_subgroup_roles_tasks as csrtByGroup
+            join crm_tasks as ctByGroup on ctByGroup.id = csrtByGroup.id_task
+            where csrtByGroup.id_subgroup in (
+                    SELECT osByGroup.id_subgroup FROM offline_students as osByGroup
+                    where osByGroup.id_user = :id_user
+                ) 
+            and ctByGroup.cancelled_date is null
+            group by csrtByGroup.id_task)';
+
+    protected $idTaskByUser = '(select crtByUser.id_task 
+                from crm_roles_tasks as crtByUser
+                where crtByUser.id_user = :id_user
+            group by crtByUser.id_task)';
+
+    protected $idTasksByGroupWithRoles = '(SELECT ctByGroupWithRoles.id
+            FROM crm_subgroup_roles_tasks as csrtByGroupWithRoles
+            join crm_tasks as ctByGroupWithRoles on ctByGroupWithRoles.id = csrtByGroupWithRoles.id_task
+            join crm_roles_tasks as crtByGroupWithRoles on crtByGroupWithRoles.id_task = ctByGroupWithRoles.id
+            where csrtByGroupWithRoles.id_subgroup in (
+                SELECT osByGroupWithRoles.id_subgroup FROM offline_students as osByGroupWithRoles
+                where osByGroupWithRoles.id_user = :id_user
+            ) and ctByGroupWithRoles.cancelled_date is null and crtByGroupWithRoles.role = :id_role
+            group by ctByGroupWithRoles.id)';
+
+    protected $idTasksByUserWithRoles = '(
+                select crtByUserWithRoles.id_task 
+                from crm_roles_tasks as crtByUserWithRoles
+                where crtByUserWithRoles.id_user = :id_user and crtByUserWithRoles.role = :id_role
+            group by crtByUserWithRoles.id_task)';
 
     protected $idTaskByDifferentUsers = '';
-    protected function idTaskByDifferentUsersWithRoles ($param)
+
+    protected function idTaskByDifferentUsersWithRoles($param, $id_role, $id_user)
     {
-        return '(select * from
-        (
-            (SELECT ct.id FROM intita.crm_subgroup_roles_tasks as csrt
-            join intita.crm_tasks as ct on ct.id = csrt.id_task
-            join intita.crm_roles_tasks as crt3 on crt3.id_task = ct.id
-            where id_subgroup in (
-                SELECT id_subgroup FROM intita.offline_students
-                where id_user = :id_user
-            ) and ct.cancelled_date is null and crt3.role = :id_role
-            group by ct.id) 
-        union
-            (select id_task from intita.crm_roles_tasks as crt2
-                where id_user = :id_user and crt2.role = :id_role
-                group by id_task) 
-            )as U
-        where U.id in 
-            (SELECT crt.id_task FROM intita.user
-                            join intita.crm_roles_tasks as crt on crt.id_user = user.id
-                            where user.firstName like '.$param.' or user.middleName like '.$param.' or user.secondName like '.$param.'  or user.email like '.$param.'
-                            group by crt.id_task)
-        )';
+        $subQuerySecond = Yii::app()->db->createCommand()
+        ->select('crtSecUserFilter.id_task')
+        ->from('crm_roles_tasks as crtSecUserFilter')
+        ->where('crtSecUserFilter.id_user = :id_user and crtSecUserFilter.role = :id_role', [':id_role' => $id_role, ':id_user' => $id_user])
+        ->group('crtSecUserFilter.id_task')
+        ->getText();
+
+        $whereSelectToSubQueryFirst = Yii::app()->db->createCommand()
+        ->select('osFirstUserFilter.id_subgroup')
+        ->from('offline_students as osFirstUserFilter')
+        ->where('osFirstUserFilter.id_user = :id_user', [':id_user' => $id_user])
+        ->getText();
+
+        $subQueryFirst = Yii::app()->db->createCommand()
+        ->select('ctFirstUserFilter.id')
+        ->from('crm_subgroup_roles_tasks as csrtFirstUserFilter')
+        ->join('crm_tasks ctFirstUserFilter', 'ctFirstUserFilter.id = csrtFirstUserFilter.id_task')
+        ->join('crm_roles_tasks crtFirstUserFilter', 'crtFirstUserFilter.id_task = ctFirstUserFilter.id')
+        ->where('csrtFirstUserFilter.id_subgroup in ('.$whereSelectToSubQueryFirst.') and ctFirstUserFilter.cancelled_date is null and crtFirstUserFilter.role = :id_role', [':id_role' => $id_role, ':id_user' => $id_user])
+        ->group('ctFirstUserFilter.id')
+        ->union($subQuerySecond)
+        ->getText();
+
+        $unionWhereSelect = Yii::app()->db->createCommand()
+        ->select('crtThirdUserFilter.id_task')
+        ->from('user as uThirdUserFilter')
+        ->join('crm_roles_tasks crtThirdUserFilter', 'crtThirdUserFilter.id_user = uThirdUserFilter.id')
+        ->where('uThirdUserFilter.firstName like :param or uThirdUserFilter.middleName like :param or uThirdUserFilter.secondName like :param or uThirdUserFilter.email like :param', [':param' => $param])
+        ->group('crtThirdUserFilter.id_task')
+        ->getText();
+
+        return Yii::app()->db->createCommand()
+        ->select('id')
+        ->from('('.$subQueryFirst.') as unionFirst')
+        ->where('id in ('.$unionWhereSelect.')', [':param' => $param, ':id_role' => $id_role, ':id_user' => $id_user])
+        ->getText();
+    }
+
+    protected function idTaskByDifferentUsers($param, $id_role, $id_user)
+    {
+        $subQuerySecond = Yii::app()->db->createCommand()
+        ->select('crtSecUserFilter.id_task')
+        ->from('crm_roles_tasks as crtSecUserFilter')
+        ->where('crtSecUserFilter.id_user = :id_user', [':id_user' => $id_user])
+        ->group('crtSecUserFilter.id_task')
+        ->getText();
+
+        $whereSelectToSubQueryFirst = Yii::app()->db->createCommand()
+        ->select('osFirstUserFilter.id_subgroup')
+        ->from('offline_students as osFirstUserFilter')
+        ->where('osFirstUserFilter.id_user = :id_user', [':id_user' => $id_user])
+        ->getText();
+
+        $subQueryFirst = Yii::app()->db->createCommand()
+        ->select('ctFirstUserFilter.id')
+        ->from('crm_subgroup_roles_tasks as csrtFirstUserFilter')
+        ->join('crm_tasks ctFirstUserFilter', 'ctFirstUserFilter.id = csrtFirstUserFilter.id_task')
+        ->join('crm_roles_tasks crtFirstUserFilter', 'crtFirstUserFilter.id_task = ctFirstUserFilter.id')
+        ->where('csrtFirstUserFilter.id_subgroup in ('.$whereSelectToSubQueryFirst.') and ctFirstUserFilter.cancelled_date is null', [':id_user' => $id_user])
+        ->group('ctFirstUserFilter.id')
+        ->union($subQuerySecond)
+        ->getText();
+
+        $unionWhereSelect = Yii::app()->db->createCommand()
+        ->select('crtThirdUserFilter.id_task')
+        ->from('user as uThirdUserFilter')
+        ->join('crm_roles_tasks crtThirdUserFilter', 'crtThirdUserFilter.id_user = uThirdUserFilter.id')
+        ->where('uThirdUserFilter.firstName like :param or uThirdUserFilter.middleName like :param or uThirdUserFilter.secondName like :param or uThirdUserFilter.email like :param', [':param' => $param])
+        ->group('crtThirdUserFilter.id_task')
+        ->getText();
+
+        return Yii::app()->db->createCommand()
+        ->select('id')
+        ->from('('.$subQueryFirst.') as unionFirst')
+        ->where('id in ('.$unionWhereSelect.')', [':param' => $param, ':id_user' => $id_user])
+        ->getText();
     }
 
     public function getTasksSimpleCondition($params, $userId)
     {
-        $allUserTasksCondidtion = 'ct.id in '.$this->idTasksByUser.' and ct.cancelled_date is null and crt.cancelled_date is null';
-        $userTasksByRoleCondition = 'ct.id in '.$this->idTasksByUserWithRoles.' and crt.cancelled_date is null and ct.cancelled_date is null and crt.role = :id_role';
+        $allUserTasksCondidtion = 'ctMain.id in '.$this->idTasksByGroup.' or ctMain.id in '.$this->idTaskByUser.' and ctMain.cancelled_date is null and crtMain.cancelled_date is null';
+        $userTasksByRoleCondition = 'ctMain.id in '.$this->idTasksByGroupWithRoles.' or ctMain.id in '.$this->idTasksByUserWithRoles.'and crtMain.cancelled_date is null and ctMain.cancelled_date is null and crtMain.role = :id_role';
         $allUserTasksCondidtionParams = [':id_user' => $userId];
         $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id']];
         $isAllTasks = intval($params['id']) === 0;
@@ -147,16 +209,11 @@ class CrmHelper
 
     public function getTasksByUserName($params, $userId)
     {
-        $paramData = "'%".$params['filter']['idUser.fullName']."%'";
-        $subQuery = '(SELECT crt.id_task FROM user
-                    join crm_roles_tasks as crt on crt.id_user = user.id
-                    where user.firstName like '.$paramData.' or user.middleName like '.$paramData.' or user.secondName like '.$paramData.'  or user.email like '.$paramData.')';
-        // $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ct.id in '.$subQuery;
-        $allUserTasksCondidtion = 'ct.id in '.$this->idTasksByUser.' and ct.cancelled_date is null and crt.cancelled_date is null and ct.id in '.$subQuery;
-        // $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ct.id in '.$subQuery;
-        $userTasksByRoleCondition = 'ct.id in '.$this->idTaskByDifferentUsersWithRoles($paramData).' and crt.cancelled_date is null and ct.cancelled_date is null crt.role = :id_role';
-        $allUserTasksCondidtionParams = [':id_user' => $userId];
-        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id']];
+        $paramData = "%".$params['filter']['idUser.fullName']."%";
+        $allUserTasksCondidtion = 'ctMain.id in ('.$this->idTaskByDifferentUsers($paramData, $params['id'], $userId).') and crtMain.cancelled_date is null and ctMain.cancelled_date is null';
+        $userTasksByRoleCondition = 'ctMain.id in ('.$this->idTaskByDifferentUsersWithRoles($paramData, $params['id'], $userId).') and crtMain.cancelled_date is null and ctMain.cancelled_date is null and crtMain.role = :id_role';
+        $allUserTasksCondidtionParams = [':id_user' => $userId, ':param' => $paramData];
+        $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':param' => $paramData];
         $isAllTasks = intval($params['id']) === 0;
         return [
             'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,

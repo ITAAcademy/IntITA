@@ -234,17 +234,17 @@ class TasksController extends TeacherCabinetController
             $whereCondition = $crmHelper->getTasksSimpleCondition($params, $userId)['whereCondition'];
             $whereConditionParams = $crmHelper->getTasksSimpleCondition($params, $userId)['whereConditionParams'];
         }
-
+        
         $crmQuery = Yii::app()->db->createCommand()
-        ->select('ct.id as id_task, ct.name as title, ct.body as task_description, ct.id_state as idState, ct.endTask as endTask, ct.deadline as deadline, ctp.title as priorityTitle, ctp.description as priorityDescription')
-        ->from('crm_roles_tasks as crt')
-        ->join('crm_tasks ct', 'ct.id = crt.id_task')
-        ->join('crm_task_type ctt', 'ctt.id = ct.type')
-        ->join('crm_task_priority as ctp', 'ctp.id = ct.priority')
+        ->select('ctMain.id as id_task, ctMain.name as title, ctMain.body as task_description, ctMain.id_state as idState, ctMain.endTask as endTask, ctMain.deadline as deadline, ctpMain.title as priorityTitle, ctpMain.description as priorityDescription')
+        ->from('crm_roles_tasks as crtMain')
+        ->join('crm_tasks ctMain', 'ctMain.id = crtMain.id_task')
+        ->join('crm_task_type cttMain', 'cttMain.id = ctMain.type')
+        ->join('crm_task_priority as ctpMain', 'ctpMain.id = ctMain.priority')
         
         ->where($whereCondition, $whereConditionParams)
-        ->group('crt.id_task')
-        ->order('priority desc')
+        ->group('crtMain.id_task')
+        ->order('ctMain.priority desc')
         ->queryAll();
 
         // $criteria = new CDbCriteria();
