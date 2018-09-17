@@ -107,7 +107,7 @@ class CrmHelper
             group by id_task)';
 
     protected $idTaskByDifferentUsers = '';
-    protected function idTaskByDifferentUsersWithRoles ($param, $id_user, $id_role)
+    protected function idTaskByDifferentUsersWithRoles ($param)
     {
         return '(select * from
         (
@@ -116,12 +116,12 @@ class CrmHelper
             join intita.crm_roles_tasks as crt3 on crt3.id_task = ct.id
             where id_subgroup in (
                 SELECT id_subgroup FROM intita.offline_students
-                where id_user = '.$id_user.'
-            ) and ct.cancelled_date is null and crt3.role = '.$id_role.'
+                where id_user = :id_user
+            ) and ct.cancelled_date is null and crt3.role = :id_role
             group by ct.id) 
         union
             (select id_task from intita.crm_roles_tasks as crt2
-                where id_user = '.$id_user.' and crt2.role = '.$id_role.'
+                where id_user = :id_user and crt2.role = :id_role
                 group by id_task) 
             )as U
         where U.id in 
@@ -148,40 +148,18 @@ class CrmHelper
     public function getTasksByUserName($params, $userId)
     {
         $paramData = "'%".$params['filter']['idUser.fullName']."%'";
-        // $subQuery = '(SELECT crt.id_task FROM user
-        //             join crm_roles_tasks as crt on crt.id_user = user.id
-        //             where user.firstName like '.$paramData.' or user.middleName like '.$paramData.' or user.secondName like '.$paramData.'  or user.email like '.$paramData.')';
+        $subQuery = '(SELECT crt.id_task FROM user
+                    join crm_roles_tasks as crt on crt.id_user = user.id
+                    where user.firstName like '.$paramData.' or user.middleName like '.$paramData.' or user.secondName like '.$paramData.'  or user.email like '.$paramData.')';
         // $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ct.id in '.$subQuery;
-        // $allUserTasksCondidtion = 'ct.id in '.$this->idTasksByUser.' and ct.cancelled_date is null and crt.cancelled_date is null and ct.id in '.$subQuery;
+        $allUserTasksCondidtion = 'ct.id in '.$this->idTasksByUser.' and ct.cancelled_date is null and crt.cancelled_date is null and ct.id in '.$subQuery;
         // $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ct.id in '.$subQuery;
-
-        $userTasksByRoleCondition = 'ct.id in (
-select * from
-(
-    (SELECT ct.id FROM intita.crm_subgroup_roles_tasks as csrt
-    join intita.crm_tasks as ct on ct.id = csrt.id_task
-    join intita.crm_roles_tasks as crt3 on crt3.id_task = ct.id
-    where id_subgroup in (
-        SELECT id_subgroup FROM intita.offline_students
-        where id_user = 386
-    ) and ct.cancelled_date is null and crt3.role = 1
-    group by ct.id) 
-union
-    (select id_task from intita.crm_roles_tasks as crt2
-        where id_user = 386 and crt2.role = 1
-        group by id_task) 
-    )as U
-where U.id in 
-    (SELECT crt.id_task FROM intita.user
-                    join intita.crm_roles_tasks as crt on crt.id_user = user.id
-                    where user.firstName like `%q%` or user.middleName like `%q%` or user.secondName like `%q%`  or user.email like `%q%`
-                    group by crt.id_task)
-) and crt.cancelled_date is null and ct.cancelled_date is null crt.role = 1';
+        $userTasksByRoleCondition = 'ct.id in '.$this->idTaskByDifferentUsersWithRoles($paramData).' and crt.cancelled_date is null and ct.cancelled_date is null crt.role = :id_role';
         $allUserTasksCondidtionParams = [':id_user' => $userId];
         $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id']];
         $isAllTasks = intval($params['id']) === 0;
         return [
-            'whereCondition' => $userTasksByRoleCondition,
+            'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
             'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
         ];      
     }
