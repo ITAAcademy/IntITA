@@ -287,12 +287,12 @@ class CrmHelper
 
     public function getTasksByGroupName($params, $userId)
     {
-        $subQuery = '(SELECT id_task FROM intita.crm_subgroup_roles_tasks as csrt
-                            join intita.offline_subgroups as os on os.id = csrt.id_subgroup
-                            join intita.offline_groups as og on og.id = os.group 
+        $subQuery = ' and ctMain.id in (SELECT id_task FROM crm_subgroup_roles_tasks as csrt
+                            join offline_subgroups as os on os.id = csrt.id_subgroup
+                            join offline_groups as og on og.id = os.group 
                             where og.id = '.$params['filter']['idTask.groupsNames'].')';
-        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ct.id in '.$subQuery;
-        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ct.id in '.$subQuery;
+        $allUserTasksCondidtion = 'ctMain.id in '.$this->taskByFilterWithinGroup($params['id'], $subQuery).' or ctMain.id in '.$this->taskByFilterWithinUser($params['id'], $subQuery).' and ctMain.cancelled_date is null and crtMain.cancelled_date is null';
+        $userTasksByRoleCondition = 'ctMain.id in '.$this->taskByFilterWithinGroup($params['id'], $subQuery).' or ctMain.id in '.$this->taskByFilterWithinUser($params['id'], $subQuery).'and crtMain.cancelled_date is null and ctMain.cancelled_date is null and crtMain.role = :id_role';
         $allUserTasksCondidtionParams = [':id_user' => $userId];
         $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id']];
         $isAllTasks = intval($params['id']) === 0;
