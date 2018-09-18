@@ -250,11 +250,45 @@ angular
                             .$promise
                             .then(function (data) {
                                 params.total(data.count);
-                                return data.rows;
+                                return prepareDataForTable(data);
                             });
                     }
                 });
                 return promise;
+            };
+
+            function prepareDataForTable(data) {
+                var dataArray = [];
+                data.rows.map(function(item) {
+                    dataArray.push({
+                        idTask: {
+                            id: item.id_task,
+                            name: item.title,
+                                 // observers: item.observers,
+                            producer: 'item.idTask.producerName.id',
+                            executant: 'item.idTask.executantName.id',
+                            description: $filter('limitTo')(item.task_description, 70),
+                            status: "concept",
+                            type: "task",
+                            taskState: {
+                                id_state: item.idState,
+                                description: item.stateDescription
+                            },
+                            taskType: {
+                                title_ua: item.typeTitle
+                            },
+                            created_date: item.created_date,
+                            endTask: item.endTask,
+                            deadline: item.deadline,
+                            priorityModel: {
+                                title: item.priorityTitle,
+                                description: item.priorityDescription
+                            }
+                        }
+                    });
+                });
+                data.rows = dataArray;
+                return data.rows;
             };
 
             var paginationPage = 1;
@@ -310,7 +344,7 @@ angular
                             });
                             // setScrollEventToKanban();
                             // $scope.crmCards = groupTasks($scope.crmCards, 'id');
-                            console.log($scope.crmCards);
+
                             $scope.initCrmKanban($scope.crmCards);
 
                             $timeout(function () {
@@ -322,27 +356,27 @@ angular
                 return promise;
             };
 
-            function groupTasks (items, propertyName) {
-                var obj = {};
-                for ( var i = 0, len = items.length; i < len; i++ ){
-                    if(!obj[items[i][propertyName]]) obj[items[i][propertyName]] = items[i];
-                }
-                var newArr = [];
-                for ( var key in obj ) newArr.push(obj[key]);
-                return newArr;
-            };
+            // function groupTasks (items, propertyName) {
+            //     var obj = {};
+            //     for ( var i = 0, len = items.length; i < len; i++ ){
+            //         if(!obj[items[i][propertyName]]) obj[items[i][propertyName]] = items[i];
+            //     }
+            //     var newArr = [];
+            //     for ( var key in obj ) newArr.push(obj[key]);
+            //     return newArr;
+            // };
 
-            function setScrollEventToKanban () {
-                var windowElement = $jq(window);
-                windowElement.scroll(function() {
-                    if(windowElement.scrollTop() + windowElement.height() >= $jq(document).height()){
-                        $scope.loadKanbanTasks($rootScope.roleId);
-                        paginationPage++;
-                        windowElement.unbind('scroll');
-                    }
-                });
+            // function setScrollEventToKanban () {
+            //     var windowElement = $jq(window);
+            //     windowElement.scroll(function() {
+            //         if(windowElement.scrollTop() + windowElement.height() >= $jq(document).height()){
+            //             $scope.loadKanbanTasks($rootScope.roleId);
+            //             paginationPage++;
+            //             windowElement.unbind('scroll');
+            //         }
+            //     });
 
-            }
+            // }
 
             $scope.setKanbanHeight = function () {
                 var heights = angular.element(".kanban-column").map(function () {
