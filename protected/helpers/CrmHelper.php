@@ -311,23 +311,84 @@ class CrmHelper
     }
 
 // kanban CRM filter by task Priority
+    protected function taskByPriorityWithinGroup($roles)
+    {
+        $rolesCase = empty($roles) ? [
+            'join' => '',
+            'where' => ''
+        ] : [
+            'join' => ' join crm_roles_tasks as crtByGroupWithRoles on crtByGroupWithRoles.id_task = ctByGroup.id ',
+            'where' => ' and crtByGroupWithRoles.role = :id_role'
+        ];
+        return '(SELECT csrtByGroup.id_task
+            FROM crm_subgroup_roles_tasks as csrtByGroup
+            join crm_tasks as ctByGroup on ctByGroup.id = csrtByGroup.id_task'.$rolesCase['join'].'
+            where csrtByGroup.id_subgroup in (
+                    SELECT osByGroup.id_subgroup FROM offline_students as osByGroup
+                    where osByGroup.id_user = :id_user
+                ) 
+            and ctByGroup.cancelled_date is null and ctpMain.id = :priorityId'.$rolesCase['where'].'
+            group by csrtByGroup.id_task)';
+    }
+
+    protected function taskByPriorityWithinUser($roles)
+    {
+        $rolesCase = empty($roles) ? '' : ' and crtByUser.role = :id_role ';
+
+        return '(select crtByUser.id_task 
+                from crm_roles_tasks as crtByUser
+                where crtByUser.id_user = :id_user and ctpMain.id = :priorityId'.$rolesCase.'
+            group by crtByUser.id_task)';
+    }
+
     public function getTasksByPriority($params, $userId)
     {
-        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ctp.id = :priorityId';
-        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ctp.id = :priorityId';
+        $allUserTasksCondidtion = 'ctMain.id in '.$this->taskByPriorityWithinGroup($params['id']).' or ctMain.id in '.$this->taskByPriorityWithinUser($params['id']).' and ctMain.cancelled_date is null and crtMain.cancelled_date is null';
+        $userTasksByRoleCondition = 'ctMain.id in '.$this->taskByPriorityWithinGroup($params['id']).' or ctMain.id in '.$this->taskByPriorityWithinUser($params['id']).'and crtMain.cancelled_date is null and ctMain.cancelled_date is null and crtMain.role = :id_role';
         $allUserTasksCondidtionParams = [':id_user' => $userId, ':priorityId' => $params['filter']['idTask.priority']];
         $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':priorityId' => $params['filter']['idTask.priority']];
         $isAllTasks = intval($params['id']) === 0;
         return [
             'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
             'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
-        ];   
+        ];
     }
 
+// kanban CRM filter by task Type
+
+    protected function taskByTypeWithinGroup($roles)
+    {
+        $rolesCase = empty($roles) ? [
+            'join' => '',
+            'where' => ''
+        ] : [
+            'join' => ' join crm_roles_tasks as crtByGroupWithRoles on crtByGroupWithRoles.id_task = ctByGroup.id ',
+            'where' => ' and crtByGroupWithRoles.role = :id_role'
+        ];
+        return '(SELECT csrtByGroup.id_task
+            FROM crm_subgroup_roles_tasks as csrtByGroup
+            join crm_tasks as ctByGroup on ctByGroup.id = csrtByGroup.id_task'.$rolesCase['join'].'
+            where csrtByGroup.id_subgroup in (
+                    SELECT osByGroup.id_subgroup FROM offline_students as osByGroup
+                    where osByGroup.id_user = :id_user
+                ) 
+            and ctByGroup.cancelled_date is null and cttMain.id = :typeId'.$rolesCase['where'].'
+            group by csrtByGroup.id_task)';
+    }
+
+    protected function taskByTypeWithinUser($roles)
+    {
+        $rolesCase = empty($roles) ? '' : ' and crtByUser.role = :id_role ';
+
+        return '(select crtByUser.id_task 
+                from crm_roles_tasks as crtByUser
+                where crtByUser.id_user = :id_user and cttMain.id = :typeId'.$rolesCase.'
+            group by crtByUser.id_task)';
+    }
     public function getTasksByType($params, $userId)
     {
-        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null and ctt.id = :typeId';
-        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null and ctt.id = :typeId';
+        $allUserTasksCondidtion = 'ctMain.id in '.$this->taskByTypeWithinGroup($params['id']).' or ctMain.id in '.$this->taskByTypeWithinUser($params['id']).' and ctMain.cancelled_date is null and crtMain.cancelled_date is null';
+        $userTasksByRoleCondition = 'ctMain.id in '.$this->taskByTypeWithinGroup($params['id']).' or ctMain.id in '.$this->taskByTypeWithinUser($params['id']).'and crtMain.cancelled_date is null and ctMain.cancelled_date is null and crtMain.role = :id_role';
         $allUserTasksCondidtionParams = [':id_user' => $userId, ':typeId' => $params['filter']['idTask.type']];
         $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id'], ':typeId' => $params['filter']['idTask.type']];
         $isAllTasks = intval($params['id']) === 0;
@@ -337,19 +398,53 @@ class CrmHelper
         ];
     }
 
+// kanban CRM filter by task Parent Type
+
+    protected function taskByParentTypeWithinGroup($roles, $param)
+    {
+        $rolesCase = empty($roles) ? [
+            'join' => '',
+            'where' => ''
+        ] : [
+            'join' => ' join crm_roles_tasks as crtByGroupWithRoles on crtByGroupWithRoles.id_task = ctByGroup.id ',
+            'where' => ' and crtByGroupWithRoles.role = :id_role'
+        ];
+        return '(SELECT csrtByGroup.id_task
+            FROM crm_subgroup_roles_tasks as csrtByGroup
+            join crm_tasks as ctByGroup on ctByGroup.id = csrtByGroup.id_task'.$rolesCase['join'].'
+            where csrtByGroup.id_subgroup in (
+                    SELECT osByGroup.id_subgroup FROM offline_students as osByGroup
+                    where osByGroup.id_user = :id_user
+                ) 
+            and ctByGroup.cancelled_date is null and'.$param.$rolesCase['where'].'
+            group by csrtByGroup.id_task)';
+    }
+
+    protected function taskByParentWithinUser($roles, $param)
+    {
+        $rolesCase = empty($roles) ? '' : ' and crtByUser.role = :id_role ';
+
+        return '(select crtByUser.id_task 
+                from crm_roles_tasks as crtByUser
+                where crtByUser.id_user = :id_user and'.$param.$rolesCase.'
+            group by crtByUser.id_task)';
+    }
+
     public function getTasksByParentType($params, $userId)
     {
-        $parentType = intval($params['filter']['idTask.parentType']) === 1 ? ' and ct.id_parent is null' : ' and ct.id_parent is not null';
-        $allUserTasksCondidtion = 'crt.id_user = :id_user and crt.cancelled_by is null and ct.cancelled_by is null'.$parentType;
-        $userTasksByRoleCondition = 'crt.id_user = :id_user and crt.role = :id_role and crt.cancelled_by is null and ct.cancelled_by is null'.$parentType;
+        $parentType = intval($params['filter']['idTask.parentType']) === 1 ? ' ctMain.id_parent is null' : ' ctMain.id_parent is not null';
+        $allUserTasksCondidtion = 'ctMain.id in '.$this->taskByParentTypeWithinGroup($params['id'], $parentType).' or ctMain.id in '.$this->taskByParentWithinUser($params['id'], $parentType).' and ctMain.cancelled_date is null and crtMain.cancelled_date is null';
+        $userTasksByRoleCondition = 'ctMain.id in '.$this->taskByParentTypeWithinGroup($params['id'], $parentType).' or ctMain.id in '.$this->taskByParentWithinUser($params['id'], $parentType).'and crtMain.cancelled_date is null and ctMain.cancelled_date is null and crtMain.role = :id_role';
         $allUserTasksCondidtionParams = [':id_user' => $userId];
         $userTasksByRoleConditionParams = [':id_user' => $userId, ':id_role' => $params['id']];
         $isAllTasks = intval($params['id']) === 0;
         return [
             'whereCondition' => $isAllTasks ? $allUserTasksCondidtion : $userTasksByRoleCondition,
             'whereConditionParams' => $isAllTasks ? $allUserTasksCondidtionParams : $userTasksByRoleConditionParams
-        ];   
+        ];
     }
+
+// kanban CRM filter by task Group Name
 
     public function getTasksByGroupName($params, $userId)
     {
