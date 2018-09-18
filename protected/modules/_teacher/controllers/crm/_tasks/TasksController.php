@@ -201,6 +201,10 @@ class TasksController extends TeacherCabinetController
         $params = $_GET;
         $crmHelper = new CrmHelper();
         $userId = Yii::app()->user->getId();
+        $page = [
+            'limit' => isset($params['count']) ? intval($params['count']) : 10,
+            'offset' => isset($params['page']) ? (intval($params['page']) - 1) : 0
+        ];
 
         if (isset($params['filter']['idUser.fullName'])) {
             $whereCondition = $crmHelper->getTasksByUserName($params, $userId)['whereCondition'];
@@ -245,8 +249,14 @@ class TasksController extends TeacherCabinetController
         
         ->where($whereCondition, $whereConditionParams)
         ->group('crtMain.id_task')
-        ->order('ctMain.priority desc')
-        ->queryAll();
+        ->order('ctMain.priority desc');
+
+        if(isset($params['isTable'])){
+            $crmQuery->limit($page['limit']);
+            $crmQuery->offset($page['offset']);
+        }
+
+        $tasks = $crmQuery->queryAll();
 
         // $criteria = new CDbCriteria();
         // $criteria->alias = 't';
@@ -304,7 +314,8 @@ class TasksController extends TeacherCabinetController
         // $adapter->mergeCriteriaWith($criteria);
         // $rows = $adapter->getData();
 
-        $rows['rows'] = $crmQuery;
+        $rows['rows'] = $tasks;
+        $rows['count'] = 50;
 
         // $date_now = new DateTime('now', new DateTimeZone(Config::getServerTimezone()));
         // foreach ($rows['rows'] as $k => $row) {
@@ -326,6 +337,7 @@ class TasksController extends TeacherCabinetController
 
         //     $rows['rows'][$k]['spent_time'] = $interval;
         // }
+
         echo json_encode($rows);
     }
 

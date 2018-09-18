@@ -242,7 +242,8 @@ angular
                     sorting: {
                         'idTask.priority': 'desc',
                     },
-                    id: idRole
+                    id: idRole,
+                    isTable: true
                 }, {
                     getData: function (params) {
                         return crmTaskServices
