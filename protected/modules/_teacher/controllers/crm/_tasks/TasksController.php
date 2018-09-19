@@ -232,17 +232,7 @@ class TasksController extends TeacherCabinetController
             $whereConditionParams = $crmHelper->getTasksSimpleCondition($params, $userId)['whereConditionParams'];
         }
 
-        $crmQuery = Yii::app()->db->createCommand()
-        ->select('ctMain.id as id_task, ctMain.name as title, ctMain.body as task_description, ctMain.id_state as idState, ctMain.endTask as endTask, ctMain.deadline as deadline, ctpMain.title as priorityTitle, ctpMain.description as priorityDescription, cttMain.title_ua as typeTitle, ctMain.created_date, ctsMain.description as stateDescription')
-        ->from('crm_roles_tasks as crtMain')
-        ->join('crm_tasks ctMain', 'ctMain.id = crtMain.id_task')
-        ->join('crm_task_type cttMain', 'cttMain.id = ctMain.type')
-        ->join('crm_task_priority as ctpMain', 'ctpMain.id = ctMain.priority')
-        ->join('crm_task_status as ctsMain', 'ctsMain.id = ctMain.id_state')
-        
-        ->where($whereCondition, $whereConditionParams)
-        ->group('crtMain.id_task')
-        ->order('ctMain.priority desc');
+        $crmQuery = CrmTasks::model()->taskListQuery($whereCondition, $whereConditionParams);
 
         if(isset($params['isTable'])){
             $crmQuery->limit($page['limit']);
