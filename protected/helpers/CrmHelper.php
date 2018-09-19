@@ -238,8 +238,8 @@ class CrmHelper
     {
         $paramData = ' and ctpMain.id = :priorityId';
         $conditionParams = [
-            'allUserTasksCondidtionParams' => [':id_user' => $userId, ':priorityId' => $params['filter']['idTask.priority']],
-            'userTasksByRoleConditionParams' => [':id_user' => $userId, ':id_role' => $params['id'], ':priorityId' => $params['filter']['idTask.priority']]
+            'allUserTasksCondidtionParams' => [':id_user' => $userId, ':priorityId' => $params['filter']['crmPriority.id']],
+            'userTasksByRoleConditionParams' => [':id_user' => $userId, ':id_role' => $params['id'], ':priorityId' => $params['filter']['crmPriority.id']]
         ];
         return $this->backBoneForCRMQuery($params, $userId, $paramData, $conditionParams);
     }
@@ -250,8 +250,8 @@ class CrmHelper
     {
         $paramData = ' and cttMain.id = :typeId';
         $conditionParams = [
-            'allUserTasksCondidtionParams' => [':id_user' => $userId, ':typeId' => $params['filter']['idTask.type']],
-            'userTasksByRoleConditionParams' => [':id_user' => $userId, ':id_role' => $params['id'], ':typeId' => $params['filter']['idTask.type']]
+            'allUserTasksCondidtionParams' => [':id_user' => $userId, ':typeId' => $params['filter']['crmType.id']],
+            'userTasksByRoleConditionParams' => [':id_user' => $userId, ':id_role' => $params['id'], ':typeId' => $params['filter']['crmType.id']]
         ];
         return $this->backBoneForCRMQuery($params, $userId, $paramData, $conditionParams);
     }
