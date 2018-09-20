@@ -311,7 +311,9 @@ angular
                         })
                         .$promise
                         .then(function (data) {
-                            $rootScope.taskCountForPagination = data.count;
+                            if (!data.isFilter) {
+                                $rootScope.taskCountForPagination = data.count;    
+                            }
                             $scope.crmCards = data.rows.map(function (item) {
                                 return {
                                     id: item.id_task,

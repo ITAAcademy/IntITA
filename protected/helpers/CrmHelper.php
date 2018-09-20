@@ -124,7 +124,7 @@ class CrmHelper
         ];
     }
 
-    public function getTasksSimpleCondition($params, $userId)
+    protected function getTasksSimpleCondition($params, $userId)
     {
         return $this->backBoneForCRMQuery($params, $userId);
     }
@@ -193,7 +193,7 @@ class CrmHelper
         ->getText();
     }
 
-    public function getTasksByUserName($params, $userId)
+    protected function getTasksByUserName($params, $userId)
     {
         $paramData = "%".$params['filter']['idUser.fullName']."%";
         $allUserTasksCondidtion = 'ctMain.id in ('.$this->idTaskByDifferentUsers($paramData, $params['id'], $userId).') and crtMain.cancelled_date is null and ctMain.cancelled_date is null';
@@ -209,7 +209,7 @@ class CrmHelper
 
 // kanban CRM filter by task name
 
-    public function getTasksByName($params, $userId)
+    protected function getTasksByName($params, $userId)
     {
         $paramData = '%'.$params['filter']['idTask.name'].'%';
         $paramToWhere = ' and ctMain.name LIKE :taskName';
@@ -222,7 +222,7 @@ class CrmHelper
 
 // kanban CRM filter by task ID
 
-    public function getTasksById($params, $userId)
+    protected function getTasksById($params, $userId)
     {
         $paramData = ' and ctMain.id = :taskId';
         $conditionParams = [
@@ -234,7 +234,7 @@ class CrmHelper
 
 // kanban CRM filter by task Priority
 
-    public function getTasksByPriority($params, $userId)
+    protected function getTasksByPriority($params, $userId)
     {
         $paramData = ' and ctpMain.id = :priorityId';
         $conditionParams = [
@@ -246,7 +246,7 @@ class CrmHelper
 
 // kanban CRM filter by task Type
 
-    public function getTasksByType($params, $userId)
+    protected function getTasksByType($params, $userId)
     {
         $paramData = ' and cttMain.id = :typeId';
         $conditionParams = [
@@ -258,7 +258,7 @@ class CrmHelper
 
 // kanban CRM filter by task Parent Type
 
-    public function getTasksByParentType($params, $userId)
+    protected function getTasksByParentType($params, $userId)
     {
         $parentType = intval($params['filter']['idTask.parentType']) === 1 ? ' and ctMain.id_parent is null' : ' and ctMain.id_parent is not null';
         
@@ -267,12 +267,65 @@ class CrmHelper
 
 // kanban CRM filter by task Group Name
 
-    public function getTasksByGroupName($params, $userId)
+    protected function getTasksByGroupName($params, $userId)
     {
         $subQuery = ' and ctMain.id in (SELECT id_task FROM crm_subgroup_roles_tasks as csrt
                             join offline_subgroups as os on os.id = csrt.id_subgroup
                             join offline_groups as og on og.id = os.group 
                             where og.id = '.$params['filter']['idTask.groupsNames'].')';
         return $this->backBoneForCRMQuery($params, $userId, $subQuery);
+    }
+
+    public function getTasksWhereConditions($params, $userId)
+    {
+        if(isset($params['filter'])) {
+            switch (key($params['filter'])) {
+                case 'idUser.fullName':
+                    return [
+                        'data' => $this->getTasksByUserName($params, $userId),
+                        'isFilter' => true
+                    ];
+                case 'idTask.name':
+                    return [
+                        'data' => $this->getTasksByName($params, $userId),
+                        'isFilter' => true
+                    ];
+                case 'idTask.id':
+                    return [
+                        'data' => $this->getTasksById($params, $userId),
+                        'isFilter' => true
+                    ];
+                case 'crmPriority.id':
+                    return [
+                        'data' => $this->getTasksByPriority($params, $userId),
+                        'isFilter' => true
+                    ];
+                case 'crmType.id':
+                    return [
+                        'data' => $this->getTasksByType($params, $userId),
+                        'isFilter' => true
+                    ];
+                case 'idTask.parentType':
+                    return [
+                        'data' => $this->getTasksByParentType($params, $userId),
+                        'isFilter' => true
+                    ];
+                case 'idTask.groupsNames':
+                    return [
+                        'data' => $this->getTasksByGroupName($params, $userId),
+                        'isFilter' => true
+                    ];
+                case 'idTask.created_date':
+                    return [
+                        'data' => $this->getTasksByCreatedDate($params, $userId),
+                        'isFilter' => true
+                    ];
+            }
+        } else {
+            return [
+                'data' => $this->getTasksSimpleCondition($params, $userId),
+                'isFilter' => false
+            ];
+        }
     }
 }

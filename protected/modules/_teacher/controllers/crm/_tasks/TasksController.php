@@ -206,33 +206,8 @@ class TasksController extends TeacherCabinetController
             'offset' => isset($params['page']) ? (intval($params['page']) - 1) : 0
         ];
 
-        if (isset($params['filter']['idUser.fullName'])) {
-            $whereCondition = $crmHelper->getTasksByUserName($params, $userId)['whereCondition'];
-            $whereConditionParams = $crmHelper->getTasksByUserName($params, $userId)['whereConditionParams'];
-        } else if (isset($params['filter']['idTask.name'])) {
-            $whereCondition = $crmHelper->getTasksByName($params, $userId)['whereCondition'];
-            $whereConditionParams = $crmHelper->getTasksByName($params, $userId)['whereConditionParams'];
-        } else if (isset($params['filter']['idTask.id'])) {
-            $whereCondition = $crmHelper->getTasksById($params, $userId)['whereCondition'];
-            $whereConditionParams = $crmHelper->getTasksById($params, $userId)['whereConditionParams'];
-        } else if (isset($params['filter']['crmPriority.id'])) {
-            $whereCondition = $crmHelper->getTasksByPriority($params, $userId)['whereCondition'];
-            $whereConditionParams = $crmHelper->getTasksByPriority($params, $userId)['whereConditionParams'];
-        } else if (isset($params['filter']['crmType.id'])) {
-            $whereCondition = $crmHelper->getTasksByType($params, $userId)['whereCondition'];
-            $whereConditionParams = $crmHelper->getTasksByType($params, $userId)['whereConditionParams'];
-        } else if (isset($params['filter']['idTask.parentType'])) {
-            $whereCondition = $crmHelper->getTasksByParentType($params, $userId)['whereCondition'];
-            $whereConditionParams = $crmHelper->getTasksByParentType($params, $userId)['whereConditionParams'];
-        } else if (isset($params['filter']['idTask.groupsNames'])) {
-            $whereCondition = $crmHelper->getTasksByGroupName($params, $userId)['whereCondition'];
-            $whereConditionParams = $crmHelper->getTasksByGroupName($params, $userId)['whereConditionParams'];
-        } else {
-            $whereCondition = $crmHelper->getTasksSimpleCondition($params, $userId)['whereCondition'];
-            $whereConditionParams = $crmHelper->getTasksSimpleCondition($params, $userId)['whereConditionParams'];
-        }
-
-        $crmQuery = CrmTasks::model()->taskListQuery($whereCondition, $whereConditionParams);
+        $dataHelper = $crmHelper->getTasksWhereConditions($params, $userId);
+        $crmQuery = CrmTasks::model()->taskListQuery($dataHelper['data']['whereCondition'], $dataHelper['data']['whereConditionParams']);
 
         if(isset($params['isTable'])){
             $crmQuery->limit($page['limit']);
@@ -244,6 +219,7 @@ class TasksController extends TeacherCabinetController
             $count = count($tasks);
             $rows['count'] = $count;
         }
+        $rows['isFilter'] = $dataHelper['isFilter'];
         $rows['rows'] = $tasks;
 
         echo json_encode($rows);
