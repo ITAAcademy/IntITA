@@ -174,7 +174,7 @@ class CrmHelper
         ->select('crtThirdUserFilter.id_task')
         ->from('user as uThirdUserFilter')
         ->join('crm_roles_tasks crtThirdUserFilter', 'crtThirdUserFilter.id_user = uThirdUserFilter.id')
-        ->where('uThirdUserFilter.firstName like :param or uThirdUserFilter.middleName like :param or uThirdUserFilter.secondName like :param or uThirdUserFilter.email like :param', [':param' => $param])
+        ->where('uThirdUserFilter.firstName like :param or uThirdUserFilter.middleName like :param or uThirdUserFilter.secondName like :param or uThirdUserFilter.email like :param and crtThirdUserFilter.cancelled_date is null', [':param' => $param])
         ->group('crtThirdUserFilter.id_task')
         ->getText();
 
