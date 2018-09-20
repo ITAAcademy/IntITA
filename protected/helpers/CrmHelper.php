@@ -276,6 +276,33 @@ class CrmHelper
         return $this->backBoneForCRMQuery($params, $userId, $subQuery);
     }
 
+// table CRM filter by task created date
+
+    protected function getTasksByCreatedDate($params, $userId)
+    {
+        $paramData = '%'.$params['filter']['idTask.created_date'].'%';
+        $paramToWhere = ' and ctMain.created_date LIKE :taskDate';
+        $conditionParams = [
+            'allUserTasksCondidtionParams' => [':id_user' => $userId, ':taskDate' => $paramData],
+            'userTasksByRoleConditionParams' => [':id_user' => $userId, ':id_role' => $params['id'], ':taskDate' => $paramData]
+        ];
+        return $this->backBoneForCRMQuery($params, $userId, $paramToWhere, $conditionParams);
+    }
+
+// table CRM filter by task State
+
+    protected function getTasksByState($params, $userId)
+    {
+        $paramData = ' and ctsMain.id = :stateId';
+        $conditionParams = [
+            'allUserTasksCondidtionParams' => [':id_user' => $userId, ':stateId' => $params['filter']['crmStates.id']],
+            'userTasksByRoleConditionParams' => [':id_user' => $userId, ':id_role' => $params['id'], ':stateId' => $params['filter']['crmStates.id']]
+        ];
+        return $this->backBoneForCRMQuery($params, $userId, $paramData, $conditionParams);
+    }
+
+// this connection with task controller actionGetTasks
+
     public function getTasksWhereConditions($params, $userId)
     {
         if(isset($params['filter'])) {
@@ -318,6 +345,11 @@ class CrmHelper
                 case 'idTask.created_date':
                     return [
                         'data' => $this->getTasksByCreatedDate($params, $userId),
+                        'isFilter' => true
+                    ];
+                case 'crmStates.id':
+                    return [
+                        'data' => $this->getTasksByState($params, $userId),
                         'isFilter' => true
                     ];
             }
