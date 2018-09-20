@@ -83,7 +83,7 @@ class CrmHelper
 
     protected function taskByFilterWithinGroup($roles, $param = '')
     {
-        $rolesCase = empty($roles) ? '' : ' and crtByGroupWithRoles.role = :id_role';
+        $rolesCase = empty($roles) ? '' : ' and csrtByGroup.role = :id_role';
         return '(SELECT csrtByGroup.id_task
             FROM crm_subgroup_roles_tasks as csrtByGroup
             join crm_roles_tasks as crtByGroupWithRoles on crtByGroupWithRoles.id_task = csrtByGroup.id_task
