@@ -6,7 +6,6 @@ class CrmHelper
     {
         $tasksIds = CrmHelper::getIndividualUsersCrmTasks($user, $active, $role, $completed);
         $subgroupsTasksIds = CrmHelper::getSubgroupsCrmTasks($user, $active, $role, $completed);
-
         $ids = array_unique(array_merge($tasksIds, $subgroupsTasksIds));
         return $ids;
     }
@@ -83,21 +82,15 @@ class CrmHelper
 
     protected function taskByFilterWithinGroup($roles, $param = '')
     {
-        $rolesCase = empty($roles) ? [
-            'join' => '',
-            'where' => ''
-        ] : [
-            'join' => ' join crm_roles_tasks as crtByGroupWithRoles on crtByGroupWithRoles.id_task = ctByGroup.id ',
-            'where' => ' and crtByGroupWithRoles.role = :id_role'
-        ];
+        $rolesCase = empty($roles) ? '' : ' and csrtByGroup.role = :id_role';
         return '(SELECT csrtByGroup.id_task
             FROM crm_subgroup_roles_tasks as csrtByGroup
-            join crm_tasks as ctByGroup on ctByGroup.id = csrtByGroup.id_task'.$rolesCase['join'].'
+            join crm_roles_tasks as crtByGroupWithRoles on crtByGroupWithRoles.id_task = csrtByGroup.id_task
+            join crm_tasks as ctByGroup on ctByGroup.id = crtByGroupWithRoles.id_task
             where csrtByGroup.id_subgroup in (
                     SELECT osByGroup.id_subgroup FROM offline_students as osByGroup
                     where osByGroup.id_user = :id_user
-                ) 
-            and ctByGroup.cancelled_date is null'.$param.$rolesCase['where'].'
+                ) and ctByGroup.cancelled_date is null'.$param.$rolesCase.'
             group by csrtByGroup.id_task)';
     }
 
@@ -107,7 +100,7 @@ class CrmHelper
 
         return '(select crtByUser.id_task 
                 from crm_roles_tasks as crtByUser
-                where crtByUser.id_user = :id_user'.$param.$rolesCase.'
+                where crtByUser.id_user = :id_user and crtByUser.cancelled_date is null'.$param.$rolesCase.'
             group by crtByUser.id_task)';
     }
 
@@ -137,7 +130,7 @@ class CrmHelper
             'subQueryFirst' => ''
         ] : [
             'subQuerySecond' => ' and crtSecUserFilter.role = :id_role',
-            'subQueryFirst' => ' and crtFirstUserFilter.role = :id_role'
+            'subQueryFirst' => ' and csrtFirstUserFilter.role = :id_role'
         ];
 
         $rolesCaseParam = empty($id_role) ? [
@@ -158,7 +151,7 @@ class CrmHelper
         $subQuerySecond = Yii::app()->db->createCommand()
         ->select('crtSecUserFilter.id_task')
         ->from('crm_roles_tasks as crtSecUserFilter')
-        ->where('crtSecUserFilter.id_user = :id_user'.$rolesCase['subQuerySecond'], $rolesCaseParam)
+        ->where('crtSecUserFilter.id_user = :id_user and crtSecUserFilter.cancelled_date is null'.$rolesCase['subQuerySecond'], $rolesCaseParam)
         ->group('crtSecUserFilter.id_task')
         ->getText();
 
@@ -169,12 +162,12 @@ class CrmHelper
         ->getText();
 
         $subQueryFirst = Yii::app()->db->createCommand()
-        ->select('ctFirstUserFilter.id')
+        ->select('csrtFirstUserFilter.id_task')
         ->from('crm_subgroup_roles_tasks as csrtFirstUserFilter')
-        ->join('crm_tasks ctFirstUserFilter', 'ctFirstUserFilter.id = csrtFirstUserFilter.id_task')
-        ->join('crm_roles_tasks crtFirstUserFilter', 'crtFirstUserFilter.id_task = ctFirstUserFilter.id')
+        ->join('crm_roles_tasks crtFirstUserFilter', 'crtFirstUserFilter.id_task = csrtFirstUserFilter.id_task')
+        ->join('crm_tasks ctFirstUserFilter', 'ctFirstUserFilter.id = crtFirstUserFilter.id_task')
         ->where('csrtFirstUserFilter.id_subgroup in ('.$whereSelectToSubQueryFirst.') and ctFirstUserFilter.cancelled_date is null'.$rolesCase['subQueryFirst'], $rolesCaseParam)
-        ->group('ctFirstUserFilter.id')
+        ->group('csrtFirstUserFilter.id_task')
         ->union($subQuerySecond)
         ->getText();
 
@@ -182,14 +175,14 @@ class CrmHelper
         ->select('crtThirdUserFilter.id_task')
         ->from('user as uThirdUserFilter')
         ->join('crm_roles_tasks crtThirdUserFilter', 'crtThirdUserFilter.id_user = uThirdUserFilter.id')
-        ->where('uThirdUserFilter.firstName like :param or uThirdUserFilter.middleName like :param or uThirdUserFilter.secondName like :param or uThirdUserFilter.email like :param', [':param' => $param])
+        ->where('uThirdUserFilter.firstName like :param or uThirdUserFilter.middleName like :param or uThirdUserFilter.secondName like :param or uThirdUserFilter.email like :param and crtThirdUserFilter.cancelled_date is null', [':param' => $param])
         ->group('crtThirdUserFilter.id_task')
         ->getText();
 
         return Yii::app()->db->createCommand()
-        ->select('id')
+        ->select('id_task')
         ->from('('.$subQueryFirst.') as unionFirst')
-        ->where('id in ('.$unionWhereSelect.')', $rolesCaseUnionParam)
+        ->where('id_task in ('.$unionWhereSelect.')', $rolesCaseUnionParam)
         ->getText();
     }
 
