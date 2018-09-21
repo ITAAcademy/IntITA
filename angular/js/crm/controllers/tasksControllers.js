@@ -207,7 +207,14 @@ angular
                 }
             };
 
+            function removeEmptyProperty (filterObject) {
+                for(var item in filterObject) {
+                    if (!filterObject[item].length) {delete filterObject[item]}
+                }
+            }
+
             $scope.applyTasksFilter = function (keyEvent) {
+                removeEmptyProperty($scope.filter);
                 if (!keyEvent || keyEvent.which === 13) {
                     $rootScope.loadTasks(
                         $rootScope.roleId,
@@ -235,19 +242,56 @@ angular
                     sorting: {
                         'idTask.priority': 'desc',
                     },
-                    id: idRole
+                    id: idRole,
+                    isTable: true,
+                    total: $rootScope.taskCountForPagination
                 }, {
                     getData: function (params) {
+                        removeEmptyProperty($scope.filter);
                         return crmTaskServices
                             .getTasks(params.url())
                             .$promise
                             .then(function (data) {
                                 params.total(data.count);
-                                return data.rows;
+                                return prepareDataForTable(data);
                             });
                     }
                 });
                 return promise;
+            };
+
+            function prepareDataForTable(data) {
+                var dataArray = [];
+                data.rows.map(function(item) {
+                    dataArray.push({
+                        idTask: {
+                            id: item.id_task,
+                            name: item.title,
+                                 // observers: item.observers,
+                            producer: 'item.idTask.producerName.id',
+                            executant: 'item.idTask.executantName.id',
+                            description: $filter('limitTo')(item.task_description, 70),
+                            status: "concept",
+                            type: "task",
+                            taskState: {
+                                id_state: item.idState,
+                                description: item.stateDescription
+                            },
+                            taskType: {
+                                title_ua: item.typeTitle
+                            },
+                            created_date: item.created_date,
+                            endTask: item.endTask,
+                            deadline: item.deadline,
+                            priorityModel: {
+                                title: item.priorityTitle,
+                                description: item.priorityDescription
+                            }
+                        }
+                    });
+                });
+                data.rows = dataArray;
+                return data.rows;
             };
 
             $scope.loadKanbanTasks = function (idRole) {
@@ -255,35 +299,35 @@ angular
                     crmTaskServices
                         .getTasks({
                             'sorting[idTask.priority]': 'desc',
+                            'count': $rootScope.taskCountForPagination !== undefined ? $rootScope.taskCountForPagination : 20,
                             id: idRole,
                             'filter[idTask.name]': $scope.filter.name,
                             'filter[idUser.fullName]': $scope.filter.fullName,
                             'filter[idTask.id]': $scope.filter.id,
-                            'filter[idTask.priority]': $scope.filter.priority,
-                            'filter[idTask.type]': $scope.filter.type,
+                            'filter[crmPriority.id]': $scope.filter.priority,
+                            'filter[crmType.id]': $scope.filter.type,
                             'filter[idTask.parentType]': $scope.filter.parentType,
-                            'filter[idTask.groupsNames]': $scope.filter.groupsNames,
+                            'filter[idTask.groupsNames]': $scope.filter.groupsNames
                         })
                         .$promise
                         .then(function (data) {
+                            if (!data.isFilter) {
+                                $rootScope.taskCountForPagination = data.count;    
+                            }
                             $scope.crmCards = data.rows.map(function (item) {
                                 return {
-                                    id: item.idTask.id,
-                                    title: item.idTask.name,
-                                    observers: item.observers,
-                                    producer: item.idTask.producerName.id,
-                                    executant: item.idTask.executantName.id,
-                                    description: $filter('limitTo')(item.idTask.body, 70),
+                                    id: item.id_task,
+                                    title: item.title,
+                                    description: $filter('limitTo')(item.task_description, 70),
                                     status: "concept",
                                     type: "task",
-                                    stage_id: item.idTask.id_state,
-                                    endTask: item.idTask.endTask,
-                                    deadline: item.idTask.deadline,
-                                    priorityTitle: item.idTask.priorityModel.title,
-                                    priority: item.idTask.priorityModel.description
-                                }
+                                    stage_id: item.idState,
+                                    endTask: item.endTask,
+                                    deadline: item.deadline,
+                                    priorityTitle: item.priorityTitle,
+                                    priority: item.priorityDescription
+                                };
                             });
-
                             $scope.initCrmKanban($scope.crmCards);
 
                             $timeout(function () {

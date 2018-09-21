@@ -110,4 +110,15 @@ class TeachersController extends Controller
             'teacherletter' => $teacherLetter
         ));
     }
+
+    public function actionApiGetAllTeacherData()
+    {
+        $teacher = new Teacher();
+        $teachers = $teacher->teacherDataWithModulesAPI();
+        $userHelper = new UserHelper();
+        $teachers = $userHelper->prepareTeachersWithModules($teachers);
+        header("Access-Control-Allow-Origin: *");
+        echo CJSON::encode($teachers);
+        Yii::$app->end();
+    }
 }

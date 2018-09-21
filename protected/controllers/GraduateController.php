@@ -229,4 +229,11 @@ class GraduateController extends Controller
             ));
     }
 
+    public function actionApiGetAllAlumniData()
+    {
+        $graduate = new Graduate();
+        $alumni = $graduate->alumniDataAPI();
+        echo CJSON::encode($alumni);
+    }
+
 }
