@@ -117,6 +117,8 @@ class TeachersController extends Controller
         $teachers = $teacher->teacherDataWithModulesAPI();
         $userHelper = new UserHelper();
         $teachers = $userHelper->prepareTeachersWithModules($teachers);
+        header("Access-Control-Allow-Origin: *");
         echo CJSON::encode($teachers);
+        Yii::$app->end();
     }
 }
