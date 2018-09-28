@@ -46,7 +46,9 @@ class AdvancePaymentSchema implements IPaymentCalculator{
     public function getDuration(DateTime $startDate){
         $endDate = clone $startDate;
         if($this->payCount>12){
-            return $this->payCount;
+            $endDate->modify('+'.$this->payCount.' month');
+            $interval = date_diff($startDate, $endDate);
+            return $interval->days;
         } else {
             $endDate->modify('+'.$this->duration.' month');
             $interval = date_diff($startDate, $endDate);
