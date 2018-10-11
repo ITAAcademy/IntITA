@@ -770,4 +770,66 @@ class SiteController extends Controller {
         $bannersForGraduates = BannersForGraduates::model()->findAll('visible = 1');
         echo CJSON::encode(['banners'=>$bannersForGraduates]);
     }
+
+    public function actionIntitaOauth() {
+        $query = http_build_query([
+            'client_id' => Yii::app()->params['INTITA_CLIENT_ID'],
+            'redirect_uri' => Yii::app()->params['INTITA_REDIRECT'],
+            'response_type' => 'code',
+            'scope' => '',
+        ]);
+
+        $this->redirect(Yii::app()->params['INTITA_OAUTH'].'/oauth/authorize?'.$query);
+    }
+
+    public function actionIntitaLogin() {
+        $url = Yii::app()->params['INTITA_OAUTH']."/oauth/token";
+        $json_data = http_build_query(array(
+                'grant_type' => 'authorization_code',
+                'client_id' => Yii::app()->params['INTITA_CLIENT_ID'],
+                'client_secret' => Yii::app()->params['INTITA_CLIENT_SECRET'],
+                'redirect_uri' => Yii::app()->params['INTITA_REDIRECT'],
+                'code' => $_GET['code'],
+        ));
+        $post_data['form_params'] = $json_data;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: application/x-www-form-urlencoded'));
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        $response = curl_exec($ch);
+        if(json_decode($response)->access_token){
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => Yii::app()->params['INTITA_OAUTH']."/api/user",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "accept: application/json",
+                    "authorization: Bearer ".json_decode($response)->access_token,
+                    "cache-control: no-cache",
+                ),
+            ));
+
+            $resp = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                echo "cURL Error #:" . $err;
+            } else {
+                $user = StudentReg::model()->findByPk(json_decode($resp)->id);
+                if($user){
+                    $user->socialLogin();
+                    $this->redirect(Yii::app()->createUrl('/cabinet'));
+                }
+            }
+        }
+    }
 }
