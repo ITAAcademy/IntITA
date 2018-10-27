@@ -20,7 +20,7 @@
 
    private function configureSender(){
     $this->sender->isSMTP();
-    $this->XMailer = " ";
+    $this->sender->XMailer = " ";
     $this->sender->Host =Yii::app()->params['mailParams']['smtpHost'];
     $this->sender->Port =Yii::app()->params['mailParams']['smtpPort'];
     if(Yii::app()->params['mailParams']['smtpDebug']){
