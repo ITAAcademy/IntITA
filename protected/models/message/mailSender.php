@@ -39,7 +39,7 @@
     {
      $this->loadSender();
      $this->configureSender();
-     $this->sender->setFrom($from, $fromName);
+     $this->sender->setFrom($from, mb_encode_mimeheader($fromName,'utf-8'));
      $this->sender->addReplyTo($from);
      $this->sender->addAddress($to);
      $this->sender->SMTPAutoTLS = false;
