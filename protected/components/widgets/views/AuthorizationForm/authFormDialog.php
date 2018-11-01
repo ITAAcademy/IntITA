@@ -97,8 +97,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
             <div id="uLogin" x-ulogin-params="display=buttons;fields=;optional=email,first_name,last_name,nickname,phone,photo_big,city;
                                     redirect_uri=<?php echo Config::getBaseUrl() . '/site/sociallogin' ?>">
                 <div id="uLoginImages">
-                    <a href="<?php echo Config::getBaseUrl() . '/site/intitaOauth' ?>" style="text-decoration: none">
-                        <img style="margin: 0 2px" src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'intita.png'); ?>"
+                    <a href="<?php echo Config::getBaseUrl() . '/site/intitaOauth' ?>" style="text-decoration: none; outline: none">
+                        <img style="margin: 0 2px;" src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'intita.svg'); ?>"
                              x-ulogin-button="intita" title="INTITA"/>
                     </a>
                     <img src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'facebook2.png'); ?>"
