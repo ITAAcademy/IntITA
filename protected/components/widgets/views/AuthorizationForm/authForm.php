@@ -97,8 +97,8 @@
             <div id="uReg" x-ulogin-params="display=buttons;fields=;optional=email,first_name,last_name,nickname,phone,photo_big,city;
                                         redirect_uri=<?php echo Config::getBaseUrl() . '/site/sociallogin' ?>">
                 <div id="uLoginImages" style="display: inline-flex;">
-                    <a href="<?php echo Config::getBaseUrl() . '/site/intitaOauth' ?>" style="text-decoration: none">
-                        <img style="margin: 0 2px" src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'intita.png'); ?>"
+                    <a href="<?php echo Config::getBaseUrl() . '/site/intitaOauth' ?>" style="text-decoration: none; outline: none">
+                        <img style="margin: 0 2px;" src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'intita.svg'); ?>"
                              x-ulogin-button="intita" title="INTITA"/>
                     </a>
                     <img style="margin: 0 2px" src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'facebook2.png'); ?>"
