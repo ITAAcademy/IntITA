@@ -10,46 +10,45 @@
   {
    use composerLoader;
 
-   private $emailSender;
+   private $sender;
 
    private function loadSender()
     {
      $this->loadComposerClasses();
-     $this->emailSender = new \PHPMailer\PHPMailer\PHPMailer();
+     $this->sender = new \PHPMailer\PHPMailer\PHPMailer();
     }
 
    private function configureSender(){
-    $this->emailSender->isSMTP();
-    $this->emailSender->Host =Yii::app()->params['mailParams']['smtpHost'];
-    $this->emailSender->Port =Yii::app()->params['mailParams']['smtpPort'];
+    $this->sender->isSMTP();
+    $this->sender->XMailer = " ";
+    $this->sender->Host =Yii::app()->params['mailParams']['smtpHost'];
+    $this->sender->Port =Yii::app()->params['mailParams']['smtpPort'];
     if(Yii::app()->params['mailParams']['smtpDebug']){
-     $this->emailSender->SMTPDebug=Yii::app()->params['mailParams']['smtpDebug'];
+     $this->sender->SMTPDebug=Yii::app()->params['mailParams']['smtpDebug'];
     }
     if(Yii::app()->params['mailParams']['smtpAuth']){
-     $this->emailSender->Username =Yii::app()->params['mailParams']['smtpUsername'];
-     $this->emailSender->Password =Yii::app()->params['mailParams']['smtpPassword'];
-     $this->emailSender->SMTPSecure =Yii::app()->params['mailParams']['smtpProtocol'];
+     $this->sender->Username =Yii::app()->params['mailParams']['smtpUsername'];
+     $this->sender->Password =Yii::app()->params['mailParams']['smtpPassword'];
+     $this->sender->SMTPSecure =Yii::app()->params['mailParams']['smtpProtocol'];
     }
 
 
    }
 
-   public function sendmail($from=null, $fromName = null, $to, $subject, $message)
+   public function sendmail($from, $fromName = "IntITA", $to, $subject, $message)
     {
      $this->loadSender();
      $this->configureSender();
-     $senderEmail = (is_null($from)?Config::getNotifyEmail():$from);
-     $senderName = (is_null($fromName)?'IntITA':$fromName);
-     $this->emailSender->setFrom($senderEmail,$senderName);
-     $this->emailSender->addReplyTo($senderEmail);
-     $this->emailSender->addAddress($to);
-     $this->emailSender->SMTPAutoTLS = false;
-     $this->emailSender->isHTML(true);
-     $this->emailSender->Subject = mb_encode_mimeheader($subject,'utf-8');
-     $this->emailSender->Body = $message;
+     $this->sender->setFrom($from, mb_encode_mimeheader($fromName,'utf-8'));
+     $this->sender->addReplyTo($from);
+     $this->sender->addAddress($to);
+     $this->sender->SMTPAutoTLS = false;
+     $this->sender->isHTML(true);
+     $this->sender->Subject = mb_encode_mimeheader($subject,'utf-8');
+     $this->sender->Body = $message;
      try
       {
-       $this->emailSender->send();
+       $this->sender->send();
        return true;
       } catch (Exception $e)
       {

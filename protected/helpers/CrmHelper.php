@@ -89,7 +89,7 @@ class CrmHelper
             join crm_tasks as ctByGroup on ctByGroup.id = crtByGroupWithRoles.id_task
             where csrtByGroup.id_subgroup in (
                     SELECT osByGroup.id_subgroup FROM offline_students as osByGroup
-                    where osByGroup.id_user = :id_user
+                    where osByGroup.id_user = :id_user and osByGroup.end_date is null
                 ) and ctByGroup.cancelled_date is null'.$param.$rolesCase.'
             group by csrtByGroup.id_task)';
     }
