@@ -388,7 +388,7 @@ class RevisionController extends Controller {
         }
 
         $lectureRev->state->changeTo('editable', Yii::app()->user);
-        $revisionRequest=MessagesRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'cancelled'=>0));
+        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('model_id'=>$lectureRev->id_revision,'action'=>2));
         if($revisionRequest){
             $revisionRequest->setDeleted();
         }
@@ -405,10 +405,7 @@ class RevisionController extends Controller {
 
         $lectureRev->state->changeTo('rejected', Yii::app()->user);
         
-        $message = new MessagesRejectRevision();
-        $message->sendRevisionRejectMessage($lectureRev, $comment);
-
-        $revisionRequest=MessagesRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'cancelled'=>0, 'user_rejected'=> null));
+        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('model_id'=>$lectureRev->id_revision,'action'=>0));
         if($revisionRequest){
             $revisionRequest->setRejected();
         }
@@ -440,7 +437,7 @@ class RevisionController extends Controller {
 
         $lectureRev->state->changeTo('approved', Yii::app()->user);
         
-        $revisionRequest=MessagesRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'cancelled'=>0, 'user_approved'=> null));
+        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'action'=>0,));
         if($revisionRequest){
             $revisionRequest->setApproved();
         }
@@ -1282,28 +1279,29 @@ class RevisionController extends Controller {
     }
 
     private function sendRevisionRequest(RevisionLecture $revision){
-        if($revision){
-            $message = new MessagesRevisionRequest();
-            if($message->isRequestOpen(array($revision))) {
-                echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії лекції двічі.";
-            } else {
-                $transaction = Yii::app()->db->beginTransaction();
-                try {
-                    $message->build($revision, Yii::app()->user->model->registrationData);
-                    $message->create();
-                    $sender = new MailTransport();
+        if($revision)
+         {
+          $request = LectureRevisionRequest::model()->find('request_model_id = :revision' ,['revision'=> $revision->id_revision]);
+          if ($request)
+           {
+            if ($request->isRequestOpen())
+             echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії лекції двічі.";
+            Yii::app()->end();
+           } else
+           {
+            $request = new LectureRevisionRequest();
+            if ($request->newRequest($revision->id_revision))
+             {
+              echo "Запит на затвердження ревізії лекції успішно відправлено. Зачекайте, поки контент менеджер підтвердить запит.";
+              Yii::app()->end();
+             } else
+             {
+              throw new \application\components\Exceptions\IntItaException(500, "Запит на затвердження ревізії лекції не вдалося надіслати.");
+             }
+           }
+         }
 
-                    $message->send($sender);
-                    $transaction->commit();
-                    echo "Запит на затвердження ревізії лекції успішно відправлено. Зачекайте, поки контент менеджер підтвердить запит.";
-                } catch (Exception $e) {
-                    $transaction->rollback();
-                    throw new \application\components\Exceptions\IntItaException(500, "Запит на затвердження ревізії лекції не вдалося надіслати.");
-                }
-            }
-        } else {
-            throw new \application\components\Exceptions\IntItaException(400);
-        }
+       throw new \application\components\Exceptions\IntItaException(400, "Некоректний запит!");
     }
 
     public function actionRevisionsAuthors() {

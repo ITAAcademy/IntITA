@@ -124,6 +124,7 @@ class LibraryController extends Controller
 	{
         $criteria = new CDbCriteria;
         $criteria->addCondition('status=' . Library::ACTIVE);
+        $criteria->order = 'position';
 	    $dataProvider=new CActiveDataProvider('Library',array(
             'criteria' => $criteria,
         ));

@@ -252,7 +252,7 @@ class CourseController extends Controller
             $data[$key]['promotion']=$promotion;
             $data[$key]['template']['name']=$promotion->schemesTemplate->getName();
             $data[$key]['template']['description']=$promotion->schemesTemplate->getDescription();
-            $data[$key]['template']['isRequestOpen']=MessagesServiceSchemesRequest::model()->isRequestOpen(
+            $data[$key]['template']['isRequestOpen']=ServiceSchemesRequest::model()->isRequestOpen(
                 array('service'=>$service->service_id,'schemaTemplate'=>$promotion->schemesTemplate->id,'user'=>Yii::app()->user->getId())
             ) || $service->getContentModel()->isDeveloping();
         }
@@ -280,19 +280,10 @@ class CourseController extends Controller
         $model = StudentReg::model()->findByPk(Yii::app()->user->getId());
         $schemesTemplate= PaymentSchemeTemplate::model()->findByPk($schemesTemplateId);
         if($model && $service){
-            $transaction = Yii::app()->db->beginTransaction();
-            try {
-                $message = new MessagesServiceSchemesRequest();
-                $message->build($service, $schemesTemplate, $model);
-                $message->create();
-                $sender = new MailTransport();
-                $message->send($sender);
-                $transaction->commit();
-                echo "Запит на застосування акційної схеми успішно відправлено. Зачекайте, поки ваш запит буде оброблено";
-            } catch (Exception $e){
-                $transaction->rollback();
-                throw new \application\components\Exceptions\IntItaException(500, "Запит на застосування акційної схеми не вдалося надіслати.");
-            }
+         $message = new ServiceSchemesRequest();
+         $message->request_model_id = $service->service_id;
+         $message->comment = $schemesTemplate->id;
+         $message->save();
         }
     }
 }

@@ -1,18 +1,16 @@
 <?php
+ /**
+  * Created by PhpStorm.
+  * User: unadm
+  * Date: 28.08.18
+  * Time: 23:04
+  */
 
-interface IRequest
-{
-    public function approve(StudentReg $userApprove);
-    public function setDeleted();
-    public function isRequestOpen($params);
-    public function isApproved();
-    public function isDeleted();
-    public function getMessageId();
-    public function sender();
-    public function title();
-    public function module();
-    public function type();
-    public function statusToString();
-    public function approvedByToString();
-    public function message();
-}
+ interface IRequest
+  {
+   public function approve();
+   public function cancel();
+   public function subject();
+   public function title();
+   public function newRequest($requestedModel);
+  }

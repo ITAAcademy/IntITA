@@ -32,6 +32,7 @@ return array(
         'application.models.crm.tasksState.*',
         'application.vendor.*',
         'application.models.accountancy.services.*',
+        'application.models.library.*',
 
 	),
 	// application components

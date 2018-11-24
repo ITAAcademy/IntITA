@@ -1,4 +1,4 @@
-<div id="footer" ng-style="{'border-color': settings.footer_border_color}">
+<div id="footer" ng-style="{'background-color':settings.footer_background_color, 'border-color': settings.footer_border_color}">
     <div id="footer_main" ng-style="{  'background-color':settings.footer_background_color,
                                     'border-right-color': settings.footer_border_color,
                                     'border-left-color': settings.footer_border_color  }" class="row">
@@ -31,9 +31,8 @@
             <div class=" row">
                 <div class="left_part col-md-6 col-sm-5 col-xs-12">
                     <div class="logo">
-                        <a href="">
-                            <img ng-if="settings.logo" id="footerLogo"
-                                 ng-src='{{settings.id && domainPathLogo+settings.logo || settings.logo}}'>
+                        <a href="" id="footerLogo">
+                            <span ng-include="templateUrl('/partial/logo.html')"></span>
                         </a>
                     </div>
                     <div class="footer_contact" ng-style="{color:settings.footer_link_color}">
@@ -42,11 +41,8 @@
                         <div><span ng-bind="settings.email"></span></div>
                     </div>
                 </div>
-                <div class="footer_menu col-md-6 col-sm-7 hidden-xs">
-                    <a data-hover="{{settings.footer_hover_color}}" data-link="{{settings.footer_link_color}}"
-                       onmouseenter="changeColorOn(this)" onmouseleave="changeColorOff(this)"
-                       ng-repeat="section in listsItemMenu track by $index" href={{section.link}}><span
-                                ng-style="{color:settings.footer_link_color}">{{section.title}}</span></a>
+                <div class="footer_menu col-md-6 col-sm-7 hidden-xs" id="footerMenu">
+                    <div ng-include="templateUrl('/partial/menu.html')"></div>
                 </div>
             </div>
         </div>

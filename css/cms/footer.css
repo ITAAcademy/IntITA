@@ -48,7 +48,7 @@
 .logo{
     padding-right: 10px;
 }
-#footerLogo{
+#footerLogo img{
     max-width: 140px;
     max-height: 40px;
 }
@@ -159,7 +159,6 @@
 
 #cms_content{
     position: relative;
-    padding-bottom: 69px;
     min-height: 100%;
 }
 .edit2{
@@ -172,6 +171,10 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+}
+
+#footerMenu .nav>li>a{
+    font-size: 16px;
 }
 
 

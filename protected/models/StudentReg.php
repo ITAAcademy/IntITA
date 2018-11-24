@@ -838,8 +838,8 @@ class StudentReg extends CActiveRecord {
         $criteria->params = array(':id' => $this->id);
 
         $userMessages = UserMessages::model()->findAll($criteria);
-        $paymentMessages = MessagesPayment::model()->findAll($criteria);
-        $approveRevisionMessages = MessagesApproveRevision::model()->findAll($criteria);
+        $paymentMessages = PaymentRequest::model()->findAll($criteria);
+        $approveRevisionMessages = LectureRevisionRequest::model()->findAll($criteria);
         $rejectRevisionMessages = MessagesRejectRevision::model()->findAll($criteria);
         $rejectModuleRevisionMessages = MessagesRejectModuleRevision::model()->findAll($criteria);
         $notificationsMessages = MessagesNotifications::model()->findAll($criteria);
@@ -859,34 +859,18 @@ class StudentReg extends CActiveRecord {
     }
 
     public function newReceivedMessages() {
-        $criteria = new CDbCriteria();
-        $criteria->alias = 'm';
-        $criteria->order = 'm.id DESC';
-        $criteria->join = 'JOIN message_receiver r ON r.id_message = m.id';
-        $criteria->addCondition('r.deleted IS NULL AND r.read IS NULL and r.id_receiver =' . $this->id . ' and
-        (m.type=' . MessagesType::USER . ' or m.type=' . MessagesType::PAYMENT . ' or m.type=' . MessagesType::APPROVE_REVISION . '
-         or m.type=' . MessagesType::REJECT_REVISION . ' or m.type=' . MessagesType::NOTIFICATION . '
-          or m.type=' . MessagesType::REJECT_MODULE_REVISION . ' or m.type=' . MessagesType::SERVICE_SCHEMES_REQUEST . ')');
+     return Messages::model()->findAll('read_date IS NULL AND receiver = :receiver',[':receiver'=>$this->id]);
 
-        return Messages::model()->findAll($criteria);
     }
 
-    public function newMessages($newReceivedMessages) {
-        $result = [];
-        foreach ($newReceivedMessages as $key => $message) {
-            array_push($result, MessagesFactory::getInstance($message));
-        }
-        return $result;
+    public function newMessages() {
+        return Messages::model()->findAll('read_date IS NULL AND receiver = :receiver',[':receiver'=>$this->id]);
     }
 
     public function sentMessages() {
-        $criteria = new CDbCriteria();
-        $criteria->alias = 'um';
-        $criteria->join = 'LEFT JOIN messages as m ON um.id_message = m.id';
-        $criteria->order = 'm.create_date DESC';
-        $criteria->addCondition('m.sender = ' . $this->id);
-
-        return UserMessages::model()->findAll($criteria);
+     $criteria = new CDbCriteria();
+     $criteria->addCondition('sender = :sender',['receiver'=>$this->id]);
+     return Messages::model()->findAll($criteria);
     }
 
     public function getNameOrEmail() {
@@ -1155,13 +1139,14 @@ class StudentReg extends CActiveRecord {
             $transaction = $connection->beginTransaction();
         }
         try {
-            $message = new MessagesNotifications();
-            $sender = new MailTransport();
-            $sender->renderBodyTemplate($template, $params);
-            $message->build($subject, $sender->template(), array($this), $senderModel);
-            $message->create();
-
-            $message->send($sender);
+            $message = new Messages();
+            $message->type = Messages::SYSTEM_MESSAGE;
+            $message->sender = $senderModel->id;
+            $message->receiver = $this->id;
+            $message->subject = $subject;
+            $message->message_text = $message->renderNotifyMessage($template,$params);
+            $message->save();
+            $message->notify($template,$params);
             if ($transaction != null) {
                 $transaction->commit();
             }

@@ -9,28 +9,28 @@
 ?>
 <?php if ($owner) {?>
     <p class="text-right">
-        <a href="" ng-click="show_project=!show_project" class="about_project" ng-class="{'collapsed': !show_project}">Інструкція</a>
+        <a href="" ng-click="show_project=!show_project" class="about_project" ng-class="{'collapsed': !show_project}"><?php echo Yii::t('lecture', '0085'); ?></a>
     </p>
     <div ng-if="show_project">
         <div>
-            Якщо твій проект знаходиться на gitlab, виконай:
+            <?php echo Yii::t('profile', '1002'); ?>&#58;
             <ul>
                 <li>
                     Settings->Repository->Deploy keys->CI Press Enable
                 </li>
                 <li>
-                    Дочекайся затвердження проекта тренером
+                    <?php echo Yii::t('profile', '1003'); ?>
                 </li>
             </ul>
             <ul>
                 <li>
-                    Завантажуйте лише веб проекти. У корені проекту має знаходитися файл index.html.
+                    <?php echo Yii::t('profile', '1004'); ?>
                 </li>
                 <li>
-                    Проект повинен вміщувати лише файли з розширенням html, css, js та медіа контент.
+                    <?php echo Yii::t('profile', '1005'); ?>
                 </li>
                 <li>
-                    Кожен новий проект повинен містити назву відмінну від попередніх.
+                    <?php echo Yii::t('profile', '1006'); ?>
                 </li>
             </ul>
         </div>
@@ -38,13 +38,13 @@
         <img src="<?php echo StaticFilesHelper::createPath('image', 'common', 'project2.jpg');?>">
     </div>
 <div class="col-md-12 col-sm-12" >
-    <button class="btn btn-primary" ng-click="addProject()"> Додати проект</button>
+    <button class="btn btn-primary" ng-click="addProject()"><?php echo Yii::t('profile', '1001'); ?></button>
 </div>
 <?php }?>
 <div class="row studentProject" ng-repeat="project in projects">
 
         <div class="col-md-2 col-sm-2 ">
-                <strong>Проект:</strong>
+                <strong><?php echo Yii::t('profile', '1007'); ?>&#58;</strong>
         </div>
         <div class="col-md-5 col-sm-5" >
             <span ng-show="project.need_check != 1"><a href="{{baseProjectsUrl}}/{{project.id_student}}/{{project.title}}" target="_blank">{{project.title}}</a></span>
@@ -53,10 +53,14 @@
     <?php if ($owner) {?>
         <div class="col-md-5 col-sm-5" style="">
             <span class="col-sm-4">
-            <button class="btn btn-sm btn-primary" ng-click="editProject(project.id)">Змінити</button>
+            <button class="btn btn-sm btn-primary" ng-click="editProject(project.id)">
+                <?php echo Yii::t('profile', '1008'); ?>
+            </button>
             </span>
             <span class="col-sm-1">
-            <button class="btn btn-sm btn-success" ng-click="makeApproveRequest(project.id)">Запит на перевірку</button>
+            <button class="btn btn-sm btn-success" ng-click="makeApproveRequest(project.id)">
+                <?php echo Yii::t('profile', '1009'); ?>
+            </button>
             </span>
         </div>
     <?php }?>

@@ -29,7 +29,7 @@
                     <img src="<?php echo StaticFilesHelper::fullPathTo('css', 'images/graduates/forma_1.png'); ?>">
                 </div>
                 <div class="col-md-9 col-sm-10 title-without-padding-banners-graduates">
-                    <p>Компанії, де працюють наші випускники</p>
+                    <p><?php echo Yii::t('graduates', '0999')?></p>
                 </div>
             </div>
             <ul class="container" drctv ng-show="slides.length!=0">

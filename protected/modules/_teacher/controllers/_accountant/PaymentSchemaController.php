@@ -63,7 +63,7 @@ class PaymentSchemaController extends TeacherCabinetController
     public function actionApplyTemplateView($request=null)
     {
         if($request){
-            $model=MessagesServiceSchemesRequest::model()->findByPk($request);
+            $model=ServiceSchemesRequest::model()->findByPk($request);
             if(!$model->isApprovable())
                 throw new Exception('Статус запиту не дозволяє його застосувати');
             if($model->service->courseServices){
@@ -314,12 +314,12 @@ class PaymentSchemaController extends TeacherCabinetController
         $criteria->join .= ' left join acc_course_service cs on cs.service_id=s.service_id';
         $criteria->join .= ' left join course c on c.course_ID=cs.course_id';
         if(isset($requestParams['filter']['status']) && $requestParams['filter']['status']=='4'){
-            $criteria->condition = 't.status='.MessagesServiceSchemesRequest::NEW_REQUEST.' or t.status='.MessagesServiceSchemesRequest::IN_PROCESS;
+            $criteria->condition = 't.status='.ServiceSchemesRequest::STATUS_NEW;
             unset($requestParams['filter']);
         }
         $criteria->addCondition('c.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
         or m.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
-        $ngTable = new NgTableAdapter('MessagesServiceSchemesRequest', $requestParams);
+        $ngTable = new NgTableAdapter('ServiceSchemesRequest', $requestParams);
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
         echo json_encode($result);
@@ -417,7 +417,7 @@ class PaymentSchemaController extends TeacherCabinetController
     public function actionRejectSchemaRequest()
     {
         $comment=$_POST['reject_comment']?$_POST['reject_comment']:null;
-        $model=MessagesServiceSchemesRequest::model()->findByPk($_POST['id_message']);
+        $model=ServiceSchemesRequest::model()->findByPk($_POST['id_message']);
         if($model->service->courseServices){
             $contentModel=$model->service->courseServices->courseModel;
         }else{
@@ -431,7 +431,7 @@ class PaymentSchemaController extends TeacherCabinetController
     {
         $idMessage=Yii::app()->request->getParam('idMessage');
         $status=Yii::app()->request->getParam('status');
-        $model=MessagesServiceSchemesRequest::model()->findByPk($idMessage);
+        $model=ServiceSchemesRequest::model()->findByPk($idMessage);
         if($model->service->courseServices){
             $contentModel=$model->service->courseServices->courseModel;
         }else{
@@ -443,7 +443,7 @@ class PaymentSchemaController extends TeacherCabinetController
     
     public function actionSetRequestComment()
     {
-        $model=MessagesServiceSchemesRequest::model()->findByPk($_POST['id_message']);
+        $model=ServiceSchemesRequest::model()->findByPk($_POST['id_message']);
         if($model->service->courseServices){
             $contentModel=$model->service->courseServices->courseModel;
         }else{
@@ -456,7 +456,7 @@ class PaymentSchemaController extends TeacherCabinetController
     public function actionGetSchemesRequest()
     {
         $params = array_filter($_POST);
-        echo CJSON::encode(MessagesServiceSchemesRequest::model()->findByPk($params['id_message']));
+        echo CJSON::encode(ServiceSchemesRequest::model()->findByPk($params['id_message']));
     }
     
     public function actionApplySchemesTemplate () {
@@ -516,7 +516,7 @@ class PaymentSchemaController extends TeacherCabinetController
             }
 
             if(isset($params['request']) && $user){
-                if(MessagesServiceSchemesRequest::model()->findByPk($params['request'])->approve()){
+                if(ServiceSchemesRequest::model()->findByPk($params['request'])->approve()){
                     $this->approvedNotify($offer);
                 };
             }else if($user){
@@ -706,12 +706,13 @@ class PaymentSchemaController extends TeacherCabinetController
 
     public function actionGetActualSchemesRequestsCount()
     {
-        $modulesRequestsCount=count(MessagesServiceSchemesRequest::model()->with('service.moduleServices.moduleModel')->findAll(
+        var_dump(ServiceSchemesRequest::model()->with('service')->findAll());die;
+        $modulesRequestsCount=count(ServiceSchemesRequest::model()->with('service.moduleServices.moduleModel')->findAll(
             'moduleModel.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
-            and t.status='.MessagesServiceSchemesRequest::NEW_REQUEST));
-        $coursesRequestsCount=count(MessagesServiceSchemesRequest::model()->with('service.courseServices.courseModel')->findAll(
+            and t.status='.ServiceSchemesRequest::STATUS_NEW));
+        $coursesRequestsCount=count(ServiceSchemesRequest::model()->with('service.courseServices.courseModel')->findAll(
             'courseModel.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' 
-            and t.status='.MessagesServiceSchemesRequest::NEW_REQUEST));
+            and t.status='.ServiceSchemesRequest::STATUS_NEW));
 
          echo $modulesRequestsCount+$coursesRequestsCount;
     }

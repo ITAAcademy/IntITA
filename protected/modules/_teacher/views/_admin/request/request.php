@@ -8,8 +8,12 @@
  */
 date_default_timezone_set(Config::getServerTimezone());
 $user = Yii::app()->user->model;
-$module = $model->module();
-$sender = $model->sender();
+$module = null;
+if (method_exists($model,'module')){
+ $module = $model->module();
+}
+
+$sender = $model->requestUser;
 ?>
 <div class="row" ng-controller="requestsCtrl">
     <div class="col col-lg-8">
@@ -19,7 +23,7 @@ $sender = $model->sender();
             </div>
             <div class="panel-body">
                 <h4>Статус: <em><?php echo $model->statusToString(); ?></em></h4>
-                <h4>Дата запиту: <?php echo date("d.m.Y H:i", strtotime($model->message()->create_date));?></h4>
+                <h4>Дата запиту: <?php echo date("d.m.Y H:i", strtotime($model->action_date));?></h4>
                 <?php if ($module) { ?>
                     <h4>
                         Модуль: <a
@@ -37,31 +41,31 @@ $sender = $model->sender();
                 </h4>
                 <br>
                 <?php if (!($model->isDeleted() || $model->isApproved() ||
-                    (in_array($model->message0->type, array(MessagesType::REVISION_REQUEST,MessagesType::MODULE_REVISION_REQUEST)) && $model->isRejected()))) { ?>
+                    (in_array($model->type, array(Request::REVISION_REQUESTS,Request::MODULE_REVISION_REQUESTS)) && $model->isRejected()))) { ?>
                     <ul class="list-inline">
                         <li>
 
 
                             <button class="btn btn-outline btn-success"
-                                <?php if ($model->message0->type != MessagesType::COWORKER_REQUEST) { ?>
-                                    ng-bootbox-confirm="Підтвердити запит?" ng-bootbox-confirm-action="setRequestStatus('<?=$model->getMessageId()?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()"
+                                <?php if ($model->type != Request::COWORKER_REQUESTS) { ?>
+                                    ng-bootbox-confirm="Підтвердити запит?" ng-bootbox-confirm-action="setRequestStatus('<?=$model->id?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()"
                                 <?php } else { ?>
-                                    ng-bootbox-confirm="Підтвердити запит?" ng-bootbox-confirm-action="setCoworkerRequest('<?=$model->getMessageId()?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()"
+                                    ng-bootbox-confirm="Підтвердити запит?" ng-bootbox-confirm-action="setCoworkerRequest('<?=$model->id()?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()"
                                 <?php } ?>>
                                 Підтвердити
                             </button>
 
                         </li>
-                        <?php if(in_array($model->message0->type, array(MessagesType::REVISION_REQUEST,MessagesType::MODULE_REVISION_REQUEST)) && !$model->isRejected()) { ?>
+                        <?php if(in_array($model->type, array(Request::REVISION_REQUESTS,Request::MODULE_REVISION_REQUESTS)) && !$model->isRejected()) { ?>
                             <li>
-                                <button class="btn btn-outline btn-danger" ng-bootbox-confirm-action="cancelRequest('<?=$model->getMessageId()?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()" ng-bootbox-confirm="<h3>Ти впевнений, що хочеш відхилити ревізію?</h3><br/><textarea ng-model='comment' class='form-control' style='resize: none' rows='6' id='rejectMessageText'
+                                <button class="btn btn-outline btn-danger" ng-bootbox-confirm-action="cancelRequest('<?=$model->id?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()" ng-bootbox-confirm="<h3>Ти впевнений, що хочеш відхилити ревізію?</h3><br/><textarea ng-model='comment' class='form-control' style='resize: none' rows='6' id='rejectMessageText'
                                 placeholder='тут можна залишити коментар при відхилені ревізії'></textarea>">
                                 Відхилити
                                 </button>
                             </li>
                         <?php } else {?>
                             <li>
-                                <button class="btn btn-outline btn-danger" ng-bootbox-confirm-action="cancelRequest('<?=$model->getMessageId()?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()" ng-bootbox-confirm="Відхилити запит?">
+                                <button class="btn btn-outline btn-danger" ng-bootbox-confirm-action="cancelRequest('<?=$model->id?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()" ng-bootbox-confirm="Відхилити запит?">
                                     Відхилити
                                 </button>
                             </li>
@@ -77,17 +81,17 @@ $sender = $model->sender();
                         <div class="alert alert-info">
                             <?= $model->approvedByToString() ?>
                         </div>
-                    <?php } else if((in_array($model->message0->type, array(MessagesType::REVISION_REQUEST,MessagesType::MODULE_REVISION_REQUEST)) && $model->isRejected())){ ?>
+                    <?php } else if((in_array($model->type, array(Request::REVISION_REQUESTS,Request::MODULE_REVISION_REQUESTS)) && $model->isRejected())){ ?>
                         <div class="alert alert-info">
-                            <?php if($model->message0->type==MessagesType::REVISION_REQUEST) {?>
+                            <?php if($model->type==Request::REVISION_REQUESTS) {?>
                                 <h4>
-                                    <?php $resolution=MessagesRejectRevision::model()->findByAttributes(array('id_revision'=>$model->id_revision));
-                                    echo $resolution?'Резолюція: '.$resolution->comment:''?>
+                                    <?php
+                                    echo $model->comment ?'Резолюція: '.$model->comment:''?>
                                 </h4>
-                            <?php }else if($model->message0->type==MessagesType::MODULE_REVISION_REQUEST){ ?>
+                            <?php }else if($model->type==Request::MODULE_REVISION_REQUESTS){ ?>
                                 <h4>
-                                    <?php $resolution=MessagesRejectModuleRevision::model()->findByAttributes(array('id_revision'=>$model->id_module_revision));
-                                    echo $resolution?'Резолюція: '.$resolution->comment:''?>
+                                    <?php
+                                    echo $model->comment?'Резолюція: '.$model->comment:''?>
                                 </h4>
                             <?php } ?>
                             <?= $model->rejectedByToString() ?>

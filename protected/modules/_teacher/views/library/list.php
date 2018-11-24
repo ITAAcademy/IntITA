@@ -9,7 +9,7 @@
     <table class="table table-condensed table-striped" ng-table="booksTable">
         <tr ng-repeat="book in $data track by $index" style="text-align: center">
             <td title="'Номер'" sortable="'id'">
-                {{$index+1}}
+                {{book.id}}
             </td>
             <td  title="'Назва'" filter="{'title': 'text'}" sortable="'title'">
                 <a href="#/library/update/{{book.id}}">{{book.title}}</a>
@@ -34,6 +34,12 @@
             </td>
             <td title="'Посилання'">
                 <a ng-if="book.link" ng-href="/_teacher/library/library/getBook?id={{book.id}}">Книга</a>
+            </td>
+            <td title="'Рік Публікації'">
+                {{book.publication_year}}
+            </td>
+            <td title="'Позиція'">
+                {{book.position}}
             </td>
             <td>
                 <a ng-href="#/library/update/{{book.id}}"><i class="fa fa-edit"></i></a><br>

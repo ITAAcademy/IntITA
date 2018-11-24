@@ -65,7 +65,9 @@ select.error{box-shadow:0 0 4px #c72929;}
 .signIn .errorMessage,.signUp .errorMessage{color:#c72929;font-size:16px;font-family:"MyriadPro";}
 .signUp .errorMessage{color:#c72929;font-size:16px;font-family:"MyriadPro";}
 .signInForm .errorMessage{color:#c72929;font-size:16px;font-family:"MyriadPro";}
-#studentreg-form{padding-bottom:30px;overflow:hidden;}
+#studentreg-form{
+    /*padding-bottom:30px;*/
+    overflow:hidden;}
 #quick-form{padding-bottom:20px;}
 .signIn .image,.signUp .image{margin-bottom:20px;}
 .forminfo{margin:0 auto;width:448px;overflow:hidden;text-align:left;margin:0 0 5px 45px;color:#c72929;font-size:16px;font-family:"MyriadPro";}

@@ -187,7 +187,7 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                     <?php } ?>
                     <?php if (Yii::app()->user->model->hasLibrary()) { ?>
                         <li>
-                            <?php echo 'Бібліотека' ?>
+                            <?php echo Yii::t('header', '0990'); ?>
                         </li>
                     <?php } ?>
                 <?php } ?>
@@ -227,7 +227,9 @@ $this->breadcrumbs = array(Yii::t('breadcrumbs', '0054'));
                 </div>
                 <?php if ($owner) { ?>
                     <div id="myCareer">
-                        <a href="http://robotamolodi.org/auth/intita" target="_blank">Резюме</a>
+                        <a href="http://robotamolodi.org/auth/intita" target="_blank">
+                            <?php echo Yii::t('profile', '1010'); ?>
+                        </a>
                     </div>
                     <?php if (Yii::app()->user->model->isGraduate()) { ?>
                         <div id="myReview">

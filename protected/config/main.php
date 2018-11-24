@@ -62,6 +62,7 @@ return array(
         'application.models.quiz.TaskMarks.php',
         'ext.yii-pdf.*', // html to pdf
         'application.models.cms.*',
+        'application.models.vacation.*',
     ),
 
     'modules' => array(
@@ -144,6 +145,9 @@ return array(
                 'profile/edit' => 'studentreg/edit',
                 'agreement/<id:\d+>' => 'payments/showAgreement',
                 'cms' => 'cms/cms/index',
+                'cms/about' => 'cms/cms/about',
+                'cms/staff' => 'cms/cms/staff',
+                'cms/faq' => 'cms/cms/faq',
 
                 array('class' => 'CourseRule'),//rules for course page ($routes: 'course/index', 'module/index', 'lesson/index')
                 '<module:\w+>/<controller:\w+>/<id:\d+>' => '<module>/<controller>/view',
@@ -256,6 +260,10 @@ return array(
                     )
                 ),
             ),
+        ),
+        'request' => array(
+            'class' => 'application.components.HttpRequest',
+            'enableCsrfValidation' => true,
         ),
     ),
     'params' => $params_config['params'],

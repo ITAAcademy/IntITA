@@ -32,4 +32,20 @@ class CrmImageUploadHelper
 
         return $link;
     }
+
+    public static function copyImageFromMainToSubdomain($oldLink, $image, $folder){
+        $subdomain = Subdomains::model()->findByAttributes(array('organization' => Yii::app()->user->model->getCurrentOrganizationId()));
+        $folderAddress = Yii::app()->basePath .'/../domains/' . $subdomain->domain_name . '.' . Config::getBaseUrlWithoutSchema() . "/" . $folder ."/";
+        if (!file_exists($folderAddress)) {
+            mkdir($folderAddress, 0777, true);
+        }
+
+        if ($oldLink && file_exists($folderAddress . $oldLink)) {
+            unlink($folderAddress . $oldLink);
+        }
+
+        copy(Yii::app()->basePath .'/../domains/'.$image, $folderAddress.$image);
+
+        return $image;
+    }
 }

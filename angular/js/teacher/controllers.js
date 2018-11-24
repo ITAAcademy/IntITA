@@ -2,7 +2,9 @@
 
 angular
     .module('teacherApp')
-    .controller('cabinetCtrl', cabinetCtrl);
+    .controller('cabinetCtrl', cabinetCtrl)
+    .controller('mainCmsCtrl', ['$scope', '$http', function ($scope, $http) {}])
+    .controller('aboutCmsCtrl', ['$scope', '$http', function ($scope, $http) {}])
 
 angular
     .module('teacherApp')
@@ -75,7 +77,6 @@ angular
             })
         }])
 
-
 function addGraduateCtrl($scope, $http, $timeout, $httpParamSerializerJQLike, $ngBootbox) {
     $scope.myImage = '';
     $timeout(function () {
@@ -117,7 +118,7 @@ function addGraduateCtrl($scope, $http, $timeout, $httpParamSerializerJQLike, $n
     };
 }
 
-function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, typeAhead, chatIntITAMessenger) {
+function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, typeAhead, chatIntITAMessenger, vacationService) {
     audio = new Audio(basePath + '/angular/audio/notification.wav');
     //function back() redirect to prev link
     $rootScope.back = function () {
@@ -399,6 +400,16 @@ function cabinetCtrl($http, $scope, $compile, $location, $timeout, $rootScope, t
     $scope.updateRolesChat = function () {
         chatIntITAMessenger.updateRoles();
     };
+    
+    function getVacationType() {
+        vacationService.list().$promise
+        .then(function successCallback(response) {
+            $rootScope.vacationTypes = response.data;
+        }, function errorCallback() {
+            console.log("Отримати типи відпусток не вдалося");
+        });
+    };
+    getVacationType();
 }
 
 function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource, $filter, $location) {
@@ -433,7 +444,7 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
     });
 
     $scope.receivedMessagesTable = new NgTableParams({
-        sorting: {'message.create_date': "desc"},
+        sorting: {'create_date': "desc"},
     }, {
         getData: function (params) {
             delete $scope.deleteReceivedMessages;
@@ -446,7 +457,7 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
     });
 
     $scope.sentMessagesTable = new NgTableParams({
-        sorting: {'message.create_date': "desc"}
+        sorting: {'create_date': "desc"}
 
     }, {
         getData: function (params) {
@@ -458,7 +469,7 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
     });
 
     $scope.deletedMessagesTable = new NgTableParams({
-        sorting: {'message.create_date': "desc"}
+        sorting: {'create_date': "desc"}
     }, {
         getData: function (params) {
             return $resource(basePath + '/_teacher/messages/getUserDeletedMessages').get(params.url()).$promise.then(function (data) {
@@ -542,24 +553,35 @@ function messagesCtrl($http, $scope, $state, $compile, NgTableParams, $resource,
         }
     };
     $scope.deleteMessage = function (idMessage, url, receiver) {
-        bootbox.confirm('Ти дійсно хочеш видалити повідомлення?', function (result) {
-            if (result)
-                $http({
-                    method: "POST",
-                    url: url,
-                    data: $jq.param({
-                        data: JSON.stringify({
-                            message: idMessage,
-                            receiver: receiver
-                        })
-                    }),
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
-                    cache: false
-                }).then(function successCallback() {
-                    $state.go('messages', {}, {reload: true});
-                }, function errorCallback() {
-                    bootbox.alert("Операцію не вдалося виконати.");
-                });
+        bootbox.confirm({
+            message: 'Ти дійсно хочеш видалити повідомлення?',
+            buttons: {
+                confirm: {
+                    label: 'Погоджуюсь',
+                },
+                cancel: {
+                    label: 'Відмінити',
+                }
+            },
+            callback: function (result) {
+                if (result)
+                    $http({
+                        method: "POST",
+                        url: url,
+                        data: $jq.param({
+                            data: JSON.stringify({
+                                message: idMessage,
+                                receiver: receiver
+                            })
+                        }),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        cache: false
+                    }).then(function successCallback() {
+                        $state.go('messages', {}, {reload: true});
+                    }, function errorCallback() {
+                        bootbox.alert("Операцію не вдалося виконати.");
+                    });
+            }
         });
     };
 

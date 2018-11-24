@@ -82,9 +82,9 @@ class Author extends Role
                             'idModule' => $value,
                             'assigned_by'=>Yii::app()->user->getId()
                         ))){
-                            $revisionRequest=MessagesAuthorRequest::model()->findByAttributes(array('id_module'=>$value,'id_teacher'=>$user->id,'cancelled'=>0));
+                            $revisionRequest=AuthorRequest::model()->findByAttributes(array('related_model_id'=>$value,'request_user'=>$user->id,'action'=>0));
                             if($revisionRequest){
-                                $revisionRequest->setApproved();
+                                $revisionRequest->approve();
                             }
                             $user->notify('author' .DIRECTORY_SEPARATOR . '_assignNewModule',
                                 array(Module::model()->findByPk($value)),

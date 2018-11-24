@@ -5,12 +5,12 @@ angular
     .module('messagesRouter',['ui.router']).
 config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
-        .state('dialog/:user1/:user2', {
-            url: "/dialog/:user1/:user2",
+        .state('dialog/:messageId', {
+            url: "/dialog/:messageId",
             cache         : false,
             controller:"messagesCtrl",
             templateUrl: function($stateParams){
-                return   basePath+'/_teacher/messages/dialog/?user1='+$stateParams.user1+'&user2='+$stateParams.user2
+                return   basePath+'/_teacher/messages/dialog/?messageId='+$stateParams.messageId
             },
         })
         .state('deletedmessage/:idMessage', {

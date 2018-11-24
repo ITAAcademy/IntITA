@@ -148,9 +148,8 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionGetActualWrittenAgreementRequestsCount()
     {
-        echo count(MessagesWrittenAgreementRequest::model()->with('agreement','agreement.organization')->findAll(
-            'organization.id='.Yii::app()->user->model->getCurrentOrganization()->id.' 
-            and t.status is null'));
+        echo count(WrittenAgreementRequest::model()->with('agreement','agreement.organization')->findAll(
+            'id_organization='.Yii::app()->user->model->getCurrentOrganization()->id.' and t.action = 0 '));
     }
 
     public function actionGetActualWrittenAgreementsCount()
@@ -182,7 +181,7 @@ class AgreementsController extends TeacherCabinetController {
             unset($requestParams['filter']);
         }
         $criteria->addCondition('ce.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
-        $ngTable = new NgTableAdapter('MessagesWrittenAgreementRequest', $requestParams);
+        $ngTable = new NgTableAdapter('WrittenAgreementRequest', $requestParams);
         $ngTable->mergeCriteriaWith($criteria);
         $result = $ngTable->getData();
         echo json_encode($result);
@@ -240,7 +239,7 @@ class AgreementsController extends TeacherCabinetController {
     public function actionWrittenAgreementView($request=null)
     {
         if($request){
-            $model=MessagesWrittenAgreementRequest::model()->findByPk($request);
+            $model=WrittenAgreementRequest::model()->findByPk($request);
             Yii::app()->user->model->hasAccessToOrganizationModel($model->agreement->corporateEntity);
 
             $this->renderPartial('writtenAgreementView',array('agreement'=>$model->agreement,'type'=>'request'),false,true);
@@ -322,10 +321,10 @@ class AgreementsController extends TeacherCabinetController {
             $agreement->makePrivatePerson($sessionTime);
 
             if($idRequest){
-                $request=MessagesWrittenAgreementRequest::model()->findByPk($idRequest);
+                $request=WrittenAgreementRequest::model()->findByPk($idRequest);
                 $request->setApproved();
             }else{
-                $request=MessagesWrittenAgreementRequest::model()->findByAttributes(array('id_user'=>$agreement->user_id,'id_agreement'=>$agreement->id,'status'=>null));
+                $request=WrittenAgreementRequest::model()->findByAttributes(array('action_user'=>$agreement->user_id,'id_agreement'=>$agreement->id,'status'=>0));
                 if($request)
                     $request->setApproved();
             }
@@ -395,7 +394,7 @@ class AgreementsController extends TeacherCabinetController {
     public function actionRejectAgreementRequest()
     {
         $comment=$_POST['reject_comment']?$_POST['reject_comment']:null;
-        $model=MessagesWrittenAgreementRequest::model()->findByPk($_POST['id_message']);
+        $model=WrittenAgreementRequest::model()->findByPk($_POST['id_message']);
         Yii::app()->user->model->hasAccessToOrganizationModel($model->agreement->corporateEntity);
         $model->agreement->setCreated();
         $model->setCancelled($comment);
@@ -403,7 +402,7 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionGetAgreementRequestStatus($idMessage)
     {
-        $data['status']=MessagesWrittenAgreementRequest::model()->findByPk($idMessage)->status;
+        $data['status']=WrittenAgreementRequest::model()->findByPk($idMessage)->action;
         echo json_encode($data);
     }
     public function actionWrittenAgreement($id)
