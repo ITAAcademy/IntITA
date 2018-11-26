@@ -375,8 +375,8 @@ class Graduate extends CActiveRecord
         ->from('graduate g')
         ->join('user u', 'u.id = g.id_user')
         ->join('config ava', 'ava.id = 6')
+        ->where('published = :published', [':published' => 1])
         ->group('u.id')
         ->queryAll();
     }
-
 }
