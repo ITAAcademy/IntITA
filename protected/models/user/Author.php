@@ -82,10 +82,6 @@ class Author extends Role
                             'idModule' => $value,
                             'assigned_by'=>Yii::app()->user->getId()
                         ))){
-                            $revisionRequest=AuthorRequest::model()->findByAttributes(array('related_model_id'=>$value,'request_user'=>$user->id,'action'=>0));
-                            if($revisionRequest){
-                                $revisionRequest->approve();
-                            }
                             $user->notify('author' .DIRECTORY_SEPARATOR . '_assignNewModule',
                                 array(Module::model()->findByPk($value)),
                                 'Призначено модуль для редагування', Yii::app()->user->getId());

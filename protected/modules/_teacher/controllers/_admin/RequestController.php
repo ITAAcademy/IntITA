@@ -15,9 +15,9 @@ class RequestController extends TeacherCabinetController
 
     public function actionRequest($message)
     {
-
         $requestModel = Request::model()->find('id=:requestId AND organization=:organization',
                                                ['requestId'=>$message,'organization'=>Yii::app()->user->model->getCurrentOrganization()->id]);
+
         $model = RequestFactory::getInstance($requestModel);
         if ($model) {
             $this->renderPartial('request', array(
@@ -57,7 +57,7 @@ class RequestController extends TeacherCabinetController
     
     public function actionApprove($message, $user)
     {
-        $messageModel = Messages::model()->findByPk($message);
+        $messageModel = Request::model()->findByPk($message);
         $model = RequestFactory::getInstance($messageModel);
         $userModel = StudentReg::model()->findByPk($user);
 
@@ -74,7 +74,7 @@ class RequestController extends TeacherCabinetController
 
     public function actionCancel($message, $user)
     {
-        $messageModel = Messages::model()->findByPk($message);
+        $messageModel = Request::model()->findByPk($message);
         $model = RequestFactory::getInstance($messageModel);
 
         if ($model) {
@@ -88,26 +88,15 @@ class RequestController extends TeacherCabinetController
         }
     }
 
-    public function actionReject($message, $user)
+    public function actionReject($message, $user, $comment='')
     {
-        $messageModel = Messages::model()->findByPk($message);
+        $messageModel = Request::model()->findByPk($message);
         $model = RequestFactory::getInstance($messageModel);
         $userModel = StudentReg::model()->findByPk($user);
 
-        $comment=Yii::app()->request->getPost('comment','');
-        if($messageModel->type==MessagesType::REVISION_REQUEST){
-
-            $message = new MessagesRejectRevision();
-            $message->sendRevisionRejectMessage(RevisionLecture::model()->findByPk($model->id_revision), $comment);
-        }
-        if($messageModel->type==MessagesType::MODULE_REVISION_REQUEST){
-            $message = new MessagesRejectModuleRevision();
-            $message->sendModuleRevisionRejectMessage(RevisionModule::model()->findByPk($model->id_module_revision), $comment);
-        }
-
         if ($model && $userModel) {
             if (!$model->isRejected()) {
-                echo $model->reject($userModel);
+                echo $model->reject($comment);
             } else {
                 echo "Запит вже відхилений. Ви не можете відхилити запит двічі.";
             }

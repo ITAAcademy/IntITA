@@ -282,6 +282,7 @@ class Request extends CActiveRecord
     $message->sender = Yii::app()->user->getId();
     $message->subject = $this->subject();
     $message->receiver = $this->request_user;
+
     $message->message_text = $this->renderNotifyMessage($template,$params);
     $message->save();
     if ($emailNotify){
@@ -302,7 +303,7 @@ class Request extends CActiveRecord
 
   public function notApprovedRequests()
    {
-    return $this->findAll('action = 0');
+    return $this->findAll('action = 0 and organization = '.Yii::app()->user->model->getCurrentOrganizationId());
    }
 
   public function save($runValidation = true, $attributes = null)
@@ -348,9 +349,7 @@ class Request extends CActiveRecord
    elseif($condition == ''){
     $condition = 'type = '.$this->requestType;
    }
-   else{
-    $condition = 'type = '.$this->requestType.' AND '.$condition;
-   }
+
    return parent::find($condition,$params);
   }
 

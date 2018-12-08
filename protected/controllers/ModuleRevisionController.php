@@ -413,7 +413,6 @@ class ModuleRevisionController extends Controller {
             throw new RevisionControllerException(403, Yii::t('error', '0590'));
         }
         $result = $moduleRev->checkConflicts();
-
         if (empty($result)) {
             $moduleRev->state->changeTo('sendForApproval', Yii::app()->user);
             $this->sendModuleRevisionRequest($moduleRev);
@@ -457,7 +456,7 @@ class ModuleRevisionController extends Controller {
             throw new RevisionControllerException(403, Yii::t('revision', '0828'));
         }
         $moduleRev->state->changeTo('approved', Yii::app()->user);
-        $revisionRequest=MessagesModuleRevisionRequest::model()->findByAttributes(array('id_module_revision'=>$moduleRev->id_module_revision,'cancelled'=>0, 'user_approved'=> null));
+        $revisionRequest=ModuleRevisionRequest::model()->findByAttributes(array('request_model_id'=>$moduleRev->id_module_revision,'action'=>0));
         if($revisionRequest){
             $revisionRequest->setApproved();
         }
@@ -709,27 +708,28 @@ class ModuleRevisionController extends Controller {
     }
 
     private function sendModuleRevisionRequest(RevisionModule $revision){
-        if($revision){
-            $message = new MessagesModuleRevisionRequest();
-            if($message->isRequestOpen(array($revision))) {
-                echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії модуля двічі.";
-            } else {
-                $transaction = Yii::app()->db->beginTransaction();
-                try {
-                    $message->build($revision, Yii::app()->user->model->registrationData);
-                    $message->create();
-                    $sender = new MailTransport();
-
-                    $message->send($sender);
-                    $transaction->commit();
-                    echo "Запит на затвердження ревізії модуля успішно відправлено. Зачекайте, поки адміністратор сайта підтвердить запит.";
-                } catch (Exception $e) {
-                    $transaction->rollback();
+        if($revision)
+        {
+            $request = ModuleRevisionRequest::model()->find('request_model_id = :revision' ,['revision'=> $revision->id_module_revision]);
+            if ($request)
+            {
+                if ($request->isRequestOpen())
+                    echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії модуля двічі.";
+                Yii::app()->end();
+            } else
+            {
+                $request = new ModuleRevisionRequest();
+                if ($request->newRequest($revision->id_module_revision))
+                {
+                    echo "Запит на затвердження ревізії модуля успішно відправлено. Зачекайте, поки контент менеджер підтвердить запит.";
+                    Yii::app()->end();
+                } else
+                {
                     throw new \application\components\Exceptions\IntItaException(500, "Запит на затвердження ревізії модуля не вдалося надіслати.");
                 }
             }
-        } else {
-            throw new \application\components\Exceptions\IntItaException(400);
         }
+
+        throw new \application\components\Exceptions\IntItaException(400, "Некоректний запит!");
     }
 }

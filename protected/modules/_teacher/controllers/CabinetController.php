@@ -3,26 +3,27 @@
 class CabinetController extends TeacherCabinetController
 {
 
-    public function hasRole(){
+    public function hasRole()
+    {
         return !Yii::app()->user->isGuest;
     }
 
     public function initialize()
     {
         $app = Yii::app();
-        $organizations=Yii::app()->user->model->getOrganizations();
-        if(!$organizations) {
+        $organizations = Yii::app()->user->model->getOrganizations();
+        if (!$organizations) {
             unset(Yii::app()->session['organization']);
             $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/index'));
         }
 
-        if(count($organizations)>1 && !isset($app->session['organization'])){
+        if (count($organizations) > 1 && !isset($app->session['organization'])) {
             $this->render('set_organization');
             die();
-        }else if(count($organizations)>1 && isset($app->session['organization'])){
-            $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/index', array('organizationId'=>$app->session['organization'])));
-        }else{
-            $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/index', array('organizationId'=>$organizations[0])));
+        } else if (count($organizations) > 1 && isset($app->session['organization'])) {
+            $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/index', array('organizationId' => $app->session['organization'])));
+        } else {
+            $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/index', array('organizationId' => $organizations[0])));
         }
     }
 
@@ -30,12 +31,12 @@ class CabinetController extends TeacherCabinetController
     {
         $model = Yii::app()->user->model;
 
-        if($organizationId && $model->hasOrganizationById($organizationId)){
+        if ($organizationId && $model->hasOrganizationById($organizationId)) {
             Yii::app()->session->add('organization', $organizationId);
-        }else if($organizationId || Yii::app()->user->model->getOrganizations()){
+        } else if ($organizationId || Yii::app()->user->model->getOrganizations()) {
             $this->initialize();
         }
- 
+
         if ($course != 0 || $module != 0) {
             if (!$model->isStudent()) {
                 UserStudent::addStudent($model->registrationData);
@@ -61,18 +62,19 @@ class CabinetController extends TeacherCabinetController
         ));
     }
 
-    public function actionGetNewMessages(){
+    public function actionGetNewMessages()
+    {
         $model = Yii::app()->user->model;
-        $newReceivedMessages = Messages::model()->with(['userSender'])->findAll('receiver = :receiver AND read_date IS NULL',['receiver'=>Yii::app()->user->getId()]);
+        $newReceivedMessages = Messages::model()->with(['userSender'])->findAll('receiver = :receiver AND read_date IS NULL', ['receiver' => Yii::app()->user->getId()]);
         $newRequests = $model->requests();
-        $newMessages =[];
+        $newMessages = [];
         $imapMessages = 0;
         if ($model->isTeacher()) {
             $corpEmail = Teacher::model()->findByPk(Yii::app()->user->id)->getAttributes(['corporate_mail', 'mail_password', 'mailActive']);
             if ($corpEmail['corporate_mail'] != null && $corpEmail['mail_password'] != null && $corpEmail['mailActive']) {
                 if (extension_loaded('imap')) {
-                    $mailPassword = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256,Yii::app()->params['secretKey'], base64_decode(urldecode($corpEmail['mail_password'])),MCRYPT_MODE_ECB));
-                    $conn = imap_open('{'.Config::getImapServerAddress().'/imap/ssl/novalidate-cert}INBOX', $corpEmail['corporate_mail'], $mailPassword, OP_READONLY,1);
+                    $mailPassword = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, Yii::app()->params['secretKey'], base64_decode(urldecode($corpEmail['mail_password'])), MCRYPT_MODE_ECB));
+                    $conn = imap_open('{' . Config::getImapServerAddress() . '/imap/ssl/novalidate-cert}INBOX', $corpEmail['corporate_mail'], $mailPassword, OP_READONLY, 1);
                     $countMailBoxMessages = imap_search($conn, 'UNSEEN');
                     if ($countMailBoxMessages) {
                         $imapMessages = count($countMailBoxMessages);
@@ -84,17 +86,17 @@ class CabinetController extends TeacherCabinetController
         }
 
         foreach ($newReceivedMessages as $message) {
-                $mes['senderId'] = $message->sender;
-                $mes['userId'] = $message->receiver;
-                ($message->userSender->userName() == "")?$mes['user'] = $message->userSender->email:$mes['user'] = $message->userSender->userName();
-                $mes['date'] = date("h:m, d F", strtotime($message->create_date));
-                $mes['subject'] = $message->subject;
-                array_push($newMessages,$mes);
+            $mes['senderId'] = $message->sender;
+            $mes['userId'] = $message->receiver;
+            ($message->userSender->userName() == "") ? $mes['user'] = $message->userSender->email : $mes['user'] = $message->userSender->userName();
+            $mes['date'] = date("h:m, d F", strtotime($message->create_date));
+            $mes['subject'] = $message->subject;
+            array_push($newMessages, $mes);
         }
         if ($model->isTeacher())
-            echo json_encode(['requests' => ['countOfRequests' => count($newRequests), 'newRequests' => $newRequests], 'messages' => ['countOfNewMessages' => count($newMessages), 'newMessages' => $newMessages, 'imapMessages'=>$imapMessages]]);
-            else
-            echo json_encode(['requests'=> ['countOfRequests'=>count($newRequests),'newRequests'=>$newRequests],'messages'=>['countOfNewMessages'=>count($newMessages),'newMessages'=>$newMessages]]);
+            echo json_encode(['requests' => ['countOfRequests' => count($newRequests), 'newRequests' => ActiveRecordToJSON::toAssocArrayWithRelations($newRequests)], 'messages' => ['countOfNewMessages' => count($newMessages), 'newMessages' => $newMessages, 'imapMessages' => $imapMessages]]);
+        else
+            echo json_encode(['requests' => ['countOfRequests' => count($newRequests), 'newRequests' => ActiveRecordToJSON::toAssocArrayWithRelations($newRequests)], 'messages' => ['countOfNewMessages' => count($newMessages), 'newMessages' => $newMessages]]);
 
     }
 
@@ -105,7 +107,7 @@ class CabinetController extends TeacherCabinetController
         $model = Yii::app()->user->model;
         $role = new UserRoles($page);
 
-        if(!$model->hasRole($role)){
+        if (!$model->hasRole($role)) {
             throw new \application\components\Exceptions\IntItaException(403, 'Сторінка недоступна');
         }
 
@@ -175,7 +177,7 @@ class CabinetController extends TeacherCabinetController
 //                case 'admin':
 //                case 'accountant':
 //                case 'supervisor':
-                    $this->renderDashboard($role, $user);
+            $this->renderDashboard($role, $user);
 //                    break;
 //                default:
 //                    throw new CHttpException(400, 'Неправильно вибрана роль!');
@@ -184,8 +186,9 @@ class CabinetController extends TeacherCabinetController
         }
     }
 
-    private function renderDashboard(UserRoles $role, RegisteredUser $user){
-        $view = '/_'.$role.'/_dashboard';
+    private function renderDashboard(UserRoles $role, RegisteredUser $user)
+    {
+        $view = '/_' . $role . '/_dashboard';
         return $this->renderPartial($view, array(
             'teacher' => $user->getTeacher(),
             'user' => $user->registrationData
@@ -201,6 +204,7 @@ class CabinetController extends TeacherCabinetController
             throw new \application\components\Exceptions\IntItaException(400);
         }
     }
+
     public function actionActiveUsersByQuery($query)
     {
         if ($query) {
@@ -210,9 +214,10 @@ class CabinetController extends TeacherCabinetController
             throw new \application\components\Exceptions\IntItaException(400);
         }
     }
-    public function actionAuthorsByQuery($query, $organization=null)
+
+    public function actionAuthorsByQuery($query, $organization = null)
     {
-        $organization=$organization?$organization:Yii::app()->user->model->getCurrentOrganizationId();
+        $organization = $organization ? $organization : Yii::app()->user->model->getCurrentOrganizationId();
         if ($query) {
             $authors = UserAuthor::authorsList($query, $organization);
             echo $authors;
@@ -221,9 +226,9 @@ class CabinetController extends TeacherCabinetController
         }
     }
 
-    public function actionModulesByQuery($query, $organization=null)
+    public function actionModulesByQuery($query, $organization = null)
     {
-        $organization=$organization?$organization:Yii::app()->user->model->getCurrentOrganizationId();
+        $organization = $organization ? $organization : Yii::app()->user->model->getCurrentOrganizationId();
         if ($query) {
             $modules = Module::allModules($query, $organization);
             echo $modules;
@@ -232,9 +237,9 @@ class CabinetController extends TeacherCabinetController
         }
     }
 
-    public function actionServicesByQuery($query, $organization=null)
+    public function actionServicesByQuery($query, $organization = null)
     {
-        $organization=$organization?$organization:Yii::app()->user->model->getCurrentOrganizationId();
+        $organization = $organization ? $organization : Yii::app()->user->model->getCurrentOrganizationId();
         if ($query) {
             $services = Service::allServices($query, $organization);
             echo $services;
@@ -262,13 +267,13 @@ class CabinetController extends TeacherCabinetController
             throw new \application\components\Exceptions\IntItaException(400);
         }
     }
-    
-    public function actionCoursesByQuery($query, $organization=null)
+
+    public function actionCoursesByQuery($query, $organization = null)
     {
-        $organization=$organization?$organization:Yii::app()->user->model->getCurrentOrganizationId();
+        $organization = $organization ? $organization : Yii::app()->user->model->getCurrentOrganizationId();
         echo Course::readyCoursesList($query, $organization);
     }
-    
+
     public function actionModulesTitleById()
     {
         $id = Yii::app()->request->getPost('moduleId');
@@ -281,9 +286,9 @@ class CabinetController extends TeacherCabinetController
         echo json_encode($result);
     }
 
-    public function actionTeacherConsultantsByQuery($query, $organization=null)
+    public function actionTeacherConsultantsByQuery($query, $organization = null)
     {
-        $organization=$organization?$organization:Yii::app()->user->model->getCurrentOrganizationId();
+        $organization = $organization ? $organization : Yii::app()->user->model->getCurrentOrganizationId();
         echo TeacherConsultant::teacherConsultantsByQuery($query, $organization);
     }
 
@@ -296,7 +301,7 @@ class CabinetController extends TeacherCabinetController
     {
         echo Teacher::teachersByQuery($query);
     }
-    
+
     public function actionUsersNotTeacherByQuery($query)
     {
         if ($query) {
@@ -307,12 +312,12 @@ class CabinetController extends TeacherCabinetController
         }
     }
 
-    public function actionUsersAddForm($role, $query, $organization=null)
+    public function actionUsersAddForm($role, $query, $organization = null)
     {
-        $organization=$organization?$organization:Yii::app()->user->model->getCurrentOrganizationId();
+        $organization = $organization ? $organization : Yii::app()->user->model->getCurrentOrganizationId();
 
         $roleModel = Role::getInstance(new UserRoles($role));
-  
+
         if ($query && $roleModel) {
             echo $roleModel->addRoleFormList($query, $organization);
         } else {
@@ -329,16 +334,17 @@ class CabinetController extends TeacherCabinetController
             throw new \application\components\Exceptions\IntItaException(400);
         }
     }
-    public function actionTeacherConsultantsByQueryAndModule($query,$module)
+
+    public function actionTeacherConsultantsByQueryAndModule($query, $module)
     {
         if ($query && $module) {
-            $users = Teacher::teacherConsultantsByQueryAndModule($query,$module);
+            $users = Teacher::teacherConsultantsByQueryAndModule($query, $module);
             echo $users;
         } else {
             throw new \application\components\Exceptions\IntItaException(400);
         }
     }
-    
+
     public function actionChangeLang()
     {
         $new_lang = $_GET['lg'];
@@ -394,54 +400,58 @@ class CabinetController extends TeacherCabinetController
 
     public function actionGetGraduateId()
     {
-        echo Graduate::model()->findByAttributes(array('id_user'=>Yii::app()->request->getPost('id')))->id;
+        echo Graduate::model()->findByAttributes(array('id_user' => Yii::app()->request->getPost('id')))->id;
     }
 
     public function actionGetCourseLink()
     {
         echo Yii::app()->createUrl('course/index', array('id' => Yii::app()->request->getPost('id')));
     }
+
     public function actionGetServiceLink()
     {
         echo Service::model()->findByPk(Yii::app()->request->getPost('id'))->serviceLink();
     }
 
-    public function actionMail(){
+    public function actionMail()
+    {
         $teacher = Teacher::model()->findByPk(Yii::app()->user->id);
         $params = array(
             'uid' => Yii::app()->user->id,
-            'pass'=>rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256,Yii::app()->params['secretKey'], base64_decode(urldecode($teacher->mail_password)),MCRYPT_MODE_ECB)),
-            'mail'=>$teacher->corporate_mail,
-            'time'=>time()
+            'pass' => rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, Yii::app()->params['secretKey'], base64_decode(urldecode($teacher->mail_password)), MCRYPT_MODE_ECB)),
+            'mail' => $teacher->corporate_mail,
+            'time' => time()
         );
 
         $test = json_encode($params);
         $token = urlencode(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, Yii::app()->params['secretKey'], $test, MCRYPT_MODE_ECB)));
-        $this->redirect(Config::getRoundcubeAddress().'/?intitaLogon='.$token);
+        $this->redirect(Config::getRoundcubeAddress() . '/?intitaLogon=' . $token);
     }
 
-    public function actionRedirectToCabinet(){
-        $organizationId= Yii::app()->request->getPost('organization');
-        $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/index', array('organizationId'=>$organizationId)));
+    public function actionRedirectToCabinet()
+    {
+        $organizationId = Yii::app()->request->getPost('organization');
+        $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/index', array('organizationId' => $organizationId)));
     }
 
-    public function actionChangeOrganization(){
+    public function actionChangeOrganization()
+    {
         unset(Yii::app()->session['organization']);
         $this->redirect(Yii::app()->createUrl('/_teacher/cabinet/index'));
     }
 
     public function actionGetStudentsCategoryList()
     {
-        echo  CJSON::encode(OfflineGroups::model()->findAll('id_organization='.Yii::app()->user->model->getCurrentOrganization()->id));
+        echo CJSON::encode(OfflineGroups::model()->findAll('id_organization=' . Yii::app()->user->model->getCurrentOrganization()->id));
     }
 
     public function actionGetUserRoles()
     {
-        $data=[];
-        foreach (RegisteredUser::userById(Yii::app()->user->getId())->getRoles() as $role){
+        $data = [];
+        foreach (RegisteredUser::userById(Yii::app()->user->getId())->getRoles() as $role) {
             array_push($data, $role->__toString());
         }
 
-        echo  CJSON::encode($data);
+        echo CJSON::encode($data);
     }
 }
