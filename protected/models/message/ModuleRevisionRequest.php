@@ -2,28 +2,29 @@
 
 class ModuleRevisionRequest extends Request implements IRequest
 {
-    protected $template = 'revision'. DIRECTORY_SEPARATOR . '_moduleRevisionRequest';
-    protected $approvedTemplate = 'revision'. DIRECTORY_SEPARATOR . '_moduleRevisionRequestApproved';
-    protected $cancelledTemplate = 'revision'. DIRECTORY_SEPARATOR . '_moduleRevisionRequestCancelled';
-  protected $requestType =  3;
+    protected $template = 'revision' . DIRECTORY_SEPARATOR . '_moduleRevisionRequest';
+    protected $approvedTemplate = 'revision' . DIRECTORY_SEPARATOR . '_moduleRevisionRequestApproved';
+    protected $cancelledTemplate = 'revision' . DIRECTORY_SEPARATOR . '_moduleRevisionRequestCancelled';
+    protected $requestType = 3;
 
-  public static function model($className=__CLASS__)
-   {
-    return parent::model($className);
-   }
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 
-  public function getTableSchema()
-   {
-    $table = parent::getTableSchema();
+    public function getTableSchema()
+    {
+        $table = parent::getTableSchema();
 
-    $table->columns['request_model_id']->isForeignKey = true;
-    $table->foreignKeys['request_model_id'] = array('RevisionModule', 'module_ID');
-    $table->columns['action_user']->isForeignKey = true;
-    $table->foreignKeys['action_user'] = array('StudentReg', 'id');
-    $table->columns['request_user']->isForeignKey = true;
-    $table->foreignKeys['request_user'] = array('StudentReg', 'id');
-    return $table;
-   }
+        $table->columns['request_model_id']->isForeignKey = true;
+        $table->foreignKeys['request_model_id'] = array('RevisionModule', 'id_module_revision');
+        $table->columns['action_user']->isForeignKey = true;
+        $table->foreignKeys['action_user'] = array('StudentReg', 'id');
+        $table->columns['request_user']->isForeignKey = true;
+        $table->foreignKeys['request_user'] = array('StudentReg', 'id');
+        return $table;
+    }
+
     public function relations()
     {
         return array(
@@ -31,6 +32,25 @@ class ModuleRevisionRequest extends Request implements IRequest
             'userRejected' => array(self::BELONGS_TO, 'StudentReg', 'action_user'),
             'idRevision' => array(self::BELONGS_TO, 'RevisionModule', 'request_model_id'),
             'requestUser' => array(self::BELONGS_TO, 'StudentReg', 'request_user'),
+        );
+    }
+
+    protected function beforeFind() {
+
+        $criteria = new CDbCriteria;
+
+        $criteria->condition = "type = ".$this->requestType;
+
+        $this->dbCriteria->mergeWith($criteria);
+
+        parent::beforeFind();
+
+    }
+
+    public function defaultScope()
+    {
+        return array(
+            'with' => ['idRevision', 'requestUser']
         );
     }
 
@@ -42,22 +62,38 @@ class ModuleRevisionRequest extends Request implements IRequest
         $this->action_date = date("Y-m-d H:i:s");
         $this->action = self::STATUS_APPROVE;
         if ($this->save()) {
-            $this->notify($this->approvedTemplate,array($this->idRevision));
+            $this->notify($this->approvedTemplate, array($this->idRevision));
             return "Запит успішно підтверджений.";
         }
 
         return "Операцію не вдалося виконати";
     }
 
-    public function cancel()
+    public function cancel($comment = null)
     {
         date_default_timezone_set(Config::getServerTimezone());
         $this->idRevision->state->changeTo('rejected', Yii::app()->user);
         $this->action_user = Yii::app()->user->id;
         $this->action_date = date("Y-m-d H:i:s");
         $this->action = self::STATUS_CANCEL;
+        $this->comment = $comment;
+        if ($this->save()) {
+            return "Операцію успішно виконано.";
+        } else {
+            return "Операцію не вдалося виконати.";
+        }
+    }
 
-     if ($this->save()) {
+    public function reject($comment = null)
+    {
+        date_default_timezone_set(Config::getServerTimezone());
+        $this->idRevision->state->changeTo('rejected', Yii::app()->user);
+        $this->action_user = Yii::app()->user->id;
+        $this->action_date = date("Y-m-d H:i:s");
+        $this->action = self::STATUS_CANCEL;
+        $this->comment = $comment;
+
+        if ($this->save()) {
             return "Операцію успішно виконано.";
         } else {
             return "Операцію не вдалося виконати.";
@@ -79,15 +115,16 @@ class ModuleRevisionRequest extends Request implements IRequest
         return "Запит на призначення викладача-консультанта для модуля";
     }
 
-  public function newRequest($requestedModel)
-   {
-    $this->request_model_id = $requestedModel;
-    $this->action = Request::STATUS_NEW;
-    if ($this->save()){
-     $this->notify($this->template,[$this->requestUser,$this->idRevision],true);
+    public function newRequest($requestedModel)
+    {
+        $this->request_model_id = $requestedModel;
+        $this->action = Request::STATUS_NEW;
+        if ($this->save()) {
+            $this->notify($this->template, [$this->requestUser, $this->idRevision], true);
+            return true;
+        }
+        return false;
     }
-    return false;
-   }
 
 }
 

@@ -3,7 +3,7 @@
  * @var $params array
  * @var $revision RevisionLecture
  */
-$revision = $params[0];
+$revision = $params;
 ?>
 <h4>Вітаємо!</h4>
 <br>

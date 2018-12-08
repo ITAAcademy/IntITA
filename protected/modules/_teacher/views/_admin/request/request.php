@@ -12,7 +12,6 @@ $module = null;
 if (method_exists($model,'module')){
  $module = $model->module();
 }
-
 $sender = $model->requestUser;
 ?>
 <div class="row" ng-controller="requestsCtrl">

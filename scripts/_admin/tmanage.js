@@ -198,7 +198,7 @@ function courseActions(url, courseId) {
         datatype:'json',
         success: function (message) {
             bootbox.alert(message, function () {
-                location.hash = "/course/id/"+courseId;
+                courseId ? location.hash = "/course/id/"+courseId : location.hash = "/courses";
                 location.reload();
             });
         },

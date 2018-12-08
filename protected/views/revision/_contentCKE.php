@@ -8,7 +8,6 @@
 ?>
 <br>
 <?php
-for ($i = count($data); $i > 0; $i--){
     switch ($data['id_type']){
         case 1:
             $this->renderPartial('/revision/_textBlockCKE', array('data'=>$data, 'editMode' => $editMode));
@@ -27,5 +26,4 @@ for ($i = count($data); $i > 0; $i--){
         default:
             break;
     }
-}
 ?>

@@ -2,6 +2,7 @@
 /**
  * @var $model IRequest
  */
+
 switch($model->type){
     case Request::AUTHOR_REQUESTS:
         $this->renderPartial('_authorRequest', array('model' => $model));

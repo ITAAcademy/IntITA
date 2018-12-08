@@ -1145,6 +1145,7 @@ class StudentReg extends CActiveRecord {
             $message->receiver = $this->id;
             $message->subject = $subject;
             $message->message_text = $message->renderNotifyMessage($template,$params);
+            $message->create_date = date("Y-m-d H:i:s");
             $message->save();
             $message->notify($template,$params);
             if ($transaction != null) {

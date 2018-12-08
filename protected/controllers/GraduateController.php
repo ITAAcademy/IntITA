@@ -233,6 +233,7 @@ class GraduateController extends Controller
     {
         $graduate = new Graduate();
         $alumni = $graduate->alumniDataAPI();
+        header("Access-Control-Allow-Origin: *");
         echo CJSON::encode($alumni);
     }
 

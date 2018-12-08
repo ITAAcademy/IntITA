@@ -131,16 +131,17 @@ function  requestsCtrl($scope, $http, $ngBootbox, $state, NgTableDataService, Ng
     }
 
     $scope.cancelRequest = function(message,user){
+        var comment = $jq('#rejectMessageText').val();
         $http({
-            url:basePath+'/_teacher/_admin/request/reject/message/'+message+'/user/'+user,
+            url:basePath+'/_teacher/_admin/request/reject/message/'+message+'/user/'+user+/comment/+comment,
             type:'POST',
-            data: {comment: $scope.comment},
+            data: {comment: $jq('#rejectMessageText').val()},
             headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
         }).success(function(response){
                 $ngBootbox.alert(response).then(
                     function(){
                         $scope.$emit('openMessage','');
-                        $scope.comment = "";
+                        $jq('#rejectMessageText').val("");
                         $state.go('requests');
                     }
                 )

@@ -10,26 +10,26 @@
   {
    use composerLoader;
 
-   private $sender;
+   private $senderAttr;
 
    private function loadSender()
     {
      $this->loadComposerClasses();
-     $this->sender = new \PHPMailer\PHPMailer\PHPMailer();
+     $this->senderAttr = new \PHPMailer\PHPMailer\PHPMailer();
     }
 
    private function configureSender(){
-    $this->sender->isSMTP();
-    $this->sender->XMailer = " ";
-    $this->sender->Host =Yii::app()->params['mailParams']['smtpHost'];
-    $this->sender->Port =Yii::app()->params['mailParams']['smtpPort'];
+    $this->senderAttr->isSMTP();
+    $this->senderAttr->XMailer = " ";
+    $this->senderAttr->Host =Yii::app()->params['mailParams']['smtpHost'];
+    $this->senderAttr->Port =Yii::app()->params['mailParams']['smtpPort'];
     if(Yii::app()->params['mailParams']['smtpDebug']){
-     $this->sender->SMTPDebug=Yii::app()->params['mailParams']['smtpDebug'];
+     $this->senderAttr->SMTPDebug=Yii::app()->params['mailParams']['smtpDebug'];
     }
     if(Yii::app()->params['mailParams']['smtpAuth']){
-     $this->sender->Username =Yii::app()->params['mailParams']['smtpUsername'];
-     $this->sender->Password =Yii::app()->params['mailParams']['smtpPassword'];
-     $this->sender->SMTPSecure =Yii::app()->params['mailParams']['smtpProtocol'];
+     $this->senderAttr->Username =Yii::app()->params['mailParams']['smtpUsername'];
+     $this->senderAttr->Password =Yii::app()->params['mailParams']['smtpPassword'];
+     $this->senderAttr->SMTPSecure =Yii::app()->params['mailParams']['smtpProtocol'];
     }
 
 
@@ -39,16 +39,16 @@
     {
      $this->loadSender();
      $this->configureSender();
-     $this->sender->setFrom($from, mb_encode_mimeheader($fromName,'utf-8'));
-     $this->sender->addReplyTo($from);
-     $this->sender->addAddress($to);
-     $this->sender->SMTPAutoTLS = false;
-     $this->sender->isHTML(true);
-     $this->sender->Subject = mb_encode_mimeheader($subject,'utf-8');
-     $this->sender->Body = $message;
+     $this->senderAttr->setFrom($from, mb_encode_mimeheader($fromName,'utf-8'));
+     $this->senderAttr->addReplyTo($from);
+     $this->senderAttr->addAddress($to);
+     $this->senderAttr->SMTPAutoTLS = false;
+     $this->senderAttr->isHTML(true);
+     $this->senderAttr->Subject = mb_encode_mimeheader($subject,'utf-8');
+     $this->senderAttr->Body = $message;
      try
       {
-       $this->sender->send();
+       $this->senderAttr->send();
        return true;
       } catch (Exception $e)
       {
