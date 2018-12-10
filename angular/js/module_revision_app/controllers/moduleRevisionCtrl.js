@@ -173,14 +173,23 @@ function moduleRevisionCtrl($rootScope,$scope, $http, getModuleData, moduleRevis
             bootbox.alert("Спочатку збережи зміни, які ти вніс в наповнені модуля");
         }else{
             moduleRevisionsActions.sendModuleRevision(id).then(function(senResponse){
-                bootbox.alert(senResponse, function () {
+                if(senResponse){
+                    bootbox.alert(senResponse, function () {
+                        getModuleData.getData(idRevision).then(function (response) {
+                            $rootScope.moduleData = response;
+                            if (redirect) {
+                                location.href = basePath + '/moduleRevision/previewModuleRevision?idRevision=' + idRevision;
+                            }
+                        });
+                    });
+                } else{
                     getModuleData.getData(idRevision).then(function (response) {
                         $rootScope.moduleData = response;
                         if (redirect) {
                             location.href = basePath + '/moduleRevision/previewModuleRevision?idRevision=' + idRevision;
                         }
                     });
-                });
+                }
             });
         }
     };

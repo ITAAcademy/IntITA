@@ -74,6 +74,12 @@ $sender = $model->requestUser;
                                     Ігнорувати
                             </button>
                         </li>
+                        <li>
+                            Якщо запит вже не актуальний - видаліть його
+                            <button class="btn btn-outline btn-danger" ng-bootbox-confirm-action="deleteRequest('<?=$model->id?>','<?=$user->id?>')" ng-bootbox-confirm-action-cancel="cancelMessage()" ng-bootbox-confirm="Видалити запит?">
+                                Видалити
+                            </button>
+                        </li>
                     </ul>
                 <?php } else {
                     if ($model->isApproved()) { ?>

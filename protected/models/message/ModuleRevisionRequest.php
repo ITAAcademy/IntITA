@@ -100,12 +100,31 @@ class ModuleRevisionRequest extends Request implements IRequest
         }
     }
 
+    public function delete($comment = null)
+    {
+        date_default_timezone_set(Config::getServerTimezone());
+        $this->action_user = Yii::app()->user->id;
+        $this->action_date = date("Y-m-d H:i:s");
+        $this->deleted = self::DELETED;
+
+        if ($this->save()) {
+            return "Операцію успішно виконано.";
+        } else {
+            return "Операцію не вдалося виконати.";
+        }
+    }
+
     public function title()
     {
         return "Запит на затвердження ревізії модуля";
     }
 
     public function module()
+    {
+        return Module::model()->findByPk($this->idRevision->id_module);
+    }
+
+    public function content()
     {
         return Module::model()->findByPk($this->idRevision->id_module);
     }
@@ -119,6 +138,7 @@ class ModuleRevisionRequest extends Request implements IRequest
     {
         $this->request_model_id = $requestedModel;
         $this->action = Request::STATUS_NEW;
+        $this->deleted = Request::ACTIVE;
         if ($this->save()) {
             $this->notify($this->template, [$this->requestUser, $this->idRevision], true);
             return true;

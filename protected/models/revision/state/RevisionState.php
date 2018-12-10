@@ -65,7 +65,7 @@ abstract class RevisionState {
             $this->$state($user);
         } else {
             Yii::log('State ' . $state . ' missed in ' . get_class($this) . ' revision ' . var_export($this->revisionUnit->getAttributes(), true), CLogger::LEVEL_ERROR, 'application.revision');
-            throw new Exception('State ' . $state . ' missed in ' . get_class($this));
+            throw new Exception('Теперішній статус не дозволяє перевести в статус "' . $state . '" в моделі ' . get_class($this));
         }
     }
 

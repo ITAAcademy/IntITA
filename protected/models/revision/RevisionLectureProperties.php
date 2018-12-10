@@ -231,4 +231,15 @@ class RevisionLectureProperties extends CActiveRecord
 		}
 		return implode(", ", $errors);
 	}
+
+    public function getTitle()
+    {
+        $lang = (Yii::app()->session['lg']) ? Yii::app()->session['lg'] : 'ua';
+        $title = "title_" . $lang;
+        $lectureTitle = $this->$title;
+        if ($lectureTitle == "") {
+            $lectureTitle = $this->title_ua;
+        }
+        return $lectureTitle;
+    }
 }

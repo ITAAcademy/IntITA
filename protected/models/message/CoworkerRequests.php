@@ -51,6 +51,11 @@ class CoworkerRequests extends Request implements IRequest
         return false;
     }
 
+    public function content()
+    {
+        return false;
+    }
+
     public function title()
     {
         return "Запит на призначення співробітника";

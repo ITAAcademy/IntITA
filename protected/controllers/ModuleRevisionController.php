@@ -428,9 +428,9 @@ class ModuleRevisionController extends Controller {
             throw new RevisionControllerException(403, Yii::t('revision', '0590'));
         }
         $moduleRev->state->changeTo('editable', Yii::app()->user);
-        $revisionRequest=MessagesModuleRevisionRequest::model()->findByAttributes(array('id_module_revision'=>$moduleRev->id_module_revision,'cancelled'=>0));
+        $revisionRequest=ModuleRevisionRequest::model()->findByAttributes(array('request_model_id'=>$moduleRev->id_module_revision));
         if($revisionRequest){
-            $revisionRequest->setDeleted();
+            $revisionRequest->setDeactivate();
         }
     }
 
@@ -441,11 +441,10 @@ class ModuleRevisionController extends Controller {
         if (!$moduleRev->canRejectRevision()) {
             throw new RevisionControllerException(403, Yii::t('revision', '0827'));
         }
-        $moduleRev->state->changeTo('rejected', Yii::app()->user);
 
-        $revisionRequest=ModuleRevisionRequest::model()->findByAttributes(array('model_id'=>$moduleRev->id_module_revision));
+        $revisionRequest=ModuleRevisionRequest::model()->findByAttributes(array('request_model_id'=>$moduleRev->id_module_revision, 'action' => 0));
         if($revisionRequest){
-            $revisionRequest->setRejected();
+            $revisionRequest->reject($comment);
         }
     }
 
@@ -713,8 +712,11 @@ class ModuleRevisionController extends Controller {
             $request = ModuleRevisionRequest::model()->find('request_model_id = :revision' ,['revision'=> $revision->id_module_revision]);
             if ($request)
             {
-                if ($request->isRequestOpen())
+                if ($request->isRequestOpen()) {
                     echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії модуля двічі.";
+                } else {
+                    $request->newRequest($revision->id_module_revision);
+                }
                 Yii::app()->end();
             } else
             {
