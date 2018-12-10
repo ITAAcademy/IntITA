@@ -79,6 +79,11 @@ class AuthorRequest extends Request implements IRequest
         return $this->idModule;
     }
 
+    public function content()
+    {
+        return $this->idModule;
+    }
+
     public function subject()
     {
         return "Запит на редагування модуля";

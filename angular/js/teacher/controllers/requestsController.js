@@ -3,23 +3,22 @@
  */
 angular
     .module('teacherApp')
-    .controller('requestsCtrl',requestsCtrl);
+    .controller('requestsCtrl', requestsCtrl);
 
-function  requestsCtrl($scope, $http, $ngBootbox, $state, NgTableDataService, NgTableParams ){
+function requestsCtrl($scope, $http, $ngBootbox, $state, NgTableDataService, NgTableParams) {
 
-    $scope.comment ="";
+    $scope.comment = "";
 
-    $scope.initActiveRequests = function(){
+    $scope.initActiveRequests = function () {
         $scope.activeRequestsTable = new NgTableParams({
             sorting: {
                 id: 'desc'
             },
         }, {
-            getData: function(params) {
+            getData: function (params) {
                 NgTableDataService.setUrl(basePath + "/_teacher/_admin/request/getActiveRequestsList");
                 return NgTableDataService.getData(params.url())
                     .then(function (data) {
-                        console.log(data);
                         params.total(data.count);
                         return data.rows;
                     });
@@ -27,13 +26,13 @@ function  requestsCtrl($scope, $http, $ngBootbox, $state, NgTableDataService, Ng
         });
 //        initActiveRequestsTable();
     }
-    $scope.initApprovedRequests = function(){
+    $scope.initApprovedRequests = function () {
         $scope.approwedRequestsTable = new NgTableParams({
             sorting: {
                 id: 'desc'
             },
         }, {
-            getData: function(params) {
+            getData: function (params) {
                 NgTableDataService.setUrl(basePath + "/_teacher/_admin/request/getApprovedRequestsList");
                 return NgTableDataService.getData(params.url())
                     .then(function (data) {
@@ -44,13 +43,13 @@ function  requestsCtrl($scope, $http, $ngBootbox, $state, NgTableDataService, Ng
             }
         });
     }
-    $scope.initDeletedRequests = function(){
+    $scope.initDeletedRequests = function () {
         $scope.deletedRequestsTable = new NgTableParams({
             sorting: {
                 id: 'desc'
             },
         }, {
-            getData: function(params) {
+            getData: function (params) {
                 NgTableDataService.setUrl(basePath + "/_teacher/_admin/request/getDeletedRequestsList");
                 return NgTableDataService.getData(params.url())
                     .then(function (data) {
@@ -62,13 +61,13 @@ function  requestsCtrl($scope, $http, $ngBootbox, $state, NgTableDataService, Ng
         });
         //initDeletedRequestsTable();
     }
-    $scope.initRejectedRevisionRequests = function(){
+    $scope.initRejectedRevisionRequests = function () {
         $scope.rejectedRequestsTable = new NgTableParams({
             sorting: {
                 id: 'desc'
             },
         }, {
-            getData: function(params) {
+            getData: function (params) {
                 NgTableDataService.setUrl(basePath + "/_teacher/_admin/request/getRejectedRevisionRequestsList");
                 return NgTableDataService.getData(params.url())
                     .then(function (data) {
@@ -84,73 +83,89 @@ function  requestsCtrl($scope, $http, $ngBootbox, $state, NgTableDataService, Ng
     //$scope.initActiveRequests();
 
 
-
-
-
-    $scope.setRequestStatus = function(message, user) {
+    $scope.setRequestStatus = function (message, user) {
         $http({
-            url:basePath+'/_teacher/_admin/request/approve/message/'+message+'/user/'+user,
-            type:'POST'
-        }).success(function(response){
-                $scope.$emit('openMessage','');
-                $ngBootbox.alert(response).then(
-                    function(){
-                        $state.go('requests');
-                    }
-                )
-        }
-
-        )
-          .error(function(){
-              $ngBootbox.alert('Операцію не вдалося виконати.')
-          });
-    };
-
-    $scope.setCoworkerRequest = function(message, user) {
-        $http({
-            url:basePath+'/_teacher/_admin/teachers/create/',
-            type:'POST',
-            data: {message: message, user: user},
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-        }).success(function(response){
-                $ngBootbox.alert(response).then(
-                    function(){
+            url: basePath + '/_teacher/_admin/request/approve',
+            method: "POST",
+            data: $jq.param({message: message, user: user}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+        }).success(function (response) {
+                $scope.$emit('openMessage', '');
+                $ngBootbox.alert('Операцію виконано успішно').then(
+                    function () {
                         $state.go('requests');
                     }
                 )
             }
-
-            )
-            .error(function(){
-                $ngBootbox.alert('Операцію не вдалося виконати.')
+        )
+            .error(function (response) {
+                $ngBootbox.alert(response.reason);
             });
     };
 
-    $scope.cancelMessage = function(){
+    $scope.setCoworkerRequest = function (message, user) {
+        $http({
+            url: basePath + '/_teacher/_admin/teachers/create',
+            method: "POST",
+            data: $jq.param({message: message, user: user}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+        }).success(function (response) {
+                $ngBootbox.alert('Операцію виконано успішно').then(
+                    function () {
+                        $state.go('requests');
+                    }
+                )
+            }
+        )
+            .error(function (response) {
+                $ngBootbox.alert(response.reason);
+            });
+    };
+
+    $scope.cancelMessage = function () {
         $ngBootbox.alert('Операцію відмінено.');
     }
 
-    $scope.cancelRequest = function(message,user){
+    $scope.cancelRequest = function (message, user) {
         var comment = $jq('#rejectMessageText').val();
         $http({
-            url:basePath+'/_teacher/_admin/request/reject/message/'+message+'/user/'+user+/comment/+comment,
-            type:'POST',
-            data: {comment: $jq('#rejectMessageText').val()},
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-        }).success(function(response){
-                $ngBootbox.alert(response).then(
-                    function(){
-                        $scope.$emit('openMessage','');
+            url: basePath + '/_teacher/_admin/request/reject',
+            method: "POST",
+            data: $jq.param({message: message, user: user, comment: comment}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+        }).success(function (response) {
+                $ngBootbox.alert('Операцію виконано успішно').then(
+                    function () {
+                        $scope.$emit('openMessage', '');
                         $jq('#rejectMessageText').val("");
                         $state.go('requests');
                     }
                 )
             }
-
-            )
-            .error(function(){
-                $ngBootbox.alert('Операцію не вдалося виконати.')
+        )
+            .error(function (response) {
+                console.log(response);
+                $ngBootbox.alert(response.reason);
             });
     }
 
+    $scope.deleteRequest = function (message, user) {
+        $http({
+            url: basePath + '/_teacher/_admin/request/delete',
+            method: "POST",
+            data: $jq.param({message: message, user: user}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+        }).success(function (response) {
+                $ngBootbox.alert('Операцію виконано успішно').then(
+                    function () {
+                        $scope.$emit('openMessage', '');
+                        $state.go('requests');
+                    }
+                )
+            }
+        )
+            .error(function (response) {
+                $ngBootbox.alert(response.reason);
+            });
+    }
 }

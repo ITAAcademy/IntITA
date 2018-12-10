@@ -61,10 +61,10 @@ class NgTableRequestsAdapter
         foreach ($arrayOfModels as $record) {
             $row = array();
             $row["user"] = $record->user()->userNameWithEmail();
-            if($record->module()){
-                $row["module"] = $record->module()->getTitle();
+            if($record->content()){
+                $row["content"] = $record->content()->getTitle();
             } else {
-                $row["module"] = "не вказано";
+                $row["content"] = '';
             }
             $row["link"] = "/requests/message/".$record->id;
             $row["dateCreated"] = date("d.m.Y", strtotime($record->action_date));
@@ -105,6 +105,7 @@ class NgTableRequestsAdapter
         if(Yii::app()->user->model->isContentManager()){
             $criteria = new CDbCriteria();
             $criteria->with ='idRevision.module';
+            $criteria->addCondition('deleted = '.Request::ACTIVE);
             switch ($this->_typeOfRequest){
                 case $this::NEWREQUESTS:
                     $criteria->addCondition('action = 0');
@@ -119,8 +120,9 @@ class NgTableRequestsAdapter
                     $criteria->addCondition('deleted = 1');
                     break;
             }
+            $criteria1 = clone $criteria;
             $revisionRequests = (new LectureRevisionRequest)->findAll($criteria);
-            $moduleRevisionRequests = (new ModuleRevisionRequest)->findAll($criteria);
+            $moduleRevisionRequests = (new ModuleRevisionRequest)->findAll($criteria1);
             $requests = array_merge($revisionRequests, $moduleRevisionRequests);
         }
 

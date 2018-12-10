@@ -1,14 +1,15 @@
 <?php
 
-class RevisionController extends Controller {
+class RevisionController extends Controller
+{
     public $layout = 'revisionlayout';
 
     public function init()
     {
         parent::init();
         $app = Yii::app();
-        $app->language = isset($app->session['lg'])?$app->session['lg']:'ua';
-        
+        $app->language = isset($app->session['lg']) ? $app->session['lg'] : 'ua';
+
         if (Yii::app()->user->isGuest) {
             $this->render('/site/authorize');
             die();
@@ -18,27 +19,28 @@ class RevisionController extends Controller {
     public function initialize()
     {
         $app = Yii::app();
-        $organizations=Yii::app()->user->model->getOrganizations();
-        if(!$organizations) {
+        $organizations = Yii::app()->user->model->getOrganizations();
+        if (!$organizations) {
             throw new \application\components\Exceptions\IntItaException(403, 'Ти не є співробітником організації для перегляду');
         }
 
-        if(count($organizations)>1 && !isset($app->session['organization'])){
-            $this->render('set_organization', array('revisionController'=>'revision'));
+        if (count($organizations) > 1 && !isset($app->session['organization'])) {
+            $this->render('set_organization', array('revisionController' => 'revision'));
             die();
-        }else if(count($organizations)>1 && isset($app->session['organization'])){
-            $this->redirect(Yii::app()->createUrl('/revision/index', array('organizationId'=>$app->session['organization'])));
-        }else{
-            $this->redirect(Yii::app()->createUrl('/revision/index', array('organizationId'=>$organizations[0])));
+        } else if (count($organizations) > 1 && isset($app->session['organization'])) {
+            $this->redirect(Yii::app()->createUrl('/revision/index', array('organizationId' => $app->session['organization'])));
+        } else {
+            $this->redirect(Yii::app()->createUrl('/revision/index', array('organizationId' => $organizations[0])));
         }
     }
 
-    public function actionIndex($organizationId=0) {
+    public function actionIndex($organizationId = 0)
+    {
 
         $model = Yii::app()->user->model;
-        if($organizationId && $model->hasOrganizationById($organizationId)){
+        if ($organizationId && $model->hasOrganizationById($organizationId)) {
             Yii::app()->session->add('organization', $organizationId);
-        }else if($organizationId || Yii::app()->user->model->getOrganizations()){
+        } else if ($organizationId || Yii::app()->user->model->getOrganizations()) {
             $this->initialize();
         }
 
@@ -46,14 +48,15 @@ class RevisionController extends Controller {
             throw new RevisionControllerException(403, Yii::t('error', '0590'));
         }
 
-        $this->render('index',array(
+        $this->render('index', array(
             'isApprover' => true,
             'userId' => Yii::app()->user->getId(),
             'organization' => $organizationId,
         ));
     }
 
-    public function actionCreateNewLecture() {
+    public function actionCreateNewLecture()
+    {
 
         $idModule = Yii::app()->request->getPost("idModule");
         $titleUa = trim(Yii::app()->request->getPost("titleUa"));
@@ -69,10 +72,11 @@ class RevisionController extends Controller {
         $this->redirect(array('revision/editlecturerevision', 'idRevision' => $revLecture->id_revision));
     }
 
-    public function actionEditLectureRevision($idRevision) {
+    public function actionEditLectureRevision($idRevision)
+    {
 
         $lectureRevision = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
-        if(!$lectureRevision)
+        if (!$lectureRevision)
             throw new RevisionControllerException(404);
         if (!$this->isUserEditor(Yii::app()->user, $lectureRevision)) {
             throw new RevisionControllerException(403, Yii::t('revision', '0825'));
@@ -88,10 +92,11 @@ class RevisionController extends Controller {
         ));
     }
 
-    public function actionPreviewLectureRevision($idRevision) {
+    public function actionPreviewLectureRevision($idRevision)
+    {
 
         $lectureRevision = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
-        if(!$lectureRevision)
+        if (!$lectureRevision)
             throw new RevisionControllerException(404);
         if (!$this->isUserTeacher(Yii::app()->user, $lectureRevision->id_module) && !$this->isUserApprover(Yii::app()->user, $lectureRevision->id_module)) {
             throw new RevisionControllerException(403, Yii::t('error', '0590'));
@@ -104,7 +109,8 @@ class RevisionController extends Controller {
         ));
     }
 
-    public function actionAddPage() {
+    public function actionAddPage()
+    {
 
         $idRevision = Yii::app()->request->getPost("idRevision");
 
@@ -125,12 +131,13 @@ class RevisionController extends Controller {
         echo $json;
     }
 
-    public function actionEditPageRevision($idPage) {
+    public function actionEditPageRevision($idPage)
+    {
 
         $page = RevisionLecturePage::model()->findByPk($idPage);
-        if(!$page)
+        if (!$page)
             throw new RevisionControllerException(404);
-        $lectureRevision=RevisionLecture::model()->findByPk($page->id_revision);
+        $lectureRevision = RevisionLecture::model()->findByPk($page->id_revision);
 
         if (!$this->isUserEditor(Yii::app()->user, RevisionLecture::model()->findByPk($page->id_revision))) {
             throw new RevisionControllerException(403, Yii::t('error', '0590'));
@@ -148,7 +155,7 @@ class RevisionController extends Controller {
             "page" => $page,
             "dataProvider" => $dataProvider,
             "quiz" => $quiz,
-            "pages"=>$lectureRevision->lecturePages
+            "pages" => $lectureRevision->lecturePages
         ));
     }
 
@@ -157,7 +164,8 @@ class RevisionController extends Controller {
      * @throws RevisionControllerException
      */
 
-    public function actionAddVideo() {
+    public function actionAddVideo()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
         $idType = LectureElement::VIDEO;
@@ -179,7 +187,8 @@ class RevisionController extends Controller {
      * curl -XPOST http://intita.project/revision/editvideo -d 'idRevision=138&idPage=691&pk=758&value=url2'  -b XDEBUG_SESSION=PHPSTORM
      * @throws RevisionControllerException
      */
-    public function actionEditVideo() {
+    public function actionEditVideo()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
         $idElement = Yii::app()->request->getPost("pk");
@@ -200,7 +209,8 @@ class RevisionController extends Controller {
      * curl -XPOST http://intita.project/revision/deletevideo -d 'idRevision=138&idPage=691&pk=758'  -b XDEBUG_SESSION=PHPSTORM
      * @throws RevisionControllerException
      */
-    public function actionDeleteVideo() {
+    public function actionDeleteVideo()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
         $idElement = Yii::app()->request->getPost("pk");
@@ -220,7 +230,8 @@ class RevisionController extends Controller {
      * curl -XPOST http://intita.project/revision/EditPageTitle -d 'idRevision=139&pk=694&value=title'  -b XDEBUG_SESSION=PHPSTORM
      * @throws RevisionControllerException
      */
-    public function actionEditPageTitle() {
+    public function actionEditPageTitle()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost("pk");
         $title = trim(Yii::app()->request->getPost("value"));
@@ -241,7 +252,8 @@ class RevisionController extends Controller {
      * @throws RevisionControllerException
      */
 
-    public function actionAddLectureElement() {
+    public function actionAddLectureElement()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
         $idType = Yii::app()->request->getPost('idType');
@@ -262,7 +274,8 @@ class RevisionController extends Controller {
      * curl -XPOST http://intita.project/revision/EditLectureElement -d 'idRevision=139&idPage=694&idElement=763&html_block=block_html'  -b XDEBUG_SESSION=PHPSTORM
      * @throws RevisionControllerException
      */
-    public function actionEditLectureElement() {
+    public function actionEditLectureElement()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
         $idElement = Yii::app()->request->getPost('idElement');
@@ -283,7 +296,8 @@ class RevisionController extends Controller {
      * curl -XPOST http://intita.project/revision/DeleteLectureElement -d 'idRevision=139&idPage=694&idElement=763'  -b XDEBUG_SESSION=PHPSTORM
      * @throws RevisionControllerException
      */
-    public function actionDeleteLectureElement() {
+    public function actionDeleteLectureElement()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
         $idElement = Yii::app()->request->getPost('idElement');
@@ -298,7 +312,8 @@ class RevisionController extends Controller {
     }
 
     //@todo
-    public function actionGetLectureElement() {
+    public function actionGetLectureElement()
+    {
         $idEl = Yii::app()->request->getPost('idElement');
         $html = RevisionLectureElement::model()->findByPk($idEl)->html_block;
         echo $html;
@@ -308,7 +323,8 @@ class RevisionController extends Controller {
      * curl -XPOST --data 'idRevision=136&idPage=686' 'http://intita.project/revision/UpPage' -b XDEBUG_SESSION=PHPSTORM
      * @throws RevisionControllerException
      */
-    public function actionUpPage() {
+    public function actionUpPage()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
 
@@ -325,7 +341,8 @@ class RevisionController extends Controller {
      * curl -XPOST --data 'idRevision=136&idPage=686' 'http://intita.project/revision/DownPage' -b XDEBUG_SESSION=PHPSTORM
      * @throws RevisionControllerException
      */
-    public function actionDownPage() {
+    public function actionDownPage()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
 
@@ -339,7 +356,8 @@ class RevisionController extends Controller {
     }
 
     // @todo
-    public function actionCheckLecture() {
+    public function actionCheckLecture()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
 
         $lectureRevision = RevisionLecture::model()->with('lecturePages')->findByPk($idRevision);
@@ -359,7 +377,8 @@ class RevisionController extends Controller {
         }
     }
 
-    public function actionSendForApproveLecture() {
+    public function actionSendForApproveLecture()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
 
         $lectureRev = RevisionLecture::model()->with('lecturePages', 'properties')->findByPk($idRevision);
@@ -374,11 +393,12 @@ class RevisionController extends Controller {
             $lectureRev->state->changeTo('sendForApproval', Yii::app()->user);
             $this->sendRevisionRequest($lectureRev);
         } else {
-            echo implode(", ",$result);
+            echo implode(", ", $result);
         }
     }
-    
-    public function actionCancelSendForApproveLecture() {
+
+    public function actionCancelSendForApproveLecture()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
 
         $lectureRev = RevisionLecture::model()->with('lecturePages', 'properties')->findByPk($idRevision);
@@ -388,34 +408,34 @@ class RevisionController extends Controller {
         }
 
         $lectureRev->state->changeTo('editable', Yii::app()->user);
-        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('model_id'=>$lectureRev->id_revision,'action'=>2));
-        if($revisionRequest){
-            $revisionRequest->setDeleted();
+        $revisionRequest = LectureRevisionRequest::model()->findByAttributes(array('request_model_id' => $lectureRev->id_revision));
+        if ($revisionRequest) {
+            $revisionRequest->setDeactivate();
         }
     }
 
-    public function actionRejectLectureRevision() {
+    public function actionRejectLectureRevision()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
-        $comment=Yii::app()->request->getPost('comment','');
+        $comment = Yii::app()->request->getPost('comment', '');
         $lectureRev = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
 
-        if (!$this->isUserApprover(Yii::app()->user,$lectureRev->id_module)) {
+        if (!$this->isUserApprover(Yii::app()->user, $lectureRev->id_module)) {
             throw new RevisionControllerException(403, Yii::t('revision', '0827'));
         }
 
-        $lectureRev->state->changeTo('rejected', Yii::app()->user);
-        
-        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('model_id'=>$lectureRev->id_revision,'action'=>0));
-        if($revisionRequest){
-            $revisionRequest->setRejected();
+        $revisionRequest = LectureRevisionRequest::model()->findByAttributes(array('request_model_id' => $lectureRev->id_revision, 'action' => 0));
+        if ($revisionRequest) {
+            $revisionRequest->reject($comment);
         }
     }
 
-    public function actionCancelLectureRevision () {
+    public function actionCancelLectureRevision()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
 
-        if (!$this->isUserApprover(Yii::app()->user,$lectureRev->id_module)) {
+        if (!$this->isUserApprover(Yii::app()->user, $lectureRev->id_module)) {
             throw new RevisionControllerException(403, Yii::t('error', '0590'));
         }
 
@@ -427,23 +447,24 @@ class RevisionController extends Controller {
      * @throws Exception
      * @throws RevisionControllerException
      */
-    public function actionApproveLectureRevision() {
+    public function actionApproveLectureRevision()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
 
-        if (!$this->isUserApprover(Yii::app()->user,$lectureRev->id_module)) {
+        if (!$this->isUserApprover(Yii::app()->user, $lectureRev->id_module)) {
             throw new RevisionControllerException(403, Yii::t('revision', '0828'));
         }
 
         $lectureRev->state->changeTo('approved', Yii::app()->user);
-        
-        $revisionRequest=LectureRevisionRequest::model()->findByAttributes(array('id_revision'=>$lectureRev->id_revision,'action'=>0,));
-        if($revisionRequest){
+        $revisionRequest = LectureRevisionRequest::model()->findByAttributes(array('request_model_id' => $lectureRev->id_revision, 'action' => 0));
+        if ($revisionRequest) {
             $revisionRequest->setApproved();
         }
     }
 
-    public function actionReadyLectureRevision() {
+    public function actionReadyLectureRevision()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
 
@@ -454,7 +475,8 @@ class RevisionController extends Controller {
         $lectureRev->state->changeTo('release', Yii::app()->user);
     }
 
-    public function actionProposedToReleaseRevision() {
+    public function actionProposedToReleaseRevision()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
 
@@ -465,7 +487,8 @@ class RevisionController extends Controller {
         $lectureRev->state->changeTo('readyForRelease', Yii::app()->user);
     }
 
-    public function actionCancelProposedToReleaseRevision() {
+    public function actionCancelProposedToReleaseRevision()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
 
@@ -475,8 +498,9 @@ class RevisionController extends Controller {
 
         $lectureRev->state->changeTo('approved', Yii::app()->user);
     }
-    
-    public function actionCancelEditRevisionByEditor () {
+
+    public function actionCancelEditRevisionByEditor()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->with('lecturePages', 'properties')->findByPk($idRevision);
 
@@ -486,7 +510,8 @@ class RevisionController extends Controller {
         $lectureRev->state->changeTo('cancelledAuthor', Yii::app()->user);
     }
 
-    public function actionRestoreEditRevisionByEditor () {
+    public function actionRestoreEditRevisionByEditor()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->with('lecturePages', 'properties')->findByPk($idRevision);
 
@@ -500,7 +525,8 @@ class RevisionController extends Controller {
      * curl -XPOST http://intita.project/revision/UpLectureElement -d 'idRevision=139&idPage=694&idElement=772' -b XDEBUG_SESSION=PHPSTORM
      */
 
-    public function actionUpLectureElement() {
+    public function actionUpLectureElement()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
         $idElement = Yii::app()->request->getPost('idElement');
@@ -518,7 +544,8 @@ class RevisionController extends Controller {
      * curl -XPOST http://intita.project/revision/DownLectureElement -d 'idRevision=139&idPage=694&idElement=772' -b XDEBUG_SESSION=PHPSTORM
      */
 
-    public function actionDownLectureElement() {
+    public function actionDownLectureElement()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $idPage = Yii::app()->request->getPost('idPage');
         $idElement = Yii::app()->request->getPost('idElement');
@@ -539,7 +566,8 @@ class RevisionController extends Controller {
      * @throws RevisionControllerException
      */
 
-    public function actionEditLecture($idLecture) {
+    public function actionEditLecture($idLecture)
+    {
 
         $lectureRevisions = RevisionLecture::model()->findAllByAttributes(array("id_lecture" => $idLecture));
         $lecture = Lecture::model()->findByPk($idLecture);
@@ -562,7 +590,7 @@ class RevisionController extends Controller {
             foreach ($lectureRevisions as $lectureRevision) {
                 if ($lectureRevision->canEdit()) {
                     array_push($editableRevisions, $lectureRevision);
-                } 
+                }
                 if ($lectureRevision->isReleaseable() || $lectureRevision->isReleased()) {
                     $lastApproved = $lectureRevision;
                 }
@@ -574,7 +602,7 @@ class RevisionController extends Controller {
              */
             if ((count($editableRevisions) == 0 || (count($editableRevisions) == 1 && !$editableRevisions[0]->canEdit())) && $lastApproved) {
                 $lectureRev = $lastApproved->cloneLecture(Yii::app()->user);
-            } else if(count($editableRevisions) == 1 && $editableRevisions[0]->canEdit()) {
+            } else if (count($editableRevisions) == 1 && $editableRevisions[0]->canEdit()) {
                 $lectureRev = $editableRevisions[0];
             } else {
                 $this->render('revisionsBranch', array(
@@ -594,11 +622,12 @@ class RevisionController extends Controller {
 
     }
 
-    public function actionRevisionsBranch($idRevision) {
+    public function actionRevisionsBranch($idRevision)
+    {
         $lectureRev = RevisionLecture::model()->findByPk($idRevision);
-        if(!$lectureRev)
+        if (!$lectureRev)
             throw new RevisionControllerException(404);
-        if (!$this->isUserTeacher(Yii::app()->user,$lectureRev->id_module) && !$this->isUserApprover(Yii::app()->user, $lectureRev->id_module)) {
+        if (!$this->isUserTeacher(Yii::app()->user, $lectureRev->id_module) && !$this->isUserApprover(Yii::app()->user, $lectureRev->id_module)) {
             throw new RevisionControllerException(403, Yii::t('revision', '0829'));
         }
 
@@ -610,7 +639,8 @@ class RevisionController extends Controller {
         ));
     }
 
-    public function actionDeleteLecture() {
+    public function actionDeleteLecture()
+    {
         $idLecture = Yii::app()->request->getPost('idLecture');
         $user = Yii::app()->user;
         $lecture = Lecture::model()->findByPk($idLecture);
@@ -629,7 +659,8 @@ class RevisionController extends Controller {
         $lectureRev->deleteLectureFromRegularDB();
     }
 
-    public function actionModuleLecturesRevisions($idModule) {
+    public function actionModuleLecturesRevisions($idModule)
+    {
         if (!$this->isUserTeacher(Yii::app()->user, $idModule) && !$this->isUserApprover(Yii::app()->user, $idModule)) {
             throw new RevisionControllerException(403, Yii::t('revision', '0829'));
         }
@@ -642,7 +673,8 @@ class RevisionController extends Controller {
         ));
     }
 
-    public function actionBuildRevisionsInModule() {
+    public function actionBuildRevisionsInModule()
+    {
         $idModule = Yii::app()->request->getPost('idModule');
         $lectureRev = RevisionLecture::model()->findAllByAttributes(array("id_module" => $idModule));
         $relatedTree = RevisionLecture::getLecturesTree($idModule);
@@ -651,7 +683,8 @@ class RevisionController extends Controller {
         echo $json;
     }
 
-    public function actionBuildRevisionsBranch() {
+    public function actionBuildRevisionsBranch()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->findByPk(array("id_revision" => $idRevision));
         $relatedRev = $lectureRev->getRelatedLectures();
@@ -660,13 +693,14 @@ class RevisionController extends Controller {
 
         echo $json;
     }
-    
-    public function actionBuildAllRevisions() {
+
+    public function actionBuildAllRevisions()
+    {
         $organization = Yii::app()->request->getPost('organization');
-        $criteria=new CDbCriteria;
-        $criteria->alias='vcl';
+        $criteria = new CDbCriteria;
+        $criteria->alias = 'vcl';
         $criteria->join = 'left join module m on m.module_ID=vcl.id_module';
-        $criteria->addCondition('m.id_organization='.$organization);
+        $criteria->addCondition('m.id_organization=' . $organization);
         $lectureRev = RevisionLecture::model()->with("properties")->findAll($criteria);
         $lecturesTree = RevisionLecture::getLecturesTree();
         $json = $this->buildLectureTreeJson($lectureRev, $lecturesTree);
@@ -675,21 +709,22 @@ class RevisionController extends Controller {
     }
     //build revisions tree in branch from approved lecture
     //todo refactor
-    public function actionBuildApprovedLectureRevisions() {
+    public function actionBuildApprovedLectureRevisions()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRev = RevisionLecture::model()->findByPk($idRevision);
 
         $relatedTree = RevisionLecture::getLecturesTree($lectureRev->id_module);
 
-        $quickUnion=$lectureRev->getQuickUnionRevisions();
-        $branchRevisionsId=$lectureRev->getRelatedIdListInBranch($quickUnion);
+        $quickUnion = $lectureRev->getQuickUnionRevisions();
+        $branchRevisionsId = $lectureRev->getRelatedIdListInBranch($quickUnion);
         //get revision which is approved
-        $approvedRevision=$lectureRev->getApprovedRevision($branchRevisionsId);
-        if($approvedRevision){
-            $branchRevisionsIdFromApproved=$lectureRev->getRelatedIdListFromApproved($quickUnion,$approvedRevision->id_revision);
-            $relatedTree[$approvedRevision->id_revision]=$approvedRevision->id_revision;
-        }else{
-            $branchRevisionsIdFromApproved=[];
+        $approvedRevision = $lectureRev->getApprovedRevision($branchRevisionsId);
+        if ($approvedRevision) {
+            $branchRevisionsIdFromApproved = $lectureRev->getRelatedIdListFromApproved($quickUnion, $approvedRevision->id_revision);
+            $relatedTree[$approvedRevision->id_revision] = $approvedRevision->id_revision;
+        } else {
+            $branchRevisionsIdFromApproved = [];
         }
 
         $relatedRev = RevisionLecture::model()->with('properties')->findAllByPk($branchRevisionsIdFromApproved);
@@ -701,13 +736,14 @@ class RevisionController extends Controller {
         echo $json;
     }
 
-    public function actionBuildApprovedBranchPartInModule() {
+    public function actionBuildApprovedBranchPartInModule()
+    {
         $idModule = Yii::app()->request->getPost('idModule');
         $lectureRev = RevisionLecture::model()->findAllByAttributes(array("id_module" => $idModule));
         $relatedTree = RevisionLecture::getLecturesTree($idModule);
 
-        $approvedRevisions=RevisionLecture::getApprovedRevisionsInModule($idModule);
-        if(count($lectureRev)) {
+        $approvedRevisions = RevisionLecture::getApprovedRevisionsInModule($idModule);
+        if (count($lectureRev)) {
             $quickUnion = $lectureRev[0]->getQuickUnionRevisions();
             if ($approvedRevisions) {
                 $moduleRevisions = [];
@@ -724,7 +760,8 @@ class RevisionController extends Controller {
         }
     }
 
-    public function actionShowRevision($idRevision) {
+    public function actionShowRevision($idRevision)
+    {
         $lectureRev = RevisionLecture::model()->with('properties, lecturePages')->findByPk($idRevision);
 
     }
@@ -746,7 +783,8 @@ class RevisionController extends Controller {
      * @throws CDbException
      * @throws RevisionLectureElementException
      */
-    public function actionAddTest() {
+    public function actionAddTest()
+    {
         $revisionId = Yii::app()->request->getPost('revisionId');
         $pageId = Yii::app()->request->getPost('pageId');
         $idType = Yii::app()->request->getPost('idType');
@@ -769,7 +807,8 @@ class RevisionController extends Controller {
     /**
      * curl -XPOST --data 'revisionId=138&pageId=691&idBlock=756&condition=condition2&testTitle=testTit le2&optionsNum=2&answer1=answer3&answer2=answer4&is_valid2=1' 'http://intita.project/revision/EditTest' -b XDEBUG_SESSION=PHPSTORM
      */
-    public function actionEditTest() {
+    public function actionEditTest()
+    {
 
         $revisionId = Yii::app()->request->getPost('revisionId');
         $pageId = Yii::app()->request->getPost('pageId');
@@ -794,7 +833,8 @@ class RevisionController extends Controller {
     /**
      * curl -XPOST --data 'revisionId=138&pageId=691&idBlock=757' 'http://intita.project/revision/DeleteTest'  -b XDEBUG_SESSION=PHPSTORM
      */
-    public function actionDeleteTest() {
+    public function actionDeleteTest()
+    {
         $revisionId = Yii::app()->request->getPost('revisionId');
         $pageId = Yii::app()->request->getPost('pageId');
         $idBlock = Yii::app()->request->getPost('idBlock', 0);
@@ -806,7 +846,8 @@ class RevisionController extends Controller {
     /**
      * curl -XPOST --data 'idRevision=99' 'http://intita.project/revision/CloneLecture' -b XDEBUG_SESSION=PHPSTORM
      */
-    public function actionCloneLecture() {
+    public function actionCloneLecture()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
 
         $lectureRevision = RevisionLecture::model()->findByPk($idRevision);
@@ -817,7 +858,8 @@ class RevisionController extends Controller {
     /**
      *  curl -XPOST --data 'idPage=588' 'http://intita.project/revision/DeletePage' -b XDEBUG_SESSION=PHPSTORM
      */
-    public function actionDeletePage() {
+    public function actionDeletePage()
+    {
         $idPage = Yii::app()->request->getPost('idPage');
         $idRevision = Yii::app()->request->getPost('idRevision');
         $lectureRevision = RevisionLecture::model()->findByPk($idRevision);
@@ -827,7 +869,8 @@ class RevisionController extends Controller {
     /**
      *  curl -XPOST --data 'idRevision=139&title_ua=title_ua&title_ru=title_ru&title_en=title_en&alias=alias' 'http://intita.project/revision/EditProperties' -b XDEBUG_SESSION=PHPSTORM
      */
-    public function actionEditProperties() {
+    public function actionEditProperties()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
 
         $lectureRevision = RevisionLecture::model()->findByPk($idRevision);
@@ -848,12 +891,13 @@ class RevisionController extends Controller {
     }
 
 //    action editProperties for editable.EditableField widget
-    public function actionXEditableEditProperties() {
+    public function actionXEditableEditProperties()
+    {
         $idProperties = Yii::app()->request->getPost('pk');
         $attr = Yii::app()->request->getPost('name');
         $input = Yii::app()->request->getPost('value');
 
-        $lectureRevision = RevisionLecture::model()->findByAttributes(array('id_properties'=>$idProperties));
+        $lectureRevision = RevisionLecture::model()->findByAttributes(array('id_properties' => $idProperties));
 
         if (!$this->isUserEditor(Yii::app()->user, $lectureRevision)) {
             throw new RevisionControllerException(403, Yii::t('error', '0590'));
@@ -869,7 +913,8 @@ class RevisionController extends Controller {
      * @return bool
      * @throws CDbException
      */
-    private function isUserApprover($user, $moduleId=null, $organizationId=null) {
+    private function isUserApprover($user, $moduleId = null, $organizationId = null)
+    {
         return RegisteredUser::userById($user->getId())->canApprove($moduleId, null, $organizationId);
     }
 
@@ -879,7 +924,8 @@ class RevisionController extends Controller {
      * @param RevisionLecture $lectureRev
      * @return mixed
      */
-    private function isUserEditor($user, $lectureRev) {
+    private function isUserEditor($user, $lectureRev)
+    {
         return ($lectureRev->properties->id_user_created == $user->getId());
     }
 
@@ -889,7 +935,8 @@ class RevisionController extends Controller {
      * @param $idModule
      * @return bool
      */
-    private function isUserTeacher($user, $idModule) {
+    private function isUserTeacher($user, $idModule)
+    {
         return Teacher::isTeacherAuthorModule($user->getId(), $idModule);
     }
 
@@ -899,7 +946,8 @@ class RevisionController extends Controller {
      * @param $node - node to add
      * @param $parents - quick union structure
      */
-    private function appendNode(&$tree, $node, $parents) {
+    private function appendNode(&$tree, $node, $parents)
+    {
         if ($parents[$node['id']] == $node['id']) {
             //if root node
             $tree[$node['id']] = $node;
@@ -932,26 +980,27 @@ class RevisionController extends Controller {
         }
     }
 
-    private function appendNodeMultiselect(&$tree, $node, $parents, $actualRevisionsList) {
+    private function appendNodeMultiselect(&$tree, $node, $parents, $actualRevisionsList)
+    {
 //       do if node is in array list
         if (in_array($node['id'], $actualRevisionsList)) {
 //       change parent node if current parent node absent in array list
-            if(!in_array($parents[$node['id']], $actualRevisionsList)){
-                $tempParent=$parents[$node['id']];
+            if (!in_array($parents[$node['id']], $actualRevisionsList)) {
+                $tempParent = $parents[$node['id']];
                 while (!in_array($tempParent, $actualRevisionsList)) {
-                    $oldParent=$tempParent;
-                    $tempParent=$parents[$tempParent];
-                    if($oldParent==$tempParent){
-                        $tempParent=$node['id'];
+                    $oldParent = $tempParent;
+                    $tempParent = $parents[$tempParent];
+                    if ($oldParent == $tempParent) {
+                        $tempParent = $node['id'];
                         break;
                     }
                 }
-                $parents[$node['id']]=$tempParent;
+                $parents[$node['id']] = $tempParent;
             }
             if ($parents[$node['id']] == $node['id']) {
                 //if root node
                 $tree[$node['id']] = $node;
-            } else{
+            } else {
                 $path = [];
 
                 if (in_array($parents[$node['id']], $actualRevisionsList)) {
@@ -961,43 +1010,43 @@ class RevisionController extends Controller {
                 }
                 //building path from root to target node
                 array_push($path, $parentId);
-                $i=0;
+                $i = 0;
 
                 while ($parents[$parentId] != $parentId) {
-                    $i=$i+1;
+                    $i = $i + 1;
 
                     if (!in_array($parents[$parentId], $actualRevisionsList)) {
                         // find parent
-                        $tempParent=$parents[$parentId];
-                        $end=false;
+                        $tempParent = $parents[$parentId];
+                        $end = false;
 
                         while (!in_array($tempParent, $actualRevisionsList)) {
-                            $oldParent=$tempParent;
-                            $tempParent=$parents[$tempParent];
-                            if($oldParent==$tempParent){
-                                if(!in_array($tempParent, $actualRevisionsList)){
-                                    $end=true;
+                            $oldParent = $tempParent;
+                            $tempParent = $parents[$tempParent];
+                            if ($oldParent == $tempParent) {
+                                if (!in_array($tempParent, $actualRevisionsList)) {
+                                    $end = true;
                                     break;
-                                }else{
-                                    $parentId=$tempParent;
+                                } else {
+                                    $parentId = $tempParent;
                                     break;
                                 }
                             }
                         }
-                        if($end) break;
+                        if ($end) break;
 
                         array_push($path, $tempParent);
-                        $parentId=$tempParent;
+                        $parentId = $tempParent;
 
                     }
-                    if($parents[$parentId] != $parentId){
+                    if ($parents[$parentId] != $parentId) {
                         if (in_array($parents[$parentId], $actualRevisionsList)) {
                             array_push($path, $parents[$parentId]);
                         }
                         $parentId = $parents[$parentId];
                     }
                 }
-                
+
                 //finding reference to target node
                 $targetNode = &$tree;
                 while (count($path) != 0) {
@@ -1017,55 +1066,59 @@ class RevisionController extends Controller {
         }
     }
 
-    private function buildLectureTreeJson($lectures, $lectureTree) {
+    private function buildLectureTreeJson($lectures, $lectureTree)
+    {
         $jsonArray = [];
         foreach ($lectures as $lecture) {
             $node = array();
             $node['text'] = "Ревізія №" . $lecture->id_revision . " " .
-                $lecture->properties->title_ua . ". Статус: <strong>" . $lecture->state->getName().'</strong>'.
-                ' Створена: '.$lecture->properties->start_date.' Модифікована: '.$lecture->properties->update_date;
+                $lecture->properties->title_ua . ". Статус: <strong>" . $lecture->state->getName() . '</strong>' .
+                ' Створена: ' . $lecture->properties->start_date . ' Модифікована: ' . $lecture->properties->update_date;
             $node['selectable'] = false;
             $node['id'] = $lecture->id_revision;
             $node['creatorId'] = $lecture->properties->id_user_created;
-            $statusList=$lecture->statusList();
-            $node=array_merge ($node, $statusList);
+            $statusList = $lecture->statusList();
+            $node = array_merge($node, $statusList);
             $this->appendNode($jsonArray, $node, $lectureTree);
         }
         return json_encode(array_values($jsonArray));
     }
 
-    public function buildLectureTreeJsonMultiselect($lectures, $lectureTree, $actualIdList) {
+    public function buildLectureTreeJsonMultiselect($lectures, $lectureTree, $actualIdList)
+    {
         $jsonArray = [];
         foreach ($lectures as $lecture) {
             $node = array();
             $node['text'] = "Ревізія №" . $lecture->id_revision . " " .
-                $lecture->properties->title_ua . ". Статус: <strong>" . $lecture->state->getName().'</strong>'.
-                ' Створена: '.$lecture->properties->start_date.' Модифікована: '.$lecture->properties->update_date;
+                $lecture->properties->title_ua . ". Статус: <strong>" . $lecture->state->getName() . '</strong>' .
+                ' Створена: ' . $lecture->properties->start_date . ' Модифікована: ' . $lecture->properties->update_date;
             $node['selectable'] = false;
             $node['id'] = $lecture->id_revision;
             $node['creatorId'] = $lecture->properties->id_user_created;
-            $statusList=$lecture->statusList();
-            $node=array_merge ($node, $statusList);
+            $statusList = $lecture->statusList();
+            $node = array_merge($node, $statusList);
 
             $this->appendNodeMultiselect($jsonArray, $node, $lectureTree, $actualIdList);
         }
         return json_encode(array_values($jsonArray));
     }
 
-    public function actionDataTest() {
+    public function actionDataTest()
+    {
         $idPage = Yii::app()->request->getPost('idPage');
         $page = RevisionLecturePage::model()->findByPk($idPage);
         $data = [];
-        $data["condition"] =  $page->getQuiz()->html_block;
-        $answers=RevisionTests::getTestAnswers($page->quiz);
-        $valid=RevisionTestsAnswers::getTestValid($page->quiz);
-        $data["answers"]=$answers;
-        $data["valid"]=$valid;
+        $data["condition"] = $page->getQuiz()->html_block;
+        $answers = RevisionTests::getTestAnswers($page->quiz);
+        $valid = RevisionTestsAnswers::getTestValid($page->quiz);
+        $data["answers"] = $answers;
+        $data["valid"] = $valid;
 
         echo CJSON::encode($data);
     }
 
-    public function actionCreateLectureRevision($idRevision, $newBranch=false) {
+    public function actionCreateLectureRevision($idRevision, $newBranch = false)
+    {
 
         $lectureRevision = RevisionLecture::model()->with("properties", "lecturePages")->findByPk($idRevision);
 
@@ -1074,9 +1127,9 @@ class RevisionController extends Controller {
         }
 
         $lectureRevision = $lectureRevision->cloneLecture(Yii::app()->user, false, $newBranch);
-        if($lectureRevision){
-            $this->redirect(Yii::app()->createUrl('/revision/editLectureRevision',array('idRevision'=>$lectureRevision->id_revision)));
-        }else{
+        if ($lectureRevision) {
+            $this->redirect(Yii::app()->createUrl('/revision/editLectureRevision', array('idRevision' => $lectureRevision->id_revision)));
+        } else {
             throw new RevisionControllerException(500, 'CreateLectureRevision error');
         }
     }
@@ -1089,22 +1142,22 @@ class RevisionController extends Controller {
 
         $pages = [];
         $lecture = [];
-        $data = array('lecture' => array(),'pages' => array());
-        foreach ($lectureRevision->lecturePages as $key=>$page) {
+        $data = array('lecture' => array(), 'pages' => array());
+        foreach ($lectureRevision->lecturePages as $key => $page) {
             $pages[$key]["id"] = $page->id;
             $pages[$key]['title'] = $page->page_title;
             $pages[$key]["page_order"] = $page->page_order;
-            $pages[$key]["quiz"] = isset($page->getQuiz()->id_type)?$page->getQuiz()->id_type:null;
+            $pages[$key]["quiz"] = isset($page->getQuiz()->id_type) ? $page->getQuiz()->id_type : null;
             $pages[$key]["video"] = $page->video;
         }
-        $lecture['status']=$lectureRevision->state->getName();
-        $statusList=$lectureRevision->statusList();
-        $lecture=array_merge ($lecture, $statusList);
-        $lecture['view']= $lectureRevision->isReleased()?
-            Yii::app()->createUrl("lesson/index", array("id" => $lectureRevision->id_lecture, "idCourse" => 0)):null;
+        $lecture['status'] = $lectureRevision->state->getName();
+        $statusList = $lectureRevision->statusList();
+        $lecture = array_merge($lecture, $statusList);
+        $lecture['view'] = $lectureRevision->isReleased() ?
+            Yii::app()->createUrl("lesson/index", array("id" => $lectureRevision->id_lecture, "idCourse" => 0)) : null;
 
-        $data['lecture']=$lecture;
-        $data['pages']=$pages;
+        $data['lecture'] = $lecture;
+        $data['pages'] = $pages;
         echo CJSON::encode($data);
     }
 
@@ -1114,7 +1167,7 @@ class RevisionController extends Controller {
         $pageOrder = $_GET['idPage'];
 
         $lectureRevision = RevisionLecture::model()->findByPk($idRevision);
-        $page=$lectureRevision->lecturePages[$pageOrder-1];
+        $page = $lectureRevision->lecturePages[$pageOrder - 1];
 
         echo $this->renderPartial('lecturePreview/_videoTab',
             array('page' => $page), true);
@@ -1126,10 +1179,10 @@ class RevisionController extends Controller {
         $pageOrder = $_GET['idPage'];
 
         $lectureRevision = RevisionLecture::model()->findByPk($idRevision);
-        $page=$lectureRevision->lecturePages[$pageOrder-1];
+        $page = $lectureRevision->lecturePages[$pageOrder - 1];
 
         $dataProvider = new CArrayDataProvider($page->getLectureBody());
-        $dataProvider->pagination=false;
+        $dataProvider->pagination = false;
 
         echo $this->renderPartial('lecturePreview/_textTab',
             array('data' => $dataProvider->getData()), true);
@@ -1141,7 +1194,7 @@ class RevisionController extends Controller {
         $pageOrder = $_GET['idPage'];
 
         $lectureRevision = RevisionLecture::model()->findByPk($idRevision);
-        $page=$lectureRevision->lecturePages[$pageOrder-1];
+        $page = $lectureRevision->lecturePages[$pageOrder - 1];
 
         $quiz = $page->getQuiz();
         echo $this->renderPartial('lecturePreview/_quiz',
@@ -1151,7 +1204,7 @@ class RevisionController extends Controller {
     public function actionCheckTestAnswer()
     {
         $emptyanswers = [];
-        $test =  Yii::app()->request->getPost('test', '');
+        $test = Yii::app()->request->getPost('test', '');
         $answers = Yii::app()->request->getPost('answers', $emptyanswers);
 
         echo RevisionTestsAnswers::checkTestAnswer($test, $answers);
@@ -1161,21 +1214,22 @@ class RevisionController extends Controller {
     {
         $quizId = $_POST['id'];
         $answers = $_POST['answers'];
-        echo RevisionSkipTaskAnswers::checkSkipAnswer($quizId,$answers);
+        echo RevisionSkipTaskAnswers::checkSkipAnswer($quizId, $answers);
     }
 
-    public function actionBuildCurrentLectureJson() {
+    public function actionBuildCurrentLectureJson()
+    {
         $idModule = Yii::app()->request->getPost('idModule');
-        $currentLectures=Lecture::model()->findAllByAttributes(array("idModule" => $idModule),array('order'=>'`order` ASC'));
+        $currentLectures = Lecture::model()->findAllByAttributes(array("idModule" => $idModule), array('order' => '`order` ASC'));
         $data = [];
-        foreach ($currentLectures as $key=>$lecture) {
+        foreach ($currentLectures as $key => $lecture) {
             $data[$key]['title'] = $lecture->title_ua;
             $data[$key]['order'] = $lecture->order;
             $data[$key]['id'] = $lecture->id;
-            $data[$key]['revisionsLink'] = Yii::app()->createUrl('/revision/editLecture',array('idLecture'=>$lecture->id));
+            $data[$key]['revisionsLink'] = Yii::app()->createUrl('/revision/editLecture', array('idLecture' => $lecture->id));
             $data[$key]['lecturePreviewLink'] = Yii::app()->createUrl("lesson/index", array("id" => $lecture->id, "idCourse" => 0));
             $lectureRev = RevisionLecture::getParentRevisionForLecture($lecture->id);
-            $data[$key]['approvedFromRevision'] = ($lectureRev)?$lectureRev->id_revision:null;
+            $data[$key]['approvedFromRevision'] = ($lectureRev) ? $lectureRev->id_revision : null;
         }
         echo CJSON::encode($data);
     }
@@ -1184,8 +1238,8 @@ class RevisionController extends Controller {
     {
         $idBlock = Yii::app()->request->getPost('idBlock');
         $data = [];
-        $plainTask=RevisionLectureElement::model()->findByPk($idBlock);
-        $data["condition"]=$plainTask->html_block;
+        $plainTask = RevisionLectureElement::model()->findByPk($idBlock);
+        $data["condition"] = $plainTask->html_block;
 
         echo CJSON::encode($data);
     }
@@ -1194,9 +1248,9 @@ class RevisionController extends Controller {
     {
         $idBlock = Yii::app()->request->getPost('idBlock');
         $data = [];
-        $skipTask=RevisionSkipTask::model()->findByAttributes(array("condition" => $idBlock));
-        $data["condition"]=$skipTask->lectureElement->html_block;
-        $data["source"]=$skipTask->source;
+        $skipTask = RevisionSkipTask::model()->findByAttributes(array("condition" => $idBlock));
+        $data["condition"] = $skipTask->lectureElement->html_block;
+        $data["source"] = $skipTask->source;
 
         echo CJSON::encode($data);
     }
@@ -1205,8 +1259,8 @@ class RevisionController extends Controller {
     {
         $idBlock = Yii::app()->request->getPost('idBlock');
         $data = [];
-        $task=RevisionTask::model()->findByAttributes(array("id_lecture_element" => $idBlock));
-        $data["condition"] =  $task->lectureElement->html_block;;
+        $task = RevisionTask::model()->findByAttributes(array("id_lecture_element" => $idBlock));
+        $data["condition"] = $task->lectureElement->html_block;;
 
         echo CJSON::encode($data);
     }
@@ -1215,8 +1269,8 @@ class RevisionController extends Controller {
     public function actionGetTaskUIDbyElementId()
     {
         $blockId = Yii::app()->request->getPost('blockId');
-        $quiz=RevisionTask::model()->findByAttributes(array('id_lecture_element'=>$blockId));
-        if($quiz)
+        $quiz = RevisionTask::model()->findByAttributes(array('id_lecture_element' => $blockId));
+        if ($quiz)
             echo $quiz->uid;
         else echo false;
     }
@@ -1232,22 +1286,23 @@ class RevisionController extends Controller {
         }
 
         $data = [];
-        $data['authorName'] =StudentReg::getUserNamePayment($lectureRevision->properties->id_user_created);
-        $data['authorId'] =$lectureRevision->properties->id_user_created;
+        $data['authorName'] = StudentReg::getUserNamePayment($lectureRevision->properties->id_user_created);
+        $data['authorId'] = $lectureRevision->properties->id_user_created;
         $data['theme'] = "Ревізія №" . $lectureRevision->id_revision . " " . $lectureRevision->properties->title_ua;
-        $data["link"]=Yii::app()->createUrl('/revision/previewLectureRevision',array('idRevision'=>$lectureRevision->id_revision));
+        $data["link"] = Yii::app()->createUrl('/revision/previewLectureRevision', array('idRevision' => $lectureRevision->id_revision));
 
         echo CJSON::encode($data);
     }
 
-    public function actionBuildTreeInBranch() {
+    public function actionBuildTreeInBranch()
+    {
         $idRevision = Yii::app()->request->getPost('idRevision');
         $status = Yii::app()->request->getPost('status');
         $idAuthor = Yii::app()->request->getPost('idAuthor');
         $lectureRev = RevisionLecture::model()->findByPk(array("id_revision" => $idRevision));
-        
-        $actualIdList=RevisionLecture::getFilteredIdRevisions($status,$lectureRev->id_module,$idAuthor);
-        
+
+        $actualIdList = RevisionLecture::getFilteredIdRevisions($status, $lectureRev->id_module, $idAuthor);
+
         $relatedRev = $lectureRev->getRelatedLectures();
         $relatedTree = RevisionLecture::getLecturesTree($lectureRev->id_module);
         $json = $this->buildLectureTreeJsonMultiselect($relatedRev, $relatedTree, $actualIdList);
@@ -1255,73 +1310,76 @@ class RevisionController extends Controller {
         echo $json;
     }
 
-    public function actionBuildTreeInModule() {
+    public function actionBuildTreeInModule()
+    {
         $idModule = Yii::app()->request->getPost('idModule');
         $status = Yii::app()->request->getPost('status');
         $idAuthor = Yii::app()->request->getPost('idAuthor');
         $lectureRev = RevisionLecture::model()->findAllByAttributes(array("id_module" => $idModule));
-        $actualIdList=RevisionLecture::getFilteredIdRevisions($status,$idModule,$idAuthor);
+        $actualIdList = RevisionLecture::getFilteredIdRevisions($status, $idModule, $idAuthor);
         $relatedTree = RevisionLecture::getLecturesTree($idModule);
         $json = $this->buildLectureTreeJsonMultiselect($lectureRev, $relatedTree, $actualIdList);
 
         echo $json;
     }
 
-    public function actionBuildAllFilteredRevisionsTree() {
+    public function actionBuildAllFilteredRevisionsTree()
+    {
         $status = Yii::app()->request->getPost('status');
         $idAuthor = Yii::app()->request->getPost('idAuthor');
         $lectureRev = RevisionLecture::model()->with("properties")->findAll();
-        $actualIdList=RevisionLecture::getFilteredIdRevisions($status,null,$idAuthor);
+        $actualIdList = RevisionLecture::getFilteredIdRevisions($status, null, $idAuthor);
         $lecturesTree = RevisionLecture::getLecturesTree();
         $json = $this->buildLectureTreeJsonMultiselect($lectureRev, $lecturesTree, $actualIdList);
 
         echo $json;
     }
 
-    private function sendRevisionRequest(RevisionLecture $revision){
-        if($revision)
-         {
-          $request = LectureRevisionRequest::model()->find('request_model_id = :revision' ,['revision'=> $revision->id_revision]);
-          if ($request)
-           {
-            if ($request->isRequestOpen())
-             echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії лекції двічі.";
-            Yii::app()->end();
-           } else
-           {
-            $request = new LectureRevisionRequest();
-            if ($request->newRequest($revision->id_revision))
-             {
-              echo "Запит на затвердження ревізії лекції успішно відправлено. Зачекайте, поки контент менеджер підтвердить запит.";
-              Yii::app()->end();
-             } else
-             {
-              throw new \application\components\Exceptions\IntItaException(500, "Запит на затвердження ревізії лекції не вдалося надіслати.");
-             }
-           }
-         }
+    private function sendRevisionRequest(RevisionLecture $revision)
+    {
+        if ($revision) {
+            $request = LectureRevisionRequest::model()->find('request_model_id = :revision', ['revision' => $revision->id_revision]);
+            if ($request) {
+                if ($request->isRequestOpen()){
+                    echo "Такий запит вже надіслано. Ви не можете надіслати запит на затвердження ревізії лекції двічі.";
+                } else {
+                    $request->newRequest($revision->id_revision);
+                }
+                Yii::app()->end();
+            } else {
+                $request = new LectureRevisionRequest();
+                if ($request->newRequest($revision->id_revision)) {
+                    echo "Запит на затвердження ревізії лекції успішно відправлено. Зачекайте, поки контент менеджер підтвердить запит.";
+                    Yii::app()->end();
+                } else {
+                    throw new \application\components\Exceptions\IntItaException(500, "Запит на затвердження ревізії лекції не вдалося надіслати.");
+                }
+            }
+        }
 
-       throw new \application\components\Exceptions\IntItaException(400, "Некоректний запит!");
+        throw new \application\components\Exceptions\IntItaException(400, "Некоректний запит!");
     }
 
-    public function actionRevisionsAuthors() {
-        if(Yii::app()->request->getPost('idModule')){
-            $idModule=Yii::app()->request->getPost('idModule');
+    public function actionRevisionsAuthors()
+    {
+        if (Yii::app()->request->getPost('idModule')) {
+            $idModule = Yii::app()->request->getPost('idModule');
             echo json_encode(RevisionLecture::getRevisionsAuthors($idModule));
             die;
-        }else if(Yii::app()->request->getPost('idRevision')){
-            $idModule=RevisionLecture::model()->findByPk(Yii::app()->request->getPost('idRevision'))->id_module;
+        } else if (Yii::app()->request->getPost('idRevision')) {
+            $idModule = RevisionLecture::model()->findByPk(Yii::app()->request->getPost('idRevision'))->id_module;
             echo json_encode(RevisionLecture::getRevisionsAuthors($idModule));
             die;
-        }else{
+        } else {
             echo json_encode(RevisionLecture::getRevisionsAuthors());
             die;
         }
     }
 
-    public function actionRedirectToRevisions(){
-        $organizationId= Yii::app()->request->getPost('organization');
-        $revisionController= Yii::app()->request->getPost('revisionController');
-        $this->redirect(Yii::app()->createUrl('/'.$revisionController.'/index', array('organizationId'=>$organizationId)));
+    public function actionRedirectToRevisions()
+    {
+        $organizationId = Yii::app()->request->getPost('organization');
+        $revisionController = Yii::app()->request->getPost('revisionController');
+        $this->redirect(Yii::app()->createUrl('/' . $revisionController . '/index', array('organizationId' => $organizationId)));
     }
 }

@@ -16,7 +16,7 @@ class RequestController extends TeacherCabinetController
     public function actionRequest($message)
     {
         $requestModel = Request::model()->find('id=:requestId AND organization=:organization',
-                                               ['requestId'=>$message,'organization'=>Yii::app()->user->model->getCurrentOrganization()->id]);
+            ['requestId' => $message, 'organization' => Yii::app()->user->model->getCurrentOrganization()->id]);
 
         $model = RequestFactory::getInstance($requestModel);
         if ($model) {
@@ -32,7 +32,6 @@ class RequestController extends TeacherCabinetController
     {
         $adapter = new NgTableRequestsAdapter(NgTableRequestsAdapter::NEWREQUESTS);
         echo $adapter->getData();
-       // echo RequestsList::listAllActiveRequests();
     }
 
     public function actionGetApprovedRequestsList()
@@ -54,54 +53,117 @@ class RequestController extends TeacherCabinetController
         echo $adapter->getData();
         //echo RequestsList::listAllRejectedRevisionRequests();
     }
-    
-    public function actionApprove($message, $user)
+
+    public function actionApprove()
     {
+        $message = Yii::app()->request->getPost('message');
+        $user = Yii::app()->request->getPost('user');
+
         $messageModel = Request::model()->findByPk($message);
         $model = RequestFactory::getInstance($messageModel);
         $userModel = StudentReg::model()->findByPk($user);
 
-        if ($model && $userModel) {
-            if (!$model->isApproved()) {
-                echo $model->approve($userModel);
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            if ($model && $userModel) {
+                if (!$model->isApproved()) {
+                    $model->approve($userModel);
+                } else {
+                    throw new Exception('Запит вже підтверджено. Ви не можете підтвердити запит двічі.');
+                }
             } else {
-                echo "Запит вже підтверджено. Ви не можете підтвердити запит двічі.";
+                throw new Exception('Операцію не вдалося виконати.');
             }
-        } else {
-            echo "Операцію не вдалося виконати.";
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
-    public function actionCancel($message, $user)
+    public function actionCancel()
     {
+        $message = Yii::app()->request->getPost('message');
+        $user = Yii::app()->request->getPost('user');
+
         $messageModel = Request::model()->findByPk($message);
         $model = RequestFactory::getInstance($messageModel);
 
-        if ($model) {
-            if (!$model->isDeleted()) {
-                echo $model->setDeleted($user);
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            if ($model) {
+                if (!$model->isDeleted()) {
+                    $model->setDeleted($user);
+                } else {
+                    throw new Exception('Запит вже скасований.');
+                }
             } else {
-                echo "Запит вже скасований.";
+                throw new Exception('Операцію не вдалося виконати.');
             }
-        } else {
-            echo "Операцію не вдалося виконати.";
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 
-    public function actionReject($message, $user, $comment='')
+    public function actionReject()
     {
+        $message = Yii::app()->request->getPost('message');
+        $user = Yii::app()->request->getPost('user');
+        $comment = Yii::app()->request->getPost('comment');
+
         $messageModel = Request::model()->findByPk($message);
         $model = RequestFactory::getInstance($messageModel);
         $userModel = StudentReg::model()->findByPk($user);
 
-        if ($model && $userModel) {
-            if (!$model->isRejected()) {
-                echo $model->reject($comment);
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            if ($model && $userModel) {
+                if (!$model->isRejected()) {
+                    $model->reject($comment);
+                } else {
+                    throw new Exception('Запит вже відхилений. Ви не можете відхилити запит двічі.');
+                }
             } else {
-                echo "Запит вже відхилений. Ви не можете відхилити запит двічі.";
+                throw new Exception('Операцію не вдалося виконати.');
             }
-        } else {
-            echo "Операцію не вдалося виконати.";
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
         }
+
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
+
+    public function actionDelete()
+    {
+        $message = Yii::app()->request->getPost('message');
+        $user = Yii::app()->request->getPost('user');
+
+        $messageModel = Request::model()->findByPk($message);
+        $model = RequestFactory::getInstance($messageModel);
+        $userModel = StudentReg::model()->findByPk($user);
+
+        $result = ['message' => 'OK'];
+        $statusCode = 201;
+        try {
+            if ($model && $userModel) {
+                if (!$model->isDeleted()) {
+                    $model->delete();
+                } else {
+                    throw new Exception('Запит вже видалений. Ви не можете видалити запит двічі.');
+                }
+            } else {
+                throw new Exception('Операцію не вдалося виконати.');
+            }
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
 }

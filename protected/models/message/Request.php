@@ -38,6 +38,12 @@ class Request extends CActiveRecord
  const STATUS_NEW     = 0;
  const STATUS_CANCEL  = 1;
  const STATUS_APPROVE = 2;
+ const STATUS_DEACTIVATE = 3;
+    /**
+     * Request statuses
+     */
+    const ACTIVE     = 0;
+    const DELETED  = 1;
 
  protected $viewPath = 'application.views.mail';
 
@@ -113,6 +119,11 @@ class Request extends CActiveRecord
       'requestUser' => array(self::BELONGS_TO, 'StudentReg', 'request_user'),
 		);
 	}
+
+    public function content()
+    {
+        return false;
+    }
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -193,6 +204,42 @@ class Request extends CActiveRecord
     $this->action_date = date("Y-m-d H:i:s");
     $this->save();
    }
+
+    public function setNew()
+    {
+        date_default_timezone_set(Config::getServerTimezone());
+        $this->action_user = Yii::app()->user->getId();
+        $this->action_date = date("Y-m-d H:i:s");
+        $this->action = self::STATUS_NEW;
+        $this->save();
+    }
+
+    public function setDeleted()
+    {
+        date_default_timezone_set(Config::getServerTimezone());
+        $this->action_user = Yii::app()->user->getId();
+        $this->action_date = date("Y-m-d H:i:s");
+        $this->deleted = self::DELETED;
+        $this->save();
+    }
+
+    public function setActive()
+    {
+        date_default_timezone_set(Config::getServerTimezone());
+        $this->action_user = Yii::app()->user->getId();
+        $this->action_date = date("Y-m-d H:i:s");
+        $this->deleted = self::ACTIVE;
+        $this->save();
+    }
+
+    public function setDeactivate()
+    {
+        date_default_timezone_set(Config::getServerTimezone());
+        $this->action_user = Yii::app()->user->getId();
+        $this->action_date = date("Y-m-d H:i:s");
+        $this->action = self::STATUS_DEACTIVATE;
+        $this->save();
+    }
 
   public function statusToString()
    {
@@ -303,7 +350,7 @@ class Request extends CActiveRecord
 
   public function notApprovedRequests()
    {
-    return $this->findAll('action = 0 and organization = '.Yii::app()->user->model->getCurrentOrganizationId());
+    return $this->findAll('action = 0 and deleted ='. Request::ACTIVE .' and organization = '.Yii::app()->user->model->getCurrentOrganizationId());
    }
 
   public function save($runValidation = true, $attributes = null)

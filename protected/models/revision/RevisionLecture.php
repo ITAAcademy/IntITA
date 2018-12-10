@@ -56,7 +56,7 @@ class RevisionLecture extends CRevisionUnitActiveRecord {
 			'lecturePages' => array(self::HAS_MANY, 'RevisionLecturePage', 'id_revision',
                                                         'order' => 'page_order ASC'),
             'moduleOrder' => array(self::HAS_ONE, 'RevisionModuleLecture',  'id_lecture_revision'),
-            'module' => array(self::BELONGS_TO, 'Module', 'id_module')
+            'module' => array(self::BELONGS_TO, 'Module', 'id_module'),
 		);
 	}
 
