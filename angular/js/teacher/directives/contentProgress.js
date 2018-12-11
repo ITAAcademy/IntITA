@@ -10,7 +10,7 @@ angular
                 $scope.progress={
                     lectureRatings:[],
                     moduleRating:[],
-                    currentPage:'',
+                    currentPage:1,
                     servicesCategory:[{id:1, title:'Курси'}, {id:2, title:'Модулі'}],
                     filter:{search:null,group:null,service:1,owner:$scope.owner},
                     pageChanged: function () {
