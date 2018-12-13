@@ -4,8 +4,8 @@
 ?>
 <ul class="list-inline">
     <li>
-        <a type="button" class="btn btn-primary" ng-href="#/admin/coursemanage">
-            <?php echo Yii::t("coursemanage", "0392"); ?>
+        <a type="button" class="btn btn-default" ng-click='back()'>
+            Назад
         </a>
     </li>
 </ul>
