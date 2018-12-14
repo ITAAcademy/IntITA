@@ -36,4 +36,15 @@ class CurlHelper
         $header['errmsg']  = $errmsg;
         $header['content'] = $content;
     }
+
+    function loadImageToDependServer($url, $filename, $file, $path = null)
+    {
+        $ch = curl_init();
+        $data = array('name' => $filename, 'file' => $file, 'path' => $path);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_exec($ch);
+    }
+
 }
