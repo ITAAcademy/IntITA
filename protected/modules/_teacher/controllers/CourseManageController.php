@@ -59,6 +59,10 @@ class CourseManageController extends TeacherCabinetController
             $model->attributes = $_POST['Course'];
             if ($model->alias) $model->alias = str_replace(" ", "_", $model->alias);
             if ($model->save()) {
+
+                $callUrl = new CurlHelper();
+                $callUrl->loadImageToDependServer('http://new.intita.itatests.com/course/uploadLogo', $filename, $_FILES['Course']['tmp_name']['course_img']);
+
                 if ($model->course_img == Null) {
                     $thisModel = new Course;
                     $thisModel->updateByPk($model->course_ID, array('course_img' => 'courseImage.png'));
