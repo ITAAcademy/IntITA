@@ -39,44 +39,20 @@ class CurlHelper
 
     function loadImageToDependServer($url, $filename, $file, $path = null)
     {
+        $tmpfile = $file['tmp_name']['course_img'];
+        $filename = basename($file['name']['course_img']);
 
-        $target_url = $url;
-        //This needs to be the full path to the file you want to send.
-        $file_name_with_full_path =$file['tmp_name']['course_img'];
-        /* curl will accept an array here too.
-         * Many examples I found showed a url-encoded string instead.
-         * Take note that the 'key' in the array will be the key that shows up in the
-         * $_FILES array of the accept script. and the at sign '@' is required before the
-         * file name.
-         */
-        $post = array('extra_info' => '123456','file_contents'=>'@'.$file_name_with_full_path);
+        $data = array(
+            'uploaded_file' => '@'.$tmpfile.';filename='.$filename,
+        );
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$target_url);
-        curl_setopt($ch, CURLOPT_POST,1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        $result=curl_exec ($ch);
-        curl_close ($ch);
-        echo $result;
+        $data = array('name' => $filename, 'file' => '@'.$tmpfile, 'path' => $path);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_exec($ch);
 
-
-//
-//        $tmpfile = $file['tmp_name']['course_img'];
-//
-////        $data = array(
-////            'uploaded_file' => '@'.$tmpfile.';filename='.$filename,
-////        );
-//
-//        $data = array(
-//            'file' => '@'.$tmpfile.';filename='.$filename,
-//        );
-//        $ch = curl_init();
-////        $data = array('name' => $filename, 'file' => '@'.$tmpfile, 'path' => $path);
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_POST, 1);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//        curl_exec($ch);
-//
 
 //        $tmpfile = $file['tmp_name']['course_img'];
 //        $filename = basename($file['name']['course_img']);
