@@ -198,8 +198,8 @@ function courseActions(url, courseId) {
         datatype:'json',
         success: function (message) {
             bootbox.alert(message, function () {
-                courseId ? location.hash = "/course/id/"+courseId : location.hash = "/courses";
-                location.reload();
+                // courseId ? location.hash = "/course/id/"+courseId : location.hash = "/courses";
+                // location.reload();
             });
         },
         error: function (message) {
