@@ -277,7 +277,7 @@
     <script src="<?php echo StaticFilesHelper::fullPathTo('js', 'ckeditor/ckeditor.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/crm/mentionForCkeditor.js'); ?>"></script>
     <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/ng-ckeditor.js'); ?>"></script>
-    <script src="https://ligamagic.com.br/teste/ckeditor4x/samples/extras/underscore-min.js"></script>
+    <script src="<?php echo StaticFilesHelper::fullPathTo('angular', 'js/underscore-min.js'); ?>"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
