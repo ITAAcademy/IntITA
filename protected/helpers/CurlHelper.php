@@ -44,7 +44,18 @@ class CurlHelper
         curl_setopt($ch, CURLOPT_URL, $url);
 //        curl_setopt($ch, CURLOPT_POST, 1);
 //        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_exec($ch);
+        $content = curl_exec( $ch );
+        $err     = curl_errno( $ch );
+        $errmsg  = curl_error( $ch );
+        $header  = curl_getinfo( $ch );
+
+        curl_close( $ch );
+
+        $header['errno']   = $err;
+        $header['errmsg']  = $errmsg;
+        $header['content'] = $content;
+        var_dump('errno: '.$header['errno']);
+        var_dump('errmsg: '.$header['errmsg']);die;
     }
 
 }

@@ -61,7 +61,7 @@ class CourseManageController extends TeacherCabinetController
             if ($model->save()) {
 
                 $callUrl = new CurlHelper();
-                $callUrl->loadImageToDependServer('http://new.intita.itatests.com/course/uploadLogo', $filename, $_FILES['Course']['tmp_name']['course_img']);
+                $callUrl->loadImageToDependServer('https://new.intita.itatests.com/course/uploadLogo', $filename, $_FILES['Course']['tmp_name']['course_img']);
 
                 if ($model->course_img == Null) {
                     $thisModel = new Course;
