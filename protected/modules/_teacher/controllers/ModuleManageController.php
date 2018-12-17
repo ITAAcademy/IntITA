@@ -30,6 +30,7 @@ class ModuleManageController extends TeacherCabinetController
         $this->performAjaxValidation($model);
 
         if (isset($_POST['Module'])) {
+            $model->oldLogo = $model->module_img;
             if (isset($_POST['moduleTags'])) {
                 $moduleTags = $this->stdToArray(json_decode($_POST['moduleTags']));
             }else $moduleTags=null;
@@ -44,7 +45,7 @@ class ModuleManageController extends TeacherCabinetController
                     $imageName = array_shift($_FILES['Module']['name']);
                     $tmpName = array_shift($_FILES['Module']['tmp_name']);
                     if ($imageName && $tmpName) {
-                        if (!Avatar::updateModuleAvatar($imageName, $tmpName, $model->module_ID))
+                        if (!Avatar::updateModuleAvatar($imageName, $tmpName, $model->module_ID, $model->oldLogo))
                             throw new \application\components\Exceptions\IntItaException(400, 'Avatar not save');
                     }
                 } else {
