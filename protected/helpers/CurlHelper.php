@@ -50,4 +50,16 @@ class CurlHelper
         curl_exec($ch);
     }
 
+    function unlinkImageFromDependServer($url, $filename)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $postData = array(
+            'name' => $filename,
+        );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_exec($ch);
+    }
+
 }
