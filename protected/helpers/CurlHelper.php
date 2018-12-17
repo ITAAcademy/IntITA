@@ -39,36 +39,15 @@ class CurlHelper
 
     function loadImageToDependServer($url, $filename, $file, $path = null)
     {
-        $tmpfile = $file['tmp_name']['course_img'];
-        $filename = basename($file['name']['course_img']);
-
-        $data = array(
-            'uploaded_file' => '@'.$tmpfile.';filename='.$filename,
-        );
-
         $ch = curl_init();
-        $data = array('name' => $filename, 'file' => '@'.$tmpfile, 'path' => $path);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $postData = array(
+            'name' => $filename,
+            'file' => $file,
+        );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_exec($ch);
-
-
-//        $tmpfile = $file['tmp_name']['course_img'];
-//        $filename = basename($file['name']['course_img']);
-//
-//        $data = array(
-//            'uploaded_file' => '@'.$tmpfile.';filename='.$filename,
-//        );
-//
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//// set your other cURL options here (url, etc.)
-//
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_POST, 1);
-//
-//        curl_exec($ch);
     }
 
 }

@@ -61,7 +61,7 @@ class CourseManageController extends TeacherCabinetController
             if ($model->save()) {
 
                 $callUrl = new CurlHelper();
-                $callUrl->loadImageToDependServer('https://new.intita.itatests.com/course/uploadLogo', $filename, $_FILES['Course']);
+                $callUrl->loadImageToDependServer(Config::getDependentDomain().'/course/uploadLogo', $filename, Yii::getPathOfAlias('webroot') . "/images/course/" . $filename);
 
                 if ($model->course_img == Null) {
                     $thisModel = new Course;
