@@ -47,7 +47,8 @@ class CurlHelper
             'file' => 'https://www.google.com.ua/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        curl_exec($ch);
+        $res = curl_exec($ch);
+        var_dump($res);die;
     }
 
 }
