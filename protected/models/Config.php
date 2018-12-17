@@ -16,218 +16,254 @@ class Config extends CActiveRecord
 {
     const HIDDEN = 1;
     const VISIBLE = 0;
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'config';
-	}
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('param, value, default, label, type, hidden', 'required', 'message' => 'Поле не може бути пустим'),
-			array('param, type', 'length', 'max'=>128),
-			array('label', 'length', 'max'=>255),
-			// The following rule is used by search().
-			array('id, param, value, default, label, type', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'config';
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('param, value, default, label, type, hidden', 'required', 'message' => 'Поле не може бути пустим'),
+            array('param, type', 'length', 'max' => 128),
+            array('label', 'length', 'max' => 255),
+            // The following rule is used by search().
+            array('id, param, value, default, label, type', 'safe', 'on' => 'search'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'param' => 'Параметр',
-			'value' => 'Значення',
-			'default' => 'За замовчуванням',
-			'label' => 'Опис',
-			'type' => 'Тип',
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array();
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'param' => 'Параметр',
+            'value' => 'Значення',
+            'default' => 'За замовчуванням',
+            'label' => 'Опис',
+            'type' => 'Тип',
             'hidden' => 'Прихований',
-		);
-	}
+        );
+    }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		$criteria = new CDbCriteria;
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        $criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('param',$this->param,true);
-		$criteria->compare('value',$this->value,true);
-		$criteria->compare('default',$this->default,true);
-		$criteria->compare('label',$this->label,true);
-		$criteria->compare('type',$this->type,true);
+        $criteria->compare('id', $this->id, true);
+        $criteria->compare('param', $this->param, true);
+        $criteria->compare('value', $this->value, true);
+        $criteria->compare('default', $this->default, true);
+        $criteria->compare('label', $this->label, true);
+        $criteria->compare('type', $this->type, true);
         $criteria->addCondition('hidden=0');
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
+    }
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return Config the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Config the static model class
+     */
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 
-    public static function getBaseUrl(){
+    public static function getBaseUrl()
+    {
         return Yii::app()->config->get('baseUrl');
     }
 
-    public static function getBaseUrlWithoutSchema(){
+    public static function getBaseUrlWithoutSchema()
+    {
         return Yii::app()->config->get('baseUrlWithoutSchema');
     }
 
-    public static function getAdminEmail(){
+    public static function getAdminEmail()
+    {
         return Yii::app()->config->get('adminEmail');
     }
 
-    public static function getOpenDialogPath(){
+    public static function getOpenDialogPath()
+    {
         return Yii::app()->config->get('openDialogPath');
     }
 
-    public static function getImagesPath(){
+    public static function getImagesPath()
+    {
         return Yii::app()->config->get('imagesPath');
     }
 
-    public static function getCommonPath(){
+    public static function getCommonPath()
+    {
         return Yii::app()->config->get('commonPath');
     }
 
-    public static function getAvatarsPath(){
+    public static function getAvatarsPath()
+    {
         return Yii::app()->config->get('avatarsPath');
     }
 
-    public static function getInterpreterServer(){
+    public static function getInterpreterServer()
+    {
         return Yii::app()->config->get('interpreterServer');
     }
 
-    public static function getMaintenanceMode(){
+    public static function getMaintenanceMode()
+    {
         return Yii::app()->config->get('maintenanceMode');
     }
 
-	public static function getCoeffDependentModule(){
-		return Yii::app()->config->get('coeffDependentModule');
-	}
+    public static function getCoeffDependentModule()
+    {
+        return Yii::app()->config->get('coeffDependentModule');
+    }
 
-    public static function getExpirationTimeInterval(){
+    public static function getExpirationTimeInterval()
+    {
         return Yii::app()->config->get('expirationTimeInterval');
     }
 
-	public static function getAdminId(){
-		return (int)Yii::app()->config->get('adminId');
-	}
+    public static function getAdminId()
+    {
+        return (int)Yii::app()->config->get('adminId');
+    }
 
-    public static function getDollarRate(){
+    public static function getDollarRate()
+    {
         return Yii::app()->config->get('dollarRate');
     }
 
-    public static function getChatPath(){
+    public static function getChatPath()
+    {
         return Yii::app()->config->get('chatPath');
     }
 
-	public static function getFullChatPath(){
-		return Yii::app()->config->get('fullChatPath');
-	}
-	
-    public static function getMinLengthResponse(){
+    public static function getFullChatPath()
+    {
+        return Yii::app()->config->get('fullChatPath');
+    }
+
+    public static function getMinLengthResponse()
+    {
         return Yii::app()->config->get('minLengthResponse');
     }
 
-    public static function getMaxLengthResponse(){
+    public static function getMaxLengthResponse()
+    {
         return Yii::app()->config->get('maxLengthResponse');
     }
 
-	public static function getCoeffModuleOffline(){
-		return Yii::app()->config->get('coeffModuleOffline');
-	}
+    public static function getCoeffModuleOffline()
+    {
+        return Yii::app()->config->get('coeffModuleOffline');
+    }
 
-	public static function getNewsletterMailAddress(){
-		return Yii::app()->config->get('newsletterMail');
-	}
+    public static function getNewsletterMailAddress()
+    {
+        return Yii::app()->config->get('newsletterMail');
+    }
 
-	public static function getServerTimezone(){
-		return Yii::app()->config->get('serverTimezone');
-	}
+    public static function getServerTimezone()
+    {
+        return Yii::app()->config->get('serverTimezone');
+    }
 
-	public static function getLectureDurationInHours(){
-		return Yii::app()->config->get('lectureDurationInHours');
-	}
+    public static function getLectureDurationInHours()
+    {
+        return Yii::app()->config->get('lectureDurationInHours');
+    }
 
-	public static function offerScenario(){
-		return "default";
-	}
+    public static function offerScenario()
+    {
+        return "default";
+    }
 
-	public static function getNotifyEmail(){
+    public static function getNotifyEmail()
+    {
         return Yii::app()->config->get('notifyMail');
     }
 
-	public static function getRoundcubeAddress(){
-		return Yii::app()->config->get('roundcubeAddress');
-	}
+    public static function getRoundcubeAddress()
+    {
+        return Yii::app()->config->get('roundcubeAddress');
+    }
 
-    public static function getRatingScale(){
+    public static function getRatingScale()
+    {
         return Yii::app()->config->get('ratingScale');
     }
 
-    public static function getTempProjectsPath(){
+    public static function getTempProjectsPath()
+    {
         return Yii::app()->config->get('tempProjectsPath');
     }
 
-    public static function getRealProjectsPath(){
+    public static function getRealProjectsPath()
+    {
         return Yii::app()->config->get('realProjectsPath');
     }
 
-    public static function getStudentsProjectsUrl(){
+    public static function getStudentsProjectsUrl()
+    {
         return Yii::app()->config->get('studentsProjectsUrl');
     }
 
-    public static function getGitScriptPath(){
+    public static function getGitScriptPath()
+    {
         return Yii::app()->config->get('gitScriptPath');
     }
 
-    public static function getBannerSliderTime(){
+    public static function getBannerSliderTime()
+    {
         return Yii::app()->config->get('bannersSlideTime');
     }
 
-  public static function getImapServerAddress(){
-   return Yii::app()->config->get('imapServerAddress');
-  }
+    public static function getImapServerAddress()
+    {
+        return Yii::app()->config->get('imapServerAddress');
+    }
+
+    public static function getDependentServer()
+    {
+        return Yii::app()->config->get('dependentServer');
+    }
 }
