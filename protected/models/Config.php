@@ -262,8 +262,8 @@ class Config extends CActiveRecord
         return Yii::app()->config->get('imapServerAddress');
     }
 
-    public static function getDependentDomain()
+    public static function getDependentServer()
     {
-        return Yii::app()->config->get('dependentDomain');
+        return Yii::app()->config->get('dependentServer');
     }
 }
