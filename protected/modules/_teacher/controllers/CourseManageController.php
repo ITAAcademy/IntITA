@@ -46,9 +46,6 @@ class CourseManageController extends TeacherCabinetController
         $this->performAjaxValidation($model);
 
         if (isset($_POST['Course'])) {
-            $callUrl = new CurlHelper();
-            $callUrl->loadImageToDependServer(Config::getDependentServer().'/course/uploadLogo', '555', Yii::getPathOfAlias('webroot') . "/images/course/" . '555');
-
             if (!empty($_FILES['Course']['tmp_name']['course_img'])) {
                 $fileInfo = new SplFileInfo($_FILES['Course']['name']['course_img']);
                 $extension = $fileInfo->getExtension();

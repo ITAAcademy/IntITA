@@ -39,16 +39,17 @@ class CurlHelper
 
     function loadImageToDependServer($url, $filename, $file, $path = null)
     {
+        var_dump($filename);
+        var_dump($file);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $url);
         $postData = array(
-            'name' => 'test3.png',
-            'file' => 'https://www.google.com.ua/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
+            'name' => $filename,
+            'file' => $file,
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        $res = curl_exec($ch);
-        var_dump($res);die;
+        curl_exec($ch);
     }
 
 }
