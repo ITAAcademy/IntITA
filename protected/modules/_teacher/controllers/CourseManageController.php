@@ -60,7 +60,7 @@ class CourseManageController extends TeacherCabinetController
             if ($model->save()) {
 
                 $callUrl = new CurlHelper();
-                $callUrl->loadImageToDependServer(Config::getDependentServer().'/course/uploadLogo', $filename, Yii::getPathOfAlias('webroot') . "/images/course/" . $filename);
+                $callUrl->loadImageToDependServer(Config::getDependentServer().'/course/uploadLogo', $filename, Config::getBaseUrl() . "/images/course/" . $filename);
 
                 if ($model->course_img == Null) {
                     $thisModel = new Course;
