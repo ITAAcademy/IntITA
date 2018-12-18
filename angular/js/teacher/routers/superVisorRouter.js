@@ -52,6 +52,7 @@ config(function ($stateProvider) {
         .state('supervisor/offlineSubgroup/:id', {
             url: "/supervisor/offlineSubgroup/:id",
             cache: false,
+            controller: 'offlineSubgroupCtrl',
             templateUrl: function ($stateParams) {
                 return basePath + "/_teacher/_supervisor/superVisor/offlineSubgroup/?id=" + $stateParams.id
             }
