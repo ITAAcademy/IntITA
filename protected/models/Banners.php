@@ -111,6 +111,8 @@ class Banners extends CActiveRecord
         $image = $_FILES['file'];
         $img = new CUploadedFile($image['name'],$image['tmp_name'],$image['type'],$image['size'],$image['error']);
         if($img->saveAs("{$path}/{$image['name']}")){
+            $callUrl = new CurlHelper();
+            $callUrl->loadImageToDependServer(Config::getDependentServer().'/home/uploadBanner', $img->getName(), Config::getBaseUrl() . "/images/banners/" . $img->getName());
             $this->file_path = '/images/banners/'.$img->getName();
             if($this->save()){
                 return true;
@@ -135,6 +137,8 @@ class Banners extends CActiveRecord
 
     public function deleteImageFile(){
         $file =  $path=Yii::getPathOfAlias('webroot').$this->file_path;
+        $callUrl = new CurlHelper();
+        $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/home/unlinkBanner', substr($this->file_path, strrpos($this->file_path, '/') + 1));
         return @unlink($file);
     }
 

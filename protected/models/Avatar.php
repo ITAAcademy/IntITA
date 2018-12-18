@@ -150,11 +150,18 @@ class Avatar
         if ($model->scenario == "update") {
             if (!empty($tmpName['pictureURL'])) {
                 $src = Yii::getPathOfAlias('webroot') . "/images/mainpage/" . $oldSlide;
-                if (is_file($src))
+                if (is_file($src)){
                     unlink($src);
+                    $callUrl = new CurlHelper();
+                    $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/home/unlinkSlide', $oldSlide);
+                }
 
-                if (!copy($tmpName['pictureURL'], Yii::getPathOfAlias('webroot') . "/images/mainpage/" . $filename)) ;
-                return false;
+                if (!copy($tmpName['pictureURL'], Yii::getPathOfAlias('webroot') . "/images/mainpage/" . $filename)){
+                    return false;
+                }
+
+                $callUrl = new CurlHelper();
+                $callUrl->loadImageToDependServer(Config::getDependentServer().'/home/uploadSlide', $filename, Config::getBaseUrl() . "/images/mainpage/" . $filename);
             }
             $model->pictureURL = $filename;
             return true;
@@ -165,8 +172,12 @@ class Avatar
             $model->order = $lastOrder;
 
             if (!empty($tmpName['pictureURL'])) {
-                if (!copy($tmpName['pictureURL'], Yii::getPathOfAlias('webroot') . "/images/mainpage/" . $filename)) ;
-                return false;
+
+                if (!copy($tmpName['pictureURL'], Yii::getPathOfAlias('webroot') . "/images/mainpage/" . $filename)){
+                    return false;
+                }
+                $callUrl = new CurlHelper();
+                $callUrl->loadImageToDependServer(Config::getDependentServer().'/home/uploadSlide', $filename, Config::getBaseUrl() . "/images/mainpage/" . $filename);
             }
             return true;
         }
@@ -177,11 +188,17 @@ class Avatar
         if ($model->scenario == "update") {
             if (!empty($tmpName['pictureUrl'])) {
                 $src = Yii::getPathOfAlias('webroot') . "/images/aboutus/" . $oldSlide;
-                if (is_file($src))
+                if (is_file($src)){
                     unlink($src);
+                    $callUrl = new CurlHelper();
+                    $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/carousel/unlinkSlide', $oldSlide);
+                }
 
-                if (!copy($tmpName['pictureUrl'], Yii::getPathOfAlias('webroot') . "/images/aboutus/" . $filename)) ;
-                return false;
+                if (!copy($tmpName['pictureUrl'], Yii::getPathOfAlias('webroot') . "/images/aboutus/" . $filename)) {
+                    return false;
+                }
+                $callUrl = new CurlHelper();
+                $callUrl->loadImageToDependServer(Config::getDependentServer().'/carousel/uploadSlide', $filename, Config::getBaseUrl() . "/images/aboutus/" . $filename);
             }
             $model->pictureUrl = $filename;
             return true;
@@ -192,8 +209,11 @@ class Avatar
             $model->order = $lastOrder;
 
             if (!empty($tmpName['pictureUrl'])) {
-                if (!copy($tmpName['pictureUrl'], Yii::getPathOfAlias('webroot') . "/images/aboutus/" . $filename)) ;
-                return false;
+                if (!copy($tmpName['pictureUrl'], Yii::getPathOfAlias('webroot') . "/images/aboutus/" . $filename)){
+                    return false;
+                }
+                $callUrl = new CurlHelper();
+                $callUrl->loadImageToDependServer(Config::getDependentServer().'/carousel/uploadSlide', $filename, Config::getBaseUrl() . "/images/aboutus/" . $filename);
             }
             return true;
         }
