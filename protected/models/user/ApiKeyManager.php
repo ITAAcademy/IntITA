@@ -90,7 +90,7 @@ class ApiKeyManager extends Role
         $criteria->addSearchCondition('secondName', $query, true, "OR", "LIKE");
         $criteria->addSearchCondition('middleName', $query, true, "OR", "LIKE");
         $criteria->addSearchCondition('email', $query, true, "OR", "LIKE");
-        $criteria->join = 'LEFT JOIN user_director u ON u.id_user = s.id';
+        $criteria->join = 'LEFT JOIN user_api_key_manager u ON u.id_user = s.id';
         $criteria->addCondition('u.id_user IS NULL or u.end_date IS NOT NULL');
         $criteria->group = 's.id';
 

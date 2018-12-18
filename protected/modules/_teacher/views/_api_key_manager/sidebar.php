@@ -1,8 +1,8 @@
 <li>
-    <a href="#/#" class="show_elem">
+    <a href="#/api_key_manager" class="show_elem">
         <i class="fa fa-key fa-fw"></i> API Key Manager
     </a>
-    <a href="#/#" uib-tooltip="API Key Manager" tooltip-placement="right" class="hid" style="display: none">
+    <a href="#/api_key_manager" uib-tooltip="API Key Manager" tooltip-placement="right" class="hid" style="display: none">
         <i class="fa fa-key fa-fw"></i>
     </a>
 </li>
