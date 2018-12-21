@@ -37,7 +37,16 @@ class CurlHelper
         $header['content'] = $content;
     }
 
-    function loadImageToDependServer($url, $filename, $file, $path = null)
+    /**
+     * Get the path the user should be redirected to when they are not authenticated.
+     *
+     * @param  $url
+     * @param  $filename
+     * @param  $file
+     * @param  $params - type, id
+     * @param  $private - file type
+     */
+    function loadImageToDependServer($url, $filename, $file, $params = [], $private = false)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -45,18 +54,30 @@ class CurlHelper
         $postData = array(
             'name' => $filename,
             'file' => $file,
+            'params' => $params,
+            'private' => $private,
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_exec($ch);
     }
 
-    function unlinkImageFromDependServer($url, $filename)
+    /**
+     * Get the path the user should be redirected to when they are not authenticated.
+     *
+     * @param  $url
+     * @param  $filename
+     * @param  $params - type, id
+     * @param  $private - file type
+     */
+    function unlinkImageFromDependServer($url, $filename, $params = [], $private = false)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $url);
         $postData = array(
             'name' => $filename,
+            'params' => $params,
+            'private' => $private,
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_exec($ch);
