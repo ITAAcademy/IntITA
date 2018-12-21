@@ -94,7 +94,7 @@ class LibraryController extends TeacherCabinetController {
                     unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/logo/".$deletedBook["logo"]);
 
                     $callUrl = new CurlHelper();
-                    $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/library/unlinkBookFile', $deletedBook["logo"], ['id' => $id, 'type' => 'logo'], false);
+                    $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/library/unlinkBookFile', $deletedBook["logo"], $id,  'logo', false);
                 }
             };
             if ($deletedBook["link"]!==""){
@@ -102,7 +102,7 @@ class LibraryController extends TeacherCabinetController {
                     unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/link/".$deletedBook["link"]);
 
                     $callUrl = new CurlHelper();
-                    $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/library/unlinkBookFile', $deletedBook["link"], ['id' => $id, 'type' => 'logo'], true);
+                    $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/library/unlinkBookFile', $deletedBook["link"], $id, 'logo', true);
                 }
             }
             if ($deletedBook["demo_link"]!==""){
@@ -110,7 +110,7 @@ class LibraryController extends TeacherCabinetController {
                     unlink(Yii::getPathOfAlias('webroot')."/files/library/".$id."/demo_link/".$deletedBook["demo_link"]);
 
                     $callUrl = new CurlHelper();
-                    $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/library/unlinkBookFile', $deletedBook["demo_link"], ['id' => $id, 'type' => 'logo'], false);
+                    $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/library/unlinkBookFile', $deletedBook["demo_link"], $id, 'logo', false);
                 }
             }
             Library::model()->deleteByPk($id);

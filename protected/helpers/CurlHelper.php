@@ -43,10 +43,11 @@ class CurlHelper
      * @param  $url
      * @param  $filename
      * @param  $file
-     * @param  $params - type, id
+     * @param  $id
+     * @param  $type
      * @param  $private - file type
      */
-    function loadImageToDependServer($url, $filename, $file, $params = [], $private = false)
+    function loadImageToDependServer($url, $filename, $file, $id = null, $type = null, $private = false)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -54,7 +55,8 @@ class CurlHelper
         $postData = array(
             'name' => $filename,
             'file' => $file,
-            'params' => $params,
+            'id' => $id,
+            'type' => $type,
             'private' => $private,
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
@@ -66,17 +68,19 @@ class CurlHelper
      *
      * @param  $url
      * @param  $filename
-     * @param  $params - type, id
+     * @param  $id
+     * @param  $type
      * @param  $private - file type
      */
-    function unlinkImageFromDependServer($url, $filename, $params = [], $private = false)
+    function unlinkImageFromDependServer($url, $filename, $id = null, $type = null, $private = false)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $url);
         $postData = array(
             'name' => $filename,
-            'params' => $params,
+            'id' => $id,
+            'type' => $type,
             'private' => $private,
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
