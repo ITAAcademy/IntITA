@@ -286,7 +286,7 @@ class Library extends CActiveRecord
             if (is_file($file)) {
                 unlink($file);
                 $callUrl = new CurlHelper();
-                $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/library/unlinkBookFile', $model->$type, ['id' => $id, 'type' => $type], $private);
+                $callUrl->unlinkImageFromDependServer(Config::getDependentServer() . '/library/unlinkBookFile', $model->$type, $id, $type, $private);
             }
 
             move_uploaded_file(
@@ -298,7 +298,7 @@ class Library extends CActiveRecord
             $callUrl->loadImageToDependServer(
                 Config::getDependentServer() . '/library/uploadBookFile', $image,
                 Config::getBaseUrl() . '/files/library/' . $id . '/' . $type . '/' . $image,
-                ['id' => $id, 'type' => $type], $private);
+                $id, $type, $private);
 
             $model->$type = $image;
             $model->save();
