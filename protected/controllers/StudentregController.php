@@ -456,6 +456,19 @@ class StudentRegController extends Controller
         UserDocuments::model()->uploadUserDocuments($type);
     }
 
+    public function actionUploadFile()
+    {
+        echo '333';
+        return 5;
+//        UserDocuments::model()->uploadFile($type);
+//        if($request->input('file')) {
+//            Storage::put(
+//                'public/images/bannersForGraduates/'. $request->input('name'),
+//                file_get_contents($request->input('file'))
+//            );
+//        }
+    }
+
     public function actionRemoveUserDocumentsFile()
     {
         $idFile=Yii::app()->request->getPost('id');
