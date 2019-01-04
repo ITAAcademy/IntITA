@@ -12,43 +12,17 @@
  * @author 0leh Rostov
  */
 
-class HttpRequest extends CHttpRequest {
-	private $_csrfToken;
+class HttpRequest extends CHttpRequest  {
 
-	public function getCsrfToken()
-	{
-	    if($this->_csrfToken===null)
-	    {
-	        $session = Yii::app()->session;
-	        $csrfToken=$session->itemAt($this->csrfTokenName);
-	        if($csrfToken===null)
-	        {
-	            $csrfToken = sha1(uniqid(mt_rand(),true));
-	            $session->add($this->csrfTokenName, $csrfToken);
-	        }
-	        $this->_csrfToken = $csrfToken;
-	    }
-	    return $this->_csrfToken;
-	}
+    public $noCsrfValidationRoutes = array();
 
-	public function validateCsrfToken($event)
-	{
-	    if($this->getIsPostRequest())
-	    {
-	    	$isTokenInRequest = Yii::app()->request->csrfTokenName === $this->csrfTokenName;
-	        // only validate POST requests
-	        $session=Yii::app()->session;
-	        if($session->contains($this->csrfTokenName) && $isTokenInRequest)
-	        {
-	            $tokenFromSession=$session->itemAt($this->csrfTokenName);
-	            $tokenFromRequest=Yii::app()->request->getCsrfToken();
-	            $valid=$tokenFromSession===$tokenFromRequest;
-	        }
-	        else
-	            $valid=false;
-	        if(!$valid)
-	            throw new CHttpException(400,Yii::t('yii','The CSRF token could not be verified.'));
-	    }
-	}
+    protected function normalizeRequest()
+    {
+        parent::normalizeRequest();
+        $route = Yii::app()->getUrlManager()->parseUrl($this);
+        if($this->enableCsrfValidation && false!==array_search($route, $this->noCsrfValidationRoutes))
+            Yii::app()->detachEventHandler('onBeginRequest',array($this,'validateCsrfToken'));
+
+    }
 
 }

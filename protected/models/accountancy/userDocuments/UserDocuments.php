@@ -218,4 +218,18 @@ class UserDocuments extends CActiveRecord
             throw new \application\components\Exceptions\IntItaException(500, 'Завантажити файл не вдалося');
         }
     }
+
+    public function uploadFile($data){
+        $type = $data['type'];
+        $user_id = $data['user_id'];
+        if (!file_exists(Yii::app()->basePath . "/../files/documents/".$user_id)) {
+            mkdir(Yii::app()->basePath . "/../files/documents/".$user_id);
+        }
+        if (!file_exists(Yii::app()->basePath . "/../files/documents/".$user_id."/".$type)) {
+            mkdir(Yii::app()->basePath . "/../files/documents/".$user_id."/".$type);
+        }
+
+        $image = $data['name'];
+        file_put_contents(Yii::getpathOfAlias('webroot').'/files/documents/'.$user_id.'/'.$type.'/'.$image, $data['file']);
+    }
 }

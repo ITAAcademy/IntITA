@@ -262,8 +262,9 @@ return array(
             ),
         ),
         'request' => array(
-            'class' => 'application.components.HttpRequest',
+            'class'=>'HttpRequest',
             'enableCsrfValidation' => true,
+            'noCsrfValidationRoutes'=>array('studentReg/uploadFile','studentReg/removeFile'),
         ),
     ),
     'params' => $params_config['params'],
