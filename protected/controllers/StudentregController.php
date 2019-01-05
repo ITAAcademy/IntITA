@@ -458,6 +458,7 @@ class StudentRegController extends Controller
 
     public function actionUploadFile()
     {
+        var_dump(4444);die;
         UserDocuments::model()->uploadFile($_POST);
     }
     public function actionRemoveFile()
