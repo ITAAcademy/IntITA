@@ -264,7 +264,7 @@ return array(
         'request' => array(
             'class'=>'HttpRequest',
             'enableCsrfValidation' => true,
-            'noCsrfValidationRoutes'=>array('studentReg/uploadFile','studentReg/removeFile'),
+            'noCsrfValidationRoutes'=>array('studentreg/uploadFile','studentreg/removeFile'),
         ),
     ),
     'params' => $params_config['params'],
