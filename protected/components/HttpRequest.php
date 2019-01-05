@@ -41,9 +41,17 @@ class HttpRequest extends CHttpRequest  {
             $session=Yii::app()->session;
 
             $route = Yii::app()->getUrlManager()->parseUrl($this);
+            var_dump('1111');
             var_dump($route);
+            var_dump('2222');
             var_dump($this->noCsrfValidationRoutes);
-            var_dump(array_search($route, $this->noCsrfValidationRoutes));die;
+            var_dump('3333');
+            var_dump(in_array($route, $this->noCsrfValidationRoutes);
+            var_dump('44444');
+            var_dump(array_search($route, $this->noCsrfValidationRoutes));
+            var_dump('5555');
+            var_dump(false!==array_search($route, $this->noCsrfValidationRoutes));die;
+            var_dump('6666');
             if(($session->contains($this->csrfTokenName) && $isTokenInRequest) || false!==array_search($route, $this->noCsrfValidationRoutes))
             {
                 $tokenFromSession=$session->itemAt($this->csrfTokenName);
