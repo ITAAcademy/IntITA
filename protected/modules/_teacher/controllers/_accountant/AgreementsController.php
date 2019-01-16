@@ -173,13 +173,9 @@ class AgreementsController extends TeacherCabinetController {
     {
         $requestParams = $_GET;
         $criteria =  new CDbCriteria();
-        $criteria->join = 'left join acc_user_agreements ua on ua.id=t.id_agreement';
+        $criteria->join = 'left join acc_user_agreements ua on ua.id=t.request_model_id';
         $criteria->join .= ' left join acc_corporate_entity ce on ce.id=ua.id_corporate_entity';
         $criteria->join .= ' left join organization o on o.id=ce.id_organization';
-        if(isset($requestParams['filter']['status']) && $requestParams['filter']['status']=='null'){
-            $criteria->condition = 't.status is null';
-            unset($requestParams['filter']);
-        }
         $criteria->addCondition('ce.id_organization='.Yii::app()->user->model->getCurrentOrganization()->id);
         $ngTable = new NgTableAdapter('WrittenAgreementRequest', $requestParams);
         $ngTable->mergeCriteriaWith($criteria);
@@ -319,7 +315,6 @@ class AgreementsController extends TeacherCabinetController {
 
             Yii::app()->user->model->hasAccessToOrganizationModel($agreement->corporateEntity);
             $agreement->makePrivatePerson($sessionTime);
-
             if($idRequest){
                 $request=WrittenAgreementRequest::model()->findByPk($idRequest);
                 $request->setApproved();
@@ -331,7 +326,6 @@ class AgreementsController extends TeacherCabinetController {
 
             $actualWrittenAgreement = $agreement->checkAndGetWrittenAgreement($params);
             $actualWrittenAgreement->saveAgreementPdf();
-
             $transaction->commit();
             $agreement->setGenerated();
         } catch (Exception $error) {
@@ -393,11 +387,11 @@ class AgreementsController extends TeacherCabinetController {
 
     public function actionRejectAgreementRequest()
     {
-        $comment=$_POST['reject_comment']?$_POST['reject_comment']:null;
-        $model=WrittenAgreementRequest::model()->findByPk($_POST['id_message']);
+        $comment=$_POST['comment']?$_POST['comment']:null;
+        $model=WrittenAgreementRequest::model()->findByPk($_POST['id']);
         Yii::app()->user->model->hasAccessToOrganizationModel($model->agreement->corporateEntity);
         $model->agreement->setCreated();
-        $model->setCancelled($comment);
+        $model->cancel($comment);
     }
 
     public function actionGetAgreementRequestStatus($idMessage)

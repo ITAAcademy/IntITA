@@ -76,10 +76,10 @@
                 <option name="writtenTemplates" value="" disabled selected>(Обери шаблон)</option>
             </select>
             <div style="overflow: hidden;cursor: pointer">
-                <i title="редагувати договір" ng-if="(options.selectedTemplate || actualAgreement.id) && agreementRequestStatus!=0" class="fa fa-edit fa-2x fa-fw" ng-click="editUserAgreement()" style="float: right;"></i>
+                <i title="редагувати договір" ng-if="(options.selectedTemplate || actualAgreement.id) && agreementRequestStatus==0" class="fa fa-edit fa-2x fa-fw" ng-click="editUserAgreement()" style="float: right;"></i>
             </div>
             <div style="overflow: hidden;cursor: pointer;" class="fixed-button">
-                <i title="редагувати договір" ng-if="(options.selectedTemplate || actualAgreement.id) && agreementRequestStatus!=0" class="fa fa-edit fa-2x fa-fw" ng-click="editUserAgreement()" style="float: right; margin-top: 40px"></i>
+                <i title="редагувати договір" ng-if="(options.selectedTemplate || actualAgreement.id) && agreementRequestStatus==0" class="fa fa-edit fa-2x fa-fw" ng-click="editUserAgreement()" style="float: right; margin-top: 40px"></i>
             </div>
             <button ng-if="options.updatedUserAgreement" class="btn btn-primary" ng-click="saveUpdateAgreement(writtenAgreement.agreement, options.updatedUserAgreement)" style="margin-bottom: 5px">
                 Зберегти
@@ -103,21 +103,21 @@
         </div>
 
         <br>
-        <div style="text-align: right" ng-if="(agreementRequestStatus=='null' || !agreementRequestStatus) && !actualAgreement.id">
+        <div style="text-align: right" ng-if="!actualAgreement.id && agreementRequestStatus==0">
             <button type="button" class="btn btn-success" ng-click="checkWrittenAgreement(writtenAgreement, agreementTemplate)">Підтвердити/згенерувати PDF</button>
             <button type="button" class="btn btn-success" ng-click="sendAgreementRequestToUser(writtenAgreement, agreementTemplate)">Відправити на перевірку користувачу</button>
             <button type="button" class="btn btn-warning" ng-click="rejectAgreementRequest(writtenAgreement.agreement.id)">Скасувати запит</button>
         </div>
-        <div style="text-align: right" ng-if="actualAgreement.id && !agreementRequestStatus">
+        <div style="text-align: right" ng-if="actualAgreement.id && agreementRequestStatus==0">
             <button type="button" class="btn btn-success" ng-click="checkWrittenAgreement(writtenAgreement, agreementTemplate)">Підтвердити/згенерувати PDF</button>
             <button ng-if="actualAgreement.checked_by_accountant==0" type="button" class="btn btn-success" ng-click="sendAgreementRequestToUser(writtenAgreement, agreementTemplate)">Відправити на перевірку користувачу</button>
             <button ng-if="actualAgreement.checked_by_accountant==1" type="button" class="btn btn-warning" ng-click="cancelAgreementRequestToUser(writtenAgreement, actualAgreement.id)">Скасувати перевірку</button>
             <button ng-if="actualAgreement.checked!=1" type="button" class="btn btn-warning" ng-click="removeWrittenAgreement(writtenAgreement, actualAgreement.id)">Видалити</button>
         </div>
-        <div style="text-align: right" ng-if="agreementRequestStatus==0">
+        <div style="text-align: right" ng-if="agreementRequestStatus==1">
             Запит скасований
         </div>
-        <div style="text-align: right" ng-if="agreementRequestStatus==1">
+        <div style="text-align: right" ng-if="agreementRequestStatus==2">
             Запит затвердженний
         </div>
     </form>

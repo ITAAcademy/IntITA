@@ -147,7 +147,7 @@ class UserWrittenAgreement extends CActiveRecord
     }
 
     public function saveAgreementPdf(){
-        $pdf = Yii::app()->ePdf->mpdf();
+        $pdf = new \Mpdf\Mpdf();
         $pdf->AddPage('', // L - landscape, P - portrait
             '', '', '', '',
             25, // margin_left
@@ -185,27 +185,24 @@ class UserWrittenAgreement extends CActiveRecord
 
     public function notify(StudentReg $user, $subject, $template, $params)
     {
-        $transaction = null;
-        if (Yii::app()->db->getCurrentTransaction() == null) {
-            $transaction = Yii::app()->db->beginTransaction();
-        }
-        try {
-            $message = new MessagesNotifications();
-            $sender = new MailTransport();
-            $sender->renderBodyTemplate($template, $params);
-            $message->build($subject, $sender->template(), array($user), StudentReg::model()->findByPk(Yii::app()->user->getId()));
-            $message->create();
+        $emailNotify = true;
 
-            $message->send($sender);
-            if ($transaction) {
-                $transaction->commit();
-            }
-        } catch (Exception $e) {
-            if ($transaction) {
-                $transaction->rollback();
-            }
-            throw new \application\components\Exceptions\IntItaException(500, "Повідомлення не вдалося надіслати.");
+        $message = new Messages();
+
+        $sender = new MailTransport();
+        $sender->renderBodyTemplate($template, $params);
+        $message->sender = Yii::app()->user->getId();
+        $message->type = 14;
+        $message->create_date = date("Y-m-d H:i:s");
+        $message->subject = $subject;
+        $message->receiver = $user->id;
+        $message->message_text = $sender->template();
+        $message->save();
+        if ($emailNotify){
+            $receiverUser = $user;
+            $mailSender = new MailTransport();
+            $mailText = $sender->template();
+            $mailSender->send($receiverUser->email,'IntITA',$subject,$mailText);
         }
     }
-
 }
