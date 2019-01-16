@@ -461,10 +461,11 @@ class StudentController extends TeacherCabinetController
         if($reason==0){
             $transaction = Yii::app()->db->beginTransaction();
             try {
-                if(!WrittenAgreementRequest::model(array('request_model_id'=>$agreement->id,'requested_user'=>$agreement->user_id))){
+                if(!WrittenAgreementRequest::model()->findByAttributes(array('request_model_id'=>$agreement->id,'request_user'=>$agreement->user_id))){
                     $request = new WrittenAgreementRequest();
                     $request->request_model_id = $agreement->id;
                     $request->request_user = $agreement->user;
+                    $request->organization = Yii::app()->user->model->getCurrentOrganizationId();
                     $request->save();
                     $transaction->commit();
                     $result = ['message' => 'success', 'reason' => 'Запит на затвердження паперового договору відіслано. Зачекайте, поки ваш запит буде оброблено'];
@@ -481,8 +482,7 @@ class StudentController extends TeacherCabinetController
 
     public function actionWrittenAgreementRequestStatus($id)
     {
-        $agreement=UserAgreements::model()->findByPk($id);
-        $result=array('data'=>WrittenAgreementRequest::getStatus(array('agreement'=>$agreement->id,'user'=>$agreement->user_id)));
+        $result=array('data'=>ActiveRecordToJSON::toAssocArrayWithRelations(WrittenAgreementRequest::model()->findByAttributes(array('request_model_id'=>$id))));
         echo json_encode($result);
     }
 

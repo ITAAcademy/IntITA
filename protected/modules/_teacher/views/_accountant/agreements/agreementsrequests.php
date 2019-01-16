@@ -18,28 +18,28 @@
                                 {{row.service.description}}
                             </a>
                         </td>
-                        <td data-title="'Користувач'" filter="{'user.fullName': 'text'}" sortable="'user.fullName'">
-                            <a ng-href="#/users/profile/{{row.user.id}}" target="_blank">{{row.user.fullName}}</a>
+                        <td data-title="'Користувач'" filter="{'requestUser.fullName': 'text'}" sortable="'requestUser.fullName'">
+                            <a ng-href="#/users/profile/{{row.requestUser.id}}" target="_blank">{{row.requestUser.fullName}}</a>
                         </td>
-                        <td data-title="'Дата запиту'" filter="{'date_create': 'text'}" sortable="'date_create'">
-                            {{row.date_create}}
+                        <td data-title="'Дата запиту'" filter="{'action_date': 'text'}" sortable="'action_date'">
+                            {{row.action_date}}
                         </td>
                         <td data-title="'Затвердив'" filter="{'coworkerChecked.fullName': 'text'}" sortable="'coworkerChecked.fullName'">
                             <a ng-href="#/users/profile/{{row.coworkerChecked.id}}" target="_blank">{{row.coworkerChecked.fullName}}</a>
                         </td>
-                        <td data-title="'Статус'" filter="{'status': 'select'}" filter-data="status">
-                            <span ng-if="row.status!=1 && !(!row.status && row.user_checked)">нові</span>
-                            <span ng-if="row.status==1">затверджені</span>
-                            <span ng-if="!row.status && row.user_checked">відхилені</span>
+                        <td data-title="'Статус'" filter="{'action': 'select'}" filter-data="action">
+                            <span ng-if="!row.action">нові</span>
+                            <span ng-if="row.action==2">затверджені</span>
+                            <span ng-if="row.action==1">відхилені</span>
                         </td>
-                        <td data-title="'Коментар скасування'" filter="{'reject_comment': 'text'}">
-                            {{row.reject_comment}}
+                        <td data-title="'Коментар скасування'" filter="{'comment': 'text'}">
+                            {{row.comment}}
                         </td>
                         <td data-title="">
-                            <a title="переглянути" ng-href="#/accountant/writtenAgreementView/request/{{row.id_message}}">
+                            <a title="переглянути" ng-href="#/accountant/writtenAgreementView/request/{{row.id}}">
                                 <i class="fa fa-eye fa-fw"></i>
                             </a>
-                            <a ng-if="row.status!=1 && !(!row.status && row.user_checked)" title="скасувати" ng-click="rejectAgreementRequest(row.id_message)">
+                            <a ng-if="row.action!=1" title="скасувати" ng-click="rejectAgreementRequest(row.id)">
                                 <i class="fa fa-trash fa-fw"></i>
                             </a>
                         </td>

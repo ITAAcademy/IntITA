@@ -1577,8 +1577,8 @@ angular
                                 callback: function () {
                                     var comment = $jq('#rejectMessageText').val();
                                     paymentSchemaService.rejectSchemesRequest({
-                                        id_message: idMessage,
-                                        reject_comment: comment
+                                        id: idMessage,
+                                        comment: comment
                                     }).$promise.then(function () {
                                         $scope.schemesRequestsTableParams.reload();
                                     });
@@ -1699,13 +1699,13 @@ angular
         function ($scope, $stateParams, NgTableParams, agreementsService, $http, $rootScope) {
             $scope.changePageHeader('Запити на затвердження паперових договорів');
 
-            $scope.status = [
-                {id: 'null', title: 'нові'},
-                {id: '1', title: 'затвердженні'},
-                {id: '0', title: 'відхилені'},
+            $scope.action = [
+                {id: '0', title: 'нові'},
+                {id: '2', title: 'затвердженні'},
+                {id: '1', title: 'відхилені'},
             ];
 
-            $scope.agreementsRequestsTableParams = new NgTableParams({filter: {'status': 'null'}}, {
+            $scope.agreementsRequestsTableParams = new NgTableParams({filter: {'action': '0'}}, {
                 getData: function (params) {
                     return agreementsService
                         .agreementsRequestsList(params.url())
@@ -1717,7 +1717,7 @@ angular
                 }
             });
 
-            $scope.rejectAgreementRequest = function (id_message) {
+            $scope.rejectAgreementRequest = function (id) {
                 bootbox.dialog({
                         title: "Ти впевнений, що хочеш відхилити запит?",
                         message: '<div class="panel-body"><div class="row"><form role="form" name="rejectMessage"><div class="form-group col-md-12">' +
@@ -1730,8 +1730,8 @@ angular
                                 callback: function () {
                                     var comment = $jq('#rejectMessageText').val();
                                     agreementsService.rejectAgreementRequest({
-                                        id_message: id_message,
-                                        reject_comment: comment
+                                        id: id,
+                                        comment: comment
                                     }).$promise.then(function () {
                                         $scope.agreementsRequestsTableParams.reload();
                                     });
@@ -1984,8 +1984,8 @@ angular
                                 callback: function () {
                                     var comment = $jq('#rejectMessageText').val();
                                     agreementsService.rejectAgreementRequest({
-                                        id_message: $stateParams.request,
-                                        reject_comment: comment
+                                        id: $stateParams.request,
+                                        comment: comment
                                     }).$promise.then(function () {
                                         $scope.writtenAgreementPreview(agreementId);
                                     });

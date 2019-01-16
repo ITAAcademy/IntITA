@@ -458,7 +458,7 @@ function invoicesByAgreement($scope, NgTableParams, $stateParams, studentService
             .writtenAgreementRequestStatus({'id':agreementId})
             .$promise
             .then(function (response) {
-                $scope.writtenAgreementRequestStatus=response.data;
+                $scope.writtenAgreementRequest=response.data;
             });
     };
     $scope.getWrittenAgreementRequestStatus($stateParams.agreementId);

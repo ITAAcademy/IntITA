@@ -16,7 +16,7 @@
             <?php $this->renderPartial('/_student/agreement/_writtenAgreementContract', array('agreementId'=>$agreement->id), false, true); ?>
         </div>
         <br>
-        <div ng-if="writtenAgreementRequestStatus==1">
+        <div ng-if="writtenAgreementRequest && writtenAgreementRequest.action==1">
             Запит на затвердження паперового договору затверджений
         </div>
         <br>
