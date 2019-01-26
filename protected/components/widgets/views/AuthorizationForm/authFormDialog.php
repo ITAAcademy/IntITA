@@ -101,14 +101,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
                         <img style="margin: 0 2px;" src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'intita.svg'); ?>"
                              x-ulogin-button="intita" title="INTITA"/>
                     </a>
-                    <img src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'facebook2.png'); ?>"
-                             x-ulogin-button="facebook" title="Facebook"/>
-                    <img src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'googleplus2.png'); ?>"
-                             x-ulogin-button="googleplus" title="Google +"/>
-                    <img src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'linkedin2.png'); ?>"
-                             x-ulogin-button="linkedin" title="LinkedIn"/>
-                    <img src="<?php echo StaticFilesHelper::createPath('image', 'signin', 'twitter2.png'); ?>"
-                             x-ulogin-button="twitter" title="Twitter"/>
                 </div>
             </div>
         </div>
