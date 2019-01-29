@@ -163,7 +163,7 @@ class Library extends CActiveRecord
     {
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
         $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
-        $order_id = LiqpayPayment::dsCrypt('user_id=' . Yii::app()->user->getId() . '&library_id=' . $this->id);
+        $order_id = LiqpayPayment::dsCrypt('user_id='.Yii::app()->user->getId().'&library_id='.$this->id.'&order='.uniqid());
         $model = LibraryPayments::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'library_id' => $this->id, 'status' => Library::SUCCESS_STATUS));
         if (!$model) {
             $html = $liqpay->cnb_form(array(
