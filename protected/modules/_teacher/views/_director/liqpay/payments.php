@@ -1,29 +1,14 @@
 <div ng-controller="liqpayPaymentsCtrl">
-    <em>*Якщо в списку немає проплати здійсненої користувачем, введіть в поля нижче користувача та книгу по якій була здійснена проплата.
+    <em>*Якщо в списку немає проплати здійсненої користувачем, введіть в поле нижче order_id, який можна дістати з проплати на LiqPay.
         Буде відправлено запит на перевірку проплати та оновлено дані.</em>
     <div class="form-group row">
         <div class="col-md-6">
             <label>
-                <strong>Користувач:</strong>
+                <strong>order_id:</strong>
             </label>
-            <input type="text" ng-model="userSelected"  ng-model-options="{ debounce: 1000 }"
-                   placeholder="Користувач" uib-typeahead="item.email for item in getActiveUsers($viewValue) | limitTo : 10"
-                   typeahead-no-results="noResults"  typeahead-template-url="customTemplate.html"
-                   typeahead-on-select="onSelectUser($item)" ng-change="reloadUser()" class="form-control" />
+            <input type="text" ng-model="order_id" placeholder="order_id" class="form-control" />
             <div ng-show="noResults">
                 <i class="glyphicon glyphicon-remove"></i> користувача не знайдено
-            </div>
-        </div>
-        <div class="col-md-6">
-            <label>
-                <strong>Книга:</strong>
-            </label>
-            <input type="text" ng-model="librarySelected"  ng-model-options="{ debounce: 1000 }"
-                   placeholder="Книга" uib-typeahead="item.title for item in getLibraryList($viewValue) | limitTo : 10"
-                   typeahead-no-results="noLibraryResults"  typeahead-template-url="libraryTemplate.html"
-                   typeahead-on-select="onSelectLibrary($item)" ng-change="reloadLibrary()" class="form-control" />
-            <div ng-show="noLibraryResults">
-                <i class="glyphicon glyphicon-remove"></i> книгу не знайдено
             </div>
         </div>
     </div>

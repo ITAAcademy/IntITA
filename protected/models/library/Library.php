@@ -157,7 +157,7 @@
     {
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
         $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
-        $order_id = LiqpayPayment::dsCrypt('user_id='.Yii::app()->user->getId().'&library_id='.$this->id.'&order='.uniqid());
+        $order_id = LiqpayPayment::dsCryptOrder('user_id='.Yii::app()->user->getId().'&library_id='.$this->id.'&order='.uniqid());
         $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id, 'status'=>Library::SUCCESS_STATUS));
         if(!$model){
             $html = $liqpay->cnb_form(array(
@@ -184,34 +184,33 @@
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
         $orderParams = self::getOrderParams($order_id);
         $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
-        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>$orderParams['user_id'], 'library_id'=>$orderParams['library_id']));
+
         $res = $liqpay->api("request", array(
             'action'        => 'status',
             'version'       => '3',
             'order_id'      => $order_id
         ));
 
-        if(!$model || ($model && $model->status!=Library::SUCCESS_STATUS)) {
-            $model = new LibraryPayments();
-            $model->library_id = $this->id;
-            if (!empty($res->payment_id)) $model->payment_id = $res->payment_id;
-            if (!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
-            if (!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
-            if (!empty($res->amount)) $model->amount = $res->amount;
-            if (!empty($res->order_id)) $model->order_id = $res->order_id;
-            $model->user_id = $orderParams['user_id'];
-            $model->date = new CDbExpression('NOW()');;
-            $model->status = $res->status;
-            $model->save();
-        }
+        $model = new LibraryPayments();
+        $model->library_id = $this->id;
+        if (!empty($res->payment_id)) $model->payment_id = $res->payment_id;
+        if (!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+        if (!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+        if (!empty($res->amount)) $model->amount = $res->amount;
+        if (!empty($res->order_id)) $model->order_id = $res->order_id;
+        $model->user_id = $orderParams['user_id'];
+        $model->date = new CDbExpression('NOW()');
+        $model->status = $res->status;
+        $model->save();
+
     }
 
-   public function getStatus($order_id)
+   public static function getStatus($order_id)
     {
         $liqPayPayment = LiqpayPayment::model()->findByPk(1);
         $orderParams = self::getOrderParams($order_id);
         $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
-        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>$orderParams['user_id'], 'library_id'=>$orderParams['library_id']));
+        $model = LibraryPayments::model()->findByAttributes(array('order_id'=>$order_id));
         if(!$model){
             $model = new LibraryPayments();
         }
@@ -221,18 +220,16 @@
             'order_id'      => $order_id
         ));
 
-        if(!$model || ($model && $model->status!=Library::SUCCESS_STATUS)) {
-            $model->library_id = $this->id;
-            if (!empty($res->payment_id)) $model->payment_id = $res->payment_id;
-            if (!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
-            if (!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
-            if (!empty($res->amount)) $model->amount = $res->amount;
-            if (!empty($res->order_id)) $model->order_id = $res->order_id;
-            $model->user_id = $orderParams['user_id'];
-            $model->date = new CDbExpression('NOW()');;
-            $model->status = $res->status;
-            $model->save();
-        }
+        $model->library_id = $orderParams['library_id'];
+        if (!empty($res->payment_id)) $model->payment_id = $res->payment_id;
+        if (!empty($res->sender_phone)) $model->sender_phone = $res->sender_phone;
+        if (!empty($res->sender_card_mask2)) $model->sender_card_mask2 = $res->sender_card_mask2;
+        if (!empty($res->amount)) $model->amount = $res->amount;
+        if (!empty($res->order_id)) $model->order_id = $res->order_id;
+        $model->user_id = $orderParams['user_id'];
+        $model->date = new CDbExpression('NOW()');;
+        $model->status = $res->status;
+        $model->save();
 
         return $res->status;
     }
@@ -252,9 +249,9 @@
      ));
     }
 
-   public function getOrderParams($order_id)
+   public static function getOrderParams($order_id)
     {
-     $url = 'https://example.com/?' . LiqpayPayment::dsCrypt($order_id, 1);
+     $url = 'https://example.com/?' . LiqpayPayment::dsCryptOrder($order_id, 1);
      $query_str = parse_url($url, PHP_URL_QUERY);
      parse_str($query_str, $query_params);
 
