@@ -63,9 +63,8 @@ class LiqpayController extends TeacherCabinetController {
         $statusCode = 201;
         try {
             $params = array_filter($_POST);
-            $model = Library::model()->findByPk($params['library_id']);
-            $order_id = LiqpayPayment::dsCrypt('user_id='.$params['user_id'].'&library_id='.$params['library_id']);
-            $status = $model->getStatus($order_id);
+            $model = new Library();
+            $status = $model->getStatus($params['order_id']);
             $result = ['message' => 'OK', 'status' => $status];
         } catch (Exception $error) {
             $statusCode = 500;
