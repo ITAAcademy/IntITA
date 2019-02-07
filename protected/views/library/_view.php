@@ -45,7 +45,7 @@ $param = Yii::app()->session["lg"] ? "title_" . Yii::app()->session["lg"] : "tit
         <br/>
         <?php
         if (Yii::app()->user->isGuest) {
-            echo "<em><?php echo Yii::t('library', '0997'); ?></em>";
+            echo "<em>".Yii::t('library', '0997')."</em>";
         } else {
             echo $data->getPaymentButton();
         }
