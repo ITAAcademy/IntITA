@@ -40,11 +40,12 @@ class StudentProgressController extends TeacherCabinetController
         return $this->renderPartial('_lectureProgress');
     }
 
-    public function actionGetUsers($page=1,$count=10,$filter=null){
-
+    public function actionGetUsers($page = 1, $count = 10 , $filter = null){
+        $page = $page === "" ? 1 : $page;
         $filter=json_decode($filter);
         $criteria = new CDbCriteria();
         $criteria->with = ['idUser'];
+
         if(isset($filter->owner) && $filter->owner){
             $criteria->addInCondition('idUser.id',[Yii::app()->user->getId()]);
         }else if (!Yii::app()->user->model->isSuperVisor() && Yii::app()->user->model->isTrainer()){
@@ -63,26 +64,31 @@ class StudentProgressController extends TeacherCabinetController
             $criteria->addSearchCondition('idUser.middleName',$filter->search,true,'OR');
         }
         if ($filter->group){
-            $criteria->join = 'LEFT JOIN offline_students os ON t.id_user = os.id_user';
-            $criteria->join .= ' LEFT JOIN offline_subgroups osg ON osg.id = os.id_subgroup';
-            $criteria->join .= ' LEFT JOIN offline_groups og ON og.id = osg.group';
+            $criteria->join = 'LEFT JOIN offline_students AS os ON t.id_user = os.id_user';
+            $criteria->join .= ' LEFT JOIN offline_subgroups AS osg ON os.id_subgroup = osg.id';
+            $criteria->join .= ' LEFT JOIN offline_groups AS og ON osg.group = og.id';
             $criteria->addCondition('og.id='.$filter->group.' and os.end_date IS NULL');
         }
 
         $model = Rating::getInstance($filter->service);
+
         if ($filter->service == "1"){
-            $criteria->join = "LEFT JOIN course c ON c.course_ID = t.id_course";
+            $criteria->join .= " LEFT JOIN course c ON c.course_ID = t.id_course";
             $criteria->addCondition('c.id_organization='.Yii::app()->user->model->getCurrentOrganizationId());
         }
         if ($filter->service == "2"){
-            $criteria->join = "LEFT JOIN module m ON m.module_ID = t.id_module";
+            $criteria->join .= " LEFT JOIN module m ON m.module_ID = t.id_module";
             $criteria->addCondition('m.id_organization='.Yii::app()->user->model->getCurrentOrganizationId());
         }
+        
         $models = $model->count($criteria);
         $criteria->limit = $count;
         $criteria->offset = ($page-1)*$count;
+        
         $ratingModels = $model::model()->findAll($criteria);
+
         $result = [];
+
         foreach ($ratingModels as $ratingModel){
             $rate = new PercentageProgress($ratingModel->id_user);
             array_push($result,[
