@@ -307,6 +307,23 @@ $header = new Header();
                     <li>
                         <a href="<?php echo Config::getBaseUrl() . '/forPartners' ?>"><?php echo Yii::t('header', '0981'); ?></a>
                     </li>
+                    <li>
+                        <a href="https://ua.jooble.org/" target="_blank"><?php
+                            switch (Yii::app()->session['lg']) {
+                                case 'ua':
+                                    echo "Вакансії Jooble";
+                                    break;
+                                case 'ru':
+                                    echo "Вакансии Jooble";
+                                    break;
+                                case 'en':
+                                    echo "Vacancies Jooble";
+                                    break;
+                                default:
+                                    echo "Вакансії Jooble";
+                            }
+                            ?></a>
+                    </li>
                 </ul>
             </div>
         </div>
