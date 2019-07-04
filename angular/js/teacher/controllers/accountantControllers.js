@@ -239,7 +239,7 @@ angular
             $scope.invoicesSum = function () {
                 return $scope.operation.invoices.reduce(function (sum, item) {
                     var roundSum = Number(parseFloat(sum).toFixed(2));
-                    $scope.operation.sum = sum = roundSum + Number(item.amount);
+                    $scope.operation.sum = sum = roundSum + Number(typeof item.amount=='undefined'?item.amount_temp:item.amount);
                     return $scope.operation.sum
                 }, 0);
             };
@@ -350,7 +350,7 @@ angular
                 sendData.userId = $scope.operation.userId;
                 sendData.agreementId = $scope.operation.agreementId;
                 sendData.invoices = $scope.operation.invoices.map(function (item) {
-                    return {id: item.id, amount: item.amount}
+                    return {id: item.id, amount: (typeof item.amount=='undefined')?item.amount_temp:item.amount}
                 });
 
                 $scope.getExternalPayment()
@@ -471,9 +471,10 @@ angular
                             item.paidAmount = 0;
                             item.summa = Number(item.summa);
                             item.internalPayment.forEach(function (pays) {
-                                item.paidAmount = Number(item.paidAmount) + Number(pays.summa);
+                                item.paidAmount = Number((Number(item.paidAmount) + Number(pays.summa)).toFixed(2));
                             });
-                            item.amount = item.summa - item.paidAmount;
+                            item.amount = Number((item.summa - item.paidAmount).toFixed(2));
+                            item.amount_temp = Number((item.summa - item.paidAmount).toFixed(2));
                             return item;
                         });
                         defer.resolve(data.rows);
