@@ -133,7 +133,8 @@ class Organization extends CActiveRecord {
 
     public function getCheckingAccountFor(IServiceableWithEducationForm $model, EducationForm $educationForm) {
         $service = $model->getService($educationForm);
-        var_dump($service->id);
+        var_dump($service);
+        var_dump('___________________-');
         $checkingAccount = $service->checkingAccount;
         var_dump($checkingAccount);die;
         if (!$checkingAccount) {
