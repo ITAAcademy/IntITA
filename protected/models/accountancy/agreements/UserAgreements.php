@@ -341,8 +341,6 @@ class UserAgreements extends CActiveRecord {
                     $corporateEntity = $checkingAccount->corporateEntity;
                 }else{
                     $corporateEntity = $billableObjectOrganization->getCorporateEntityFor($billableObject, $educForm);
-                    var_dump($billableObject);
-                    var_dump($educForm);die;
                     $checkingAccount = $billableObjectOrganization->getCheckingAccountFor($billableObject, $educForm);
                 }
                 $builder = new ContractingPartyBuilder();
