@@ -34,7 +34,7 @@ $mark = $plainTask->mark();
                 <div class="form-group">
                     <label for="answer">Відповідь</label>
                     <textarea class="form-control" name="answer" id="textareaSettingsbyId"
-                              readonly><?php echo $plainTask->answer; ?>
+                              readonly><?php echo str_replace('}}','} }',str_replace('{{', '{ {', $plainTask->answer)); ?>
                     </textarea>
                 </div>
                 <div class="form-group">
