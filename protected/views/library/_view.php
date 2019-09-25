@@ -43,12 +43,12 @@ $param = Yii::app()->session["lg"] ? "title_" . Yii::app()->session["lg"] : "tit
             <a href="" ng-click="getDocument('<?php echo $data->id ?>')">переглянути</a>
         <?php } ?>
         <br/>
-        <?php
-        if (Yii::app()->user->isGuest) {
-            echo '<em>Для купівлі авторизуйся</em>';
-        } else {
-            echo $data->getPaymentButton();
-        }
-        ?>
+<!--        --><?php
+//        if (Yii::app()->user->isGuest) {
+//            echo '<em>Для купівлі авторизуйся</em>';
+//        } else {
+//            echo $data->getPaymentButton();
+//        }
+//        ?>
     </div>
 </div>
