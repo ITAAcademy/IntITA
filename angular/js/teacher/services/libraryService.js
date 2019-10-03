@@ -36,5 +36,11 @@ angular
                         url: basePath + '/_teacher/library/library/getLibraryData',
                         method: 'GET',
                     },
+                    changeStatus: {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'},
+                        url: basePath + '/_teacher/_director/liqpay/changeStatus',
+                        transformRequest : transformRequest.bind(null)
+                    },
                 });
         }]);

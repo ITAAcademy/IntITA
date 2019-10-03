@@ -42,7 +42,13 @@ $param = Yii::app()->session["lg"] ? "title_" . Yii::app()->session["lg"] : "tit
             <?php echo Yii::t('library', '0995'); ?>&#58;
             <a href="" ng-click="getDocument('<?php echo $data->id ?>')"><?php echo Yii::t('library', '0996'); ?></a>
         <?php } ?>
-        <br/>
+        <div>
+            <a data-toggle="collapse" href="#collapse<?php echo $data->id ?>">Реквізити для оплати:</a>
+            <div id="collapse<?php echo $data->id ?>" class="collapse">
+                <p>Здійсніть оплату по реквізитах наданих нижче. Після чого з Вами зв'яжуться або нададуть доступ в автоматичному режимі:</p>
+                ФОП 23445345353
+            </div>
+        </div>
         <?php
         if (Yii::app()->user->isGuest) {
             echo "<em>".Yii::t('library', '0997')."</em>";

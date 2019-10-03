@@ -72,4 +72,18 @@ class LiqpayController extends TeacherCabinetController {
         }
         $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
     }
+
+    public function actionChangeStatus() {
+        $statusCode = 201;
+        try {
+            $params = array_filter($_POST);
+            $model = new Library();
+            $status = $model->changeStatus($params);
+            $result = ['message' => 'OK', 'status' => $status];
+        } catch (Exception $error) {
+            $statusCode = 500;
+            $result = ['message' => 'error', 'reason' => $error->getMessage()];
+        }
+        $this->renderPartial('//ajax/json', ['statusCode' => $statusCode, 'body' => json_encode($result)]);
+    }
 }
