@@ -14,6 +14,8 @@ $param = Yii::app()->session["lg"] ? "title_" . Yii::app()->session["lg"] : "tit
         <br/>
         <span class="titleBook"><?php echo CHtml::encode($data->title); ?></span>
         <br/>
+        <span style="padding: 2px 4px; background: #5bc0de; border-radius: 2px "><?php echo 'ID' ?>&#58; <b style="font-size: large"><?php echo CHtml::encode($data->id); ?></b></span>
+        <br/>
         <?php echo Yii::t('library', '0991'); ?>&#58;
         <?php echo CHtml::encode($data->description); ?>
         <?php if ($data->paper_price) { ?>
@@ -45,8 +47,8 @@ $param = Yii::app()->session["lg"] ? "title_" . Yii::app()->session["lg"] : "tit
         <div>
             <a data-toggle="collapse" href="#collapse<?php echo $data->id ?>">Реквізити для оплати:</a>
             <div id="collapse<?php echo $data->id ?>" class="collapse">
-                <p>Здійсніть оплату по реквізитах наданих нижче. Після чого з Вами зв'яжуться або нададуть доступ в автоматичному режимі:</p>
-                ФОП 23445345353
+                <p>Здійсніть оплату по реквізитах наданих нижче. В коментарі при оплаті вкажіть ІД матеріалу, який знаходиться в атрибутах матеріалу. Після чого з Вами зв'яжуться або нададуть доступ в автоматичному режимі:</p>
+                XXXXXXXXXXXX
             </div>
         </div>
         <?php

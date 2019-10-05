@@ -186,17 +186,27 @@ function libraryPaymentsCtrl ($scope, NgTableParams, liqpayService, libraryServi
     $scope.reloadLibrary = function(){
         $scope.selectedLibrary=null;
     };
-    $scope.createPayment = function(){
+
+    $scope.clearInputs=function () {
+        $scope.onSelectLibrary();
+        $scope.reloadLibrary();
+
+        $scope.userSelected = null;
+        $scope.librarySelected=null;
+    };
+
+    $scope.createPayment = function(status){
         if($scope.selectedUser && $scope.selectedLibrary){
             libraryService.changeStatus(
                 {
                     'library_id':$scope.selectedLibrary.id,
                     'user_id':$scope.selectedUser.id,
-                    'status':'success'
+                    'status':status,
                 }
             ).$promise
                 .then(function successCallback(response) {
                     console.log(response);
+                    $scope.clearInputs();
                     ngToast.create({
                         dismissButton: true,
                         className: 'success',
@@ -211,5 +221,26 @@ function libraryPaymentsCtrl ($scope, NgTableParams, liqpayService, libraryServi
         }else{
             bootbox.alert('Оберіть матеріал та користувача');
         }
+    };
+    $scope.setPayment = function(status, id){
+        libraryService.changeStatus(
+            {
+                'status':status,
+                'id':id,
+            }
+        ).$promise
+            .then(function successCallback(response) {
+                console.log(response);
+                ngToast.create({
+                    dismissButton: true,
+                    className: 'success',
+                    content: 'Проплату знайдено та оновлено',
+                    timeout: 3000
+                });
+            }, function errorCallback(error) {
+                console.log(error);
+                bootbox.alert("Виникла помилка");
+            });
+        $scope.libraryPaymentsTableParams.reload();
     };
 }

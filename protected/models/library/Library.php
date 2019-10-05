@@ -295,6 +295,7 @@ class Library extends CActiveRecord
         $criteria->select = "t.id, title";
         $criteria->alias = "t";
         $criteria->addSearchCondition('title', $query, true, "OR", "LIKE");
+        $criteria->addSearchCondition('t.id', $query, true, "OR");
         $criteria->addCondition('t.status=' . self::ACTIVE);
         $data = Library::model()->findAll($criteria);
         $result = array();
@@ -374,11 +375,18 @@ class Library extends CActiveRecord
 
     public static function changeStatus($params)
     {
-        $model = new LibraryPayments();
-        $model->library_id = $params['library_id'];
-        $model->user_id = $params['user_id'];
-        $model->date = new CDbExpression('NOW()');;
-        $model->status = $params['status'];
-        $model->save();
+        if(isset($params['id'])){
+            $model = LibraryPayments::model()->findByPk($params['id']);
+            $model->date = new CDbExpression('NOW()');;
+            $model->status = $params['status'];
+            $model->save();
+        }else{
+            $model = new LibraryPayments();
+            $model->library_id = $params['library_id'];
+            $model->user_id = $params['user_id'];
+            $model->date = new CDbExpression('NOW()');;
+            $model->status = $params['status'];
+            $model->save();
+        }
     }
 }
