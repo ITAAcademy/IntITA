@@ -617,7 +617,7 @@ class Lecture extends CActiveRecord
             $row["title"] = $record->title_ua;
             $row["type"] = $record->type->title_ua;
             $row["id"] = $record->id;
-
+            $row["url"] = Config::getBaseUrl().'/lesson/'.$record->id;
             array_push($return['data'], $row);
         }
 
@@ -640,6 +640,7 @@ class Lecture extends CActiveRecord
             $row["title"] = $record->title_ua;
             $row["type"] = $record->type->title_ua;
             $row["id"] = $record->id;
+            $row["url"] = Config::getBaseUrl().'/lesson/'.$record->id;
 
             array_push($return['data'], $row);
         }
@@ -664,6 +665,7 @@ class Lecture extends CActiveRecord
             $row["title"] = $record->title_ua;
             $row["type"] = $record->type->title_ua;
             $row["id"] = $record->id;
+            $row["url"] = Config::getBaseUrl().'/lesson/'.$record->id;
 
             array_push($return['data'], $row);
         }

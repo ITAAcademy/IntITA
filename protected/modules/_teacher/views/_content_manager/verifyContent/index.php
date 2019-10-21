@@ -26,7 +26,7 @@
                                     <tr  ng-repeat="waitLecture in waitLectures">
                                         <td>{{waitLecture.module}}</td>
                                         <td>{{waitLecture.order}}</td>
-                                        <td><a href="{{waitLecture.lesson_url}}">{{waitLecture.title}}</a></td>
+                                        <td><a href="{{waitLecture.url}}">{{waitLecture.title}}</a></td>
                                         <td>{{waitLecture.type}}</td>
                                         <td><a href="javascript:void(0)" ng-click="actionLecture('confirmLecture', $index, waitLecture.id)">Затвердити</td>
                                     </tr>
@@ -55,7 +55,7 @@
                                     <tr  ng-repeat="verifiedlecture in verifiedlectures">
                                         <td>{{verifiedlecture.module}}</td>
                                         <td>{{verifiedlecture.order}}</td>
-                                        <td><a href="{{verifiedlecture.lesson_url}}">{{verifiedlecture.title}}</a></td>
+                                        <td><a href="{{verifiedlecture.url}}">{{verifiedlecture.title}}</a></td>
                                         <td>{{verifiedlecture.type}}</td>
                                         <td><a href="javascript:void(0)" ng-click="actionLecture('cancelLecture', $index, verifiedlecture.id)">Скасувати</td>
                                     </tr>
