@@ -8,6 +8,7 @@ angular
     .controller('organizationCtrl', organizationCtrl)
     .controller('liqpayCtrl', liqpayCtrl)
     .controller('liqpayPaymentsCtrl', liqpayPaymentsCtrl)
+    .controller('libraryPaymentsCtrl', libraryPaymentsCtrl)
 
 function organizationTableCtrl ($scope, organizationService, NgTableParams){
     $scope.changePageHeader('Організації');
@@ -150,6 +151,65 @@ function liqpayPaymentsCtrl ($scope, NgTableParams, liqpayService, ngToast){
             });
         }else{
             bootbox.alert('Введіть order_id');
+        }
+    };
+}
+
+function libraryPaymentsCtrl ($scope, NgTableParams, liqpayService, libraryService, ngToast){
+    $scope.changePageHeader('Бібліотечні проплати');
+
+    $scope.libraryPaymentsTableParams = new NgTableParams({
+        sorting: {
+            'date': 'desc',
+        },
+    }, {
+        getData: function (params) {
+            return liqpayService
+                .getPayments(params.url())
+                .$promise
+                .then(function (data) {
+                    params.total(data.count);
+                    return data.rows;
+                });
+        }
+    });
+
+    $scope.onSelectUser = function ($item) {
+        $scope.selectedUser = $item;
+    };
+    $scope.reloadUser = function(){
+        $scope.selectedUser=null;
+    };
+    $scope.onSelectLibrary = function ($item) {
+        $scope.selectedLibrary = $item;
+    };
+    $scope.reloadLibrary = function(){
+        $scope.selectedLibrary=null;
+    };
+    $scope.createPayment = function(){
+        if($scope.selectedUser && $scope.selectedLibrary){
+            libraryService.changeStatus(
+                {
+                    'library_id':$scope.selectedLibrary.id,
+                    'user_id':$scope.selectedUser.id,
+                    'status':'success'
+                }
+            ).$promise
+                .then(function successCallback(response) {
+                    console.log(response);
+                    ngToast.create({
+                        dismissButton: true,
+                        className: 'success',
+                        content: 'Проплату знайдено та оновлено',
+                        timeout: 3000
+                    });
+                }, function errorCallback(error) {
+                    console.log(error);
+                    bootbox.alert("Виникла помилка");
+                });
+            $scope.libraryPaymentsTableParams.reload();
+        }else{
+            bootbox.alert('Оберіть матеріал та користувача');
         }
     };
 }
