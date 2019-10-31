@@ -37,7 +37,7 @@ class LibraryPayments extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('order_id, library_id, user_id, date, status', 'required'),
+            array('library_id, user_id, date, status', 'required'),
 			array('library_id, user_id', 'numerical', 'integerOnly'=>true),
 			array('order_id', 'length', 'max'=>128),
 			array('amount', 'length', 'max'=>10),

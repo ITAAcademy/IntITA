@@ -153,29 +153,14 @@
      return parent::model($className);
     }
 
-   public function getPaymentButton()
+    public function getPaymentButton()
     {
-        $liqPayPayment = LiqpayPayment::model()->findByPk(1);
-        $liqpay = new LiqPay($liqPayPayment->public_key, LiqpayPayment::dsCrypt($liqPayPayment->private_key, 1));
-        $order_id = LiqpayPayment::dsCryptOrder('user_id='.Yii::app()->user->getId().'&library_id='.$this->id.'&order='.uniqid());
-        $model = LibraryPayments::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'library_id'=>$this->id, 'status'=>Library::SUCCESS_STATUS));
-        if(!$model){
-            $html = $liqpay->cnb_form(array(
-                'version'=>'3',
-                'action'         => 'pay',
-                'amount'         => $this->price,
-                'currency'       => 'UAH',
-                'description'    => 'Купівля книги '.$this->title,
-                'order_id'       => $order_id,
-                'result_url'	=>	Config::getBaseUrl() . '/library/libraryPay/?id='.$this->id.'&order_id='.$order_id,
-                'server_url'	=>	Config::getBaseUrl() . '/library/liqpayStatus/?id='.$this->id.'&order_id='.$order_id,
-                'language'		=>	'uk', // uk, en
-            ));
-        } else {
-            $html = '<a href="/library/getBook?id='.$this->id.'">Завантажити</a>';
+        $model = LibraryPayments::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'library_id' => $this->id, 'status' => Library::SUCCESS_STATUS));
+        $html = '';
+        if ($model) {
+            $html = '<a href="/library/getBook?id=' . $this->id . '">Завантажити</a>';
         }
-
-     return $html;
+        return $html;
     }
 
    public function createPayment($order_id)
@@ -366,6 +351,16 @@
      else
       throw new CHttpException(500,"Помилка при створенні файлу!");
 
+    }
+
+    public static function changeStatus($params)
+    {
+        $model = new LibraryPayments();
+        $model->library_id = $params['library_id'];
+        $model->user_id = $params['user_id'];
+        $model->date = new CDbExpression('NOW()');;
+        $model->status = $params['status'];
+        $model->save();
     }
 
   }

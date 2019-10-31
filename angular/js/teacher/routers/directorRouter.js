@@ -50,4 +50,9 @@ angular
             cache: false,
             templateUrl: basePath+"/_teacher/_director/liqpay/payments",
         })
+        .state('library_payments', {
+            url: "/library_payments",
+            cache: false,
+            templateUrl: basePath+"/_teacher/_director/library/payments",
+        })
 });
