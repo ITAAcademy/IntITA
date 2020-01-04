@@ -103,7 +103,7 @@ function companyOneCheckingAccount($state, companiesService, ngToast) {
                 companyId: data.corporateEntity.id,
                 bank_name: data.bank_name,
                 bank_code: Number(data.bank_code),
-                checking_account: Number(data.checking_account),
+                checking_account: data.checking_account,
                 checking_account_order: Number(data.checking_account_order),
                 createdAt: new Date(data.createdAt),
                 deletedAt: new Date(data.deletedAt)
