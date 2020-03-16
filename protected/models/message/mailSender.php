@@ -14,6 +14,7 @@
 
    private function loadSender()
     {
+        var_dump('test');die;
      $this->loadComposerClasses();
      $this->senderAttr = new \PHPMailer\PHPMailer\PHPMailer();
     }
