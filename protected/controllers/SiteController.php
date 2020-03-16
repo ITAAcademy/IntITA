@@ -373,7 +373,6 @@ class SiteController extends Controller {
     }
 
     public function actionResetEmail() {
-        var_dump('test');die;
         if (!Yii::app()->user->isGuest) {
             $model = StudentReg::model()->findByPk(Yii::app()->user->id);
 
@@ -387,6 +386,7 @@ class SiteController extends Controller {
             }
             $key = 'ababagalamaga';
             $mailHash = base64_encode(Mail::strcode($modelReset->email, $key));
+            var_dump('$model->validate()', $model->validate());die;
             if ($model->validate()) {
                 $model->updateByPk($model->id, array('token' => $model->token, 'activkey_lifetime' => $getTime));
                 $sender = new MailTransport();
