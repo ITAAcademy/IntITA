@@ -386,7 +386,7 @@ class SiteController extends Controller {
             }
             $key = 'ababagalamaga';
             $mailHash = base64_encode(Mail::strcode($modelReset->email, $key));
-            var_dump('$model->validate()', $model->validate());die;
+            var_dump('$model->validate()', $model->getErrors());die;
             if ($model->validate()) {
                 $model->updateByPk($model->id, array('token' => $model->token, 'activkey_lifetime' => $getTime));
                 $sender = new MailTransport();
