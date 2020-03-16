@@ -386,7 +386,9 @@ class SiteController extends Controller {
             }
             $key = 'ababagalamaga';
             $mailHash = base64_encode(Mail::strcode($modelReset->email, $key));
-            var_dump('$model->validate()', $model->getErrors());die;
+            if (!$model->validate()) {
+                var_dump('$model->validate()', $model->getErrors());
+            }
             if ($model->validate()) {
                 $model->updateByPk($model->id, array('token' => $model->token, 'activkey_lifetime' => $getTime));
                 $sender = new MailTransport();
@@ -396,6 +398,7 @@ class SiteController extends Controller {
 
                 $this->redirect(Yii::app()->createUrl('/site/changeemailinfo', array('email' => $modelReset->email)));
             }
+            var_dump('$model->validate()', $model->getErrors());die;
         }
     }
 
