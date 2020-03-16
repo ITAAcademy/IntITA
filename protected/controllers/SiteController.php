@@ -373,6 +373,7 @@ class SiteController extends Controller {
     }
 
     public function actionResetEmail() {
+        var_dump('test');die;
         if (!Yii::app()->user->isGuest) {
             $model = StudentReg::model()->findByPk(Yii::app()->user->id);
 
