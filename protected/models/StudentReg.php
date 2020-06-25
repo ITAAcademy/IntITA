@@ -389,7 +389,12 @@ class StudentReg extends CActiveRecord {
 
         if ($this->birthday != null) {
             $format = "d/m/Y";
-            $this->birthday = date_format(DateTime::createFromFormat($format, $this->birthday),'Y-m-d');
+            $dateOfBirth = DateTime::createFromFormat($format, $this->birthday);
+            if ($dateOfBirth) {
+                $this->birthday = date_format(DateTime::createFromFormat($format, $this->birthday),'Y-m-d');
+            } else {
+                $this->birthday=null;    
+            }
         }else $this->birthday=null;
 
 
